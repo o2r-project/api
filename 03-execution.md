@@ -10,9 +10,9 @@
 
 
 Execution jobs are instances of ERCs. When ERCs are executed, they are executed
-as a new job. This provides reproducability and build history for ERCs, as well
-as the option to run a ERC with different input parameters. The most simple
-execution job is a direct copy of the unmodified ERC.
+as a new job. This provides reproducability and build history for ERCs, as well as the option to run a ERC with different input parameters. The most simple execution job is a direct copy of the unmodified ERC.
+
+[ich finde das bis hier hin etwas verwirrend, "instance" passt hier nicht ganz. Auch nicht ganz klar: Eine Kopie eines ERC ist die simpelste Form eines execution jobs?]
 
 ## Create job
 
@@ -36,10 +36,10 @@ URL Params
 Data Params
 : ```{ execute_now : [boolean], inputs : [ [FileDescriptor], … ] }```
 
-If `execute_now` is `True`, the job will start as soon as it is created.
+If `execute_now` is `True`, the job will start as soon as it is created. [gibt es einen Fall, in dem man einen Job erstellt und den nicht sofort ausführen will?]
 
 Where `[FileDescriptor]` allows overriding files from the ERC with files
-from a different execution Job or a different ERC.
+from a different execution Job or a different ERC. [what? diese Funktionalität ist mir neu.]
 
 __`[FileDescriptor]` Syntax:__
 ```
@@ -66,7 +66,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in
+   User is not logged in [für diese Funktion muss ein user wahrscheinlich nicht zwingend eingeloggt sein, müssen wir aber noch diskutieren]
 
 
 
@@ -128,7 +128,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in
+   User is not logged in [Es sollte wahrscheinlich möglich sein, ein ERC ausführen zu können, ohne dass man eingeloggt ist]
 
 
 
