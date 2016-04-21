@@ -89,4 +89,4 @@ Content
    This ERC does not yet have a job ID attached to it.
 
 
-[Ist hier evtl. die Richtige Stelle, um auch die Ordnerstruktur eines ERC abfragen zu können?]
+[Ist hier evtl. die Richtige Stelle, um auch die Ordnerstruktur eines ERC abfragen zu können?] [jk: Ja, hier sollte auch die Option hinein, den Dateibaum für das originale ERC zu betrachten. Zusätzlich kann man aber auch die Dateibäume für die execution Jobs betrachten, das geschieht über die execution job api. Da stellt sich die Frage, ob es nicht reicht den Dateibaum von dem "trivialen" Execution Job, also der ersten Ausführung des originalen ERC zu betrachten.]

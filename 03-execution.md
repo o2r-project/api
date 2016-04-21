@@ -14,6 +14,15 @@ as a new job. This provides reproducability and build history for ERCs, as well 
 
 [ich finde das bis hier hin etwas verwirrend, "instance" passt hier nicht ganz. Auch nicht ganz klar: Eine Kopie eines ERC ist die simpelste Form eines execution jobs?]
 
+[jk: die Beschreibung war erstmal ganz provisiorisch, muss natürlich weiter
+ausgebaut werden. Generell wollen wir ja die Möglichkeit haben nachzuverfolgen
+ob/wann ein ERC erfolgreich ausgeführt werden konnte. Daher denke ich dass man
+verschiedene Ausführ-aktionen separieren sollte - eben sog. "execution jobs".
+Die können wirklich nur für das reine ausführen der originalen Version genutzt
+werden, dann macht man an dem originalen ERC auch nichts weiter. Es soll ja aber
+auch die Option geben die Eingangsdaten und Eingangsparameter zu verändern, und
+dann ist es eben nicht mehr die originale Version des ERC.]
+
 ## Create job
 
 Create a new execution job for a ERC.
@@ -66,7 +75,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in [für diese Funktion muss ein user wahrscheinlich nicht zwingend eingeloggt sein, müssen wir aber noch diskutieren]
+   User is not logged in [für diese Funktion muss ein user wahrscheinlich nicht zwingend eingeloggt sein, müssen wir aber noch diskutieren] [jk: richtig. copy'n'paste artefakt.]
 
 
 
