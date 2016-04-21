@@ -2,7 +2,7 @@
 
 ## URC
 
-Upload a unvalidated research compendium as a zipped file.
+Upload a unvalidated research compendium as a zipped file. [ heißt das, es gibt für die anderen RCs eigene URLs? Ist es nicht besser, das unabhängig vom ERS Status zu machen?]
 
 Implemented
 : No
@@ -37,7 +37,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-     User is not logged in
+     User is not logged in [Kann man mit reinnehmen, aber der User wird im nicht eingeloggten Zustand ohnehin nicht die Möglichkeit haben, irgendwas hochzuschieben]
 
 -
 
@@ -58,7 +58,7 @@ Method
 : `POST`
 
 URL
-: `/upload/urc`
+: `/upload/urc` [obwohl es hier noch kein RC ist?]
 
 URL Params
 : _none_
