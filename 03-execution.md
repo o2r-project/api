@@ -213,7 +213,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in
+   User is not logged in [siehe oben]
 
 
 
