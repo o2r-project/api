@@ -45,10 +45,10 @@ URL Params
 Data Params
 : ```{ execute_now : [boolean], inputs : [ [FileDescriptor], … ] }```
 
-If `execute_now` is `True`, the job will start as soon as it is created. [gibt es einen Fall, in dem man einen Job erstellt und den nicht sofort ausführen will?]
+If `execute_now` is `True`, the job will start as soon as it is created. [gibt es einen Fall, in dem man einen Job erstellt und den nicht sofort ausführen will?] [jk: gute Frage, sollte man diskutieren.]
 
 Where `[FileDescriptor]` allows overriding files from the ERC with files
-from a different execution Job or a different ERC. [what? diese Funktionalität ist mir neu.]
+from a different execution Job or a different ERC. [what? diese Funktionalität ist mir neu.] [jk: O3,4, User Stories 53-55]
 
 __`[FileDescriptor]` Syntax:__
 ```
@@ -137,7 +137,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in [Es sollte wahrscheinlich möglich sein, ein ERC ausführen zu können, ohne dass man eingeloggt ist]
+   User is not logged in [Es sollte wahrscheinlich möglich sein, ein ERC ausführen zu können, ohne dass man eingeloggt ist] [jk: ja. c'n'p artefakt.]
 
 
 
@@ -222,7 +222,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in [siehe oben]
+   User is not logged in [siehe oben] [s.o.]
 
 
 
