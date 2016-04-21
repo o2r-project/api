@@ -34,7 +34,7 @@ Code
 
 Content
 : `{ error : 'user not logged in' }`
-   User is not logged in
+   User is not logged in [s.o.]
 
 
 
@@ -89,4 +89,4 @@ Content
    This ERC does not yet have a job ID attached to it.
 
 
-
+[Ist hier evtl. die Richtige Stelle, um auch die Ordnerstruktur eines ERC abfragen zu können?]
