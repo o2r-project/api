@@ -14,6 +14,6 @@ The following system dependencies are need to compile the PDF (and may not be in
 
 ## License
 
-The o2r Web API specification is licensed under The Apache License, Version 2.0, see file `LICENSE`.
+The o2r Web API specification is licensed under Creative Commons CC-BY-4.0 License, see file `LICENSE`.
 
 Copyright (C) 2016 - o2r project.
