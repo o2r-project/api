@@ -1,8 +1,12 @@
-# ERC
+# Compendium
 
-## View Metadata
+## View Compendium
 
-View Metadata for a ERC. __TODO__ define `metadata`!
+View Information regarding a research compendium. This includes the complete
+metadata set and a tree representation of the included files.
+
+__TODO__ specify the tree representation. This will be very close to the format
+used in https://www.npmjs.com/package/directory-tree
 
 Implemented
 : No
@@ -14,10 +18,10 @@ Method
 : `GET`
 
 URL
-: `/erc/view/:id`
+: `/api/v1/compendium/:id`
 
 URL Params
-: :id → ERC id
+: :id → Compendium ID
 
 ### Success Response
 
@@ -25,29 +29,20 @@ Code
 : 200 OK
 
 Content
-: ```{ id : [alphanumeric], metadata : … }```
+: ```{ id : [alphanumeric], metadata : … , files : … }```
 
 ### Error Response
-
-Code
-: 401 Unauthorized
-
-Content
-: `{ error : 'user not logged in' }`
-   User is not logged in [s.o.]
-
-
 
 Code
 : 404 Not Found
 
 Content
-: `{ error : 'no ERC with this id' }`
-   Could not find a ERC with the requested ID.
+: `{ error : 'no compendium with this id' }`
+   Could not find a compendium with the requested ID.
 
 ## List execution jobs
 
-List the job IDs for all execution jobs attached to a ERC.
+List all executon jobs by ID attached to a compendium.
 
 Implemented
 : No
@@ -59,10 +54,10 @@ Method
 : `GET`
 
 URL
-: `/erc/view/:id/jobs`
+: `/api/v1/compendium/:id/jobs`
 
 URL Params
-: :id → ERC id
+: :id → Compendium ID
 
 ### Success Response
 
@@ -70,23 +65,14 @@ Code
 : 200 OK
 
 Content
-: ```{ id : [alphanumeric], job_ids: [ [alphanumeric], … ] }```
+: ```{ compendium_id : [alphanumeric], job_ids: [ [alphanumeric], … ] }```
 
 ### Error Response
-
-Code
-: 401 Unauthorized
-
-Content
-: `{ error : 'user not logged in' }`
-   User is not logged in
 
 Code
 : 404 Not Found
 
 Content
-: `{ error : 'no job attached to this ERC' }`
-   This ERC does not yet have a job ID attached to it.
-
-
-[Ist hier evtl. die Richtige Stelle, um auch die Ordnerstruktur eines ERC abfragen zu können?] [jk: Ja, hier sollte auch die Option hinein, den Dateibaum für das originale ERC zu betrachten. Zusätzlich kann man aber auch die Dateibäume für die execution Jobs betrachten, das geschieht über die execution job api. Da stellt sich die Frage, ob es nicht reicht den Dateibaum von dem "trivialen" Execution Job, also der ersten Ausführung des originalen ERC zu betrachten.]
+: `{ error : 'no job attached to this compendium' }`
+   This compendium does not yet have a job attached to it. This happens, when
+   the compendium has never been executed so far.

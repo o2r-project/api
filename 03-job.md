@@ -41,13 +41,13 @@ URL Params
 : None
 
 Data Params
-: ```{ erc_id : String, inputs : [ [FileDescriptor], … ] }```
+: ```{ compendium_id : String, inputs : [ [FileDescriptor], … ] }```
 
 _The FileDescriptor functionality is only a potential feature and not at all
 finalized._
 
-Where `[FileDescriptor]` allows overriding files from the ERC with files
-from a different execution Job or a different ERC. [what? diese Funktionalität ist mir neu.] [jk: O3,4, User Stories 53-55]
+Where `[FileDescriptor]` allows overriding files from the compendium with files
+from a different execution job or a different compendium.
 
 __`[FileDescriptor]` Syntax:__
 ```
@@ -73,8 +73,8 @@ Code
 : 404 Not Found
 
 Content
-: `{ error : 'no ERC with this ID found' }`
-   Could not find a ERC with the provided `erc_id`.
+: `{ error : 'no compendium with this ID found' }`
+   Could not find a compendium with the provided `compendium_id`.
 
 
 Code
@@ -116,7 +116,7 @@ Code
 : 200 OK
 
 Content
-: ```{ id : [alphanumeric], erc_id : [alphanumeric], steps : { [ExecutionStep], … }}```
+: ```{ id : [alphanumeric], compendium_id : [alphanumeric], steps : { [ExecutionStep], … }}```
 
 Where `[ExecutionStep]` are `Object` types containing status information for a execution step.
 
@@ -156,8 +156,8 @@ Code
 : 404 Not Found
 
 Content
-: `{ error : 'no ERC with this ID found' }`
-   Could not find a ERC with the provided `:id`.
+: `{ error : 'no compendium with this ID found' }`
+   Could not find a compendium with the provided `:id`.
 
 ### Status report
 
