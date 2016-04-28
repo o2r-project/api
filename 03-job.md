@@ -8,24 +8,22 @@
 
 ---
 
+Execution jobs are used to execute a research compendium. When a new execution
+job is started, the contents of the research compendium are cloned to create a
+trackable execution. The status information, logs and final working directory
+data are saved in their final state, so that they can be reviewed later on.
 
-Execution jobs are instances of ERCs. When ERCs are executed, they are executed
-as a new job. This provides reproducability and build history for ERCs, as well as the option to run a ERC with different input parameters. The most simple execution job is a direct copy of the unmodified ERC.
+All execution jobs are tied to a single research compendium and reflect the
+execution history of that research compendium.
 
-[ich finde das bis hier hin etwas verwirrend, "instance" passt hier nicht ganz. Auch nicht ganz klar: Eine Kopie eines ERC ist die simpelste Form eines execution jobs?]
+A trivial execution job would be a completely unmodified research compendium, to
+test the reproducibility of a research compendium. A potential future feature
+would be that the input data (input files, datasets, parameters) can be altered
+to run a modified execution job. This functionality is not yet final.
 
-[jk: die Beschreibung war erstmal ganz provisiorisch, muss natürlich weiter
-ausgebaut werden. Generell wollen wir ja die Möglichkeit haben nachzuverfolgen
-ob/wann ein ERC erfolgreich ausgeführt werden konnte. Daher denke ich dass man
-verschiedene Ausführ-aktionen separieren sollte - eben sog. "execution jobs".
-Die können wirklich nur für das reine ausführen der originalen Version genutzt
-werden, dann macht man an dem originalen ERC auch nichts weiter. Es soll ja aber
-auch die Option geben die Eingangsdaten und Eingangsparameter zu verändern, und
-dann ist es eben nicht mehr die originale Version des ERC.]
+## New Job
 
-## Create job
-
-Create a new execution job for a ERC.
+Create and run a new execution job.
 
 Implemented
 : No
@@ -37,15 +35,16 @@ Method
 : `POST`
 
 URL
-: `/jobs/create/:id`
+: `/api/v1/job`
 
 URL Params
-: :id → ERC id
+: None
 
 Data Params
-: ```{ execute_now : [boolean], inputs : [ [FileDescriptor], … ] }```
+: ```{ erc_id : String, inputs : [ [FileDescriptor], … ] }```
 
-If `execute_now` is `True`, the job will start as soon as it is created. [gibt es einen Fall, in dem man einen Job erstellt und den nicht sofort ausführen will?] [jk: gute Frage, sollte man diskutieren.]
+_The FileDescriptor functionality is only a potential feature and not at all
+finalized._
 
 Where `[FileDescriptor]` allows overriding files from the ERC with files
 from a different execution Job or a different ERC. [what? diese Funktionalität ist mir neu.] [jk: O3,4, User Stories 53-55]
@@ -66,25 +65,16 @@ Code
 : 200 OK
 
 Content
-: ```{ id : [alphanumeric] }```
+: ```{ job_id : [alphanumeric] }```
 
 ### Error Response
-
-Code
-: 401 Unauthorized
-
-Content
-: `{ error : 'user not logged in' }`
-   User is not logged in [für diese Funktion muss ein user wahrscheinlich nicht zwingend eingeloggt sein, müssen wir aber noch diskutieren] [jk: richtig. copy'n'paste artefakt.]
-
-
 
 Code
 : 404 Not Found
 
 Content
 : `{ error : 'no ERC with this ID found' }`
-   Could not find a ERC with the provided `:id`.
+   Could not find a ERC with the provided `erc_id`.
 
 
 Code
@@ -94,67 +84,12 @@ Content
 : `{ error : 'Could not create job'}`
   Could not create job for undefined reason.
 
-
-
 Code
 : 500 Internal Server Error
 
 Content
 : `{ error : 'could not provide file', filedescriptor : [FileDescriptor] }`
   File described in [FileDescriptor] could not be provided to job.
-
-## Run Job
-
-Run a execution job.
-
-Implemented
-: No
-
-Stability:
-: 0 - subject to changes
-
-Method
-: `GET`
-
-URL
-: `/jobs/run/:id`
-
-URL Params
-: :id → ERC id
-
-### Success Response
-
-Code
-: 200 OK
-
-Content
-: ```{ id : [alphanumeric] }```
-
-### Error Response
-
-Code
-: 401 Unauthorized
-
-Content
-: `{ error : 'user not logged in' }`
-   User is not logged in [Es sollte wahrscheinlich möglich sein, ein ERC ausführen zu können, ohne dass man eingeloggt ist] [jk: ja. c'n'p artefakt.]
-
-
-
-Code
-: 404 Not Found
-
-Content
-: `{ error : 'no ERC with this ID found' }`
-   Could not find a ERC with the provided `:id`.
-
-
-Code
-: 500 Internal Server Error
-
-Content
-: `{ error : 'Could not run job'}`
-  Could not create job for undefined reason.
 
 ## View Job
 
@@ -170,10 +105,10 @@ Method
 : `GET`
 
 URL
-: `/jobs/view/:id`
+: `/api/v1/job/:id`
 
 URL Params
-: :id → ERC id
+: :id → Job ID
 
 ### Success Response
 
@@ -218,29 +153,11 @@ Additional explanations will be saved in the `text` property.
 ### Error Response
 
 Code
-: 401 Unauthorized
-
-Content
-: `{ error : 'user not logged in' }`
-   User is not logged in [siehe oben] [s.o.]
-
-
-
-Code
 : 404 Not Found
 
 Content
 : `{ error : 'no ERC with this ID found' }`
    Could not find a ERC with the provided `:id`.
-
-
-Code
-: 500 Internal Server Error
-
-Content
-: `{ error : 'Could not run job'}`
-  Could not create job for undefined reason.
-
 
 ### Status report
 
