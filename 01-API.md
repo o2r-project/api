@@ -2,13 +2,17 @@
 
 *version 0.0.1*
 
-The o2r Web API is currently split into four groups:
+## Entry point
 
-[Upload](02-upload.md)
+The API entry point for versions including `0.0.1` and below is `/api/v1`.
 
-[Execution](03-execution.md)
+There are currently three main collections:
 
-[ERC Queries](04-ERC.md)
+`/api/v1/upload`
+: [Upload](02-upload.md)
 
-[User Management](05-user.md)
+`/api/v1/job`
+: [Execution Job](03-job.md)
 
+`/api/v1/compendium`
+: [Compendium](04-compendium.md)
