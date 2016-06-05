@@ -1,6 +1,44 @@
 # Compendium
 
-## View Compendium
+## View compendia
+
+View compendia. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
+
+Implemented
+: No
+
+Stability:
+: 0 - subject to changes
+
+Method
+: `GET`
+
+URL
+: `/api/v1/compendium`
+
+URL Params
+: `?job={id, …}` Only include compendia that are related to one or more of the jobs, provided by a comma-separated lists of IDs.
+  `?start=…` List from specific search result onwards. 1-indexed. Defaults to 1.
+  `?limit=…` Specify maximum amount of results per page. Defaults to 50.
+
+### Success Response
+
+Code
+: 200 OK
+
+Content
+: ```{ results : [ … ], next: [URL], previous: [URL] }```
+
+### Error Response
+
+Code
+: 404 Not Found
+
+Content
+: `{ error : 'no compendium found' }`
+    No compendium found.
+
+## View single compendium
 
 View Information regarding a research compendium. This includes the complete
 metadata set and a tree representation of the included files.
