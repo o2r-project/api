@@ -16,13 +16,13 @@ Method
 : `POST`
 
 URL
-: `/api/v1/upload/compendium`
+: `/api/v1/compendium`
 
 URL Params
 : _none_
 
 Data Params
-: TODO
+: `{ content_type : 'compendium_v1' }` _optional_
 
 ### Success Response
 
@@ -57,13 +57,13 @@ Method
 : `POST`
 
 URL
-: `/api/v1/upload/workspace`
+: `/api/v1/compendium`
 
 URL Params
 : _none_
 
 Data Params
-: TODO
+: `{ content_type : 'workspace' }` _required_
 
 ### Success Response
 
