@@ -1,0 +1,199 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "o2r Web API\n\n\nversion 0.0.1\n\n\nEntry point\n\n\nThe API entry point for versions including \n0.0.1\n and below is \n/api/v1\n.\n\n\nThere are currently three main collections:\n\n\n/api/v1/upload\n\n: \nUpload\n\n\n/api/v1/job\n\n: \nExecution Job\n\n\n/api/v1/compendium\n\n: \nCompendium",
+            "title": "Home"
+        },
+        {
+            "location": "/#o2r-web-api",
+            "text": "version 0.0.1",
+            "title": "o2r Web API"
+        },
+        {
+            "location": "/#entry-point",
+            "text": "The API entry point for versions including  0.0.1  and below is  /api/v1 .  There are currently three main collections:  /api/v1/upload \n:  Upload  /api/v1/job \n:  Execution Job  /api/v1/compendium \n:  Compendium",
+            "title": "Entry point"
+        },
+        {
+            "location": "/02-upload/",
+            "text": "Upload\n\n\nCompendium\n\n\nUpload a unvalidated research compendium as a archived file. Archive Type can be\neither \n.zip\n or \n.tar.gz\n. Encoding type must be \nmultipart/form-data\n, \nname\n\nmust be \ncompendium\n.\n\n\nImplemented\n: No\n\n\nStability\n: 0 - subject to changes\n\n\nMethod\n: \nPOST\n\n\nURL\n: \n/api/v1/compendium\n\n\nURL Params\n: \nnone\n\n\nData Params\n: \n{ content_type : 'compendium_v1' }\n \noptional\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ id : [alphanumeric] }\n\n\nError Response\n\n\nCode\n: 401 Unauthorized\n\n\nContent\n: \n{ error : 'user not logged in' }\n\n     User is not logged in\n\n\nWorkspace\n\n\nUpload formless workspace directory as a archived file. Archive Type can be\neither \n.zip\n or \n.tar.gz\n. Encoding type must be \nmultipart/form-data\n, \nname\n\nmust be \nworkspace\n.\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nPOST\n\n\nURL\n: \n/api/v1/compendium\n\n\nURL Params\n: \nnone\n\n\nData Params\n: \n{ content_type : 'workspace' }\n \nrequired\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ id : [alphanumeric] }\n\n\nError Response\n\n\nCode\n: 401 Unauthorized\n\n\nContent\n: \n{ error : 'user not logged in' }\n\n   User is not logged in\n\n\nExternal Source\n\n\nTODO",
+            "title": "Upload"
+        },
+        {
+            "location": "/02-upload/#upload",
+            "text": "",
+            "title": "Upload"
+        },
+        {
+            "location": "/02-upload/#compendium",
+            "text": "Upload a unvalidated research compendium as a archived file. Archive Type can be\neither  .zip  or  .tar.gz . Encoding type must be  multipart/form-data ,  name \nmust be  compendium .  Implemented\n: No  Stability\n: 0 - subject to changes  Method\n:  POST  URL\n:  /api/v1/compendium  URL Params\n:  none  Data Params\n:  { content_type : 'compendium_v1' }   optional",
+            "title": "Compendium"
+        },
+        {
+            "location": "/02-upload/#success-response",
+            "text": "Code\n: 200 OK  Content\n:  { id : [alphanumeric] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/02-upload/#error-response",
+            "text": "Code\n: 401 Unauthorized  Content\n:  { error : 'user not logged in' } \n     User is not logged in",
+            "title": "Error Response"
+        },
+        {
+            "location": "/02-upload/#workspace",
+            "text": "Upload formless workspace directory as a archived file. Archive Type can be\neither  .zip  or  .tar.gz . Encoding type must be  multipart/form-data ,  name \nmust be  workspace .  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  POST  URL\n:  /api/v1/compendium  URL Params\n:  none  Data Params\n:  { content_type : 'workspace' }   required",
+            "title": "Workspace"
+        },
+        {
+            "location": "/02-upload/#success-response_1",
+            "text": "Code\n: 200 OK  Content\n:  { id : [alphanumeric] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/02-upload/#error-response_1",
+            "text": "Code\n: 401 Unauthorized  Content\n:  { error : 'user not logged in' } \n   User is not logged in",
+            "title": "Error Response"
+        },
+        {
+            "location": "/02-upload/#external-source",
+            "text": "TODO",
+            "title": "External Source"
+        },
+        {
+            "location": "/03-job/",
+            "text": "Execution Jobs\n\n\n\n\nview job\n\n\nexecution log\n\n\nlive log \n(websockets)\n\n\nview file structure\n\n\nview single file\n\n\n\n\n\n\nExecution jobs are used to execute a research compendium. When a new execution\njob is started, the contents of the research compendium are cloned to create a\ntrackable execution. The status information, logs and final working directory\ndata are saved in their final state, so that they can be reviewed later on.\n\n\nAll execution jobs are tied to a single research compendium and reflect the\nexecution history of that research compendium.\n\n\nA trivial execution job would be a completely unmodified research compendium, to\ntest the reproducibility of a research compendium. A potential future feature\nwould be that the input data (input files, datasets, parameters) can be altered\nto run a modified execution job. This functionality is not yet final.\n\n\nNew Job\n\n\nCreate and run a new execution job.\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nPOST\n\n\nURL\n: \n/api/v1/job\n\n\nURL Params\n: None\n\n\nData Params\n: \n{ compendium_id : String, inputs : [ [FileDescriptor], \u2026 ] }\n\n\nThe FileDescriptor functionality is only a potential feature and not at all\nfinalized.\n\n\nWhere \n[FileDescriptor]\n allows overriding files from the compendium with files\nfrom a different execution job or a different compendium.\n\n\n[FileDescriptor]\n Syntax:\n\n\nERC/JOB:ID:Source:Destination\n\n\n\n\ne.g. \nERC:lnj82bkmj23:/data/bigdataset.Rdata:/data/newinput.Rdata\n would provide\n\n/data/bigdataset.Rdata\n from the \nERC\n with the ID \nlnj82bkmj23\n as the file\n\n/data/newinput.Rdata\n in this execution Job.\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ job_id : [alphanumeric] }\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no compendium with this ID found' }\n\n   Could not find a compendium with the provided \ncompendium_id\n.\n\n\nCode\n: 500 Internal Server Error\n\n\nContent\n: \n{ error : 'Could not create job'}\n\n  Could not create job for undefined reason.\n\n\nCode\n: 500 Internal Server Error\n\n\nContent\n: \n{ error : 'could not provide file', filedescriptor : [FileDescriptor] }\n\n  File described in [FileDescriptor] could not be provided to job.\n\n\nView jobs\n\n\nView jobs. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nGET\n\n\nURL\n: \n/api/v1/job\n\n\nURL Params\n: \n?compendium={id, \u2026}\n Only include jobs that are related to one or more of the compendia, provided by a comma-separated lists of IDs.\n  \n?start=\u2026\n List from specific search result onwards. 1-indexed. Defaults to 1.\n  \n?limit=\u2026\n Specify maximum amount of results per page. Defaults to 50.\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ results : [ \u2026 ], next: [URL], previous: [URL] }\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no jobs found' }\n\n    No jobs found.\n\n\nView single Job\n\n\nView details for a job\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nGET\n\n\nURL\n: \n/api/v1/job/:id\n\n\nURL Params\n: :id \u2192 Job ID\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ id : [alphanumeric], compendium_id : [alphanumeric], steps : { [ExecutionStep], \u2026 }}\n\n\nWhere \n[ExecutionStep]\n are \nObject\n types containing status information for a execution step.\n\n\n[ExecutionStep] : {\n  status : [StepStatus],\n  text : [alphanumeric],\n  }\n\n\n\n\nPossible types of [ExecutionStep] are:\n\n\n\n\nfetch\n\n\nunpack\n\n\nvalidateBag\n\n\nvalidateERC\n\n\nvalidateDockerfile\n\n\nbuildImage\n\n\nexecuteImage\n\n\ncleanup\n\n\nfinish\n\n\n\n\nPossible types of [StepStatus] are:\n\n\n\n\nqueued\n\n\nrunning\n\n\nsuccess\n\n\nfailure\n\n\nwarning\n\n\nskip\n\n\n\n\nAdditional explanations will be saved in the \ntext\n property.\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no compendium with this ID found' }\n\n   Could not find a compendium with the provided \n:id\n.\n\n\nStatus report\n\n\n\n\nbagit verifiziert\n        * erc format verifiziert\n        * image gebaut\n        * ausf\u00fchrung im container\n          * output?\n          * prozente?\n        * validierung\n        * endergebnis",
+            "title": "Job"
+        },
+        {
+            "location": "/03-job/#execution-jobs",
+            "text": "view job  execution log  live log  (websockets)  view file structure  view single file    Execution jobs are used to execute a research compendium. When a new execution\njob is started, the contents of the research compendium are cloned to create a\ntrackable execution. The status information, logs and final working directory\ndata are saved in their final state, so that they can be reviewed later on.  All execution jobs are tied to a single research compendium and reflect the\nexecution history of that research compendium.  A trivial execution job would be a completely unmodified research compendium, to\ntest the reproducibility of a research compendium. A potential future feature\nwould be that the input data (input files, datasets, parameters) can be altered\nto run a modified execution job. This functionality is not yet final.",
+            "title": "Execution Jobs"
+        },
+        {
+            "location": "/03-job/#new-job",
+            "text": "Create and run a new execution job.  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  POST  URL\n:  /api/v1/job  URL Params\n: None  Data Params\n:  { compendium_id : String, inputs : [ [FileDescriptor], \u2026 ] }  The FileDescriptor functionality is only a potential feature and not at all\nfinalized.  Where  [FileDescriptor]  allows overriding files from the compendium with files\nfrom a different execution job or a different compendium.  [FileDescriptor]  Syntax:  ERC/JOB:ID:Source:Destination  e.g.  ERC:lnj82bkmj23:/data/bigdataset.Rdata:/data/newinput.Rdata  would provide /data/bigdataset.Rdata  from the  ERC  with the ID  lnj82bkmj23  as the file /data/newinput.Rdata  in this execution Job.",
+            "title": "New Job"
+        },
+        {
+            "location": "/03-job/#success-response",
+            "text": "Code\n: 200 OK  Content\n:  { job_id : [alphanumeric] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/03-job/#error-response",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no compendium with this ID found' } \n   Could not find a compendium with the provided  compendium_id .  Code\n: 500 Internal Server Error  Content\n:  { error : 'Could not create job'} \n  Could not create job for undefined reason.  Code\n: 500 Internal Server Error  Content\n:  { error : 'could not provide file', filedescriptor : [FileDescriptor] } \n  File described in [FileDescriptor] could not be provided to job.",
+            "title": "Error Response"
+        },
+        {
+            "location": "/03-job/#view-jobs",
+            "text": "View jobs. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  GET  URL\n:  /api/v1/job  URL Params\n:  ?compendium={id, \u2026}  Only include jobs that are related to one or more of the compendia, provided by a comma-separated lists of IDs.\n   ?start=\u2026  List from specific search result onwards. 1-indexed. Defaults to 1.\n   ?limit=\u2026  Specify maximum amount of results per page. Defaults to 50.",
+            "title": "View jobs"
+        },
+        {
+            "location": "/03-job/#success-response_1",
+            "text": "Code\n: 200 OK  Content\n:  { results : [ \u2026 ], next: [URL], previous: [URL] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/03-job/#error-response_1",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no jobs found' } \n    No jobs found.",
+            "title": "Error Response"
+        },
+        {
+            "location": "/03-job/#view-single-job",
+            "text": "View details for a job  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  GET  URL\n:  /api/v1/job/:id  URL Params\n: :id \u2192 Job ID",
+            "title": "View single Job"
+        },
+        {
+            "location": "/03-job/#success-response_2",
+            "text": "Code\n: 200 OK  Content\n:  { id : [alphanumeric], compendium_id : [alphanumeric], steps : { [ExecutionStep], \u2026 }}  Where  [ExecutionStep]  are  Object  types containing status information for a execution step.  [ExecutionStep] : {\n  status : [StepStatus],\n  text : [alphanumeric],\n  }  Possible types of [ExecutionStep] are:   fetch  unpack  validateBag  validateERC  validateDockerfile  buildImage  executeImage  cleanup  finish   Possible types of [StepStatus] are:   queued  running  success  failure  warning  skip   Additional explanations will be saved in the  text  property.",
+            "title": "Success Response"
+        },
+        {
+            "location": "/03-job/#error-response_2",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no compendium with this ID found' } \n   Could not find a compendium with the provided  :id .",
+            "title": "Error Response"
+        },
+        {
+            "location": "/03-job/#status-report",
+            "text": "bagit verifiziert\n        * erc format verifiziert\n        * image gebaut\n        * ausf\u00fchrung im container\n          * output?\n          * prozente?\n        * validierung\n        * endergebnis",
+            "title": "Status report"
+        },
+        {
+            "location": "/04-compendium/",
+            "text": "Compendium\n\n\nView compendia\n\n\nView compendia. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nGET\n\n\nURL\n: \n/api/v1/compendium\n\n\nURL Params\n: \n?job={id, \u2026}\n Only include compendia that are related to one or more of the jobs, provided by a comma-separated lists of IDs.\n  \n?start=\u2026\n List from specific search result onwards. 1-indexed. Defaults to 1.\n  \n?limit=\u2026\n Specify maximum amount of results per page. Defaults to 50.\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ results : [ \u2026 ], next: [URL], previous: [URL] }\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no compendium found' }\n\n    No compendium found.\n\n\nView single compendium\n\n\nView Information regarding a research compendium. This includes the complete\nmetadata set and a tree representation of the included files.\n\n\nTODO\n specify the tree representation. This will be very close to the format\nused in https://www.npmjs.com/package/directory-tree\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nGET\n\n\nURL\n: \n/api/v1/compendium/:id\n\n\nURL Params\n: :id \u2192 Compendium ID\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ id : [alphanumeric], metadata : \u2026 , files : \u2026 }\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no compendium with this id' }\n\n   Could not find a compendium with the requested ID.\n\n\nList execution jobs\n\n\nList all executon jobs by ID attached to a compendium.\n\n\nImplemented\n: No\n\n\nStability:\n: 0 - subject to changes\n\n\nMethod\n: \nGET\n\n\nURL\n: \n/api/v1/compendium/:id/jobs\n\n\nURL Params\n: :id \u2192 Compendium ID\n\n\nSuccess Response\n\n\nCode\n: 200 OK\n\n\nContent\n: \n{ compendium_id : [alphanumeric], job_ids: [ [alphanumeric], \u2026 ] }\n\n\nError Response\n\n\nCode\n: 404 Not Found\n\n\nContent\n: \n{ error : 'no job attached to this compendium' }\n\n   This compendium does not yet have a job attached to it. This happens, when\n   the compendium has never been executed so far.",
+            "title": "Compendium"
+        },
+        {
+            "location": "/04-compendium/#compendium",
+            "text": "",
+            "title": "Compendium"
+        },
+        {
+            "location": "/04-compendium/#view-compendia",
+            "text": "View compendia. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  GET  URL\n:  /api/v1/compendium  URL Params\n:  ?job={id, \u2026}  Only include compendia that are related to one or more of the jobs, provided by a comma-separated lists of IDs.\n   ?start=\u2026  List from specific search result onwards. 1-indexed. Defaults to 1.\n   ?limit=\u2026  Specify maximum amount of results per page. Defaults to 50.",
+            "title": "View compendia"
+        },
+        {
+            "location": "/04-compendium/#success-response",
+            "text": "Code\n: 200 OK  Content\n:  { results : [ \u2026 ], next: [URL], previous: [URL] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/04-compendium/#error-response",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no compendium found' } \n    No compendium found.",
+            "title": "Error Response"
+        },
+        {
+            "location": "/04-compendium/#view-single-compendium",
+            "text": "View Information regarding a research compendium. This includes the complete\nmetadata set and a tree representation of the included files.  TODO  specify the tree representation. This will be very close to the format\nused in https://www.npmjs.com/package/directory-tree  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  GET  URL\n:  /api/v1/compendium/:id  URL Params\n: :id \u2192 Compendium ID",
+            "title": "View single compendium"
+        },
+        {
+            "location": "/04-compendium/#success-response_1",
+            "text": "Code\n: 200 OK  Content\n:  { id : [alphanumeric], metadata : \u2026 , files : \u2026 }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/04-compendium/#error-response_1",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no compendium with this id' } \n   Could not find a compendium with the requested ID.",
+            "title": "Error Response"
+        },
+        {
+            "location": "/04-compendium/#list-execution-jobs",
+            "text": "List all executon jobs by ID attached to a compendium.  Implemented\n: No  Stability:\n: 0 - subject to changes  Method\n:  GET  URL\n:  /api/v1/compendium/:id/jobs  URL Params\n: :id \u2192 Compendium ID",
+            "title": "List execution jobs"
+        },
+        {
+            "location": "/04-compendium/#success-response_2",
+            "text": "Code\n: 200 OK  Content\n:  { compendium_id : [alphanumeric], job_ids: [ [alphanumeric], \u2026 ] }",
+            "title": "Success Response"
+        },
+        {
+            "location": "/04-compendium/#error-response_2",
+            "text": "Code\n: 404 Not Found  Content\n:  { error : 'no job attached to this compendium' } \n   This compendium does not yet have a job attached to it. This happens, when\n   the compendium has never been executed so far.",
+            "title": "Error Response"
+        },
+        {
+            "location": "/05-user/",
+            "text": "User\n\n\nthis is a stub.\n\n\n\n\nUser Management\n\n\nRole Management\n\n\nRights Management\n\n\n\u2026",
+            "title": "User"
+        },
+        {
+            "location": "/05-user/#user",
+            "text": "this is a stub.   User Management  Role Management  Rights Management  \u2026",
+            "title": "User"
+        },
+        {
+            "location": "/06-search/",
+            "text": "Search\n\n\nSearch endpoint follows the \nOpenSearch specification\n.",
+            "title": "Search"
+        },
+        {
+            "location": "/06-search/#search",
+            "text": "Search endpoint follows the  OpenSearch specification .",
+            "title": "Search"
+        }
+    ]
+}
