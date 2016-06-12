@@ -137,8 +137,6 @@ __Stability:__ 0 - subject to changes
 
 The answer will contain information to the following `steps`:
 
-* `fetch`
-* `unpack`
 * `validateBag`
 * `validateERC`
 * `validateDockerfile`
