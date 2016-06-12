@@ -8,7 +8,7 @@
   
   
   
-  <title>Job - o2r Web API</title>
+  <title>Job - o2r web API</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -24,8 +24,8 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Job";
-    var mkdocs_page_input_path = "03-job.md";
-    var mkdocs_page_url = "/03-job/";
+    var mkdocs_page_input_path = "job.md";
+    var mkdocs_page_url = "/job/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -43,7 +43,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> o2r Web API</a>
+        <a href=".." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -56,14 +56,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
+        <a class="" href="..">Index</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../02-upload/">Upload</a>
+        <a class="" href="../upload/">Upload</a>
         
     </li>
 <li>
@@ -74,13 +74,15 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#execution-jobs">Execution Jobs</a></li>
+                <li class="toctree-l3"><a href="#job">Job</a></li>
                 
                     <li><a class="toctree-l4" href="#new-job">New Job</a></li>
                 
-                    <li><a class="toctree-l4" href="#view-jobs">View jobs</a></li>
+                    <li><a class="toctree-l4" href="#list-jobs">List jobs</a></li>
                 
                     <li><a class="toctree-l4" href="#view-single-job">View single Job</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-report">Status report</a></li>
                 
             
             </ul>
@@ -90,21 +92,21 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../04-compendium/">Compendium</a>
+        <a class="" href="../compendium/">Compendium</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../05-user/">User</a>
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../06-search/">Search</a>
+        <a class="" href="../search/">Search</a>
         
     </li>
 <li>
@@ -119,7 +121,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">o2r Web API</a>
+        <a href="..">o2r web API</a>
       </nav>
 
       
@@ -141,15 +143,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="execution-jobs">Execution Jobs</h1>
-<ul>
-<li>view job</li>
-<li>execution log</li>
-<li>live log <em>(websockets)</em></li>
-<li>view file structure</li>
-<li>view single file</li>
-</ul>
-<hr />
+                <h1 id="job">Job</h1>
 <p>Execution jobs are used to execute a research compendium. When a new execution
 job is started, the contents of the research compendium are cloned to create a
 trackable execution. The status information, logs and final working directory
@@ -157,105 +151,106 @@ data are saved in their final state, so that they can be reviewed later on.</p>
 <p>All execution jobs are tied to a single research compendium and reflect the
 execution history of that research compendium.</p>
 <p>A trivial execution job would be a completely unmodified research compendium, to
-test the reproducibility of a research compendium. A potential future feature
+test the reproducibility of a research compendium. A <em>potential</em> future feature
 would be that the input data (input files, datasets, parameters) can be altered
 to run a modified execution job. This functionality is not yet final.</p>
 <h2 id="new-job">New Job</h2>
-<p>Create and run a new execution job.</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>POST</code></p>
-<p>URL
-: <code>/api/v1/job</code></p>
-<p>URL Params
-: None</p>
-<p>Data Params
-: <code>{ compendium_id : String, inputs : [ [FileDescriptor], … ] }</code></p>
+<p>Create and run a new execution job. Requires a <code>compendium_id</code>.</p>
+<p><code>POST /api/v1/job</code></p>
+<pre><code class="json">200 OK
+
+{&quot;job_id&quot;:&quot;ngK4m&quot;}
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="body-parameters">Body parameters:</h3>
+<ul>
+<li><code>compendium_id</code> - The <code>id</code> of the compendium to base this job on.</li>
+<li><code>inputs</code> - <strong><em>proposal</em></strong> - Array with one or more <code>FileDescriptor</code>.</li>
+</ul>
+<h3 id="filedescriptor"><code>FileDescriptor</code></h3>
 <p><em>The FileDescriptor functionality is only a potential feature and not at all
 finalized.</em></p>
-<p>Where <code>[FileDescriptor]</code> allows overriding files from the compendium with files
+<p><code>[FileDescriptor]</code> allows overriding files from the compendium with files
 from a different execution job or a different compendium.</p>
 <p><strong><code>[FileDescriptor]</code> Syntax:</strong></p>
 <pre><code>ERC/JOB:ID:Source:Destination
 </code></pre>
 
-<p>e.g. <code>ERC:lnj82bkmj23:/data/bigdataset.Rdata:/data/newinput.Rdata</code> would provide
-<code>/data/bigdataset.Rdata</code> from the <code>ERC</code> with the ID <code>lnj82bkmj23</code> as the file
+<p>e.g. <code>ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata</code> would provide
+<code>/data/bigdataset.Rdata</code> from the <code>ERC</code> with the ID <code>lnj82</code> as the file
 <code>/data/newinput.Rdata</code> in this execution Job.</p>
-<h3 id="success-response">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ job_id : [alphanumeric] }</code></p>
-<h3 id="error-response">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no compendium with this ID found' }</code>
-   Could not find a compendium with the provided <code>compendium_id</code>.</p>
-<p>Code
-: 500 Internal Server Error</p>
-<p>Content
-: <code>{ error : 'Could not create job'}</code>
-  Could not create job for undefined reason.</p>
-<p>Code
-: 500 Internal Server Error</p>
-<p>Content
-: <code>{ error : 'could not provide file', filedescriptor : [FileDescriptor] }</code>
-  File described in [FileDescriptor] could not be provided to job.</p>
-<h2 id="view-jobs">View jobs</h2>
-<p>View jobs. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>GET</code></p>
-<p>URL
-: <code>/api/v1/job</code></p>
-<p>URL Params
-: <code>?compendium={id, …}</code> Only include jobs that are related to one or more of the compendia, provided by a comma-separated lists of IDs.
-  <code>?start=…</code> List from specific search result onwards. 1-indexed. Defaults to 1.
-  <code>?limit=…</code> Specify maximum amount of results per page. Defaults to 50.</p>
-<h3 id="success-response_1">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ results : [ … ], next: [URL], previous: [URL] }</code></p>
-<h3 id="error-response_1">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no jobs found' }</code>
-    No jobs found.</p>
-<h2 id="view-single-job">View single Job</h2>
-<p>View details for a job</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>GET</code></p>
-<p>URL
-: <code>/api/v1/job/:id</code></p>
-<p>URL Params
-: :id → Job ID</p>
-<h3 id="success-response_2">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ id : [alphanumeric], compendium_id : [alphanumeric], steps : { [ExecutionStep], … }}</code></p>
-<p>Where <code>[ExecutionStep]</code> are <code>Object</code> types containing status information for a execution step.</p>
-<pre><code>[ExecutionStep] : {
-  status : [StepStatus],
-  text : [alphanumeric],
-  }
+<h3 id="error-responses">Error Responses</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium with this ID found&quot;}
 </code></pre>
 
-<p>Possible types of [ExecutionStep] are:</p>
+<pre><code class="json">500 Internal Server Error
+
+{&quot;error&quot;:&quot;could not create job&quot;}
+</code></pre>
+
+<pre><code class="json">500 Internal Server Error
+
+{
+  &quot;error&quot;:&quot;could not provide file&quot;,
+  &quot;filedescriptor&quot;:&quot;[FileDescriptor]&quot;
+ }
+</code></pre>
+
+<h2 id="list-jobs">List jobs</h2>
+<p>Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related <code>compendium_id</code>.</p>
+<p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;nkm4L&quot;,
+    &quot;asdi5&quot;,
+    &quot;nb2sg&quot;,
+    …
+  ],
+  &quot;next&quot;:&quot;/api/v1/job?limit=100&amp;start=3&quot;,
+  &quot;previous&quot;:&quot;/api/v1/job?limit=100&amp;start=1&quot;
+}
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="get-parameters">GET parameters</h3>
+<ul>
+<li><code>compendium_id</code> - Comma-separated list of related compendium ids to filter by.</li>
+<li><code>start</code> - List from specific search result onwards. 1-indexed. Defaults to 1.</li>
+<li><code>limit</code> - Specify maximum amount of results per page. Defaults to 100.</li>
+</ul>
+<h2 id="view-single-job">View single Job</h2>
+<p>View details for a single job.</p>
+<p><code>GET /api/v1/job/:id</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;id&quot;:&quot;nkm4L&quot;,
+  &quot;compendium_id&quot;:&quot;a4Dnm&quot;,
+  &quot;steps&quot;:{
+    &quot;unpack&quot;:{
+      &quot;status&quot;:&quot;failure&quot;,
+      &quot;text&quot;:&quot;not a valid archive&quot;
+    },
+    …
+  }
+}
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="url-parameters">URL Parameters</h3>
+<ul>
+<li><code>:id</code> - id of the job to be viewed</li>
+</ul>
+<h3 id="steps">Steps</h3>
+<p>The answer will contain information to the following <code>steps</code>:</p>
 <ul>
 <li><code>fetch</code></li>
 <li><code>unpack</code></li>
@@ -267,7 +262,7 @@ from a different execution job or a different compendium.</p>
 <li><code>cleanup</code></li>
 <li><code>finish</code></li>
 </ul>
-<p>Possible types of [StepStatus] are:</p>
+<p>Their status will be one of:</p>
 <ul>
 <li><code>queued</code></li>
 <li><code>running</code></li>
@@ -276,23 +271,27 @@ from a different execution job or a different compendium.</p>
 <li><code>warning</code></li>
 <li><code>skip</code></li>
 </ul>
-<p>Additional explanations will be saved in the <code>text</code> property.</p>
-<h3 id="error-response_2">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no compendium with this ID found' }</code>
-   Could not find a compendium with the provided <code>:id</code>.</p>
-<h3 id="status-report">Status report</h3>
+<p>Additional explanations to their state will be transmitted in the <code>text</code> property.</p>
+<h3 id="error-responses_1">Error Responses</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium with this ID found&quot;}
+</code></pre>
+
+<h2 id="status-report">Status report</h2>
 <ul>
-<li>bagit verifiziert
-        * erc format verifiziert
-        * image gebaut
-        * ausführung im container
-          * output?
-          * prozente?
-        * validierung
-        * endergebnis</li>
+<li>bagit verifiziert<ul>
+<li>erc format verifiziert</li>
+<li>image gebaut</li>
+<li>ausführung im container<ul>
+<li>output?</li>
+<li>prozente?</li>
+</ul>
+</li>
+<li>validierung</li>
+<li>endergebnis</li>
+</ul>
+</li>
 </ul>
               
             </div>
@@ -301,10 +300,10 @@ from a different execution job or a different compendium.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../04-compendium/" class="btn btn-neutral float-right" title="Compendium">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../compendium/" class="btn btn-neutral float-right" title="Compendium">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../02-upload/" class="btn btn-neutral" title="Upload"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../upload/" class="btn btn-neutral" title="Upload"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -330,10 +329,10 @@ from a different execution job or a different compendium.</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../02-upload/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../upload/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../04-compendium/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../compendium/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

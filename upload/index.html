@@ -8,7 +8,7 @@
   
   
   
-  <title>Search - o2r Web API</title>
+  <title>Upload - o2r web API</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Search";
-    var mkdocs_page_input_path = "06-search.md";
-    var mkdocs_page_url = "/06-search/";
+    var mkdocs_page_name = "Upload";
+    var mkdocs_page_input_path = "upload.md";
+    var mkdocs_page_url = "/upload/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -43,7 +43,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> o2r Web API</a>
+        <a href=".." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -56,49 +56,51 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../02-upload/">Upload</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../03-job/">Job</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../04-compendium/">Compendium</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../05-user/">User</a>
+        <a class="" href="..">Index</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 current">
-        <a class="current" href="./">Search</a>
+        <a class="current" href="./">Upload</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#search">Search</a></li>
+                <li class="toctree-l3"><a href="#upload">Upload</a></li>
+                
+                    <li><a class="toctree-l4" href="#compendium">Compendium</a></li>
                 
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../job/">Job</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium/">Compendium</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../search/">Search</a>
         
     </li>
 <li>
@@ -113,7 +115,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">o2r Web API</a>
+        <a href="..">o2r web API</a>
       </nav>
 
       
@@ -125,7 +127,7 @@
     
       
     
-    <li>Search</li>
+    <li>Upload</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -135,8 +137,31 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="search">Search</h1>
-<p>Search endpoint follows the <a href="http://www.opensearch.org">OpenSearch specification</a>.</p>
+                <h1 id="upload">Upload</h1>
+<h2 id="compendium">Compendium</h2>
+<p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>. Upon successful extraction of archive, a <code>id</code> for the new compendium is returned.</p>
+<p><code>POST /api/v1/compendium</code></p>
+<pre><code class="json">200 OK
+
+{&quot;id&quot;:&quot;a4Ndl&quot;}
+</code></pre>
+
+<p><strong>Body parameters:</strong></p>
+<ul>
+<li><code>compendium</code> - The archive file</li>
+<li><code>content_type</code> - Form of archive. One of the following:<ul>
+<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
+<li><code>workspace</code> - formless workspace</li>
+</ul>
+</li>
+</ul>
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="error-responses">Error Responses</h3>
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;user not logged in&quot;}
+</code></pre>
               
             </div>
           </div>
@@ -144,8 +169,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../05-user/" class="btn btn-neutral" title="User"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href=".." class="btn btn-neutral" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -171,8 +198,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../05-user/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../job/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

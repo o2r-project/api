@@ -8,7 +8,7 @@
   
   
   
-  <title>Compendium - o2r Web API</title>
+  <title>Compendium - o2r web API</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -24,8 +24,8 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Compendium";
-    var mkdocs_page_input_path = "04-compendium.md";
-    var mkdocs_page_url = "/04-compendium/";
+    var mkdocs_page_input_path = "compendium.md";
+    var mkdocs_page_url = "/compendium/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -43,7 +43,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> o2r Web API</a>
+        <a href=".." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -56,21 +56,21 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
+        <a class="" href="..">Index</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../02-upload/">Upload</a>
+        <a class="" href="../upload/">Upload</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../03-job/">Job</a>
+        <a class="" href="../job/">Job</a>
         
     </li>
 <li>
@@ -81,13 +81,13 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#compendium">Compendium</a></li>
+                <li class="toctree-l3"><a href="#compendium">compendium</a></li>
                 
-                    <li><a class="toctree-l4" href="#view-compendia">View compendia</a></li>
+                    <li><a class="toctree-l4" href="#list-compendia">List compendia</a></li>
                 
                     <li><a class="toctree-l4" href="#view-single-compendium">View single compendium</a></li>
                 
-                    <li><a class="toctree-l4" href="#list-execution-jobs">List execution jobs</a></li>
+                    <li><a class="toctree-l4" href="#list-related-execution-jobs">List related execution jobs</a></li>
                 
             
             </ul>
@@ -97,14 +97,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../05-user/">User</a>
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../06-search/">Search</a>
+        <a class="" href="../search/">Search</a>
         
     </li>
 <li>
@@ -119,7 +119,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">o2r Web API</a>
+        <a href="..">o2r web API</a>
       </nav>
 
       
@@ -141,82 +141,91 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="compendium">Compendium</h1>
-<h2 id="view-compendia">View compendia</h2>
-<p>View compendia. Will return up to 50 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>GET</code></p>
-<p>URL
-: <code>/api/v1/compendium</code></p>
-<p>URL Params
-: <code>?job={id, …}</code> Only include compendia that are related to one or more of the jobs, provided by a comma-separated lists of IDs.
-  <code>?start=…</code> List from specific search result onwards. 1-indexed. Defaults to 1.
-  <code>?limit=…</code> Specify maximum amount of results per page. Defaults to 50.</p>
-<h3 id="success-response">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ results : [ … ], next: [URL], previous: [URL] }</code></p>
-<h3 id="error-response">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no compendium found' }</code>
-    No compendium found.</p>
+                <h1 id="compendium">compendium</h1>
+<h2 id="list-compendia">List compendia</h2>
+<p>Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
+<p><code>GET /api/v1/compendium?limit=100&amp;start=2</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;nkm4b&quot;,
+    &quot;asdis&quot;,
+    &quot;nb2sm&quot;,
+    …
+  ],
+  &quot;next&quot;:&quot;/api/v1/compendium?limit=100&amp;start=3&quot;,
+  &quot;previous&quot;:&quot;/api/v1/compendium?limit=100&amp;start=1&quot;
+}
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="url-parameters">URL Parameters</h3>
+<ul>
+<li><code>job_id</code> - Comma-separated list of related job ids to filter by.</li>
+<li><code>start</code> - List from specific search result onwards. 1-indexed. Defaults to 1.</li>
+<li><code>limit</code> - Specify maximum amount of results per page. Defaults to 100.</li>
+</ul>
+<h3 id="error-responses">Error Responses</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium found&quot;}
+</code></pre>
+
 <h2 id="view-single-compendium">View single compendium</h2>
-<p>View Information regarding a research compendium. This includes the complete
-metadata set and a tree representation of the included files.</p>
+<p>This includes the complete metadata set, related job ids and a tree representation of the included files.</p>
 <p><strong>TODO</strong> specify the tree representation. This will be very close to the format
 used in https://www.npmjs.com/package/directory-tree</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>GET</code></p>
-<p>URL
-: <code>/api/v1/compendium/:id</code></p>
-<p>URL Params
-: :id → Compendium ID</p>
-<h3 id="success-response_1">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ id : [alphanumeric], metadata : … , files : … }</code></p>
-<h3 id="error-response_1">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no compendium with this id' }</code>
-   Could not find a compendium with the requested ID.</p>
-<h2 id="list-execution-jobs">List execution jobs</h2>
-<p>List all executon jobs by ID attached to a compendium.</p>
-<p>Implemented
-: No</p>
-<p>Stability:
-: 0 - subject to changes</p>
-<p>Method
-: <code>GET</code></p>
-<p>URL
-: <code>/api/v1/compendium/:id/jobs</code></p>
-<p>URL Params
-: :id → Compendium ID</p>
-<h3 id="success-response_2">Success Response</h3>
-<p>Code
-: 200 OK</p>
-<p>Content
-: <code>{ compendium_id : [alphanumeric], job_ids: [ [alphanumeric], … ] }</code></p>
-<h3 id="error-response_2">Error Response</h3>
-<p>Code
-: 404 Not Found</p>
-<p>Content
-: <code>{ error : 'no job attached to this compendium' }</code>
-   This compendium does not yet have a job attached to it. This happens, when
-   the compendium has never been executed so far.</p>
+<p><code>GET /api/v1/compendium/:id</code></p>
+<pre><code>200 OK
+
+{
+  &quot;id&quot;:&quot;comid&quot;,
+  &quot;metadata&quot;: … ,
+  &quot;files&quot;: …
+ }
+
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="url-parameters_1">URL Parameters</h3>
+<ul>
+<li><code>:id</code> - the compendiums id</li>
+</ul>
+<h3 id="error-responses_1">Error Responses</h3>
+<pre><code>404 Not Found
+
+{&quot;error&quot;:&quot;no compendium with this id&quot;}
+</code></pre>
+
+<h2 id="list-related-execution-jobs">List related execution jobs</h2>
+<p><code>GET /api/v1/compendium/:id/jobs</code></p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;:[
+    &quot;nkm4L&quot;,
+    &quot;asdi5&quot;,
+    &quot;nb2sg&quot;,
+    …
+  ],
+  &quot;next&quot;:&quot;/api/v1/compendium/:id/jobs?limit=100&amp;start=3&quot;,
+  &quot;previous&quot;:&quot;/api/v1/compendium/:id/job?limit=100&amp;start=1&quot;
+}
+</code></pre>
+
+<p><strong>Implemented:</strong> No</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<h3 id="url-parameters_2">URL Parameters</h3>
+<ul>
+<li><code>:id</code> - compendium id that the results should be related to</li>
+</ul>
+<h3 id="error-response">Error Response</h3>
+<pre><code>404 Not Found
+
+{&quot;error&quot;:&quot;no job found&quot;}
+</code></pre>
               
             </div>
           </div>
@@ -224,10 +233,10 @@ used in https://www.npmjs.com/package/directory-tree</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../05-user/" class="btn btn-neutral float-right" title="User">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../user/" class="btn btn-neutral float-right" title="User">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../03-job/" class="btn btn-neutral" title="Job"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../job/" class="btn btn-neutral" title="Job"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -253,10 +262,10 @@ used in https://www.npmjs.com/package/directory-tree</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../03-job/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../job/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../05-user/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../user/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
