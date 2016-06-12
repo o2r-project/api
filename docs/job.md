@@ -137,13 +137,12 @@ __Stability:__ 0 - subject to changes
 
 The answer will contain information to the following `steps`:
 
-* `validateBag`
-* `validateERC`
-* `validateDockerfile`
-* `buildImage`
-* `executeImage`
+* `validate_bag`
+* `validate_compendium`
+* `validate_dockerfile`
+* `image_build`
+* `image_execute`
 * `cleanup`
-* `finish`
 
 Their status will be one of:
 
