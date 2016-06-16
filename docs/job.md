@@ -16,6 +16,8 @@ to run a modified execution job. This functionality is not yet final.
 
 Create and run a new execution job. Requires a `compendium_id`.
 
+`curl -F compendium_id=$ID http://…/api/v1/job`
+
 `POST /api/v1/job`
 
 ```json
@@ -75,6 +77,8 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide
 
 Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related `compendium_id`.
 
+`curl -F compendium_id=$ID http://…/api/v1/job?limit=100&start=2&compendium_id=$ID`
+
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm`
 
 ```json
@@ -105,6 +109,8 @@ __Stability:__ 0 - subject to changes
 ## View single Job
 
 View details for a single job.
+
+`curl http://…/api/v1/job/$ID`
 
 `GET /api/v1/job/:id`
 

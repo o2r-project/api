@@ -4,6 +4,8 @@
 
 Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
 
+`curl http://…/api/v1/compendium?limit=100&start=2`
+
 `GET /api/v1/compendium?limit=100&start=2`
 
 ```json
@@ -45,6 +47,8 @@ This includes the complete metadata set, related job ids and a tree representati
 __TODO__ specify the tree representation. This will be very close to the format
 used in https://www.npmjs.com/package/directory-tree
 
+`curl http://…/api/v1/$ID`
+
 `GET /api/v1/compendium/:id`
 
 ```
@@ -76,6 +80,9 @@ __Stability:__ 0 - subject to changes
 ```
 
 ## List related execution jobs
+
+
+`curl http://…/api/v1/compendium/$ID/jobs`
 
 `GET /api/v1/compendium/:id/jobs`
 

@@ -4,6 +4,8 @@
 
 Upload a unvalidated research compendium as a compressed archive, either `.zip` or `.tar.gz`. Upon successful extraction of archive, a `id` for the new compendium is returned.
 
+`curl -F "compendium=@compendium.zip;type=application/zip" -F content_type=compendium_v1 http://…/api/v1/compendium `
+
 `POST /api/v1/compendium`
 
 ```json
