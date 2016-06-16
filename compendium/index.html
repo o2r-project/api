@@ -144,6 +144,7 @@
                 <h1 id="compendium">compendium</h1>
 <h2 id="list-compendia">List compendia</h2>
 <p>Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
+<p><code>curl http://…/api/v1/compendium?limit=100&amp;start=2</code></p>
 <p><code>GET /api/v1/compendium?limit=100&amp;start=2</code></p>
 <pre><code class="json">200 OK
 
@@ -177,6 +178,7 @@
 <p>This includes the complete metadata set, related job ids and a tree representation of the included files.</p>
 <p><strong>TODO</strong> specify the tree representation. This will be very close to the format
 used in https://www.npmjs.com/package/directory-tree</p>
+<p><code>curl http://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <pre><code>200 OK
 
@@ -201,6 +203,7 @@ used in https://www.npmjs.com/package/directory-tree</p>
 </code></pre>
 
 <h2 id="list-related-execution-jobs">List related execution jobs</h2>
+<p><code>curl http://…/api/v1/compendium/$ID/jobs</code></p>
 <p><code>GET /api/v1/compendium/:id/jobs</code></p>
 <pre><code class="json">200 OK
 {

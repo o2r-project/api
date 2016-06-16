@@ -140,6 +140,7 @@
                 <h1 id="upload">Upload</h1>
 <h2 id="compendium">Compendium</h2>
 <p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>. Upon successful extraction of archive, a <code>id</code> for the new compendium is returned.</p>
+<p><code>curl -F "compendium=@compendium.zip;type=application/zip" -F content_type=compendium_v1 http://…/api/v1/compendium</code></p>
 <p><code>POST /api/v1/compendium</code></p>
 <pre><code class="json">200 OK
 

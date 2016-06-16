@@ -156,6 +156,7 @@ would be that the input data (input files, datasets, parameters) can be altered
 to run a modified execution job. This functionality is not yet final.</p>
 <h2 id="new-job">New Job</h2>
 <p>Create and run a new execution job. Requires a <code>compendium_id</code>.</p>
+<p><code>curl -F compendium_id=$ID http://…/api/v1/job</code></p>
 <p><code>POST /api/v1/job</code></p>
 <pre><code class="json">200 OK
 
@@ -202,6 +203,7 @@ from a different execution job or a different compendium.</p>
 
 <h2 id="list-jobs">List jobs</h2>
 <p>Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related <code>compendium_id</code>.</p>
+<p><code>curl -F compendium_id=$ID http://…/api/v1/job?limit=100&amp;start=2&amp;compendium_id=$ID</code></p>
 <p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm</code></p>
 <pre><code class="json">200 OK
 
@@ -227,6 +229,7 @@ from a different execution job or a different compendium.</p>
 </ul>
 <h2 id="view-single-job">View single Job</h2>
 <p>View details for a single job.</p>
+<p><code>curl http://…/api/v1/job/$ID</code></p>
 <p><code>GET /api/v1/job/:id</code></p>
 <pre><code class="json">200 OK
 
