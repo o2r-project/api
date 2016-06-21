@@ -1,0 +1,10 @@
+site_name: o2r web API
+pages:
+  - Index:       index.md
+  - Upload:     upload.md
+  - Job:        job.md
+  - Compendium: compendium.md
+  - User:       user.md
+  - Search:     search.md
+theme: readthedocs
+site_dir: docs/html
