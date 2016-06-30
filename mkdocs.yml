@@ -1,6 +1,6 @@
 site_name: o2r web API
 pages:
-  - Index:       index.md
+  - Index:      index.md
   - Upload:     upload.md
   - Job:        job.md
   - Compendium: compendium.md
