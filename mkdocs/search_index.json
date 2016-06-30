@@ -7,7 +7,7 @@
         },
         {
             "location": "/upload/",
-            "text": "Upload\n\n\nCompendium\n\n\nUpload a unvalidated research compendium as a compressed archive, either \n.zip\n or \n.tar.gz\n. Upon successful extraction of archive, a \nid\n for the new compendium is returned.\n\n\ncurl -F \"compendium=@compendium.zip;type=application/zip\" -F content_type=compendium_v1 http://\u2026/api/v1/compendium\n\n\nPOST /api/v1/compendium\n\n\n200 OK\n\n{\"id\":\"a4Ndl\"}\n\n\n\n\nBody parameters:\n\n\n\n\ncompendium\n - The archive file\n\n\ncontent_type\n - Form of archive. One of the following:\n\n\ncompendium_v1\n - \ndefault\n - compendium in Bagtainer format\n\n\nworkspace\n - formless workspace\n\n\n\n\n\n\n\n\nImplemented:\n No\n\n\nStability:\n 0 - subject to changes\n\n\nError Responses\n\n\n401 Unauthorized\n\n{\"error\":\"user not logged in\"}",
+            "text": "Upload\n\n\nCompendium\n\n\nUpload a unvalidated research compendium as a compressed archive, either \n.zip\n or \n.tar.gz\n. Upon successful extraction of archive, a \nid\n for the new compendium is returned.\n\n\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n     -F content_type=compendium_v1 \\ \n     -H \"X-API-Key: CHANGE_ME\" \\\n     http://\u2026/api/v1/compendium \n\n\n\n\nPOST /api/v1/compendium#\n\nX-API-Key: api_key\n\n\n\n\n200 OK\n\n{\"id\":\"a4Ndl\"}\n\n\n\n\nAdditional Headers:\n\n\n\n\nX-API-Key\n - valid API key for POSTing to /compendium\n\n\n\n\nBody parameters:\n\n\n\n\ncompendium\n - The archive file\n\n\ncontent_type\n - Form of archive. One of the following:\n\n\ncompendium_v1\n - \ndefault\n - compendium in Bagtainer format\n\n\nworkspace\n - formless workspace\n\n\n\n\n\n\n\n\nImplemented:\n No\n\n\nStability:\n 0 - subject to changes\n\n\nError Responses\n\n\n401 Unauthorized\n\n{\"error\":\"missing or wrong api key\"}",
             "title": "Upload"
         },
         {
@@ -17,12 +17,12 @@
         },
         {
             "location": "/upload/#compendium",
-            "text": "Upload a unvalidated research compendium as a compressed archive, either  .zip  or  .tar.gz . Upon successful extraction of archive, a  id  for the new compendium is returned.  curl -F \"compendium=@compendium.zip;type=application/zip\" -F content_type=compendium_v1 http://\u2026/api/v1/compendium  POST /api/v1/compendium  200 OK\n\n{\"id\":\"a4Ndl\"}  Body parameters:   compendium  - The archive file  content_type  - Form of archive. One of the following:  compendium_v1  -  default  - compendium in Bagtainer format  workspace  - formless workspace     Implemented:  No  Stability:  0 - subject to changes",
+            "text": "Upload a unvalidated research compendium as a compressed archive, either  .zip  or  .tar.gz . Upon successful extraction of archive, a  id  for the new compendium is returned.  curl -F \"compendium=@compendium.zip;type=application/zip\" \\\n     -F content_type=compendium_v1 \\ \n     -H \"X-API-Key: CHANGE_ME\" \\\n     http://\u2026/api/v1/compendium   POST /api/v1/compendium#\n\nX-API-Key: api_key  200 OK\n\n{\"id\":\"a4Ndl\"}  Additional Headers:   X-API-Key  - valid API key for POSTing to /compendium   Body parameters:   compendium  - The archive file  content_type  - Form of archive. One of the following:  compendium_v1  -  default  - compendium in Bagtainer format  workspace  - formless workspace     Implemented:  No  Stability:  0 - subject to changes",
             "title": "Compendium"
         },
         {
             "location": "/upload/#error-responses",
-            "text": "401 Unauthorized\n\n{\"error\":\"user not logged in\"}",
+            "text": "401 Unauthorized\n\n{\"error\":\"missing or wrong api key\"}",
             "title": "Error Responses"
         },
         {
