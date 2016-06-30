@@ -99,6 +99,13 @@
           
             <li>
     <li class="toctree-l1 ">
+        <a class="" href="../files/">Files</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
         <a class="" href="../user/">User</a>
         
     </li>
@@ -168,6 +175,7 @@ to run a modified execution job. This functionality is not yet final.</p>
 <h3 id="body-parameters">Body parameters:</h3>
 <ul>
 <li><code>compendium_id</code> - The <code>id</code> of the compendium to base this job on.</li>
+<li><code>steps</code> - <strong>TODO</strong> select steps that will be executed (skip some steps in successive executions?)</li>
 <li><code>inputs</code> - <strong><em>proposal</em></strong> - Array with one or more <code>FileDescriptor</code>.</li>
 </ul>
 <h3 id="filedescriptor"><code>FileDescriptor</code></h3>
@@ -228,7 +236,7 @@ from a different execution job or a different compendium.</p>
 <li><code>limit</code> - Specify maximum amount of results per page. Defaults to 100.</li>
 </ul>
 <h2 id="view-single-job">View single Job</h2>
-<p>View details for a single job.</p>
+<p>View details for a single job. Filelisting format is described in <a href="../files/">Files</a></p>
 <p><code>curl http://…/api/v1/job/$ID</code></p>
 <p><code>GET /api/v1/job/:id</code></p>
 <pre><code class="json">200 OK
@@ -242,6 +250,9 @@ from a different execution job or a different compendium.</p>
       &quot;text&quot;:&quot;not a valid archive&quot;
     },
     …
+  },
+  &quot;files&quot;:{
+    {FileListing}
   }
 }
 </code></pre>

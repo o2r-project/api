@@ -35,6 +35,14 @@
 
     
     <url>
+     <loc>None/files/</loc>
+     <lastmod>2016-06-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>None/user/</loc>
      <lastmod>2016-06-30</lastmod>
      <changefreq>daily</changefreq>

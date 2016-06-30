@@ -8,7 +8,7 @@
   
   
   
-  <title>Upload - o2r web API</title>
+  <title>Files - o2r web API</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Upload";
-    var mkdocs_page_input_path = "upload.md";
-    var mkdocs_page_url = "/upload/";
+    var mkdocs_page_name = "Files";
+    var mkdocs_page_input_path = "files.md";
+    var mkdocs_page_url = "/files/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -62,17 +62,8 @@
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Upload</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#upload">Upload</a></li>
-                
-                    <li><a class="toctree-l4" href="#compendium">Compendium</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../upload/">Upload</a>
         
     </li>
 <li>
@@ -92,8 +83,17 @@
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files/">Files</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Files</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#file-listing">File Listing</a></li>
+                
+                    <li><a class="toctree-l4" href="#path-property">path property</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
@@ -134,7 +134,7 @@
     
       
     
-    <li>Upload</li>
+    <li>Files</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -144,45 +144,49 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload">Upload</h1>
-<h2 id="compendium">Compendium</h2>
-<p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>. Upon successful extraction of archive, a <code>id</code> for the new compendium is returned.</p>
-<pre><code>curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-     -F content_type=compendium_v1 \ 
-     -H &quot;X-API-Key: CHANGE_ME&quot; \
-     http://…/api/v1/compendium 
+                <h1 id="file-listing">File Listing</h1>
+<p>The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state. If a job has been run and the programm outputs new data, this new data will be included as well.</p>
+<p><em>Note: currently, the bagtainer will be invalid if new data is saved, as the checksums are not updated.</em></p>
+<p>File listings are represented as a Object. The file structure for the the job <code>nj141</code></p>
+<pre><code>nj141
+├── bagit.txt
+└── data
+    ├── paper.Rmd
+    └── Dockerfile
 </code></pre>
 
-<pre><code>POST /api/v1/compendium#
-
-X-API-Key: api_key
+<p>will be represented as</p>
+<pre><code class="json">{
+  &quot;path&quot;: &quot;/api/v1/job/nj141/data&quot;,
+  &quot;name&quot;: &quot;nj141&quot;,
+  &quot;children&quot;: [
+    {
+      &quot;path&quot;: &quot;/api/v1/job/nj141/data/bagit.txt&quot;,
+      &quot;name&quot;: &quot;bagit.xt&quot;,
+      &quot;size&quot;: 55
+    },
+    {
+      &quot;path&quot;: &quot;/api/v1/job/nj141/data/data&quot;,
+      &quot;name&quot;: &quot;data&quot;,
+      &quot;children&quot;: [
+        {
+          &quot;path&quot;: &quot;/api/v1/job/nj141/data/data/paper.Rmd&quot;,
+          &quot;name&quot;: &quot;paper.Rmd&quot;,
+          &quot;size&quot;: 346512
+        }
+        {
+          &quot;path&quot;: &quot;/api/v1/job/nj141/data/data/Dockerfile&quot;,
+          &quot;name&quot;: &quot;Dockerfile&quot;,
+          &quot;size&quot;: 1729
+        }
+      ]
+    }
+  ]
+}
 </code></pre>
 
-<pre><code class="json">200 OK
-
-{&quot;id&quot;:&quot;a4Ndl&quot;}
-</code></pre>
-
-<p><strong>Additional Headers:</strong></p>
-<ul>
-<li><code>X-API-Key</code> - valid API key for POSTing to /compendium</li>
-</ul>
-<p><strong>Body parameters:</strong></p>
-<ul>
-<li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:<ul>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - formless workspace</li>
-</ul>
-</li>
-</ul>
-<p><strong>Implemented:</strong> No</p>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
-<h3 id="error-responses">Error Responses</h3>
-<pre><code class="json">401 Unauthorized
-
-{&quot;error&quot;:&quot;missing or wrong api key&quot;}
-</code></pre>
+<h3 id="path-property"><code>path</code> property</h3>
+<p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
               
             </div>
           </div>
@@ -190,10 +194,10 @@ X-API-Key: api_key
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../user/" class="btn btn-neutral float-right" title="User">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium/" class="btn btn-neutral" title="Compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -219,10 +223,10 @@ X-API-Key: api_key
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../compendium/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../job/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../user/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
