@@ -32,6 +32,7 @@ __Stability:__ 0 - subject to changes
 ### Body parameters:
 
 * `compendium_id` - The `id` of the compendium to base this job on.
+* `steps` - __TODO__ select steps that will be executed (skip some steps in successive executions?)
 * `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
 ### `FileDescriptor`
@@ -108,7 +109,7 @@ __Stability:__ 0 - subject to changes
 
 ## View single Job
 
-View details for a single job.
+View details for a single job. Filelisting format is described in [Files](files.md)
 
 `curl http://…/api/v1/job/$ID`
 
@@ -126,6 +127,9 @@ View details for a single job.
       "text":"not a valid archive"
     },
     …
+  },
+  "files":{
+    {FileListing}
   }
 }
 ```

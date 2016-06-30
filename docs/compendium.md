@@ -42,7 +42,7 @@ __Stability:__ 0 - subject to changes
 
 ## View single compendium
 
-This includes the complete metadata set, related job ids and a tree representation of the included files.
+This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md).
 
 __TODO__ specify the tree representation. This will be very close to the format
 used in https://www.npmjs.com/package/directory-tree
