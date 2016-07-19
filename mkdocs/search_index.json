@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/",
-            "text": "Current version of the API: v1\n\n\nThe o2r web API acts as the interface between the \no2r\n backend services and the \nwebinterface\n. It includes functionality to \nupload\n and examine \nexecutable research compendia\n and run and examine \nexecution jobs\n.\n\n\nIt is implemented as a RESTful API. The entrypoint for the current version is \n/api/v1\n.\nUnless specified otherwise, responses will always be in JSON format, body parameters are expected in \nmultipart/form-data\n format.",
+            "text": "Current version of the API: v1\n\n\nThe o2r web API acts as the interface between the \no2r\n backend services and the \nwebinterface\n. It includes functionality to \nupload\n and examine \nexecutable research compendia\n and run and examine \nexecution jobs\n.\n\n\nIt is implemented as a RESTful API. The entrypoint for the current version is \n/api/v1\n.\nUnless specified otherwise, responses will always be in JSON format, body parameters are expected in \nmultipart/form-data\n format.\n\n\nWe also provide a \nsimple Postman collection\n(\ngetpostman.com\n), so that you can comfortably explore the API.",
             "title": "Index"
         },
         {
