@@ -6,3 +6,5 @@ The o2r web API acts as the interface between the [o2r](https://o2r.info) backen
 
 It is implemented as a RESTful API. The entrypoint for the current version is `/api/v1`.
 Unless specified otherwise, responses will always be in JSON format, body parameters are expected in `multipart/form-data` format.
+
+We also provide a [simple Postman collection](https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json)([getpostman.com](https://www.getpostman.com/)), so that you can comfortably explore the API.
