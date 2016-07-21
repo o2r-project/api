@@ -25,7 +25,7 @@ Create and run a new execution job. Requires a `compendium_id`.
 
 {"job_id":"ngK4m"}
 ```
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -97,7 +97,7 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -134,7 +134,7 @@ View details for a single job. Filelisting format is described in [Files](files.
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -172,15 +172,3 @@ Additional explanations to their state will be transmitted in the `text` propert
 
 {"error":"no compendium with this ID found"}
 ```
-
-## Status report
-
-* bagit verifiziert
-    * erc format verifiziert
-    * image gebaut
-    * ausführung im container
-        * output?
-        * prozente?
-    * validierung
-    * endergebnis
-

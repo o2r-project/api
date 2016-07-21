@@ -33,7 +33,7 @@ __Body parameters:__
     * `compendium_v1` - _default_ - compendium in Bagtainer format
     * `workspace` - formless workspace
 
-__Implemented:__ No
+__Implemented:__ Partially (`content_type` must be `compendium_v1`)
 
 __Stability:__ 0 - subject to changes
 

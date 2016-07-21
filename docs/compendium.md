@@ -22,7 +22,7 @@ Will return up to 100 results by default. For pagination purposes, URLs for prev
   "previous":"/api/v1/compendium?limit=100&start=1"
 }
 ```
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -62,7 +62,7 @@ used in https://www.npmjs.com/package/directory-tree
 
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -100,7 +100,7 @@ __Stability:__ 0 - subject to changes
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
