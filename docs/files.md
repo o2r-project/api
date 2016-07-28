@@ -21,6 +21,7 @@ will be represented as
     {
       "path": "/api/v1/job/nj141/data/bagit.txt",
       "name": "bagit.xt",
+      "type": "text/plain",
       "size": 55
     },
     {
@@ -30,11 +31,13 @@ will be represented as
         {
           "path": "/api/v1/job/nj141/data/data/paper.Rmd",
           "name": "paper.Rmd",
+          "type": "text/plain",
           "size": 346512
         }
         {
           "path": "/api/v1/job/nj141/data/data/Dockerfile",
           "name": "Dockerfile",
+          "type": "text/plain",
           "size": 1729
         }
       ]
@@ -46,3 +49,7 @@ will be represented as
 ### `path` property
 
 The `path` property for each file in the listing is a link to the raw file. Additionally the `GET` parameter `?size=…` can be appended to retrieve previews of the files. In the case of Images (`png`, `jpg`, `gif`, `tiff`), the value defines the maximum width/height. For text files (`txt`, `csv`, scripts), the value defines the amount of lines returned.
+
+### `type` property
+
+The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the [list of extension to type mapping](files-mime.md) for specific details.
