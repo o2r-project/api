@@ -42,10 +42,7 @@ __Stability:__ 0 - subject to changes
 
 ## View single compendium
 
-This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md).
-
-__TODO__ specify the tree representation. This will be very close to the format
-used in https://www.npmjs.com/package/directory-tree
+This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md). The `created` timestamp refers to the upload of the compendium. It is formated as ISO8601.
 
 `curl http://…/api/v1/$ID`
 
@@ -57,7 +54,7 @@ used in https://www.npmjs.com/package/directory-tree
 {
   "id":"comid",
   "metadata": … ,
-  "created": Date,
+  "created": 2016-08-01T13:57:40.760Z",
   "files": …
  }
 

@@ -165,7 +165,7 @@ Their status will be one of:
 * `warning`
 * `skip`
 
-Additional explanations to their state will be transmitted in the `text` property.
+Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
 ### Error Responses
 
