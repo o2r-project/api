@@ -124,6 +124,8 @@ View details for a single job. Filelisting format is described in [Files](files.
   "steps":{
     "unpack":{
       "status":"failure",
+      "start": Date,
+      "end": Date,
       "text":"not a valid archive"
     },
     …

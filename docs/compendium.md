@@ -57,6 +57,7 @@ used in https://www.npmjs.com/package/directory-tree
 {
   "id":"comid",
   "metadata": … ,
+  "created": Date,
   "files": …
  }
 
