@@ -245,6 +245,8 @@ from a different execution job or a different compendium.</p>
   &quot;steps&quot;:{
     &quot;unpack&quot;:{
       &quot;status&quot;:&quot;failure&quot;,
+      &quot;start&quot;: Date,
+      &quot;end&quot;: Date,
       &quot;text&quot;:&quot;not a valid archive&quot;
     },
     …
@@ -280,7 +282,7 @@ from a different execution job or a different compendium.</p>
 <li><code>warning</code></li>
 <li><code>skip</code></li>
 </ul>
-<p>Additional explanations to their state will be transmitted in the <code>text</code> property.</p>
+<p>Additional explanations to their state will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
 <h3 id="error-responses_1">Error Responses</h3>
 <pre><code class="json">404 Not Found
 

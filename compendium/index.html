@@ -182,9 +182,7 @@
 </code></pre>
 
 <h2 id="view-single-compendium">View single compendium</h2>
-<p>This includes the complete metadata set, related job ids and a tree representation of the included <a href="../files/">files</a>.</p>
-<p><strong>TODO</strong> specify the tree representation. This will be very close to the format
-used in https://www.npmjs.com/package/directory-tree</p>
+<p>This includes the complete metadata set, related job ids and a tree representation of the included <a href="../files/">files</a>. The <code>created</code> timestamp refers to the upload of the compendium. It is formated as ISO8601.</p>
 <p><code>curl http://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <pre><code>200 OK
@@ -192,6 +190,7 @@ used in https://www.npmjs.com/package/directory-tree</p>
 {
   &quot;id&quot;:&quot;comid&quot;,
   &quot;metadata&quot;: … ,
+  &quot;created&quot;: 2016-08-01T13:57:40.760Z&quot;,
   &quot;files&quot;: …
  }
 
