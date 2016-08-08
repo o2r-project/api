@@ -1,4 +1,4 @@
-#Upload
+# Upload
 
 ## Compendium
 
@@ -8,7 +8,7 @@ Upload a unvalidated research compendium as a compressed archive, either `.zip` 
 curl -F "compendium=@compendium.zip;type=application/zip" \
      -F content_type=compendium_v1 \ 
      -H "X-API-Key: CHANGE_ME" \
-     http://…/api/v1/compendium 
+     https://…/api/v1/compendium
 ```
 
 ```
@@ -22,20 +22,22 @@ X-API-Key: api_key
 
 {"id":"a4Ndl"}
 ```
-__Additional Headers:__
 
-* `X-API-Key` - valid API key for POSTing to /compendium
+**Additional Headers:**
 
-__Body parameters:__
+- `X-API-Key` - valid API key for POSTing to /compendium
 
-* `compendium` - The archive file
-* `content_type` - Form of archive. One of the following:
-    * `compendium_v1` - _default_ - compendium in Bagtainer format
-    * `workspace` - formless workspace
+**Body parameters:**
 
-__Implemented:__ Partially (`content_type` must be `compendium_v1`)
+- `compendium` - The archive file
+- `content_type` - Form of archive. One of the following:
 
-__Stability:__ 0 - subject to changes
+  - `compendium_v1` - _default_ - compendium in Bagtainer format
+  - `workspace` - formless workspace
+
+**Implemented:** Partially (`content_type` must be `compendium_v1`)
+
+**Stability:** 0 - subject to changes
 
 ### Error Responses
 
