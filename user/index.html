@@ -164,8 +164,8 @@
 <p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
 <p><strong>Implemented:</strong> Yes</p>
 <p><strong>Stability:</strong> 2 - will not likely change.</p>
-<p><code>curl https://</code></p>
-<p><code>GET /api/v1/auth/whoami --cookie "connect.sid=…"</code></p>
+<p><code>curl https://…/api/v1/auth/whoami --cookie "connect.sid=…"</code></p>
+<p><code>GET /api/v1/auth/whoami</code></p>
 <pre><code class="json">200 OK
 
 {
