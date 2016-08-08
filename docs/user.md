@@ -30,9 +30,9 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 
 **Stability:** 2 - will not likely change.
 
-`curl https://`
+`curl https://…/api/v1/auth/whoami --cookie "connect.sid=…"`
 
-`GET /api/v1/auth/whoami --cookie "connect.sid=…"`
+`GET /api/v1/auth/whoami`
 
 ```json
 200 OK
