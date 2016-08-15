@@ -10,4 +10,4 @@ Unless specified otherwise, responses will always be in JSON format.
 Body parameters in `POST` requests are expected in `multipart/form-data` format.
 Requests to the API should always be made with a secure connection, i.e. HTTPS.
 
-We also provide a [simple Postman collection](https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json)([getpostman.com](https://www.getpostman.com/)), so that you can comfortably explore the API.
+We also provide a [simple Postman collection](https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json) ([getpostman.com](https://www.getpostman.com/)), so that you can comfortably explore the API.
