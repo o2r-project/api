@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../o2r.css" rel="stylesheet">
 
   
   <script>
@@ -70,6 +71,8 @@
                 <li class="toctree-l3"><a href="#upload">Upload</a></li>
                 
                     <li><a class="toctree-l4" href="#compendium">Compendium</a></li>
+                
+                    <li><a class="toctree-l4" href="#example-data">Example data</a></li>
                 
             
             </ul>
@@ -146,16 +149,14 @@
               
                 <h1 id="upload">Upload</h1>
 <h2 id="compendium">Compendium</h2>
-<p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>. Upon successful extraction of archive, a <code>id</code> for the new compendium is returned.</p>
-<pre><code>curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-     -F content_type=compendium_v1 \ 
-     -H &quot;X-API-Key: CHANGE_ME&quot; \
+<p><strong>Stability:</strong> 0 - subject to changes</p>
+<p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>.</p>
+<p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
+<p>Upon successful extraction of archive, the <code>id</code> for the new compendium is returned.</p>
+<pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
+    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
      http://…/api/v1/compendium 
-</code></pre>
-
-<pre><code>POST /api/v1/compendium#
-
-X-API-Key: api_key
 </code></pre>
 
 <pre><code class="json">200 OK
@@ -163,26 +164,26 @@ X-API-Key: api_key
 {&quot;id&quot;:&quot;a4Ndl&quot;}
 </code></pre>
 
-<p><strong>Additional Headers:</strong></p>
-<ul>
-<li><code>X-API-Key</code> - valid API key for POSTing to /compendium</li>
-</ul>
-<p><strong>Body parameters:</strong></p>
+<h3 id="body-parameters">Body parameters</h3>
 <ul>
 <li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:<ul>
+<li><code>content_type</code> - Form of archive. One of the following:</li>
 <li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - formless workspace</li>
+<li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
 </ul>
-</li>
-</ul>
-<p><strong>Implemented:</strong> Partially (<code>content_type</code> must be <code>compendium_v1</code>)</p>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
-<h3 id="error-responses">Error Responses</h3>
+<h3 id="error-responses">Error responses</h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;missing or wrong api key&quot;}
 </code></pre>
+
+<h2 id="example-data">Example data</h2>
+<p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
+The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
+<pre><code class="bash">docker run --rm o2rproject/examplecompendia -c &lt;my cookie&gt; -e 7 -b 0003 -b 0004 -b 0005
+</code></pre>
+
+<p>For more configuration details, see the project's README file.</p>
               
             </div>
           </div>

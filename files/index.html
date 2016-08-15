@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../o2r.css" rel="stylesheet">
 
   
   <script>
@@ -147,8 +148,8 @@
                 <h1 id="file-listing">File Listing</h1>
 <p>The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state. If a job has been run and the programm outputs new data, this new data will be included as well.</p>
 <p><em>Note: currently, the bagtainer will be invalid if new data is saved, as the checksums are not updated.</em></p>
-<p>File listings are represented as a Object. The file structure for the the job <code>nj141</code></p>
-<pre><code>nj141
+<p>File listings are represented as a Object. The file structure for a synthetic job <code>nj141</code> is as follows.</p>
+<pre><code class="text">nj141
 ├── bagit.txt
 └── data
     ├── paper.Rmd
@@ -185,7 +186,7 @@
 }
 </code></pre>
 
-<h3 id="path-property"><code>path</code> property</h3>
+<h2 id="path-property"><code>path</code> property</h2>
 <p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
               
             </div>

@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="./css/theme.css" type="text/css" />
   <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="./css/highlight.css">
+  <link href="./o2r.css" rel="stylesheet">
 
   
   <script>
@@ -141,9 +142,10 @@
               
                 <p><img alt="Opening Reproducible Research" src="./logo.png" /></p>
 <p><strong>Current version of the API: v1</strong></p>
-<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> backend services and the <a href="https://github.com/o2r-project/o2r-platform">webinterface</a>. It includes functionality to <a href="upload/">upload</a> and examine <a href="compendium/">executable research compendia</a> and run and examine <a href="job/">execution jobs</a>.</p>
-<p>It is implemented as a RESTful API. The entrypoint for the current version is <code>/api/v1</code>.
-Unless specified otherwise, responses will always be in JSON format, body parameters are expected in <code>multipart/form-data</code> format.</p>
+<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="https://github.com/o2r-project">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>. It includes functionality to <a href="upload/">upload</a> and examine <a href="compendium/">executable research compendia</a> and run and examine <a href="job/">execution jobs</a>.</p>
+<p>It is implemented as a RESTful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
+<p>Unless specified otherwise, responses will always be in JSON format.
+Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.</p>
 <p>We also provide a <a href="https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json">simple Postman collection</a>(<a href="https://www.getpostman.com/">getpostman.com</a>), so that you can comfortably explore the API.</p>
               
             </div>
@@ -190,5 +192,5 @@ Unless specified otherwise, responses will always be in JSON format, body parame
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-08-08 17:49:13.114684
+Build Date UTC : 2016-08-15 09:19:27.316563
 -->
