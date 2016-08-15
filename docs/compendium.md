@@ -1,4 +1,4 @@
-# compendium
+# Compendium
 
 ## List compendia
 
