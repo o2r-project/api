@@ -164,6 +164,7 @@
     {
       &quot;path&quot;: &quot;/api/v1/job/nj141/data/bagit.txt&quot;,
       &quot;name&quot;: &quot;bagit.xt&quot;,
+      &quot;type&quot;: &quot;text/plain&quot;,
       &quot;size&quot;: 55
     },
     {
@@ -173,11 +174,13 @@
         {
           &quot;path&quot;: &quot;/api/v1/job/nj141/data/data/paper.Rmd&quot;,
           &quot;name&quot;: &quot;paper.Rmd&quot;,
+          &quot;type&quot;: &quot;text/plain&quot;,
           &quot;size&quot;: 346512
         }
         {
           &quot;path&quot;: &quot;/api/v1/job/nj141/data/data/Dockerfile&quot;,
           &quot;name&quot;: &quot;Dockerfile&quot;,
+          &quot;type&quot;: &quot;text/plain&quot;,
           &quot;size&quot;: 1729
         }
       ]
@@ -188,6 +191,8 @@
 
 <h2 id="path-property"><code>path</code> property</h2>
 <p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
+<h3 id="type-property"><code>type</code> property</h3>
+<p>The <code>type</code> property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the <a href="files-mime.md">list of extension to type mapping</a> for specific details.</p>
               
             </div>
           </div>

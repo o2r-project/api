@@ -153,7 +153,7 @@
 <h2 id="list-compendia">List compendia</h2>
 <p><strong>Stability:</strong> 0 - subject to changes</p>
 <p>Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
-<p><code>curl http://…/api/v1/compendium?limit=100&amp;start=2</code></p>
+<p><code>curl https://…/api/v1/compendium?limit=100&amp;start=2</code></p>
 <p><code>GET /api/v1/compendium?limit=100&amp;start=2</code></p>
 <pre><code class="json">200 OK
 
@@ -198,7 +198,7 @@
 <h2 id="view-single-compendium">View single compendium</h2>
 <p><strong>Stability:</strong> 0 - subject to changes</p>
 <p>This includes the complete metadata set, related job ids and a tree representation of the included <a href="../files/">files</a>. The <code>created</code> timestamp refers to the upload of the compendium. It is formated as ISO8601.</p>
-<p><code>curl http://…/api/v1/$ID</code></p>
+<p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <pre><code class="json">200 OK
 
@@ -208,7 +208,6 @@
   &quot;created&quot;: 2016-08-01T13:57:40.760Z&quot;,
   &quot;files&quot;: …
  }
-
 </code></pre>
 
 <h3 id="url-parameters_1">URL parameters</h3>
@@ -222,7 +221,7 @@
 </code></pre>
 
 <h2 id="list-related-execution-jobs">List related execution jobs</h2>
-<p><code>curl http://…/api/v1/compendium/$ID/jobs</code></p>
+<p><code>curl https://…/api/v1/compendium/$ID/jobs</code></p>
 <p><code>GET /api/v1/compendium/:id/jobs</code></p>
 <pre><code class="json">200 OK
 {
