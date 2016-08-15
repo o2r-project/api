@@ -1,4 +1,4 @@
-#Upload
+# Upload
 
 ## Compendium
 
@@ -25,10 +25,10 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 ### Body parameters
 
-* `compendium` - The archive file
-* `content_type` - Form of archive. One of the following:
-  * `compendium_v1` - _default_ - compendium in Bagtainer format
-  * `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
+- `compendium` - The archive file
+- `content_type` - Form of archive. One of the following:
+  - `compendium_v1` - _default_ - compendium in Bagtainer format
+  - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 
 ### Error responses
 

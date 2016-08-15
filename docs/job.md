@@ -12,7 +12,7 @@ A trivial execution job would be a completely unmodified research compendium, to
 
 Create and run a new execution job. Requires a `compendium_id`.
 
-`curl -F compendium_id=$ID http://…/api/v1/job`
+`curl -F compendium_id=$ID https://…/api/v1/job`
 
 `POST /api/v1/job`
 
@@ -24,27 +24,23 @@ Create and run a new execution job. Requires a `compendium_id`.
 
 ### Body parameters
 
-* `compendium_id` - The `id` of the compendium to base this job on.
-* `steps` - __TODO__ select steps that will be executed (skip some steps in successive executions?)
-* `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
+- `compendium_id` - The `id` of the compendium to base this job on.
+- `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
+- `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
 ### `FileDescriptor`
 
-_The FileDescriptor functionality is only a potential feature and not at all
-finalized._
+_The FileDescriptor functionality is only a potential feature and not at all finalized._
 
-`[FileDescriptor]` allows overriding files from the compendium with files
-from a different execution job or a different compendium.
+`[FileDescriptor]` allows overriding files from the compendium with files from a different execution job or a different compendium.
 
-__`[FileDescriptor]` Syntax:__
+**`[FileDescriptor]` Syntax:**
 
-```
+```text
 ERC/JOB:ID:Source:Destination
 ```
 
-e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide
-`/data/bigdataset.Rdata` from the `ERC` with the ID `lnj82` as the file
-`/data/newinput.Rdata` in this execution Job.
+e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/data/bigdataset.Rdata` from the `ERC` with the ID `lnj82` as the file `/data/newinput.Rdata` in this execution Job.
 
 ### Error responses
 
@@ -75,7 +71,7 @@ __Stability:__ 0 - subject to changes
 
 Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related `compendium_id`.
 
-`curl -F compendium_id=$ID http://…/api/v1/job?limit=100&start=2&compendium_id=$ID`
+`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID`
 
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm`
 
@@ -96,9 +92,9 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 
 ### GET parameters
 
-* `compendium_id` - Comma-separated list of related compendium ids to filter by.
-* `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
-* `limit` - Specify maximum amount of results per page. Defaults to 100.
+- `compendium_id` - Comma-separated list of related compendium ids to filter by.
+- `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
+- `limit` - Specify maximum amount of results per page. Defaults to 100.
 
 ## View single job
 
@@ -106,7 +102,7 @@ __Stability:__ 0 - subject to changes
 
 View details for a single job. Filelisting format is described in [Files](files.md)
 
-`curl http://…/api/v1/job/$ID`
+`curl https://…/api/v1/job/$ID`
 
 `GET /api/v1/job/:id`
 
@@ -133,27 +129,27 @@ View details for a single job. Filelisting format is described in [Files](files.
 
 ### URL parameters
 
-* `:id` - id of the job to be viewed
+- `:id` - id of the job to be viewed
 
 ### Steps
 
 The answer will contain information to the following `steps`:
 
-* `validate_bag`
-* `validate_compendium`
-* `validate_dockerfile`
-* `image_build`
-* `image_execute`
-* `cleanup`
+- `validate_bag`
+- `validate_compendium`
+- `validate_dockerfile`
+- `image_build`
+- `image_execute`
+- `cleanup`
 
 Their status will be one of:
 
-* `queued`
-* `running`
-* `success`
-* `failure`
-* `warning`
-* `skip`
+- `queued`
+- `running`
+- `success`
+- `failure`
+- `warning`
+- `skip`
 
 Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 

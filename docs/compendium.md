@@ -6,7 +6,7 @@ __Stability:__ 0 - subject to changes
 
 Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
 
-`curl http://…/api/v1/compendium?limit=100&start=2`
+`curl https://…/api/v1/compendium?limit=100&start=2`
 
 `GET /api/v1/compendium?limit=100&start=2`
 
@@ -44,10 +44,10 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 
 ### URL parameters
 
-* `job_id` - Comma-separated list of related job ids to filter by.
-* `user` - Public user identifier to filter by.
-* `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
-* `limit` - Specify maximum amount of results per page. Defaults to 100.
+- `job_id` - Comma-separated list of related job ids to filter by.
+- `user` - Public user identifier to filter by.
+- `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
+- `limit` - Specify maximum amount of results per page. Defaults to 100.
 
 ### Error responses
 
@@ -63,7 +63,7 @@ __Stability:__ 0 - subject to changes
 
 This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md). The `created` timestamp refers to the upload of the compendium. It is formated as ISO8601.
 
-`curl http://…/api/v1/$ID`
+`curl https://…/api/v1/$ID`
 
 `GET /api/v1/compendium/:id`
 
@@ -76,13 +76,11 @@ This includes the complete metadata set, related job ids and a tree representati
   "created": 2016-08-01T13:57:40.760Z",
   "files": …
  }
-
 ```
 
 ### URL parameters
 
-* `:id` - the compendiums id
-
+- `:id` - the compendiums id
 
 ### Error responses
 
@@ -94,8 +92,7 @@ This includes the complete metadata set, related job ids and a tree representati
 
 ## List related execution jobs
 
-
-`curl http://…/api/v1/compendium/$ID/jobs`
+`curl https://…/api/v1/compendium/$ID/jobs`
 
 `GET /api/v1/compendium/:id/jobs`
 
@@ -113,13 +110,13 @@ This includes the complete metadata set, related job ids and a tree representati
 }
 ```
 
-__Implemented:__ Yes
+**Implemented:** Yes
 
-__Stability:__ 0 - subject to changes
+**Stability:** 0 - subject to changes
 
 ### URL parameters
 
-* `:id` - compendium id that the results should be related to
+- `:id` - compendium id that the results should be related to
 
 ### Error response
 
