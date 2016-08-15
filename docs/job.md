@@ -25,13 +25,14 @@ Create and run a new execution job. Requires a `compendium_id`.
 
 {"job_id":"ngK4m"}
 ```
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
 ### Body parameters:
 
 * `compendium_id` - The `id` of the compendium to base this job on.
+* `steps` - __TODO__ select steps that will be executed (skip some steps in successive executions?)
 * `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
 ### `FileDescriptor`
@@ -96,7 +97,7 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -108,7 +109,7 @@ __Stability:__ 0 - subject to changes
 
 ## View single Job
 
-View details for a single job.
+View details for a single job. Filelisting format is described in [Files](files.md)
 
 `curl http://…/api/v1/job/$ID`
 
@@ -123,14 +124,19 @@ View details for a single job.
   "steps":{
     "unpack":{
       "status":"failure",
+      "start": Date,
+      "end": Date,
       "text":"not a valid archive"
     },
     …
+  },
+  "files":{
+    {FileListing}
   }
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -159,7 +165,7 @@ Their status will be one of:
 * `warning`
 * `skip`
 
-Additional explanations to their state will be transmitted in the `text` property.
+Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
 ### Error Responses
 
@@ -168,15 +174,3 @@ Additional explanations to their state will be transmitted in the `text` propert
 
 {"error":"no compendium with this ID found"}
 ```
-
-## Status report
-
-* bagit verifiziert
-    * erc format verifiziert
-    * image gebaut
-    * ausführung im container
-        * output?
-        * prozente?
-    * validierung
-    * endergebnis
-

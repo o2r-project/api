@@ -1,0 +1,121 @@
+{
+	"variables": [],
+	"info": {
+		"name": "muncher",
+		"_postman_id": "49db9f06-128c-b848-559d-d4933e2f56c1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/v1/compendium",
+			"request": {
+				"url": "{{host}}/api/v1/compendium?limit=50&start=1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/compendium/:id",
+			"request": {
+				"url": "{{host}}/api/v1/compendium/GZp2a",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/compendium",
+			"request": {
+				"url": "{{host}}/api/v1/compendium",
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "CHANGE_ME",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content_type",
+							"value": "compendium_v1",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "compendium",
+							"value": "compendium.zip",
+							"type": "file",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/job",
+			"request": {
+				"url": "{{host}}/api/v1/job",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/job/:id",
+			"request": {
+				"url": "{{host}}/api/v1/job/zTPpd",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/job",
+			"request": {
+				"url": "{{host}}/api/v1/job",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "compendium_id",
+							"value": "GZp2a",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

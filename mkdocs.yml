@@ -4,6 +4,7 @@ pages:
   - Upload:     upload.md
   - Job:        job.md
   - Compendium: compendium.md
+  - Files:      files.md
   - User:       user.md
   - Search:     search.md
 theme: readthedocs # flatly, cinder

@@ -22,7 +22,7 @@ Will return up to 100 results by default. For pagination purposes, URLs for prev
   "previous":"/api/v1/compendium?limit=100&start=1"
 }
 ```
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -42,10 +42,7 @@ __Stability:__ 0 - subject to changes
 
 ## View single compendium
 
-This includes the complete metadata set, related job ids and a tree representation of the included files.
-
-__TODO__ specify the tree representation. This will be very close to the format
-used in https://www.npmjs.com/package/directory-tree
+This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md). The `created` timestamp refers to the upload of the compendium. It is formated as ISO8601.
 
 `curl http://…/api/v1/$ID`
 
@@ -57,12 +54,13 @@ used in https://www.npmjs.com/package/directory-tree
 {
   "id":"comid",
   "metadata": … ,
+  "created": 2016-08-01T13:57:40.760Z",
   "files": …
  }
 
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
@@ -100,7 +98,7 @@ __Stability:__ 0 - subject to changes
 }
 ```
 
-__Implemented:__ No
+__Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 

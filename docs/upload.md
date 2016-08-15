@@ -2,6 +2,8 @@
 
 ## Compendium
 
+__Stability:__ 0 - subject to changes
+
 Upload a unvalidated research compendium as a compressed archive, either `.zip` or `.tar.gz`.
 
 The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
@@ -9,12 +11,11 @@ The upload is only allowed for logged in users. To run the upload from the comma
 Upon successful extraction of archive, the `id` for the new compendium is returned.
 
 ```bash
-curl -F "compendium=@compendium.zip;type=application/zip"
-    -F content_type=compendium_v1 http://…/api/v1/compendium
-    --cookie "connect.sid=<code string here>"
+curl -F "compendium=@compendium.zip;type=application/zip" \
+    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    --cookie "connect.sid=<code string here>" \
+     http://…/api/v1/compendium 
 ```
-
-`POST /api/v1/compendium`
 
 ```json
 200 OK
@@ -22,23 +23,23 @@ curl -F "compendium=@compendium.zip;type=application/zip"
 {"id":"a4Ndl"}
 ```
 
-__Body parameters:__
+### Additional Headers
+
+* `X-API-Key` - valid API key for POSTing to /compendium
+
+### Body parameters
 
 * `compendium` - The archive file
 * `content_type` - Form of archive. One of the following:
-    * `compendium_v1` - _default_ - compendium in Bagtainer format
-    * `workspace` - formless workspace
-
-__Implemented:__ No
-
-__Stability:__ 0 - subject to changes
+  * `compendium_v1` - _default_ - compendium in Bagtainer format
+  * `workspace` - formless workspace [NOT IMPLEMENTED]
 
 ### Error Responses
 
 ```json
 401 Unauthorized
 
-{"error":"user not logged in"}
+{"error":"missing or wrong api key"}
 ```
 
 ## Example data
