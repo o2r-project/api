@@ -6,7 +6,15 @@ Project description: http://o2r.info
 
 ## Build
 
-This specification is written in [Markdown](https://daringfireball.net/projects/markdown/). You can use `mkdocs` to render it locally, or view the latest master-branch on <http://o2r.info/o2r-web-api/>.
+This specification is written in [Markdown](https://daringfireball.net/projects/markdown/). You can use `mkdocs` to render it locally, or view the latest master-branch on <http://o2r.info/o2r-web-api/>. See the [MkDocs documentation](http://www.mkdocs.org/) for details.
+
+```bash
+# pip install mkdocs
+# mkdocs --version
+mkdocs serve
+
+mkdocs build
+```
 
 ### Automated Builds
 
@@ -22,7 +30,7 @@ travis encrypt GH_TOKEN=<token here>
 
 The variable `GH_TOKEN` is used in the deploy script. The token generated on the GitHub website should not be stored anywhere, simply generate a new one if needed.
 
-This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/o2r-web-api/settings), so that malicious changes to the Travis configuration file will be noticed.
+This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/o2r-web-api/settings), so that malicious changes to the Travis configuration file will be noticed by the repository maintainer before merging a pull request.
 
 
 ## License
