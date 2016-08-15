@@ -2,19 +2,19 @@
 
 ## Compendium
 
-Upload a unvalidated research compendium as a compressed archive, either `.zip` or `.tar.gz`. Upon successful extraction of archive, a `id` for the new compendium is returned.
+__Stability:__ 0 - subject to changes
 
-```
+Upload a unvalidated research compendium as a compressed archive, either `.zip` or `.tar.gz`.
+
+The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
+
+Upon successful extraction of archive, the `id` for the new compendium is returned.
+
+```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-     -F content_type=compendium_v1 \ 
-     -H "X-API-Key: CHANGE_ME" \
+    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium 
-```
-
-```
-POST /api/v1/compendium#
-
-X-API-Key: api_key
 ```
 
 ```json
@@ -22,25 +22,29 @@ X-API-Key: api_key
 
 {"id":"a4Ndl"}
 ```
-__Additional Headers:__
 
-* `X-API-Key` - valid API key for POSTing to /compendium
-
-__Body parameters:__
+### Body parameters
 
 * `compendium` - The archive file
 * `content_type` - Form of archive. One of the following:
-    * `compendium_v1` - _default_ - compendium in Bagtainer format
-    * `workspace` - formless workspace
+  * `compendium_v1` - _default_ - compendium in Bagtainer format
+  * `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 
-__Implemented:__ Partially (`content_type` must be `compendium_v1`)
-
-__Stability:__ 0 - subject to changes
-
-### Error Responses
+### Error responses
 
 ```json
 401 Unauthorized
 
 {"error":"missing or wrong api key"}
 ```
+
+## Example data
+
+For local testing you can quickly upload some of the example compendia using a Docker image that is part of the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
+The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.
+
+```bash
+docker run --rm o2rproject/examplecompendia -c <my cookie> -e 7 -b 0003 -b 0004 -b 0005
+```
+
+For more configuration details, see the project's README file.

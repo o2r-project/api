@@ -22,17 +22,18 @@ Will return up to 100 results by default. For pagination purposes, URLs for prev
   "previous":"/api/v1/compendium?limit=100&start=1"
 }
 ```
+
 __Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
-### URL Parameters
+### URL parameters
 
 * `job_id` - Comma-separated list of related job ids to filter by.
 *  `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 *  `limit` - Specify maximum amount of results per page. Defaults to 100.
 
-### Error Responses
+### Error responses
 
 ```json
 404 Not Found
@@ -64,12 +65,12 @@ __Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
-### URL Parameters
+### URL parameters
 
 * `:id` - the compendiums id
 
 
-### Error Responses
+### Error responses
 
 ```
 404 Not Found
@@ -102,12 +103,13 @@ __Implemented:__ Yes
 
 __Stability:__ 0 - subject to changes
 
-### URL Parameters
+### URL parameters
+
 * `:id` - compendium id that the results should be related to
 
-### Error Response
+### Error response
 
-```
+```json
 404 Not Found
 
 {"error":"no job found"}

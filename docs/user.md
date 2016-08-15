@@ -43,7 +43,7 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 }
 ```
 
-### Error Response
+### Error response
 
 When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a `401 Unauthorized` message.
 
