@@ -23,18 +23,14 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 {"id":"a4Ndl"}
 ```
 
-### Additional Headers
-
-* `X-API-Key` - valid API key for POSTing to /compendium
-
 ### Body parameters
 
 * `compendium` - The archive file
 * `content_type` - Form of archive. One of the following:
   * `compendium_v1` - _default_ - compendium in Bagtainer format
-  * `workspace` - formless workspace [NOT IMPLEMENTED]
+  * `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 
-### Error Responses
+### Error responses
 
 ```json
 401 Unauthorized
