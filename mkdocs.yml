@@ -7,5 +7,6 @@ pages:
   - Files:      files.md
   - User:       user.md
   - Search:     search.md
-theme: readthedocs
+theme: readthedocs # flatly, cinder
 site_dir: docs/html
+extra_css: [o2r.css]

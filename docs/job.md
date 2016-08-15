@@ -1,12 +1,14 @@
 # Job
 
+__Stability:__ 0 - subject to changes
+
 Execution jobs are used to execute a research compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 
 A trivial execution job would be a completely unmodified research compendium, to test the reproducibility of a research compendium. A _potential_ future feature would be that the input data (input files, datasets, parameters) can be altered to run a modified execution job. This functionality is not yet final.
 
-## New Job
+## New job
 
 Create and run a new execution job. Requires a `compendium_id`.
 
@@ -20,11 +22,7 @@ Create and run a new execution job. Requires a `compendium_id`.
 {"job_id":"ngK4m"}
 ```
 
-**Implemented:** Yes
-
-**Stability:** 0 - subject to changes
-
-### Body parameters:
+### Body parameters
 
 - `compendium_id` - The `id` of the compendium to base this job on.
 - `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
@@ -38,13 +36,13 @@ _The FileDescriptor functionality is only a potential feature and not at all fin
 
 **`[FileDescriptor]` Syntax:**
 
-```
+```text
 ERC/JOB:ID:Source:Destination
 ```
 
 e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/data/bigdataset.Rdata` from the `ERC` with the ID `lnj82` as the file `/data/newinput.Rdata` in this execution Job.
 
-### Error Responses
+### Error responses
 
 ```json
 404 Not Found
@@ -69,6 +67,8 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/dat
 
 ## List jobs
 
+__Stability:__ 0 - subject to changes
+
 Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related `compendium_id`.
 
 `curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID`
@@ -90,17 +90,15 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 }
 ```
 
-**Implemented:** Yes
-
-**Stability:** 0 - subject to changes
-
 ### GET parameters
 
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
 
-## View single Job
+## View single job
+
+__Stability:__ 0 - subject to changes
 
 View details for a single job. Filelisting format is described in [Files](files.md)
 
@@ -129,11 +127,7 @@ View details for a single job. Filelisting format is described in [Files](files.
 }
 ```
 
-**Implemented:** Yes
-
-**Stability:** 0 - subject to changes
-
-### URL Parameters
+### URL parameters
 
 - `:id` - id of the job to be viewed
 
@@ -159,7 +153,7 @@ Their status will be one of:
 
 Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
-### Error Responses
+### Error responses
 
 ```json
 404 Not Found
