@@ -247,13 +247,38 @@
         },
         {
             "location": "/search/",
-            "text": "Search\n\n\nSearch endpoint follows the \nOpenSearch specification\n.",
+            "text": "Search\n\n\nIndexed information\n\n\n\n\ncompendium metadata \nplanned\n\n\nPDF documents in a compendium \nplanned\n\n\ntext files in a compendium \nplanned\n\n\n\n\nSimple search\n\n\nThe search is based on \nElasticsearch\n and the regular \nElasticsearch search API\n is exposed at\n\n\nhttp://\u2026/api/v1/search\n\n\n\n\nExample requests\n\n\n\n\nhttp://o2r.uni-muenster.de/api/v1/search?q=*\n\n\nhttp://o2r.uni-muenster.de/api/v1/search?q=term\n\n\nhttp://o2r.uni-muenster.de/api/v1/search?q=*&fields=compendium_id\n\n\n\n\nSecurity\n\n\nOnly reading requsts, i.e. \nGET\n requests, are allowed at the moment. This means that Kibana cannot be run against this interface, and neither can complex queries requiring \nPOST\n requests. \nGET\n requests with payloads are allowed.\n\n\nExample query:\n\n\ncurl -XGET 'https://\u2026/api/v1/search' -d '{\n    \"query\": {\n            \"type\" : {\n                \"value\" : \"jobs\"\n            }\n        }\n    }\n}'\n\n\n\n\nSuggesters\n\n\nUNDER DEVELOPMENT\n\n\nElasticsearch suggest API",
             "title": "Search"
         },
         {
             "location": "/search/#search",
-            "text": "Search endpoint follows the  OpenSearch specification .",
+            "text": "",
             "title": "Search"
+        },
+        {
+            "location": "/search/#indexed-information",
+            "text": "compendium metadata  planned  PDF documents in a compendium  planned  text files in a compendium  planned",
+            "title": "Indexed information"
+        },
+        {
+            "location": "/search/#simple-search",
+            "text": "The search is based on  Elasticsearch  and the regular  Elasticsearch search API  is exposed at  http://\u2026/api/v1/search",
+            "title": "Simple search"
+        },
+        {
+            "location": "/search/#example-requests",
+            "text": "http://o2r.uni-muenster.de/api/v1/search?q=*  http://o2r.uni-muenster.de/api/v1/search?q=term  http://o2r.uni-muenster.de/api/v1/search?q=*&fields=compendium_id",
+            "title": "Example requests"
+        },
+        {
+            "location": "/search/#security",
+            "text": "Only reading requsts, i.e.  GET  requests, are allowed at the moment. This means that Kibana cannot be run against this interface, and neither can complex queries requiring  POST  requests.  GET  requests with payloads are allowed.  Example query:  curl -XGET 'https://\u2026/api/v1/search' -d '{\n    \"query\": {\n            \"type\" : {\n                \"value\" : \"jobs\"\n            }\n        }\n    }\n}'",
+            "title": "Security"
+        },
+        {
+            "location": "/search/#suggesters",
+            "text": "UNDER DEVELOPMENT  Elasticsearch suggest API",
+            "title": "Suggesters"
         }
     ]
 }

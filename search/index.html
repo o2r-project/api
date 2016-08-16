@@ -105,6 +105,12 @@
             
                 <li class="toctree-l3"><a href="#search">Search</a></li>
                 
+                    <li><a class="toctree-l4" href="#indexed-information">Indexed information</a></li>
+                
+                    <li><a class="toctree-l4" href="#simple-search">Simple search</a></li>
+                
+                    <li><a class="toctree-l4" href="#suggesters">Suggesters</a></li>
+                
             
             </ul>
         
@@ -144,7 +150,39 @@
             <div class="section">
               
                 <h1 id="search">Search</h1>
-<p>Search endpoint follows the <a href="http://www.opensearch.org">OpenSearch specification</a>.</p>
+<h2 id="indexed-information">Indexed information</h2>
+<ul>
+<li>compendium metadata <strong>planned</strong></li>
+<li>PDF documents in a compendium <strong>planned</strong></li>
+<li>text files in a compendium <strong>planned</strong></li>
+</ul>
+<h2 id="simple-search">Simple search</h2>
+<p>The search is based on <a href="https://www.elastic.co/">Elasticsearch</a> and the regular <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html">Elasticsearch search API</a> is exposed at</p>
+<pre><code class="bash">http://…/api/v1/search
+</code></pre>
+
+<h3 id="example-requests">Example requests</h3>
+<ul>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*">http://o2r.uni-muenster.de/api/v1/search?q=*</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=term">http://o2r.uni-muenster.de/api/v1/search?q=term</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id">http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id</a></li>
+</ul>
+<h3 id="security">Security</h3>
+<p>Only reading requsts, i.e. <code>GET</code> requests, are allowed at the moment. This means that Kibana cannot be run against this interface, and neither can complex queries requiring <code>POST</code> requests. <code>GET</code> requests with payloads are allowed.</p>
+<p>Example query:</p>
+<pre><code class="bash">curl -XGET 'https://…/api/v1/search' -d '{
+    &quot;query&quot;: {
+            &quot;type&quot; : {
+                &quot;value&quot; : &quot;jobs&quot;
+            }
+        }
+    }
+}'
+</code></pre>
+
+<h2 id="suggesters">Suggesters</h2>
+<p><strong>UNDER DEVELOPMENT</strong></p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html">Elasticsearch suggest API</a> </p>
               
             </div>
           </div>
