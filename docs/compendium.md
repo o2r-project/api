@@ -102,7 +102,9 @@ Download the complete compendium as an archive. Supported formats are as follows
 
 ### Requests
 
-`curl https://…/api/v1/$ID.zip`
+`curl https://…/api/v1/compendium/$ID.zip`
+
+`wget https://…/api/v1/compendium/$ID.zip`
 
 ```
 GET /api/v1/compendium/:id.zip
@@ -127,6 +129,14 @@ Content-Type: application/zip
 Transfer-Encoding: chunked
 Content-Disposition: attachment; filename="$ID.zip"
 X-Response-Time: 13.556ms
+```
+
+The zip file contains a comment with the original URL.
+
+```bash
+$ unzip -z CXE1c.zip 
+Archive:  CXE1c.zip
+Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
 
 ### URL parameters
