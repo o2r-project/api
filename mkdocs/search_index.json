@@ -97,7 +97,7 @@
         },
         {
             "location": "/compendium/",
-            "text": "Compendium\n\n\nList compendia\n\n\nStability:\n 0 - subject to changes\n\n\nWill return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.\n\n\ncurl https://\u2026/api/v1/compendium?limit=100&start=2\n\n\nGET /api/v1/compendium?limit=100&start=2\n\n\n200 OK\n\n{\n  \"results\":[\n    \"nkm4b\",\n    \"asdis\",\n    \"nb2sm\",\n    \u2026\n  ],\n  \"next\":\"/api/v1/compendium?limit=100&start=3\",\n  \"previous\":\"/api/v1/compendium?limit=100&start=1\"\n}\n\n\n\n\nYou can also get only the compendia uploaded by a specific user. A user filter can be combined with pagination.\n\n\ncurl http://\u2026/api/v1/compendium?user=0000-0001-6021-1617\n\n\nGET /api/v1/compendium?user=0000-0001-6021-1617\n\n\n200 OK\n\n{\n  \"results\":[\n    \"nkm4b\",\n    \"nb2sm\"\n  ]\n}\n\n\n\n\nURL parameters\n\n\n\n\njob_id\n - Comma-separated list of related job ids to filter by.\n\n\nuser\n - Public user identifier to filter by.\n\n\nstart\n - List from specific search result onwards. 1-indexed. Defaults to 1.\n\n\nlimit\n - Specify maximum amount of results per page. Defaults to 100.\n\n\n\n\nError responses\n\n\n404 Not Found\n\n{\"error\":\"no compendium found\"}\n\n\n\n\nView single compendium\n\n\nStability:\n 0 - subject to changes\n\n\nThis includes the complete metadata set, related job ids and a tree representation of the included \nfiles\n. The \ncreated\n timestamp refers to the upload of the compendium. It is formated as ISO8601.\n\n\ncurl https://\u2026/api/v1/$ID\n\n\nGET /api/v1/compendium/:id\n\n\n200 OK\n\n{\n  \"id\":\"comid\",\n  \"metadata\": \u2026 ,\n  \"created\": 2016-08-01T13:57:40.760Z\",\n  \"files\": \u2026\n }\n\n\n\n\nURL parameters\n\n\n\n\n:id\n - the compendiums id\n\n\n\n\nError responses\n\n\n404 Not Found\n\n{\"error\":\"no compendium with this id\"}\n\n\n\n\nList related execution jobs\n\n\ncurl https://\u2026/api/v1/compendium/$ID/jobs\n\n\nGET /api/v1/compendium/:id/jobs\n\n\n200 OK\n{\n  \"results\":[\n    \"nkm4L\",\n    \"asdi5\",\n    \"nb2sg\",\n    \u2026\n  ],\n  \"next\":\"/api/v1/compendium/:id/jobs?limit=100&start=3\",\n  \"previous\":\"/api/v1/compendium/:id/job?limit=100&start=1\"\n}\n\n\n\n\nImplemented:\n Yes\n\n\nStability:\n 0 - subject to changes\n\n\nURL parameters\n\n\n\n\n:id\n - compendium id that the results should be related to\n\n\n\n\nError response\n\n\n404 Not Found\n\n{\"error\":\"no job found\"}",
+            "text": "Compendium\n\n\nList compendia\n\n\nStability:\n 0 - subject to changes\n\n\nWill return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.\n\n\ncurl https://\u2026/api/v1/compendium?limit=100&start=2\n\n\nGET /api/v1/compendium?limit=100&start=2\n\n\n200 OK\n\n{\n  \"results\":[\n    \"nkm4b\",\n    \"asdis\",\n    \"nb2sm\",\n    \u2026\n  ],\n  \"next\":\"/api/v1/compendium?limit=100&start=3\",\n  \"previous\":\"/api/v1/compendium?limit=100&start=1\"\n}\n\n\n\n\nYou can also get only the compendia uploaded by a specific user. A user filter can be combined with pagination.\n\n\ncurl http://\u2026/api/v1/compendium?user=0000-0001-6021-1617\n\n\nGET /api/v1/compendium?user=0000-0001-6021-1617\n\n\n200 OK\n\n{\n  \"results\":[\n    \"nkm4b\",\n    \"nb2sm\"\n  ]\n}\n\n\n\n\nURL parameters\n\n\n\n\njob_id\n - Comma-separated list of related job ids to filter by.\n\n\nuser\n - Public user identifier to filter by.\n\n\nstart\n - List from specific search result onwards. 1-indexed. Defaults to 1.\n\n\nlimit\n - Specify maximum amount of results per page. Defaults to 100.\n\n\n\n\nError responses\n\n\n404 Not Found\n\n{\"error\":\"no compendium found\"}\n\n\n\n\nView single compendium\n\n\nStability:\n 0 - subject to changes\n\n\nThis includes the complete metadata set, related job ids and a tree representation of the included \nfiles\n. The \ncreated\n timestamp refers to the upload of the compendium. It is formated as ISO8601.\n\n\ncurl https://\u2026/api/v1/$ID\n\n\nGET /api/v1/compendium/:id\n\n\n200 OK\n\n{\n  \"id\":\"comid\",\n  \"metadata\": \u2026 ,\n  \"created\": 2016-08-01T13:57:40.760Z\",\n  \"files\": \u2026\n }\n\n\n\n\nURL parameters\n\n\n\n\n:id\n - the compendiums id\n\n\n\n\nError responses\n\n\n404 Not Found\n\n{\"error\":\"no compendium with this id\"}\n\n\n\n\nDownload compendium\n\n\nStability:\n 0 - subject to changes\n\n\nDownload the complete compendium as an archive. Supported formats are as follows:\n\n\n\n\nzip\n\n\ntar\n\n\ntar.gz\n (gzipped tarball)\n\n\n\n\nRequests\n\n\ncurl https://\u2026/api/v1/$ID.zip\n\n\nGET /api/v1/compendium/:id.zip\nGET /api/v1/compendium/:id.tar\nGET /api/v1/compendium/:id.tar.gz\nGET /api/v1/compendium/:id.tar?gzip\n\n\n\n\nResponse\n\n\nThe response is a file attachment. The suggested file name is available in the HTTP header \ncontent-disposition\n using the respective file extension (i.e. \n.zip\n, \n.tar\n, and \n.tar.gz\n).\n\n\nThe \ncontent-type\n header also reflects the respective format, which can take the following values:\n\n\n\n\napplication/zip\n for ZIP archive\n\n\napplication/x-tar\n for TAR archive\n\n\napplication/octet-stream\n for gzipped TAR\n\n\n\n\n200 OK\nContent-Type: application/zip\nTransfer-Encoding: chunked\nContent-Disposition: attachment; filename=\"$ID.zip\"\nX-Response-Time: 13.556ms\n\n\n\n\nURL parameters\n\n\n\n\n:id\n - the compendiums id\n\n\n\n\nURL query parameters\n\n\n\n\ngzip\n - \nonly for .tar endpoint\n - compress tarball with gzip\n\n\n\n\nError responses\n\n\n404 Not Found\n\n{\"error\":\"no compendium with this id\"}\n\n\n\n\nList related execution jobs\n\n\ncurl https://\u2026/api/v1/compendium/$ID/jobs\n\n\nGET /api/v1/compendium/:id/jobs\n\n\n200 OK\n{\n  \"results\":[\n    \"nkm4L\",\n    \"asdi5\",\n    \"nb2sg\",\n    \u2026\n  ],\n  \"next\":\"/api/v1/compendium/:id/jobs?limit=100&start=3\",\n  \"previous\":\"/api/v1/compendium/:id/job?limit=100&start=1\"\n}\n\n\n\n\nImplemented:\n Yes\n\n\nStability:\n 0 - subject to changes\n\n\nURL parameters\n\n\n\n\n:id\n - compendium id that the results should be related to\n\n\n\n\nError response\n\n\n404 Not Found\n\n{\"error\":\"no job found\"}",
             "title": "Compendium"
         },
         {
@@ -136,12 +136,42 @@
             "title": "Error responses"
         },
         {
+            "location": "/compendium/#download-compendium",
+            "text": "Stability:  0 - subject to changes  Download the complete compendium as an archive. Supported formats are as follows:   zip  tar  tar.gz  (gzipped tarball)",
+            "title": "Download compendium"
+        },
+        {
+            "location": "/compendium/#requests",
+            "text": "curl https://\u2026/api/v1/$ID.zip  GET /api/v1/compendium/:id.zip\nGET /api/v1/compendium/:id.tar\nGET /api/v1/compendium/:id.tar.gz\nGET /api/v1/compendium/:id.tar?gzip",
+            "title": "Requests"
+        },
+        {
+            "location": "/compendium/#response",
+            "text": "The response is a file attachment. The suggested file name is available in the HTTP header  content-disposition  using the respective file extension (i.e.  .zip ,  .tar , and  .tar.gz ).  The  content-type  header also reflects the respective format, which can take the following values:   application/zip  for ZIP archive  application/x-tar  for TAR archive  application/octet-stream  for gzipped TAR   200 OK\nContent-Type: application/zip\nTransfer-Encoding: chunked\nContent-Disposition: attachment; filename=\"$ID.zip\"\nX-Response-Time: 13.556ms",
+            "title": "Response"
+        },
+        {
+            "location": "/compendium/#url-parameters_2",
+            "text": ":id  - the compendiums id",
+            "title": "URL parameters"
+        },
+        {
+            "location": "/compendium/#url-query-parameters",
+            "text": "gzip  -  only for .tar endpoint  - compress tarball with gzip",
+            "title": "URL query parameters"
+        },
+        {
+            "location": "/compendium/#error-responses_2",
+            "text": "404 Not Found\n\n{\"error\":\"no compendium with this id\"}",
+            "title": "Error responses"
+        },
+        {
             "location": "/compendium/#list-related-execution-jobs",
             "text": "curl https://\u2026/api/v1/compendium/$ID/jobs  GET /api/v1/compendium/:id/jobs  200 OK\n{\n  \"results\":[\n    \"nkm4L\",\n    \"asdi5\",\n    \"nb2sg\",\n    \u2026\n  ],\n  \"next\":\"/api/v1/compendium/:id/jobs?limit=100&start=3\",\n  \"previous\":\"/api/v1/compendium/:id/job?limit=100&start=1\"\n}  Implemented:  Yes  Stability:  0 - subject to changes",
             "title": "List related execution jobs"
         },
         {
-            "location": "/compendium/#url-parameters_2",
+            "location": "/compendium/#url-parameters_3",
             "text": ":id  - compendium id that the results should be related to",
             "title": "URL parameters"
         },
