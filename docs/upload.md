@@ -4,7 +4,7 @@
 
 __Stability:__ 0 - subject to changes
 
-Upload a unvalidated research compendium as a compressed archive, either `.zip` or `.tar.gz`.
+Upload a unvalidated research compendium as a compressed `.zip` archive.
 
 The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
 
