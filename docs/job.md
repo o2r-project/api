@@ -69,9 +69,12 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/dat
 
 __Stability:__ 0 - subject to changes
 
-Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date and can be filtered by one or more related `compendium_id` as well as by `state`. Additionally results can be provided as a list of strings or as objects with added `fields`.
+Lists jobs. Will return up to 100 results by default.
 
-`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success&fields=state`
+For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter `compendium_id`, as well as by `state`.
+The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
+
+`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success`
 
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success`
 
@@ -89,6 +92,7 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
   "previous":"/api/v1/job?limit=100&start=1"
 }
 ```
+
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success&fields=state`
 
 ```json
@@ -120,8 +124,8 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
-- `state` - Specify state to filter by. Can contain following `states`: `success`, `failure`, `running`.
-- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `state`. Defaults to none.
+- `state` - Specify state to filter by. Can contain following states: `success`, `failure`, `running`.
+- `fields` - Specify if/which additional attributes results should contain. Allowed values are `state`. Defaults to none (<code>&#32;</code>).
 
 ### State
 
