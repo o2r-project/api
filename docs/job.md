@@ -47,20 +47,6 @@ Create and run a new execution job. Requires a `compendium_id`.
 - `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
 - `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
-### `FileDescriptor`
-
-_The FileDescriptor functionality is only a potential feature and not at all finalized._
-
-`[FileDescriptor]` allows overriding files from the compendium with files from a different execution job or a different compendium.
-
-**`[FileDescriptor]` Syntax:**
-
-```text
-ERC/JOB:ID:Source:Destination
-```
-
-e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/data/bigdataset.Rdata` from the `ERC` with the ID `lnj82` as the file `/data/newinput.Rdata` in this execution Job.
-
 ### Error responses
 
 ```json
@@ -73,15 +59,6 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/dat
 500 Internal Server Error
 
 {"error":"could not create job"}
-```
-
-```json
-500 Internal Server Error
-
-{
-  "error":"could not provide file",
-  "filedescriptor":"[FileDescriptor]"
- }
 ```
 
 ## List jobs
