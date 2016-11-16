@@ -202,3 +202,16 @@ Additional explanations to their state will be transmitted in the `text` propert
 
 {"error":"no compendium with this ID found"}
 ```
+
+## Job status updates
+
+You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket). The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
+
+The job log is available at `https://o2r.uni-muenster.de` under the namespace `api/v1/logs/job`.
+
+```JavaScript
+# create a socket.io client:
+var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
+```
+
+__TODO__: add documentation on messages on the socket.
