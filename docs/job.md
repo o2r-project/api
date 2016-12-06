@@ -179,7 +179,7 @@ The answer will contain information to the following `steps`:
 
 - `validate_bag`
 - `validate_compendium`
-- `validate_dockerfile`
+- `image_prepare`
 - `image_build`
 - `image_execute`
 - `cleanup`
