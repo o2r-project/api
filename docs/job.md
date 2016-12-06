@@ -69,11 +69,11 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/dat
 
 __Stability:__ 0 - subject to changes
 
-Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date and can be filtered by one or more related `compendium_id` as well as by `state`. Additionally results can be provided as a list of strings or as objects with added `fields`.
+Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date and can be filtered by one or more related `compendium_id` as well as by `status`. Additionally results can be provided as a list of strings or as objects with added `fields`.
 
-`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success&fields=state`
+`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success&fields=status`
 
-`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success`
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success`
 
 ```json
 200 OK
@@ -89,7 +89,7 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
   "previous":"/api/v1/job?limit=100&start=1"
 }
 ```
-`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success&fields=state`
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success&fields=status`
 
 ```json
 200 OK
@@ -98,20 +98,20 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
   "results":[
     {
       "id":"nkm4L",
-      "state":"failure"
+      "status":"failure"
     },
     {
       "id":"asdi5",
-      "state":"success"
+      "status":"success"
     },
     {
       "id":"nb2sg",
-      "state":"running"
+      "status":"running"
     },
     …
   ],
-  "next":"/api/v1/job?limit=100&start=3&fields=state",
-  "previous":"/api/v1/job?limit=100&start=1&fields=state"
+  "next":"/api/v1/job?limit=100&start=3&fields=status",
+  "previous":"/api/v1/job?limit=100&start=1&fields=status"
 }
 ```
 
@@ -120,10 +120,10 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
-- `state` - Specify state to filter by. Can contain following `states`: `success`, `failure`, `running`.
-- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `state`. Defaults to none.
+- `status` - Specify state to filter by. Can contain following `status`: `success`, `failure`, `running`.
+- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status`. Defaults to none.
 
-### State
+### Status
 
 Shows the overall state of a job.
 
@@ -153,7 +153,7 @@ View details for a single job. Filelisting format is described in [Files](files.
   "id":"nkm4L",
   "compendium_id":"a4Dnm",
   "creation_date": Date,
-  "state": "fail",
+  "status": "fail",
   "steps":{
     "unpack":{
       "status":"failure",
