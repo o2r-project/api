@@ -5,9 +5,9 @@ set -o errexit -o nounset
 rev=$(git rev-parse --short HEAD)
 
 # Initialize gh-pages checkout
-mkdir -p docs/html
+mkdir -p site
 (
-  cd docs/html
+  cd site
   git init
   git config user.name "${GH_USER_NAME}"
   git config user.email "${GH_USER_EMAIL}"
@@ -21,7 +21,7 @@ mkdocs build --clean
 
 #Commit and push the documentation to gh-pages
 (
-  cd docs/html
+  cd site
   touch .
   git add -A .
   git commit -m "Rebuild pages at ${rev}"

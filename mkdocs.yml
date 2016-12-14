@@ -5,9 +5,10 @@ pages:
   - Job:        job.md
   - Compendium: compendium.md
   - Files:      files.md
+  - Mime-types: files-mime.md
   - User:       user.md
   - Search:     search.md
   - Shipment:   shipment.md 
 theme: readthedocs # flatly, cinder
-site_dir: docs/html
+site_dir: site
 extra_css: [o2r.css]

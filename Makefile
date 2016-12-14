@@ -1,3 +1,5 @@
-build:
+serve:
 	mkdocs serve
-.PHONY: build
+build:
+	mkdocs build --clean
+.PHONY: build serve
