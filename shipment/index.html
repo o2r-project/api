@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Search - o2r web API</title>
+  <title>Shipment - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Search";
-    var mkdocs_page_input_path = "search.md";
-    var mkdocs_page_url = "/search/";
+    var mkdocs_page_name = "Shipment";
+    var mkdocs_page_input_path = "shipment.md";
+    var mkdocs_page_url = "/shipment/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -97,28 +97,26 @@
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Search</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#search">Search</a></li>
-                
-                    <li><a class="toctree-l4" href="#indexed-information">Indexed information</a></li>
-                
-                    <li><a class="toctree-l4" href="#simple-search">Simple search</a></li>
-                
-                    <li><a class="toctree-l4" href="#suggesters">Suggesters</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../search/">Search</a>
         
     </li>
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../shipment/">Shipment</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Shipment</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#shipment">Shipment</a></li>
+                
+                    <li><a class="toctree-l4" href="#list-shipments">List shipments</a></li>
+                
+                    <li><a class="toctree-l4" href="#new-shipment">New shipment</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
@@ -145,7 +143,7 @@
     
       
     
-    <li>Search</li>
+    <li>Shipment</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -155,40 +153,81 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="search">Search</h1>
-<h2 id="indexed-information">Indexed information</h2>
-<ul>
-<li>compendium metadata <strong>planned</strong></li>
-<li>PDF documents in a compendium <strong>planned</strong></li>
-<li>text files in a compendium <strong>planned</strong></li>
-</ul>
-<h2 id="simple-search">Simple search</h2>
-<p>The search is based on <a href="https://www.elastic.co/">Elasticsearch</a> and the regular <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html">Elasticsearch search API</a> is exposed at</p>
-<pre><code class="bash">http://…/api/v1/search
+                <h1 id="shipment">Shipment</h1>
+<p>Shipments are used to deliver ERCs to third party repositories or archives.</p>
+<h2 id="list-shipments">List shipments</h2>
+<p>Will return the complete list of shipments, currently without pagination.</p>
+<p><code>curl https://…/api/v1/shipment</code></p>
+<p><code>GET /api/v1/shipment</code></p>
+<pre><code class="json">200
+
+{
+    &quot;shipments&quot;: [&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
+}
 </code></pre>
 
-<h3 id="example-requests">Example requests</h3>
-<ul>
-<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*">http://o2r.uni-muenster.de/api/v1/search?q=*</a></li>
-<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=term">http://o2r.uni-muenster.de/api/v1/search?q=term</a></li>
-<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id">http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id</a></li>
-</ul>
-<h3 id="security">Security</h3>
-<p>Only reading requsts, i.e. <code>GET</code> requests, are allowed at the moment. This means that Kibana cannot be run against this interface, and neither can complex queries requiring <code>POST</code> requests. <code>GET</code> requests with payloads are allowed.</p>
-<p>Example query:</p>
-<pre><code class="bash">curl -XGET 'https://…/api/v1/search' -d '{
-    &quot;query&quot;: {
-            &quot;type&quot; : {
-                &quot;value&quot; : &quot;jobs&quot;
-            }
-        }
-    }
-}'
+<p>You can also get only the shipments belonging to a specific id or compendium id.</p>
+<p><code>curl http://…/api/v1/shipment?compendium_id=4XgD9</code></p>
+<p><code>GET /api/v1/shipment?compendium_id=4XgD97</code></p>
+<pre><code class="json">200 
+
+{
+    &quot;last_modified&quot;: &quot;2016-12-12 10:34:32.001475&quot;,
+    &quot;recipient&quot;: &quot;zenodo&quot;,
+    &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
+    &quot;deposition_id&quot;: &quot;63179&quot;,
+    &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;status&quot;: &quot;delivered&quot;,
+    &quot;compendium_id&quot;: &quot;4XgD9&quot;,
+    &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
+}
 </code></pre>
 
-<h2 id="suggesters">Suggesters</h2>
-<p><strong>UNDER DEVELOPMENT</strong></p>
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html">Elasticsearch suggest API</a> </p>
+<p><em>Note that returned deposition urls from Zenodo (records) will only be active after publishing.</em></p>
+<h3 id="url-parameters">URL parameters</h3>
+<ul>
+<li><code>id</code> - The identifier of a specific shipment.</li>
+<li><code>compendium_id</code> - The identifier of a specific compendium.</li>
+</ul>
+<h3 id="error-responses">Error responses</h3>
+<pre><code class="json">400
+
+{&quot;error&quot;:&quot;bad request&quot;}
+</code></pre>
+
+<h2 id="new-shipment">New shipment</h2>
+<p>You can start a transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
+<p><code>curl https://…/api/v1/shipment</code></p>
+<p><code>POST /api/v1/shipment</code></p>
+<pre><code class="json">200
+
+{
+    &quot;recipient&quot;: &quot;zenodo&quot;,
+    &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;
+}
+</code></pre>
+
+<h3 id="body-parameters">Body parameters</h3>
+<p>This requires the following parameters and conditions:</p>
+<ul>
+<li><code>compendium_id</code></li>
+<li><code>recipient</code> (name of the repository; <em>currently only <code>"zenodo"</code> is possible</em>)</li>
+<li><code>cookie</code> user must be logged in with sufficient rights</li>
+</ul>
+<p>Optionally, you can specifiy a custom <code>shipment_id</code>.</p>
+<h3 id="error-responses_1">Error responses</h3>
+<pre><code class="json">400
+
+{&quot;error&quot;:&quot;bad request&quot;}
+</code></pre>
+
+<pre><code class="json">403
+
+{&quot;error&quot;: &quot;insufficient permissions&quot;}
+</code></pre>
+
+<p><strong>Implemented:</strong> Yes</p>
+<p><strong>Stability:</strong> 0 - subject to changes</p>
               
             </div>
           </div>
@@ -196,10 +235,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../shipment/" class="btn btn-neutral float-right" title="Shipment">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../user/" class="btn btn-neutral" title="User"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../search/" class="btn btn-neutral" title="Search"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -225,10 +262,8 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../user/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../search/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../shipment/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

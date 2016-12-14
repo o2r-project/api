@@ -3,56 +3,72 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/upload/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/upload/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/job/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/job/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/compendium/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/compendium/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/files/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/files/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/user/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/files-mime/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/search/</loc>
-     <lastmod>2016-09-19</lastmod>
+     <loc>/user/</loc>
+     <lastmod>2016-12-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/search/</loc>
+     <lastmod>2016-12-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/shipment/</loc>
+     <lastmod>2016-12-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

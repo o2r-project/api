@@ -7,20 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
-  <title>Upload - o2r web API</title>
-  
-
   <link rel="shortcut icon" href="../img/favicon.ico">
-
-  
+  <title>Upload - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
   <link href="../o2r.css" rel="stylesheet">
-
   
   <script>
     // Current page data
@@ -31,9 +25,7 @@
   
   <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../js/highlight.pack.js"></script>
-  <script src="../js/theme.js"></script> 
-
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
   
 </head>
 
@@ -53,7 +45,7 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        <ul class="current">
+	<ul class="current">
           
             <li>
     <li class="toctree-l1 ">
@@ -103,6 +95,13 @@
           
             <li>
     <li class="toctree-l1 ">
+        <a class="" href="../files-mime/">Mime-types</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
         <a class="" href="../user/">User</a>
         
     </li>
@@ -111,6 +110,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../search/">Search</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../shipment/">Shipment</a>
         
     </li>
 <li>
@@ -150,7 +156,7 @@
                 <h1 id="upload">Upload</h1>
 <h2 id="compendium">Compendium</h2>
 <p><strong>Stability:</strong> 0 - subject to changes</p>
-<p>Upload a unvalidated research compendium as a compressed archive, either <code>.zip</code> or <code>.tar.gz</code>.</p>
+<p>Upload a unvalidated research compendium as a compressed <code>.zip</code> archive.</p>
 <p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful extraction of archive, the <code>id</code> for the new compendium is returned.</p>
 <pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
@@ -213,10 +219,10 @@ The following command executes the container and uploads 7 empty examples and tw
       </div>
 
     </section>
-
+    
   </div>
 
-<div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
@@ -227,6 +233,7 @@ The following command executes the container and uploads 7 empty examples and tw
       
     </span>
 </div>
+    <script src="../js/theme.js"></script>
 
 </body>
 </html>
