@@ -6,7 +6,26 @@ Execution jobs are used to execute a research compendium. When a new execution j
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 
-A trivial execution job would be a completely unmodified research compendium, to test the reproducibility of a research compendium. A _potential_ future feature would be that the input data (input files, datasets, parameters) can be altered to run a modified execution job. This functionality is not yet final.
+A trivial execution job would be a completely unmodified research compendium, to test the reproducibility of a research compendium.
+
+(A _potential_ future feature would be that the input data (input files, datasets, parameters) can be altered to run a modified execution job. This functionality is not yet implemented.)
+
+## Steps
+
+One job consists of a series of steps. All of these steps can be in one of three status: `running`, `failure`, or `success`. The are executed in order.
+
+- **validate_bag**
+  Validate the BagIt bag based on npm's [bagit](https://www.npmjs.com/package/bagit).
+- **validate_compendium**
+  Parses and validate the bagtainer configuration and metadta.
+- **image_prepare**
+  Create an archive of the payload of the BagIt bag, which allows to build and run the image also on remote Docker hosts.
+- **image_build**
+  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged `bagtainer:<jobid>`.
+- **image_execute**
+  Run the container and return based on status code of program that ran inside the container.
+- **cleanup**
+  Remove image or job files (depending on server-side settings).
 
 ## New job
 
@@ -28,20 +47,6 @@ Create and run a new execution job. Requires a `compendium_id`.
 - `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
 - `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
-### `FileDescriptor`
-
-_The FileDescriptor functionality is only a potential feature and not at all finalized._
-
-`[FileDescriptor]` allows overriding files from the compendium with files from a different execution job or a different compendium.
-
-**`[FileDescriptor]` Syntax:**
-
-```text
-ERC/JOB:ID:Source:Destination
-```
-
-e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/data/bigdataset.Rdata` from the `ERC` with the ID `lnj82` as the file `/data/newinput.Rdata` in this execution Job.
-
 ### Error responses
 
 ```json
@@ -56,24 +61,18 @@ e.g. `ERC:lnj82:/data/bigdataset.Rdata:/data/newinput.Rdata` would provide `/dat
 {"error":"could not create job"}
 ```
 
-```json
-500 Internal Server Error
-
-{
-  "error":"could not provide file",
-  "filedescriptor":"[FileDescriptor]"
- }
-```
-
 ## List jobs
 
 __Stability:__ 0 - subject to changes
 
-Lists jobs. Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable. Results can be filtered by one or more related `compendium_id`.
+Lists jobs. Will return up to 100 results by default.
 
-`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID`
+For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter `compendium_id`, as well as by `state`.
+The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
 
-`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm`
+`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success`
+
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success`
 
 ```json
 200 OK
@@ -90,11 +89,52 @@ Lists jobs. Will return up to 100 results by default. For pagination purposes, U
 }
 ```
 
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success&fields=state`
+
+```json
+200 OK
+
+{
+  "results":[
+    {
+      "id":"nkm4L",
+      "state":"failure"
+    },
+    {
+      "id":"asdi5",
+      "state":"success"
+    },
+    {
+      "id":"nb2sg",
+      "state":"running"
+    },
+    …
+  ],
+  "next":"/api/v1/job?limit=100&start=3&fields=state",
+  "previous":"/api/v1/job?limit=100&start=1&fields=state"
+}
+```
+
 ### GET parameters
 
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
+- `state` - Specify state to filter by. Can contain following states: `success`, `failure`, `running`.
+- `fields` - Specify if/which additional attributes results should contain. Allowed values are `state`. Defaults to none (<code>&#32;</code>).
+
+### State
+
+Shows the overall state of a job.
+
+The status will be one of following:
+
+- `success` - if state of all steps is `success`.
+- `failure` - if state of at least one step is `failure`.
+- `running` - if state of at least one step is `running` and no state is `failure`.
+
+More information about `steps` can be found in subsection `Steps` of section `View single job`.
+
 
 ## View single job
 
@@ -112,6 +152,8 @@ View details for a single job. Filelisting format is described in [Files](files.
 {
   "id":"nkm4L",
   "compendium_id":"a4Dnm",
+  "creation_date": Date,
+  "state": "fail",
   "steps":{
     "unpack":{
       "status":"failure",
@@ -137,7 +179,7 @@ The answer will contain information to the following `steps`:
 
 - `validate_bag`
 - `validate_compendium`
-- `validate_dockerfile`
+- `image_prepare`
 - `image_build`
 - `image_execute`
 - `cleanup`
@@ -160,3 +202,16 @@ Additional explanations to their state will be transmitted in the `text` propert
 
 {"error":"no compendium with this ID found"}
 ```
+
+## Job status updates
+
+You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket). The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
+
+The job log is available at `https://o2r.uni-muenster.de` under the namespace `api/v1/logs/job`.
+
+```JavaScript
+# create a socket.io client:
+var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
+```
+
+__TODO__: add documentation on messages on the socket.
