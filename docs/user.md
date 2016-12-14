@@ -71,13 +71,24 @@ The content of the response depends on the state and level of the user that requ
 
 User authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.
 
+### Access authentication information for direct API access
+
+To run commands which require authentication from the command line, a user must login on the website first. Then open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Use the the contents of the cookie for your requests, for example as shown below when using curl.
+
+```bash
+curl [...] --cookie "connect.sid=<code string here>" \
+     http://…/api/v1/endpoint
+```
+
+### Authentication within microservices
+
 **Attention:** The authentication process _requires_ a secured connection, i.e. HTTPS.
 
-### Authentication provider
+#### Authentication provider
 
 Session authentication is done using the OAuth 2.0 protocol. Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
 
-### Start OAuth login
+#### Start OAuth login
 
 **Stability:** 1 - The endpoint location and error response might change.
 
@@ -85,11 +96,9 @@ Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, wh
 
 If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, where the o2r platform webinterface resides.
 
-#### Error response
+If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.
 
-**TODO** This needs to be properly implemented, but will very likely redirect you to the login endpoint, which will in turn start the authentication process over.
-
-### Request authentication status
+#### Request authentication status
 
 As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
