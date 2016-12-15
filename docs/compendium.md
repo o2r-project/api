@@ -73,7 +73,7 @@ This includes the complete metadata set, related job ids and a tree representati
 {
   "id":"comid",
   "metadata": … ,
-  "created": 2016-08-01T13:57:40.760Z",
+  "created": "2016-08-01T13:57:40.760Z",
   "files": …
  }
 ```
@@ -84,7 +84,7 @@ This includes the complete metadata set, related job ids and a tree representati
 
 ### Error responses
 
-```
+```json
 404 Not Found
 
 {"error":"no compendium with this id"}
@@ -106,11 +106,12 @@ Download the complete compendium as an archive. Supported formats are as follows
 
 `wget https://…/api/v1/compendium/$ID.zip`
 
-```
+```bash
 GET /api/v1/compendium/:id.zip
 GET /api/v1/compendium/:id.tar
 GET /api/v1/compendium/:id.tar.gz
 GET /api/v1/compendium/:id.tar?gzip
+GET /api/v1/compendium/:id.zip?image=false
 ```
 
 ### Response
@@ -134,7 +135,7 @@ X-Response-Time: 13.556ms
 The zip file contains a comment with the original URL.
 
 ```bash
-$ unzip -z CXE1c.zip 
+$ unzip -z CXE1c.zip
 Archive:  CXE1c.zip
 Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
@@ -146,10 +147,11 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ### URL query parameters
 
 - `gzip` - _only for .tar endpoint_ - compress tarball with gzip
+- `image=true` or `image=false` - include tarball of Docker image in the archive, default is `true`
 
 ### Error responses
 
-```
+```bash
 404 Not Found
 
 {"error":"no compendium with this id"}
