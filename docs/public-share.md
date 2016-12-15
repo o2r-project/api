@@ -11,7 +11,7 @@ The upload is only allowed for logged in users. To run the upload from the comma
 Upon successful download from the public share, the `id` for the new compendium is returned.
 
 ```bash
-curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/c7htJIHGvgWnE6U \
+curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 	-F content_type=compendium_v1 http://…/api/v1/public-share \
 	--cookie "connect.sid=<code string here>" \
      http://…/api/v1/public-share
@@ -35,17 +35,19 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/c7htJIHGvgWnE6U \
 ```json
 401 Unauthorized
 
-{"error":"missing or wrong api key"}
+{"error":"unauthorized: user level does not allow compendium creation"}
 ```
 
 ```json
 403 Forbidden
 
-{"error":"invalid file host"}
+{"error":"public share host is not allowed"}
 ```
 
 ## Example data
 
-For testing you can create a sciebo public share containing one of the example compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
+For testing purposes you can use this sciebo public share: https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO
+ 
+It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project
 
 For more configuration details, see the project's README file.
