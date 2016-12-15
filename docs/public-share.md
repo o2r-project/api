@@ -46,8 +46,9 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 
 ## Example data
 
-For testing purposes you can use this sciebo public share: https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO
+For testing purposes you can the following sciebo public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+
+`https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`
  
-It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project
 
 For more configuration details, see the project's README file.
