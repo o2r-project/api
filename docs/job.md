@@ -153,7 +153,7 @@ View details for a single job. Filelisting format is described in [Files](files.
   "id":"nkm4L",
   "compendium_id":"a4Dnm",
   "creation_date": Date,
-  "status": "fail",
+  "status": "failure",
   "steps":{
     "unpack":{
       "status":"failure",
