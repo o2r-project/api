@@ -51,11 +51,11 @@ The content of the response depends on the state and level of the user that requ
 }
 ```
 
-### URL parameters
+### URL parameters for single user view
 
 - `:id` - the user id
 
-### Error responses
+### Error responses for single user view
 
 ```json
 404 Not Found
@@ -78,7 +78,7 @@ curl [...] --cookie "connect.sid=<code string here>" \
 
 ### Authentication within microservices
 
-**Attention:** The authentication process _requires_ a secured connection, i.e. HTTPS.
+**Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.
 
 #### Authentication provider
 
@@ -109,7 +109,7 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 }
 ```
 
-#### Error response
+#### Error response for requests requiring authentication
 
 When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a `401 Unauthorized` message.
 
@@ -125,7 +125,7 @@ When no session cookie was included, or the included session cookie does not bel
 
 You can update information of an existing user using the `HTTP` operation `PATCH`.
 
-### Change level
+### Request for user level change
 
 The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
 The value must be an `int`.
@@ -147,7 +147,7 @@ curl --request PATCH --cookie "connect.sid=<session cookie here>" \
 }
 ```
 
-### Error responses
+### Error responses for user level change
 
 ```json
 401 Unauthorized

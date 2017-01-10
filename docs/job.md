@@ -6,7 +6,19 @@ All execution jobs are tied to a single research compendium and reflect the exec
 
 A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.
 
-## Steps
+## State of a job
+
+The property `>job>.state` shows the overall state of a job.
+
+The status will be one of following:
+
+- `success` - if state of all steps is `success`.
+- `failure` - if state of at least one step is `failure`.
+- `running` - if state of at least one step is `running` and no state is `failure`.
+
+More information about `steps` can be found in subsection `Steps` of section `View single job`.
+
+## Steps of a job
 
 One job consists of a series of steps. All of these steps can be in one of three status: `running`, `failure`, or `success`. The are executed in order.
 
@@ -23,6 +35,15 @@ One job consists of a series of steps. All of these steps can be in one of three
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
+The step status is one of:
+
+- `queued`
+- `running`
+- `success`
+- `failure`
+- `warning`
+- `skipped`
+
 ## New job
 
 Create and run a new execution job. Requires a `compendium_id`.
@@ -37,13 +58,13 @@ Create and run a new execution job. Requires a `compendium_id`.
 {"job_id":"ngK4m"}
 ```
 
-### Body parameters
+### Body parameters for new jobs
 
 - `compendium_id` - The `id` of the compendium to base this job on.
 - `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
 - `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
 
-### Error responses
+### Error responses for new jobs
 
 ```json
 404 Not Found
@@ -83,6 +104,8 @@ The content of the response can be limited to certain properties of each result 
 }
 ```
 
+The overall job state can be added to the job list response:
+
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success&fields=state`
 
 ```json
@@ -109,26 +132,13 @@ The content of the response can be limited to certain properties of each result 
 }
 ```
 
-### GET parameters
+### GET query parameters for listing jobs
 
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
 - `state` - Specify state to filter by. Can contain following states: `success`, `failure`, `running`.
 - `fields` - Specify if/which additional attributes results should contain. Allowed values are `state`. Defaults to none (<code>&#32;</code>).
-
-### State
-
-Shows the overall state of a job.
-
-The status will be one of following:
-
-- `success` - if state of all steps is `success`.
-- `failure` - if state of at least one step is `failure`.
-- `running` - if state of at least one step is `running` and no state is `failure`.
-
-More information about `steps` can be found in subsection `Steps` of section `View single job`.
-
 
 ## View single job
 
@@ -161,33 +171,17 @@ View details for a single job. Filelisting format is described in [Files](files.
 }
 ```
 
-### URL parameters
+### URL parameters for single job view
 
 - `:id` - id of the job to be viewed
 
 ### Steps
 
-The answer will contain information to the following `steps`:
-
-- `validate_bag`
-- `validate_compendium`
-- `image_prepare`
-- `image_build`
-- `image_execute`
-- `cleanup`
-
-Their status will be one of:
-
-- `queued`
-- `running`
-- `success`
-- `failure`
-- `warning`
-- `skip`
+The answer will contain information regaring the job steps.
 
 Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
-### Error responses
+### Error responses for single job view
 
 ```json
 404 Not Found

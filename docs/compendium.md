@@ -40,14 +40,14 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 }
 ```
 
-### URL parameters
+### URL parameters for compendium lists
 
 - `job_id` - Comma-separated list of related job ids to filter by.
 - `user` - Public user identifier to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
 
-### Error responses
+### Error responses for compendium lists
 
 ```json
 404 Not Found
@@ -74,11 +74,11 @@ This includes the complete metadata set, related job ids and a tree representati
  }
 ```
 
-### URL parameters
+### URL parameters for single compendium view
 
 - `:id` - the compendiums id
 
-### Error responses
+### Error responses for single compendium view
 
 ```json
 404 Not Found
@@ -134,16 +134,13 @@ Archive:  CXE1c.zip
 Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
 
-### URL parameters
+### URL parameters for compendium download
 
 - `:id` - the compendiums id
+- `?gzip` - _only for .tar endpoint_ - compress tarball with gzip
+- `?image=true` or `?image=false` - include tarball of Docker image in the archive, default is `true`
 
-### URL query parameters
-
-- `gzip` - _only for .tar endpoint_ - compress tarball with gzip
-- `image=true` or `image=false` - include tarball of Docker image in the archive, default is `true`
-
-### Error responses
+### Error responses for compendium download
 
 ```bash
 404 Not Found
@@ -171,13 +168,11 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 }
 ```
 
-**Implemented:** Yes
-
-### URL parameters
+### URL parameters for related execution jobs
 
 - `:id` - compendium id that the results should be related to
 
-### Error response
+### Error response for related execution jobs
 
 ```json
 404 Not Found
