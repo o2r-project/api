@@ -1,8 +1,6 @@
-# Public share
+# Public share - WORK IN PROGRESS
 
 ## Compendium
-
-__Stability:__ 0 - subject to changes
 
 Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.
 
@@ -12,9 +10,9 @@ Upon successful download from the public share, the `id` for the new compendium 
 
 ```bash
 curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
-	-F content_type=compendium_v1 http://…/api/v1/public-share \
-	--cookie "connect.sid=<code string here>" \
-     http://…/api/v1/public-share
+  -F content_type=compendium_v1 http://…/api/v1/public-share \
+  --cookie "connect.sid=<code string here>" \
+    http://…/api/v1/public-share
 ```
 
 ```json
@@ -23,14 +21,14 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 {"id":"b9Faz"}
 ```
 
-### Body parameters
+### Body parameters for creating compendium from public share
 
 - `share_url` - The sciebo link to the public share
 - `content_type` - Form of archive. One of the following:
   - `compendium_v1` - _default_ - compendium in Bagtainer format
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 
-### Error responses
+### Error responses for creating compendium from public share
 
 ```json
 401 Unauthorized
@@ -49,6 +47,5 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 For testing purposes you can the following sciebo public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
 
 `https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`
- 
 
 For more configuration details, see the project's README file.
