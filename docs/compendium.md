@@ -246,3 +246,60 @@ Future sub-properties might expose `enriched` or `harvested` metadata.
   "files": …
 }
 ```
+
+### Update metadata - WORK IN PROGRESS
+
+The following endpoint can be used to update the `o2r` metadata elements.
+Only authors of a compendium can update the metadata.
+All other metadata sub-properties are only updated by the platform itself.
+
+#### Metadata update request
+
+```bash
+curl -H 'Content-Type: application/json' \
+  -X PUT \
+  --cookie "connect.sid=<code string here>" \
+  -d '{ "o2r": { "title": "Blue Book" } }' \
+  /api/v1/compendium/:id/metadata
+```
+
+The request will _overwrite_ the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+
+#### Metadata update response
+
+The response contains an excerpt of a compendium with only the o2r metadata property.
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "o2r": {
+      "title": "Blue Book"
+    }
+  }
+}
+```
+
+This response is also available at `GET /api/v1/compendium/:id/metadata`.
+
+### Metadata update error responses
+
+```json
+401 Unauthorized
+
+{"error":"not authorized"}
+```
+
+```json
+400 Bad Request
+
+{"error":"invalid JSON"}
+```
+
+```json
+422 Unprocessable Entity
+
+{"error":"JSON with root element 'o2r' required"}
+```
