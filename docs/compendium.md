@@ -2,8 +2,6 @@
 
 ## List compendia
 
-__Stability:__ 0 - subject to changes
-
 Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
 
 `curl https://…/api/v1/compendium?limit=100&start=2`
@@ -42,14 +40,14 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 }
 ```
 
-### URL parameters
+### URL parameters for compendium lists
 
 - `job_id` - Comma-separated list of related job ids to filter by.
 - `user` - Public user identifier to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
 
-### Error responses
+### Error responses for compendium lists
 
 ```json
 404 Not Found
@@ -58,8 +56,6 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 ```
 
 ## View single compendium
-
-__Stability:__ 0 - subject to changes
 
 This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md). The `created` timestamp refers to the upload of the compendium. It is formated as ISO8601.
 
@@ -78,11 +74,11 @@ This includes the complete metadata set, related job ids and a tree representati
  }
 ```
 
-### URL parameters
+### URL parameters for single compendium view
 
 - `:id` - the compendiums id
 
-### Error responses
+### Error responses for single compendium view
 
 ```json
 404 Not Found
@@ -91,8 +87,6 @@ This includes the complete metadata set, related job ids and a tree representati
 ```
 
 ## Download compendium
-
-__Stability:__ 0 - subject to changes
 
 Download the complete compendium as an archive. Supported formats are as follows:
 
@@ -140,16 +134,13 @@ Archive:  CXE1c.zip
 Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
 
-### URL parameters
+### URL parameters for compendium download
 
 - `:id` - the compendiums id
+- `?gzip` - _only for .tar endpoint_ - compress tarball with gzip
+- `?image=true` or `?image=false` - include tarball of Docker image in the archive, default is `true`
 
-### URL query parameters
-
-- `gzip` - _only for .tar endpoint_ - compress tarball with gzip
-- `image=true` or `image=false` - include tarball of Docker image in the archive, default is `true`
-
-### Error responses
+### Error responses for compendium download
 
 ```bash
 404 Not Found
@@ -177,18 +168,125 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 }
 ```
 
-**Implemented:** Yes
-
-**Stability:** 0 - subject to changes
-
-### URL parameters
+### URL parameters for related execution jobs
 
 - `:id` - compendium id that the results should be related to
 
-### Error response
+### Error response for related execution jobs
 
 ```json
 404 Not Found
 
 {"error":"no job found"}
+```
+
+## Metadata
+
+### Basics
+
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes preprended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+
+A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property. _This API always returns the database copy of the metadata elements._ You can download the respective files to access the normative metadata documents.
+
+Both the files and the sub-properties are only available _on-demand_, so for example after a shipment to Zenodo is initiated. After creation the metadata is persisted to file and database.
+
+The sub-properties and their features are
+
+- `raw` contains raw metadata extracted automatically
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is first an automatic transformation of raw metadata and should then be checked by the uploading user during the upload process.
+- `datacite` (TBD) holds DataCite XML
+- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo
+
+**Note:** The information in each sub-property are subject to independent workflows and may differ from one another.
+
+Future sub-properties might expose `enriched` or `harvested` metadata.
+
+### URL parameters for metadata
+
+- `:id` - compendium id
+
+### GET metadata - example request and response
+
+`curl https://…/api/v1/$ID`
+
+`GET /api/v1/compendium/:id`
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "raw": {
+      "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
+      "author": "John M. Chambers.   "
+    },
+    "o2r": {
+      "title": "Programming with Data",
+      "creator": "John M. Chambers",
+      "year": 1998
+    }, {
+      …
+    }
+  },
+  "created": …,
+  "files": …
+}
+```
+
+### Update metadata - WORK IN PROGRESS
+
+The following endpoint can be used to update the `o2r` metadata elements.
+Only authors of a compendium can update the metadata.
+All other metadata sub-properties are only updated by the platform itself.
+
+#### Metadata update request
+
+```bash
+curl -H 'Content-Type: application/json' \
+  -X PUT \
+  --cookie "connect.sid=<code string here>" \
+  -d '{ "o2r": { "title": "Blue Book" } }' \
+  /api/v1/compendium/:id/metadata
+```
+
+The request will _overwrite_ the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+
+#### Metadata update response
+
+The response contains an excerpt of a compendium with only the o2r metadata property.
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "o2r": {
+      "title": "Blue Book"
+    }
+  }
+}
+```
+
+This response is also available at `GET /api/v1/compendium/:id/metadata`.
+
+### Metadata update error responses
+
+```json
+401 Unauthorized
+
+{"error":"not authorized"}
+```
+
+```json
+400 Bad Request
+
+{"error":"invalid JSON"}
+```
+
+```json
+422 Unprocessable Entity
+
+{"error":"JSON with root element 'o2r' required"}
 ```

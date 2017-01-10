@@ -2,9 +2,9 @@
 
 ## Indexed information
 
-- compendium metadata __planned__
-- PDF documents in a compendium __planned__
-- text files in a compendium __planned__
+- compendium metadata
+- text files in a compendium
+- PDF documents in a compendium (TBD)
 
 ## Simple search
 
@@ -37,8 +37,6 @@ curl -XGET 'https://…/api/v1/search' -d '{
 }'
 ```
 
-## Suggesters
-
-**UNDER DEVELOPMENT**
+## Suggesters - WORK IN PROGRESS
 
 [Elasticsearch suggest API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) 

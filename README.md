@@ -1,12 +1,18 @@
 # o2r Web API
 
-_Please note: this document is still a very rough draft and will change a lot._
+Project description: [http://o2r.info](http://o2r.info)
 
-Project description: http://o2r.info
+## Basics
+
+We're a research project, so _everything in this API and its documentation is subject to change_.
+We try to use "WORK IN PROGRESS" or "TBD" _in headlines_ to signal things that are not working fully yet.
+
+The "working" state should eventually always be in the `master` branch, which is published online at [http://o2r.info/o2r-web-api](http://o2r.info/o2r-web-api), and open pull requests reflect things that are under development.
 
 ## Build
 
-This specification is written in [Markdown](https://daringfireball.net/projects/markdown/). You can use `mkdocs` to render it locally, or view the latest master-branch on <http://o2r.info/o2r-web-api/>. See the [MkDocs documentation](http://www.mkdocs.org/) for details.
+This specification is written in [Markdown](https://daringfireball.net/projects/markdown/) and deployed automatically using Travis CI.
+You can use `mkdocs` to render it locally, or view the latest master-branch on <http://o2r.info/o2r-web-api/>. See the [MkDocs documentation](http://www.mkdocs.org/) for details.
 
 ```bash
 # pip install mkdocs
@@ -24,7 +30,7 @@ The current master branch is automatically built on Travis CI and deployed to th
 
 Travis authenticates its push to the `gh-pages` branch using a [personal access token](https://github.com/settings/tokens) of the user [@o2r-user](https://github.com/o2r-user). The access token is encrypted in the `.travis.yml` [using Travis CLI](https://docs.travis-ci.com/user/encryption-keys/) _for the repository o2r-project/o2r-web-api_:
 
-```
+```bash
 travis encrypt GH_TOKEN=<token here>
 ```
 
@@ -37,4 +43,4 @@ This has some security risks, as described [here](https://gist.github.com/domeni
 
 The o2r Web API specification is licensed under Creative Commons CC-BY-4.0 License, see file `LICENSE`.
 
-Copyright (C) 2016 - o2r project.
+Copyright (C) 2017 - o2r project.

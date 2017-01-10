@@ -1,8 +1,6 @@
-# File Listing
+# Compendium file listing
 
 The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state. If a job has been run and the programm outputs new data, this new data will be included as well.
-
-_Note: currently, the bagtainer will be invalid if new data is saved, as the checksums are not updated._
 
 File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
 
@@ -56,3 +54,11 @@ The `path` property for each file in the listing is a link to the raw file. Addi
 ### `type` property
 
 The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the [list of extension to type mapping](files-mime.md) for specific details.
+
+## File extension to MIME type mappings
+
+This list contains the custom mapping of file extensions to MIME types used in the server.
+
+| Extension        | MIME type          |
+|------------------|--------------------|
+| `.R`, `.r`       | `script/x-R`       |

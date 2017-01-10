@@ -1,8 +1,4 @@
-# Upload
-
-## Compendium
-
-__Stability:__ 0 - subject to changes
+# Upload via API
 
 Upload a unvalidated research compendium as a compressed `.zip` archive.
 
@@ -23,14 +19,14 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 {"id":"a4Ndl"}
 ```
 
-### Body parameters
+## Body parameters for compendium upload
 
 - `compendium` - The archive file
 - `content_type` - Form of archive. One of the following:
   - `compendium_v1` - _default_ - compendium in Bagtainer format
-  - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
+  - `workspace` - _WORK IN PROGRESS_ - formless workspace
 
-### Error responses
+## Error responses for compendium upload
 
 ```json
 401 Unauthorized

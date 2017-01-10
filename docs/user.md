@@ -2,8 +2,6 @@
 
 ## List users
 
-__Stability:__ 1 - unlikely to change
-
 Return a list of user ids. [Pagination (including defaults) as described for compendia](compendium.md) is available for users.
 
 `curl https://…/api/v1/user`
@@ -22,8 +20,6 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 ```
 
 ## View single user
-
-__Stability:__ 0 - subject to changes
 
 Show the details of a user.
 
@@ -55,11 +51,11 @@ The content of the response depends on the state and level of the user that requ
 }
 ```
 
-### URL parameters
+### URL parameters for single user view
 
 - `:id` - the user id
 
-### Error responses
+### Error responses for single user view
 
 ```json
 404 Not Found
@@ -82,15 +78,13 @@ curl [...] --cookie "connect.sid=<code string here>" \
 
 ### Authentication within microservices
 
-**Attention:** The authentication process _requires_ a secured connection, i.e. HTTPS.
+**Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.
 
 #### Authentication provider
 
 Session authentication is done using the OAuth 2.0 protocol. Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
 
 #### Start OAuth login
-
-**Stability:** 1 - The endpoint location and error response might change.
 
 Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
@@ -101,10 +95,6 @@ If the login is unsuccessful, the user is not redirected back to the site and no
 #### Request authentication status
 
 As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
-
-**Implemented:** Yes
-
-**Stability:** 2 - will not likely change.
 
 `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
 
@@ -119,7 +109,7 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 }
 ```
 
-#### Error response
+#### Error response for requests requiring authentication
 
 When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a `401 Unauthorized` message.
 
@@ -135,7 +125,7 @@ When no session cookie was included, or the included session cookie does not bel
 
 You can update information of an existing user using the `HTTP` operation `PATCH`.
 
-### Change level
+### Request for user level change
 
 The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
 The value must be an `int`.
@@ -157,7 +147,7 @@ curl --request PATCH --cookie "connect.sid=<session cookie here>" \
 }
 ```
 
-### Error responses
+### Error responses for user level change
 
 ```json
 401 Unauthorized
