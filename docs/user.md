@@ -96,8 +96,6 @@ If the login is unsuccessful, the user is not redirected back to the site and no
 
 As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
-**Implemented:** Yes
-
 `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
 
 `GET /api/v1/auth/whoami`

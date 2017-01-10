@@ -4,9 +4,7 @@ Execution jobs are used to execute a research compendium. When a new execution j
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 
-A trivial execution job would be a completely unmodified research compendium, to test the reproducibility of a research compendium.
-
-(A _potential_ future feature would be that the input data (input files, datasets, parameters) can be altered to run a modified execution job. This functionality is not yet implemented.)
+A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.
 
 ## Steps
 

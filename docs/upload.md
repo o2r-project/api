@@ -26,7 +26,7 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 - `compendium` - The archive file
 - `content_type` - Form of archive. One of the following:
   - `compendium_v1` - _default_ - compendium in Bagtainer format
-  - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
+  - `workspace` - _WORK IN PROGRESS_ - formless workspace
 
 ### Error responses
 
