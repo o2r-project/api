@@ -192,3 +192,57 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 
 {"error":"no job found"}
 ```
+
+## Metadata
+
+### Basics
+
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes preprended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+
+A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property. _This API always returns the database copy of the metadata elements._ You can download the respective files to access the normative metadata documents.
+
+Both the files and the sub-properties are only available _on-demand_, so for example after a shipment to Zenodo is initiated. After creation the metadata is persisted to file and database.
+
+The sub-properties and their features are
+
+- `raw` contains raw metadata extracted automatically
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is first an automatic transformation of raw metadata and should then be checked by the uploading user during the upload process.
+- `datacite` (TBD) holds DataCite XML
+- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo
+
+**Note:** The information in each sub-property are subject to independent workflows and may differ from one another.
+
+Future sub-properties might expose `enriched` or `harvested` metadata.
+
+### URL parameters for metadata
+
+- `:id` - compendium id
+
+### GET metadata - example request and response
+
+`curl https://…/api/v1/$ID`
+
+`GET /api/v1/compendium/:id`
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "raw": {
+      "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
+      "author": "John M. Chambers.   "
+    },
+    "o2r": {
+      "title": "Programming with Data",
+      "creator": "John M. Chambers",
+      "year": 1998
+    }, {
+      …
+    }
+  },
+  "created": …,
+  "files": …
+}
+```
