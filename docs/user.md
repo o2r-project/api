@@ -2,8 +2,6 @@
 
 ## List users
 
-__Stability:__ 1 - unlikely to change
-
 Return a list of user ids. [Pagination (including defaults) as described for compendia](compendium.md) is available for users.
 
 `curl https://…/api/v1/user`
@@ -22,8 +20,6 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 ```
 
 ## View single user
-
-__Stability:__ 0 - subject to changes
 
 Show the details of a user.
 
@@ -90,8 +86,6 @@ Session authentication is done using the OAuth 2.0 protocol. Currently [ORCID](h
 
 #### Start OAuth login
 
-**Stability:** 1 - The endpoint location and error response might change.
-
 Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
 If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, where the o2r platform webinterface resides.
@@ -103,8 +97,6 @@ If the login is unsuccessful, the user is not redirected back to the site and no
 As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
 **Implemented:** Yes
-
-**Stability:** 2 - will not likely change.
 
 `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
 

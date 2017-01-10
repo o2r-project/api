@@ -73,6 +73,7 @@ You can start a transmission to a repository at the same endpoint using a `POST`
 ```
 
 ### Body parameters
+
 This requires the following parameters and conditions:
 
 + `compendium_id`
@@ -96,9 +97,3 @@ Optionally, you can specifiy a custom `shipment_id`.
 
 {"error": "insufficient permissions"}
 ```
-
-
-
-**Implemented:** Yes
-
-**Stability:** 0 - subject to changes

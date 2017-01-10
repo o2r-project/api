@@ -1,7 +1,5 @@
 # Job
 
-__Stability:__ 0 - subject to changes
-
 Execution jobs are used to execute a research compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
@@ -62,8 +60,6 @@ Create and run a new execution job. Requires a `compendium_id`.
 ```
 
 ## List jobs
-
-__Stability:__ 0 - subject to changes
 
 Lists jobs. Will return up to 100 results by default.
 
@@ -137,8 +133,6 @@ More information about `steps` can be found in subsection `Steps` of section `Vi
 
 
 ## View single job
-
-__Stability:__ 0 - subject to changes
 
 View details for a single job. Filelisting format is described in [Files](files.md)
 

@@ -2,8 +2,6 @@
 
 ## List compendia
 
-__Stability:__ 0 - subject to changes
-
 Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
 
 `curl https://…/api/v1/compendium?limit=100&start=2`
@@ -59,8 +57,6 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 
 ## View single compendium
 
-__Stability:__ 0 - subject to changes
-
 This includes the complete metadata set, related job ids and a tree representation of the included [files](files.md). The `created` timestamp refers to the upload of the compendium. It is formated as ISO8601.
 
 `curl https://…/api/v1/$ID`
@@ -91,8 +87,6 @@ This includes the complete metadata set, related job ids and a tree representati
 ```
 
 ## Download compendium
-
-__Stability:__ 0 - subject to changes
 
 Download the complete compendium as an archive. Supported formats are as follows:
 
@@ -178,8 +172,6 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
 
 **Implemented:** Yes
-
-**Stability:** 0 - subject to changes
 
 ### URL parameters
 

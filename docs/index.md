@@ -1,6 +1,6 @@
 ![Opening Reproducible Research](logo.png)
 
-**Current version of the API: v1**
+**Current version of the API**: `v1` (subject to change)
 
 The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](https://github.com/o2r-project) and the [web interface](https://github.com/o2r-project/o2r-platform). It includes functionality to [upload](upload.md) and examine [executable research compendia](compendium.md) and run and examine [execution jobs](job.md).
 
