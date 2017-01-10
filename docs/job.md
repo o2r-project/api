@@ -82,12 +82,12 @@ Create and run a new execution job. Requires a `compendium_id`.
 
 Lists jobs. Will return up to 100 results by default.
 
-For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter `compendium_id`, as well as by `state`.
+For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter `compendium_id`, as well as by `status`.
 The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
 
-`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&state=success`
+`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`
 
-`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success`
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success`
 
 ```json
 200 OK
@@ -106,7 +106,7 @@ The content of the response can be limited to certain properties of each result 
 
 The overall job state can be added to the job list response:
 
-`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&state=success&fields=state`
+`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success&fields=status`
 
 ```json
 200 OK
@@ -115,20 +115,20 @@ The overall job state can be added to the job list response:
   "results":[
     {
       "id":"nkm4L",
-      "state":"failure"
+      "status":"failure"
     },
     {
       "id":"asdi5",
-      "state":"success"
+      "status":"success"
     },
     {
       "id":"nb2sg",
-      "state":"running"
+      "status":"running"
     },
     …
   ],
-  "next":"/api/v1/job?limit=100&start=3&fields=state",
-  "previous":"/api/v1/job?limit=100&start=1&fields=state"
+  "next":"/api/v1/job?limit=100&start=3&fields=status",
+  "previous":"/api/v1/job?limit=100&start=1&fields=status"
 }
 ```
 
@@ -137,8 +137,8 @@ The overall job state can be added to the job list response:
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
 - `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
 - `limit` - Specify maximum amount of results per page. Defaults to 100.
-- `state` - Specify state to filter by. Can contain following states: `success`, `failure`, `running`.
-- `fields` - Specify if/which additional attributes results should contain. Allowed values are `state`. Defaults to none (<code>&#32;</code>).
+- `status` - Specify status to filter by. Can contain following `status`: `success`, `failure`, `running`.
+- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status`. Defaults to none.
 
 ## View single job
 
@@ -155,7 +155,7 @@ View details for a single job. Filelisting format is described in [Files](files.
   "id":"nkm4L",
   "compendium_id":"a4Dnm",
   "creation_date": Date,
-  "state": "fail",
+  "status": "failure",
   "steps":{
     "unpack":{
       "status":"failure",
@@ -179,7 +179,7 @@ View details for a single job. Filelisting format is described in [Files](files.
 
 The answer will contain information regaring the job steps.
 
-Additional explanations to their state will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+Additional explanations to their status will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
 ### Error responses for single job view
 
