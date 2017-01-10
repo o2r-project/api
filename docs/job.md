@@ -1,6 +1,6 @@
-# Job
+# Execute a compendium
 
-Execution jobs are used to execute a research compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
+Execution jobs are used to run the analysis in a compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 

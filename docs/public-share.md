@@ -1,7 +1,5 @@
 # Public share - WORK IN PROGRESS
 
-## Compendium
-
 Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.
 
 The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
@@ -21,14 +19,14 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 {"id":"b9Faz"}
 ```
 
-### Body parameters for creating compendium from public share
+## Body parameters for creating compendium from public share
 
 - `share_url` - The sciebo link to the public share
 - `content_type` - Form of archive. One of the following:
   - `compendium_v1` - _default_ - compendium in Bagtainer format
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 
-### Error responses for creating compendium from public share
+## Error responses for creating compendium from public share
 
 ```json
 401 Unauthorized

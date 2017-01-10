@@ -1,6 +1,6 @@
-# Shipment
+# Ship compendia and metadata
 
-Shipments are used to deliver ERCs to third party repositories or archives.
+Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
 
 ## List shipments
 
