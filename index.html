@@ -8,7 +8,7 @@
   <meta name="description" content="None">
   
   <link rel="shortcut icon" href="./img/favicon.ico">
-  <title>Index - o2r web API</title>
+  <title>Home - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="./css/theme.css" type="text/css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Index";
+    var mkdocs_page_name = "Home";
     var mkdocs_page_input_path = "index.md";
     var mkdocs_page_url = "/";
   </script>
@@ -49,9 +49,12 @@
           
             <li>
     <li class="toctree-l1 current">
-        <a class="current" href=".">Index</a>
+        <a class="current" href=".">Home</a>
         
             <ul>
+            
+                <li class="toctree-l3"><a href="#o2r-web-api-documentation">o2r web API documentation</a></li>
+                
             
             </ul>
         
@@ -59,50 +62,52 @@
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="upload/">Upload</a>
+        <a class="" href="upload/">API upload</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="public-share/">Public share</a>
+        <a class="" href="public-share/">Public share submission</a>
         
     </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="compendium/">View and download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
 <li>
           
             <li>
     <li class="toctree-l1 ">
         <a class="" href="job/">Job</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="compendium/">Compendium</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="files/">Files</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="files-mime/">Mime-types</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="user/">User</a>
         
     </li>
 <li>
@@ -117,6 +122,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="shipment/">Shipment</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="user/">User</a>
         
     </li>
 <li>
@@ -143,7 +155,7 @@
     
       
     
-    <li>Index</li>
+    <li>Home</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -153,13 +165,15 @@
           <div role="main">
             <div class="section">
               
-                <p><img alt="Opening Reproducible Research" src="./logo.png" /></p>
-<p><strong>Current version of the API: v1</strong></p>
-<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="https://github.com/o2r-project">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>. It includes functionality to <a href="upload/">upload</a> and examine <a href="compendium/">executable research compendia</a> and run and examine <a href="job/">execution jobs</a>.</p>
+                <h1 id="o2r-web-api-documentation">o2r web API documentation</h1>
+<p><a href="http://o2r.info"><img alt="Opening Reproducible Research" src="./logo.png" /></a></p>
+<p><strong>Current version of the API</strong>: <code>v1</code> (subject to change)</p>
+<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="https://github.com/o2r-project/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.
+It includes functionality to <a href="upload/">upload</a> and examine <a href="compendium/">executable research compendia</a> and run and examine <a href="job/">execution jobs</a>.</p>
 <p>It is implemented as a RESTful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
-<p>Unless specified otherwise, responses will always be in JSON format.
+<p>Unless specified otherwise, responses are always in JSON format.
 Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.
-Requests to the API should always be made with a secure connection, i.e. HTTPS.</p>
+Requests to the API should always be made with a secure connection using <code>HTTPS</code>.</p>
 <p>We also provide a <a href="https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json">simple Postman collection</a> (<a href="https://www.getpostman.com/">getpostman.com</a>), so that you can comfortably explore the API.</p>
               
             </div>
@@ -168,7 +182,7 @@ Requests to the API should always be made with a secure connection, i.e. HTTPS.<
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="upload/" class="btn btn-neutral float-right" title="Upload">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="upload/" class="btn btn-neutral float-right" title="API upload">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -207,5 +221,5 @@ Requests to the API should always be made with a secure connection, i.e. HTTPS.<
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-10 16:42:02
+Build Date UTC : 2017-01-10 17:19:30
 -->

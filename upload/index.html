@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Upload - o2r web API</title>
+  <title>API upload - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Upload";
+    var mkdocs_page_name = "API upload";
     var mkdocs_page_input_path = "upload.md";
     var mkdocs_page_url = "/upload/";
   </script>
@@ -49,20 +49,32 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Index</a>
+        <a class="" href="..">Home</a>
         
     </li>
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 current">
-        <a class="current" href="./">Upload</a>
+        <a class="current" href="./">API upload</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#upload">Upload</a></li>
+                <li class="toctree-l3"><a href="#upload-via-api">Upload via API</a></li>
                 
-                    <li><a class="toctree-l4" href="#compendium">Compendium</a></li>
+                    <li><a class="toctree-l4" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a></li>
+                
+                    <li><a class="toctree-l4" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a></li>
                 
                     <li><a class="toctree-l4" href="#example-data">Example data</a></li>
                 
@@ -70,46 +82,38 @@
             </ul>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share</a>
+        <a class="" href="../public-share/">Public share submission</a>
         
     </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium/">View and download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
 <li>
           
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../job/">Job</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/">Compendium</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files/">Files</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files-mime/">Mime-types</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -124,6 +128,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../shipment/">Shipment</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -149,8 +160,16 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Compendium &raquo;</li>
+        
+      
+        
+          <li>Create new compendium &raquo;</li>
+        
+      
     
-    <li>Upload</li>
+    <li>API upload</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -160,9 +179,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload">Upload</h1>
-<h2 id="compendium">Compendium</h2>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
+                <h1 id="upload-via-api">Upload via API</h1>
 <p>Upload a unvalidated research compendium as a compressed <code>.zip</code> archive.</p>
 <p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful extraction of archive, the <code>id</code> for the new compendium is returned.</p>
@@ -177,14 +194,14 @@
 {&quot;id&quot;:&quot;a4Ndl&quot;}
 </code></pre>
 
-<h3 id="body-parameters">Body parameters</h3>
+<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
 <ul>
 <li><code>compendium</code> - The archive file</li>
 <li><code>content_type</code> - Form of archive. One of the following:</li>
 <li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
+<li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
 </ul>
-<h3 id="error-responses">Error responses</h3>
+<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;missing or wrong api key&quot;}
@@ -204,10 +221,10 @@ The following command executes the container and uploads 7 empty examples and tw
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../public-share/" class="btn btn-neutral float-right" title="Public share">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../public-share/" class="btn btn-neutral float-right" title="Public share submission">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   

@@ -49,23 +49,53 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Index</a>
+        <a class="" href="..">Home</a>
         
     </li>
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../upload/">Upload</a>
+        <a class="" href="../upload/">API upload</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share</a>
+        <a class="" href="../public-share/">Public share submission</a>
         
     </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium/">View and download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
 <li>
           
             <li>
@@ -77,21 +107,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../compendium/">Compendium</a>
+        <a class="" href="../search/">Search</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../files/">Files</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files-mime/">Mime-types</a>
+        <a class="" href="../shipment/">Shipment</a>
         
     </li>
 <li>
@@ -114,20 +137,6 @@
                 
             
             </ul>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../search/">Search</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../shipment/">Shipment</a>
         
     </li>
 <li>
@@ -166,7 +175,6 @@
               
                 <h1 id="user">User</h1>
 <h2 id="list-users">List users</h2>
-<p><strong>Stability:</strong> 1 - unlikely to change</p>
 <p>Return a list of user ids. <a href="../compendium/">Pagination (including defaults) as described for compendia</a> is available for users.</p>
 <p><code>curl https://…/api/v1/user</code></p>
 <p><code>GET /api/v1/user</code></p>
@@ -181,7 +189,6 @@
 </code></pre>
 
 <h2 id="view-single-user">View single user</h2>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
 <p>Show the details of a user.</p>
 <p><code>curl https://…/api/v1/user/$ID</code></p>
 <p><code>GET /api/v1/user/:id</code></p>
@@ -205,11 +212,11 @@
 }
 </code></pre>
 
-<h3 id="url-parameters">URL parameters</h3>
+<h3 id="url-parameters-for-single-user-view">URL parameters for single user view</h3>
 <ul>
 <li><code>:id</code> - the user id</li>
 </ul>
-<h3 id="error-responses">Error responses</h3>
+<h3 id="error-responses-for-single-user-view">Error responses for single user view</h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no user with this id&quot;}
@@ -224,18 +231,15 @@
 </code></pre>
 
 <h3 id="authentication-within-microservices">Authentication within microservices</h3>
-<p><strong>Attention:</strong> The authentication process <em>requires</em> a secured connection, i.e. HTTPS.</p>
+<p><strong>Attention:</strong> The authentication process <em>requires</em> a secured connection, i.e. <code>HTTPS</code>.</p>
 <h4 id="authentication-provider">Authentication provider</h4>
 <p>Session authentication is done using the OAuth 2.0 protocol. Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.</p>
 <h4 id="start-oauth-login">Start OAuth login</h4>
-<p><strong>Stability:</strong> 1 - The endpoint location and error response might change.</p>
 <p>Navigate the webbrowser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
 <p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, where the o2r platform webinterface resides.</p>
 <p>If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.</p>
 <h4 id="request-authentication-status">Request authentication status</h4>
 <p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
-<p><strong>Implemented:</strong> Yes</p>
-<p><strong>Stability:</strong> 2 - will not likely change.</p>
 <p><code>curl https://…/api/v1/auth/whoami --cookie "connect.sid=…</code></p>
 <p><code>GET /api/v1/auth/whoami</code></p>
 <pre><code class="json">200 OK
@@ -246,7 +250,7 @@
 }
 </code></pre>
 
-<h4 id="error-response">Error response</h4>
+<h4 id="error-response-for-requests-requiring-authentication">Error response for requests requiring authentication</h4>
 <p>When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a <code>401 Unauthorized</code> message.</p>
 <pre><code class="json">401 Unauthorized
 
@@ -257,7 +261,7 @@
 
 <h2 id="edit-user">Edit user</h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
-<h3 id="change-level">Change level</h3>
+<h3 id="request-for-user-level-change">Request for user level change</h3>
 <p>The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. <code>..?level=&lt;new level value&gt;</code>.
 The value must be an <code>int</code>.
 The response is the full user document with the updated value.</p>
@@ -275,7 +279,7 @@ The response is the full user document with the updated value.</p>
 }
 </code></pre>
 
-<h3 id="error-responses_1">Error responses</h3>
+<h3 id="error-responses-for-user-level-change">Error responses for user level change</h3>
 <pre><code class="json">401 Unauthorized
 
 {
@@ -303,10 +307,8 @@ The response is the full user document with the updated value.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../search/" class="btn btn-neutral float-right" title="Search">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../files-mime/" class="btn btn-neutral" title="Mime-types"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../shipment/" class="btn btn-neutral" title="Shipment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -332,10 +334,8 @@ The response is the full user document with the updated value.</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../files-mime/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../shipment/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../search/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

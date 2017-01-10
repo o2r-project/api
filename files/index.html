@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Files - o2r web API</title>
+  <title>Files in a compendium - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Files";
+    var mkdocs_page_name = "Files in a compendium";
     var mkdocs_page_input_path = "files.md";
     var mkdocs_page_url = "/files/";
   </script>
@@ -49,65 +49,69 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Index</a>
+        <a class="" href="..">Home</a>
         
     </li>
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../upload/">Upload</a>
+        <a class="" href="../upload/">API upload</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share</a>
+        <a class="" href="../public-share/">Public share submission</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+    </ul>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../job/">Job</a>
+        <a class="" href="../compendium/">View and download</a>
         
     </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/">Compendium</a>
+
         
-    </li>
-<li>
-          
-            <li>
+            
     <li class="toctree-l1 current">
-        <a class="current" href="./">Files</a>
+        <a class="current" href="./">Files in a compendium</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#file-listing">File Listing</a></li>
+                <li class="toctree-l3"><a href="#compendium-file-listing">Compendium file listing</a></li>
                 
                     <li><a class="toctree-l4" href="#path-property">path property</a></li>
+                
+                    <li><a class="toctree-l4" href="#file-extension-to-mime-type-mappings">File extension to MIME type mappings</a></li>
                 
             
             </ul>
         
     </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files-mime/">Mime-types</a>
+
         
-    </li>
+    </ul>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../user/">User</a>
+        <a class="" href="../job/">Job</a>
         
     </li>
 <li>
@@ -122,6 +126,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../shipment/">Shipment</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -147,8 +158,12 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Compendium &raquo;</li>
+        
+      
     
-    <li>Files</li>
+    <li>Files in a compendium</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -158,9 +173,8 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="file-listing">File Listing</h1>
+                <h1 id="compendium-file-listing">Compendium file listing</h1>
 <p>The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state. If a job has been run and the programm outputs new data, this new data will be included as well.</p>
-<p><em>Note: currently, the bagtainer will be invalid if new data is saved, as the checksums are not updated.</em></p>
 <p>File listings are represented as a Object. The file structure for a synthetic job <code>nj141</code> is as follows.</p>
 <pre><code class="text">nj141
 ├── bagit.txt
@@ -205,7 +219,23 @@
 <h2 id="path-property"><code>path</code> property</h2>
 <p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
 <h3 id="type-property"><code>type</code> property</h3>
-<p>The <code>type</code> property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the <a href="../files-mime/">list of extension to type mapping</a> for specific details.</p>
+<p>The <code>type</code> property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the <a href="files-mime.md">list of extension to type mapping</a> for specific details.</p>
+<h2 id="file-extension-to-mime-type-mappings">File extension to MIME type mappings</h2>
+<p>This list contains the custom mapping of file extensions to MIME types used in the server.</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>MIME type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.R</code>, <code>.r</code></td>
+<td><code>script/x-R</code></td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div>
@@ -213,10 +243,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../files-mime/" class="btn btn-neutral float-right" title="Mime-types">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../compendium/" class="btn btn-neutral" title="Compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium/" class="btn btn-neutral" title="View and download"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -245,7 +275,7 @@
         <span><a href="../compendium/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../files-mime/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../job/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

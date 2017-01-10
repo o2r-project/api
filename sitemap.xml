@@ -10,56 +10,30 @@
     
 
     
+        
     <url>
-     <loc>/upload/</loc>
-     <lastmod>2017-01-10</lastmod>
+     <loc></loc>
+     <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
-    <url>
-     <loc>/public-share/</loc>
-     <lastmod>2017-01-10</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>/job/</loc>
-     <lastmod>2017-01-10</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
+        
     <url>
      <loc>/compendium/</loc>
      <lastmod>2017-01-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
+        
     <url>
      <loc>/files/</loc>
      <lastmod>2017-01-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     
 
     
     <url>
-     <loc>/files-mime/</loc>
-     <lastmod>2017-01-10</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>/user/</loc>
+     <loc>/job/</loc>
      <lastmod>2017-01-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -76,6 +50,14 @@
     
     <url>
      <loc>/shipment/</loc>
+     <lastmod>2017-01-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/user/</loc>
      <lastmod>2017-01-10</lastmod>
      <changefreq>daily</changefreq>
     </url>

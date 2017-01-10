@@ -49,23 +49,53 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Index</a>
+        <a class="" href="..">Home</a>
         
     </li>
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../upload/">Upload</a>
+        <a class="" href="../upload/">API upload</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share</a>
+        <a class="" href="../public-share/">Public share submission</a>
         
     </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium/">View and download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
 <li>
           
             <li>
@@ -74,9 +104,11 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#job">Job</a></li>
+                <li class="toctree-l3"><a href="#execute-a-compendium">Execute a compendium</a></li>
                 
-                    <li><a class="toctree-l4" href="#steps">Steps</a></li>
+                    <li><a class="toctree-l4" href="#state-of-a-job">State of a job</a></li>
+                
+                    <li><a class="toctree-l4" href="#steps-of-a-job">Steps of a job</a></li>
                 
                     <li><a class="toctree-l4" href="#new-job">New job</a></li>
                 
@@ -94,34 +126,6 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../compendium/">Compendium</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files/">Files</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files-mime/">Mime-types</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../user/">User</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
         <a class="" href="../search/">Search</a>
         
     </li>
@@ -130,6 +134,13 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../shipment/">Shipment</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -166,13 +177,20 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="job">Job</h1>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
-<p>Execution jobs are used to execute a research compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.</p>
+                <h1 id="execute-a-compendium">Execute a compendium</h1>
+<p>Execution jobs are used to run the analysis in a compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.</p>
 <p>All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.</p>
-<p>A trivial execution job would be a completely unmodified research compendium, to test the reproducibility of a research compendium.</p>
-<p>(A <em>potential</em> future feature would be that the input data (input files, datasets, parameters) can be altered to run a modified execution job. This functionality is not yet implemented.)</p>
-<h2 id="steps">Steps</h2>
+<p>A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.</p>
+<h2 id="state-of-a-job">State of a job</h2>
+<p>The property <code>&gt;job&gt;.state</code> shows the overall state of a job.</p>
+<p>The status will be one of following:</p>
+<ul>
+<li><code>success</code> - if state of all steps is <code>success</code>.</li>
+<li><code>failure</code> - if state of at least one step is <code>failure</code>.</li>
+<li><code>running</code> - if state of at least one step is <code>running</code> and no state is <code>failure</code>.</li>
+</ul>
+<p>More information about <code>steps</code> can be found in subsection <code>Steps</code> of section <code>View single job</code>.</p>
+<h2 id="steps-of-a-job">Steps of a job</h2>
 <p>One job consists of a series of steps. All of these steps can be in one of three status: <code>running</code>, <code>failure</code>, or <code>success</code>. The are executed in order.</p>
 <ul>
 <li><strong>validate_bag</strong>
@@ -188,6 +206,15 @@
 <li><strong>cleanup</strong>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
+<p>The step status is one of:</p>
+<ul>
+<li><code>queued</code></li>
+<li><code>running</code></li>
+<li><code>success</code></li>
+<li><code>failure</code></li>
+<li><code>warning</code></li>
+<li><code>skipped</code></li>
+</ul>
 <h2 id="new-job">New job</h2>
 <p>Create and run a new execution job. Requires a <code>compendium_id</code>.</p>
 <p><code>curl -F compendium_id=$ID https://…/api/v1/job</code></p>
@@ -197,13 +224,13 @@
 {&quot;job_id&quot;:&quot;ngK4m&quot;}
 </code></pre>
 
-<h3 id="body-parameters">Body parameters</h3>
+<h3 id="body-parameters-for-new-jobs">Body parameters for new jobs</h3>
 <ul>
 <li><code>compendium_id</code> - The <code>id</code> of the compendium to base this job on.</li>
 <li><code>steps</code> - <strong>TODO</strong> select steps that will be executed (skip some steps in successive executions?)</li>
 <li><code>inputs</code> - <strong><em>proposal</em></strong> - Array with one or more <code>FileDescriptor</code>.</li>
 </ul>
-<h3 id="error-responses">Error responses</h3>
+<h3 id="error-responses-for-new-jobs">Error responses for new jobs</h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
@@ -215,12 +242,11 @@
 </code></pre>
 
 <h2 id="list-jobs">List jobs</h2>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
 <p>Lists jobs. Will return up to 100 results by default.</p>
-<p>For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter <code>compendium_id</code>, as well as by <code>state</code>.
+<p>For pagination purposes, URLs for previous and next results are provided if applicable. Results will be sorted by descending date of last change. Results can be filtered by one or more compendiums, i.e. parameter <code>compendium_id</code>, as well as by <code>status</code>.
 The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
-<p><code>curl -F compendium_id=$ID https://…/api/v1/job?limit=100&amp;start=2&amp;compendium_id=$ID&amp;state=success</code></p>
-<p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;state=success</code></p>
+<p><code>curl -F compendium_id=$ID https://…/api/v1/job?limit=100&amp;start=2&amp;compendium_id=$ID&amp;status=success&amp;fields=status</code></p>
+<p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;status=success</code></p>
 <pre><code class="json">200 OK
 
 {
@@ -235,49 +261,40 @@ The content of the response can be limited to certain properties of each result 
 }
 </code></pre>
 
-<p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;state=success&amp;fields=state</code></p>
+<p>The overall job state can be added to the job list response:</p>
+<p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;status=success&amp;fields=status</code></p>
 <pre><code class="json">200 OK
 
 {
   &quot;results&quot;:[
     {
       &quot;id&quot;:&quot;nkm4L&quot;,
-      &quot;state&quot;:&quot;failure&quot;
+      &quot;status&quot;:&quot;failure&quot;
     },
     {
       &quot;id&quot;:&quot;asdi5&quot;,
-      &quot;state&quot;:&quot;success&quot;
+      &quot;status&quot;:&quot;success&quot;
     },
     {
       &quot;id&quot;:&quot;nb2sg&quot;,
-      &quot;state&quot;:&quot;running&quot;
+      &quot;status&quot;:&quot;running&quot;
     },
     …
   ],
-  &quot;next&quot;:&quot;/api/v1/job?limit=100&amp;start=3&amp;fields=state&quot;,
-  &quot;previous&quot;:&quot;/api/v1/job?limit=100&amp;start=1&amp;fields=state&quot;
+  &quot;next&quot;:&quot;/api/v1/job?limit=100&amp;start=3&amp;fields=status&quot;,
+  &quot;previous&quot;:&quot;/api/v1/job?limit=100&amp;start=1&amp;fields=status&quot;
 }
 </code></pre>
 
-<h3 id="get-parameters">GET parameters</h3>
+<h3 id="get-query-parameters-for-listing-jobs">GET query parameters for listing jobs</h3>
 <ul>
 <li><code>compendium_id</code> - Comma-separated list of related compendium ids to filter by.</li>
 <li><code>start</code> - List from specific search result onwards. 1-indexed. Defaults to 1.</li>
 <li><code>limit</code> - Specify maximum amount of results per page. Defaults to 100.</li>
-<li><code>state</code> - Specify state to filter by. Can contain following states: <code>success</code>, <code>failure</code>, <code>running</code>.</li>
-<li><code>fields</code> - Specify if/which additional attributes results should contain. Allowed values are <code>state</code>. Defaults to none (<code>&#32;</code>).</li>
+<li><code>status</code> - Specify status to filter by. Can contain following <code>status</code>: <code>success</code>, <code>failure</code>, <code>running</code>.</li>
+<li><code>fields</code> - Specify if/which additional attributes results should contain. Can contain following <code>fields</code>: <code>status</code>. Defaults to none.</li>
 </ul>
-<h3 id="state">State</h3>
-<p>Shows the overall state of a job.</p>
-<p>The status will be one of following:</p>
-<ul>
-<li><code>success</code> - if state of all steps is <code>success</code>.</li>
-<li><code>failure</code> - if state of at least one step is <code>failure</code>.</li>
-<li><code>running</code> - if state of at least one step is <code>running</code> and no state is <code>failure</code>.</li>
-</ul>
-<p>More information about <code>steps</code> can be found in subsection <code>Steps</code> of section <code>View single job</code>.</p>
 <h2 id="view-single-job">View single job</h2>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
 <p>View details for a single job. Filelisting format is described in <a href="../files/">Files</a></p>
 <p><code>curl https://…/api/v1/job/$ID</code></p>
 <p><code>GET /api/v1/job/:id</code></p>
@@ -287,7 +304,7 @@ The content of the response can be limited to certain properties of each result 
   &quot;id&quot;:&quot;nkm4L&quot;,
   &quot;compendium_id&quot;:&quot;a4Dnm&quot;,
   &quot;creation_date&quot;: Date,
-  &quot;state&quot;: &quot;fail&quot;,
+  &quot;status&quot;: &quot;failure&quot;,
   &quot;steps&quot;:{
     &quot;unpack&quot;:{
       &quot;status&quot;:&quot;failure&quot;,
@@ -303,31 +320,14 @@ The content of the response can be limited to certain properties of each result 
 }
 </code></pre>
 
-<h3 id="url-parameters">URL parameters</h3>
+<h3 id="url-parameters-for-single-job-view">URL parameters for single job view</h3>
 <ul>
 <li><code>:id</code> - id of the job to be viewed</li>
 </ul>
-<h3 id="steps_1">Steps</h3>
-<p>The answer will contain information to the following <code>steps</code>:</p>
-<ul>
-<li><code>validate_bag</code></li>
-<li><code>validate_compendium</code></li>
-<li><code>image_prepare</code></li>
-<li><code>image_build</code></li>
-<li><code>image_execute</code></li>
-<li><code>cleanup</code></li>
-</ul>
-<p>Their status will be one of:</p>
-<ul>
-<li><code>queued</code></li>
-<li><code>running</code></li>
-<li><code>success</code></li>
-<li><code>failure</code></li>
-<li><code>warning</code></li>
-<li><code>skip</code></li>
-</ul>
-<p>Additional explanations to their state will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
-<h3 id="error-responses_1">Error responses</h3>
+<h3 id="steps">Steps</h3>
+<p>The answer will contain information regaring the job steps.</p>
+<p>Additional explanations to their status will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
+<h3 id="error-responses-for-single-job-view">Error responses for single job view</h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
@@ -348,10 +348,10 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../compendium/" class="btn btn-neutral float-right" title="Compendium">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../search/" class="btn btn-neutral float-right" title="Search">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../public-share/" class="btn btn-neutral" title="Public share"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../files/" class="btn btn-neutral" title="Files in a compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -377,10 +377,10 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../public-share/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../files/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../compendium/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../search/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

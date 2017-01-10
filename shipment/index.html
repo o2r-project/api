@@ -49,56 +49,58 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Index</a>
+        <a class="" href="..">Home</a>
         
     </li>
 <li>
           
             <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../upload/">Upload</a>
+        <a class="" href="../upload/">API upload</a>
         
     </li>
-<li>
-          
-            <li>
+
+        
+            
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share</a>
+        <a class="" href="../public-share/">Public share submission</a>
         
     </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium/">View and download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
 <li>
           
             <li>
     <li class="toctree-l1 ">
         <a class="" href="../job/">Job</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/">Compendium</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files/">Files</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../files-mime/">Mime-types</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -116,7 +118,7 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#shipment">Shipment</a></li>
+                <li class="toctree-l3"><a href="#ship-compendia-and-metadata">Ship compendia and metadata</a></li>
                 
                     <li><a class="toctree-l4" href="#list-shipments">List shipments</a></li>
                 
@@ -124,6 +126,13 @@
                 
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
         
     </li>
 <li>
@@ -160,8 +169,8 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="shipment">Shipment</h1>
-<p>Shipments are used to deliver ERCs to third party repositories or archives.</p>
+                <h1 id="ship-compendia-and-metadata">Ship compendia and metadata</h1>
+<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives.</p>
 <h2 id="list-shipments">List shipments</h2>
 <p>Will return the complete list of shipments, currently without pagination.</p>
 <p><code>curl https://…/api/v1/shipment</code></p>
@@ -169,7 +178,7 @@
 <pre><code class="json">200
 
 {
-    &quot;shipments&quot;: [&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
+  &quot;shipments&quot;: [&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
 }
 </code></pre>
 
@@ -179,24 +188,24 @@
 <pre><code class="json">200 
 
 {
-    &quot;last_modified&quot;: &quot;2016-12-12 10:34:32.001475&quot;,
-    &quot;recipient&quot;: &quot;zenodo&quot;,
-    &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
-    &quot;deposition_id&quot;: &quot;63179&quot;,
-    &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
-    &quot;status&quot;: &quot;delivered&quot;,
-    &quot;compendium_id&quot;: &quot;4XgD9&quot;,
-    &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
+  &quot;last_modified&quot;: &quot;2016-12-12 10:34:32.001475&quot;,
+  &quot;recipient&quot;: &quot;zenodo&quot;,
+  &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
+  &quot;deposition_id&quot;: &quot;63179&quot;,
+  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+  &quot;status&quot;: &quot;delivered&quot;,
+  &quot;compendium_id&quot;: &quot;4XgD9&quot;,
+  &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
 }
 </code></pre>
 
 <p><em>Note that returned deposition urls from Zenodo (records) will only be active after publishing.</em></p>
-<h3 id="url-parameters">URL parameters</h3>
+<h3 id="url-parameters-for-shipment-lists">URL parameters for shipment lists</h3>
 <ul>
 <li><code>id</code> - The identifier of a specific shipment.</li>
 <li><code>compendium_id</code> - The identifier of a specific compendium.</li>
 </ul>
-<h3 id="error-responses">Error responses</h3>
+<h3 id="error-responses-for-shipment-lists">Error responses for shipment lists</h3>
 <pre><code class="json">400
 
 {&quot;error&quot;:&quot;bad request&quot;}
@@ -209,12 +218,12 @@
 <pre><code class="json">200
 
 {
-    &quot;recipient&quot;: &quot;zenodo&quot;,
-    &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;
+  &quot;recipient&quot;: &quot;zenodo&quot;,
+  &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;
 }
 </code></pre>
 
-<h3 id="body-parameters">Body parameters</h3>
+<h3 id="body-parameters-for-new-shipment-creation">Body parameters for new shipment creation</h3>
 <p>This requires the following parameters and conditions:</p>
 <ul>
 <li><code>compendium_id</code></li>
@@ -222,7 +231,7 @@
 <li><code>cookie</code> user must be logged in with sufficient rights</li>
 </ul>
 <p>Optionally, you can specifiy a custom <code>shipment_id</code>.</p>
-<h3 id="error-responses_1">Error responses</h3>
+<h3 id="error-responses-for-new-shipment-creation">Error responses for new shipment creation</h3>
 <pre><code class="json">400
 
 {&quot;error&quot;:&quot;bad request&quot;}
@@ -232,15 +241,14 @@
 
 {&quot;error&quot;: &quot;insufficient permissions&quot;}
 </code></pre>
-
-<p><strong>Implemented:</strong> Yes</p>
-<p><strong>Stability:</strong> 0 - subject to changes</p>
               
             </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../user/" class="btn btn-neutral float-right" title="User">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../search/" class="btn btn-neutral" title="Search"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -271,6 +279,8 @@
       
         <span><a href="../search/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../user/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
