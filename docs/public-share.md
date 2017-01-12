@@ -7,10 +7,11 @@ The upload is only allowed for logged in users. To run the upload from the comma
 Upon successful download from the public share, the `id` for the new compendium is returned.
 
 ```bash
-curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
-  -F content_type=compendium_v1 http://…/api/v1/public-share \
-  --cookie "connect.sid=<code string here>" \
-    http://…/api/v1/public-share
+curl -d "content_type=compendium_v1" \
+    -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
+    -d "path=/sleeptainer" \
+	  --cookie "connect.sid=<code string here>" \
+     http://…/api/v1/public-share
 ```
 
 ```json
@@ -25,6 +26,8 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 - `content_type` - Form of archive. One of the following:
   - `compendium_v1` - _default_ - compendium in Bagtainer format
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
+- `path` - Path to a subdirectory in the public share - default is '/'
+
 
 ## Error responses for creating compendium from public share
 
@@ -42,7 +45,7 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 
 ## Example data
 
-For testing purposes you can the following sciebo public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
 
 `https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`
 
