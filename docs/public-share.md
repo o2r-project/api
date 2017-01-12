@@ -10,7 +10,7 @@ Upon successful download from the public share, the `id` for the new compendium 
 curl -d "content_type=compendium_v1" \
     -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
     -d "path=/sleeptainer" \
-	  --cookie "connect.sid=<code string here>" \
+    --cookie "connect.sid=<code string here>" \
      http://…/api/v1/public-share
 ```
 
@@ -19,6 +19,15 @@ curl -d "content_type=compendium_v1" \
 
 {"id":"b9Faz"}
 ```
+
+## File selection
+
+Depending on the file structure, the public share contents are treated differently:
+
+1. If a file named `bagit.txt` is found the directory will be treated as a research compendium
+2. If a single zip file is found, the file will be extracted and treated as a research compendium
+3. If a single subdirectory is found, the loader will look for subdirectories and analyze their contents
+4. If multiple files or subdirectories are found, the public share contents are treated as a workspace _(NOT IMPLEMENTED)_
 
 ## Body parameters for creating compendium from public share
 
