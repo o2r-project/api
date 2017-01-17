@@ -201,6 +201,72 @@ The sub-properties and their features are
 
 Future sub-properties might expose `enriched` or `harvested` metadata.
 
+### Spatial MD
+
+For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files _TDB_, geotiffs _TDB_ or jpegs _TDB_).
+
+The following structure will be made available per file:
+
+````{json}
+"spatial": [
+        {
+            "geojson": {
+                "bbox": [
+                    7.595369517803192,
+                    51.96245837645124,
+                    7.62162297964096,
+                    51.96966694957956
+                ],
+                "geometry": {
+                    "coordinates": [
+                        [
+                            [
+                                7.595369517803192,
+                                51.96245837645124
+                            ],
+                            [
+                                7.62162297964096,
+                                51.96966694957956
+                            ]
+                        ]
+                    ],
+                    "type": "Polygon"
+                },
+                "type": "Feature"
+            },
+            "source": "master"
+        },
+        {
+            "geojson": {
+                "bbox": [
+                    7.595369517803192,
+                    51.96245837645124,
+                    7.62162297964096,
+                    51.96966694957956
+                ],
+                "geometry": {
+                    "coordinates": [
+                        [
+                            [
+                                7.595369517803192,
+                                51.96245837645124
+                            ],
+                            [
+                                7.62162297964096,
+                                51.96966694957956
+                            ]
+                        ]
+                    ],
+                    "type": "Polygon"
+                },
+                "type": "Feature"
+            },
+            "source": "example/layers/POLYGON.shp"
+        }
+        ]
+```
+_TBD_ The `spatial` key has a _"master"_ bounding box, that is an abstraction of all bounding boxes that have been found during abstraction. It can be retrieved via the key `"source": "master"`.
+
 ### URL parameters for metadata
 
 - `:id` - compendium id
