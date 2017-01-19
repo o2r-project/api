@@ -208,64 +208,119 @@ For discovery purposes, the Metadata will included extracted geojson bounding bo
 The following structure will be made available per file:
 
 ````{json}
-"spatial": [
-        {
+    "spatial": {
+        "files": [
+            {
+                "geojson": {
+                    "bbox": "",
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    -2.362060546875,
+                                    52.0862573323384
+                                ],
+                                [
+                                    -1.285400390625,
+                                    52.649729197309426
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+    "spatial": {
+        "files": [
+            {
+                "geojson": {
+                    "bbox": [
+                        -2.362060546875,
+                        52.0862573323384,
+                        -1.285400390625,
+                        52.649729197309426
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    -2.362060546875,
+                                    52.0862573323384
+                                ],
+                                [
+                                    -1.285400390625,
+                                    52.649729197309426
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file1.geojson"
+            },
+            {
+                "geojson": {
+                    "bbox": [
+                        7.595369517803192,
+                        51.96245837645124,
+                        7.62162297964096,
+                        51.96966694957956
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    7.595369517803192,
+                                    51.96245837645124
+                                ],
+                                [
+                                    7.62162297964096,
+                                    51.96966694957956
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file2.shp"
+            }
+        ],
+        "union": {
             "geojson": {
                 "bbox": [
-                    7.595369517803192,
+                    -2.362060546875,
                     51.96245837645124,
                     7.62162297964096,
-                    51.96966694957956
+                    51.96245837645124
                 ],
                 "geometry": {
                     "coordinates": [
                         [
-                            [
-                                7.595369517803192,
-                                51.96245837645124
-                            ],
-                            [
-                                7.62162297964096,
-                                51.96966694957956
-                            ]
+                            -2.362060546875,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            52.649729197309426
+                        ],
+                        [
+                            -2.362060546875,
+                            52.649729197309426
                         ]
                     ],
                     "type": "Polygon"
                 },
                 "type": "Feature"
-            },
-            "source": "master"
-        },
-        {
-            "geojson": {
-                "bbox": [
-                    7.595369517803192,
-                    51.96245837645124,
-                    7.62162297964096,
-                    51.96966694957956
-                ],
-                "geometry": {
-                    "coordinates": [
-                        [
-                            [
-                                7.595369517803192,
-                                51.96245837645124
-                            ],
-                            [
-                                7.62162297964096,
-                                51.96966694957956
-                            ]
-                        ]
-                    ],
-                    "type": "Polygon"
-                },
-                "type": "Feature"
-            },
-            "source": "example/layers/POLYGON.shp"
+            }
         }
-        ]
+    }
 ```
-_TBD_ The `spatial` key has a _"master"_ bounding box, that is an abstraction of all bounding boxes that have been found during abstraction. It can be retrieved via the key `"source": "master"`.
+The `spatial` key has a `union` bounding box, that is an wraps all bounding boxes that have been found during abstraction.
 
 ### URL parameters for metadata
 
