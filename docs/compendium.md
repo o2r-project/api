@@ -320,7 +320,7 @@ The following structure will be made available per file:
         }
     }
 ```
-The `spatial` key has a `union` bounding box, that is an wraps all bounding boxes that have been found during abstraction.
+The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
 
 ### URL parameters for metadata
 
