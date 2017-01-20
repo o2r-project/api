@@ -212,27 +212,6 @@ The following structure will be made available per file:
         "files": [
             {
                 "geojson": {
-                    "bbox": "",
-                    "geometry": {
-                        "coordinates": [
-                            [
-                                [
-                                    -2.362060546875,
-                                    52.0862573323384
-                                ],
-                                [
-                                    -1.285400390625,
-                                    52.649729197309426
-                                ]
-                            ]
-                        ],
-                        "type": "Polygon"
-                    },
-                    "type": "Feature"
-    "spatial": {
-        "files": [
-            {
-                "geojson": {
                     "bbox": [
                         -2.362060546875,
                         52.0862573323384,
