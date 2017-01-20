@@ -24,18 +24,19 @@ curl -d "content_type=compendium_v1" \
 
 Depending on the file structure, the public share contents are treated differently:
 
-1. If a file named `bagit.txt` is found the directory will be treated as a research compendium
+1. If a file named `bagit.txt` is found, the directory will be treated as a research compendium
 2. If a single zip file is found, the file will be extracted and treated as a research compendium
 3. If a single subdirectory is found, the loader will look for subdirectories and analyze their contents
 4. If multiple files or subdirectories are found, the public share contents are treated as a workspace _(NOT IMPLEMENTED)_
 
 ## Body parameters for creating compendium from public share
 
-- `share_url` - The sciebo link to the public share
-- `content_type` - Form of archive. One of the following:
-  - `compendium_v1` - _default_ - compendium in Bagtainer format
+- `share_url` - The sciebo link to the public share (required)
+- `content_type` - Form of archive. One of the following (required):
+  - `compendium_v1` compendium in Bagtainer format
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
-- `path` - Path to a subdirectory in the public share - default is '/'
+- `path` - Path to a subdirectory in the public share (optional)
+  - default is `/`
 
 
 ## Error responses for creating compendium from public share
