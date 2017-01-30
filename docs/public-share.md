@@ -11,7 +11,7 @@ curl -d "content_type=compendium_v1" \
     -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
     -d "path=/sleeptainer" \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/public-share
+     http://…:8088/api/v1/compendium
 ```
 
 ```json
@@ -37,7 +37,6 @@ Depending on the file structure, the public share contents are treated different
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 - `path` - Path to a subdirectory in the public share (optional)
   - default is `/`
-
 
 ## Error responses for creating compendium from public share
 
