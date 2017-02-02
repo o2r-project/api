@@ -1,4 +1,4 @@
-# Public share - WORK IN PROGRESS
+# Public share
 
 Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.
 
@@ -11,7 +11,7 @@ curl -d "content_type=compendium_v1" \
     -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
     -d "path=/sleeptainer" \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v1/compendium
+     http://…:8088/api/v2/compendium
 ```
 
 ```json
