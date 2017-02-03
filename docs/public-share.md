@@ -10,7 +10,7 @@ Upon successful download from the public share, the `id` for the new compendium 
 curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
   -F content_type=compendium_v1 http://…/api/v1/public-share \
   --cookie "connect.sid=<code string here>" \
-    http://…/api/v1/public-share
+    http://…/api/v2/compendium
 ```
 
 ```json
