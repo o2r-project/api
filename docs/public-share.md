@@ -1,4 +1,4 @@
-# Public share - WORK IN PROGRESS
+# Public share
 
 Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.
 
@@ -7,10 +7,11 @@ The upload is only allowed for logged in users. To run the upload from the comma
 Upon successful download from the public share, the `id` for the new compendium is returned.
 
 ```bash
-curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
-  -F content_type=compendium_v1 http://…/api/v1/public-share \
-  --cookie "connect.sid=<code string here>" \
-    http://…/api/v2/compendium
+curl -d "content_type=compendium_v1" \
+    -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
+    -d "path=/sleeptainer" \
+    --cookie "connect.sid=<code string here>" \
+     http://…:8088/api/v2/compendium
 ```
 
 ```json
@@ -19,12 +20,23 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 {"id":"b9Faz"}
 ```
 
+## File selection
+
+Depending on the file structure, the public share contents are treated differently:
+
+1. If a file named `bagit.txt` is found, the directory will be treated as a research compendium
+2. If a single zip file is found, the file will be extracted and treated as a research compendium
+3. If a single subdirectory is found, the loader will look for subdirectories and analyze their contents _(NOT_IMPLEMENTED)_
+4. If multiple files or subdirectories are found, the public share contents are treated as a workspace _(NOT IMPLEMENTED)_
+
 ## Body parameters for creating compendium from public share
 
-- `share_url` - The sciebo link to the public share
-- `content_type` - Form of archive. One of the following:
-  - `compendium_v1` - _default_ - compendium in Bagtainer format
+- `share_url` - The sciebo link to the public share (required)
+- `content_type` - Form of archive. One of the following (required):
+  - `compendium_v1` compendium in Bagtainer format
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
+- `path` - Path to a subdirectory in the public share (optional)
+  - default is `/`
 
 ## Error responses for creating compendium from public share
 
@@ -42,7 +54,7 @@ curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
 
 ## Example data
 
-For testing purposes you can the following sciebo public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
 
 `https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`
 
