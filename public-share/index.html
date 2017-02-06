@@ -77,7 +77,9 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#public-share-work-in-progress">Public share - WORK IN PROGRESS</a></li>
+                <li class="toctree-l3"><a href="#public-share">Public share</a></li>
+                
+                    <li><a class="toctree-l4" href="#file-selection">File selection</a></li>
                 
                     <li><a class="toctree-l4" href="#body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</a></li>
                 
@@ -179,14 +181,15 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="public-share-work-in-progress">Public share - WORK IN PROGRESS</h1>
+                <h1 id="public-share">Public share</h1>
 <p>Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.</p>
 <p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful download from the public share, the <code>id</code> for the new compendium is returned.</p>
-<pre><code class="bash">curl -F share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO \
-  -F content_type=compendium_v1 http://…/api/v1/public-share \
-  --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-    http://…/api/v2/compendium
+<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
+    -d &quot;share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO&quot;  \
+    -d &quot;path=/sleeptainer&quot; \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     http://…:8088/api/v2/compendium
 </code></pre>
 
 <pre><code class="json">200 OK
@@ -194,12 +197,22 @@
 {&quot;id&quot;:&quot;b9Faz&quot;}
 </code></pre>
 
+<h2 id="file-selection">File selection</h2>
+<p>Depending on the file structure, the public share contents are treated differently:</p>
+<ol>
+<li>If a file named <code>bagit.txt</code> is found, the directory will be treated as a research compendium</li>
+<li>If a single zip file is found, the file will be extracted and treated as a research compendium</li>
+<li>If a single subdirectory is found, the loader will look for subdirectories and analyze their contents <em>(NOT_IMPLEMENTED)</em></li>
+<li>If multiple files or subdirectories are found, the public share contents are treated as a workspace <em>(NOT IMPLEMENTED)</em></li>
+</ol>
 <h2 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h2>
 <ul>
-<li><code>share_url</code> - The sciebo link to the public share</li>
-<li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
+<li><code>share_url</code> - The sciebo link to the public share (required)</li>
+<li><code>content_type</code> - Form of archive. One of the following (required):</li>
+<li><code>compendium_v1</code> compendium in Bagtainer format</li>
 <li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
+<li><code>path</code> - Path to a subdirectory in the public share (optional)</li>
+<li>default is <code>/</code></li>
 </ul>
 <h2 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</h2>
 <pre><code class="json">401 Unauthorized
@@ -213,7 +226,7 @@
 </code></pre>
 
 <h2 id="example-data">Example data</h2>
-<p>For testing purposes you can the following sciebo public share. It contains a few ready-to-use compendia found in the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project:</p>
+<p>For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project:</p>
 <p><code>https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO</code></p>
 <p>For more configuration details, see the project's README file.</p>
               
