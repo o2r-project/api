@@ -279,10 +279,10 @@ This response is also available at `GET /api/v1/compendium/:id/metadata`.
 {"error":"not authorized"}
 ```
 
-```json
+```txt
 400 Bad Request
 
-{"error":"invalid JSON"}
+"SyntaxError [...]"
 ```
 
 ```json
