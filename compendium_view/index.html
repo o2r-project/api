@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>View - o2r web API</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../o2r.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "View";
+    var mkdocs_page_input_path = "compendium_view.md";
+    var mkdocs_page_url = "/compendium_view/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> o2r web API</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Compendium</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Create new compendium</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_upload/">API upload</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_public_share/">Public share submission</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">View</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#view-compendium">View compendium</a></li>
+                
+                    <li><a class="toctree-l4" href="#list-compendia">List compendia</a></li>
+                
+                    <li><a class="toctree-l4" href="#view-single-compendium">View single compendium</a></li>
+                
+                    <li><a class="toctree-l4" href="#list-related-execution-jobs">List related execution jobs</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_download/">Download</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_metadata/">Metadata</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_files/">Files in a compendium</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../job/">Job</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../search/">Search</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../shipment/">Shipment</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user/">User</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">o2r web API</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Compendium &raquo;</li>
+        
+      
+    
+    <li>View</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="view-compendium">View compendium</h1>
+<h2 id="list-compendia">List compendia</h2>
+<p>Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.</p>
+<p><code>curl https://…/api/v1/compendium?limit=100&amp;start=2</code></p>
+<p><code>GET /api/v1/compendium?limit=100&amp;start=2</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;nkm4b&quot;,
+    &quot;asdis&quot;,
+    &quot;nb2sm&quot;,
+    …
+  ],
+  &quot;next&quot;:&quot;/api/v1/compendium?limit=100&amp;start=3&quot;,
+  &quot;previous&quot;:&quot;/api/v1/compendium?limit=100&amp;start=1&quot;
+}
+</code></pre>
+
+<p>You can also get only the compendia uploaded by a specific user. A user filter can be combined with pagination.</p>
+<p><code>curl http://…/api/v1/compendium?user=0000-0001-6021-1617</code></p>
+<p><code>GET /api/v1/compendium?user=0000-0001-6021-1617</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;nkm4b&quot;,
+    &quot;nb2sm&quot;
+  ]
+}
+</code></pre>
+
+<h3 id="url-parameters-for-compendium-lists">URL parameters for compendium lists</h3>
+<ul>
+<li><code>job_id</code> - Comma-separated list of related job ids to filter by.</li>
+<li><code>user</code> - Public user identifier to filter by.</li>
+<li><code>start</code> - List from specific search result onwards. 1-indexed. Defaults to 1.</li>
+<li><code>limit</code> - Specify maximum amount of results per page. Defaults to 100.</li>
+</ul>
+<h3 id="error-responses-for-compendium-lists">Error responses for compendium lists</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium found&quot;}
+</code></pre>
+
+<h2 id="view-single-compendium">View single compendium</h2>
+<p>This includes the complete metadata set, related job ids and a tree representation of the included <a href="files.md">files</a>. The <code>created</code> timestamp refers to the upload of the compendium. It is formated as ISO8601.</p>
+<p><code>curl https://…/api/v1/$ID</code></p>
+<p><code>GET /api/v1/compendium/:id</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;id&quot;:&quot;comid&quot;,
+  &quot;metadata&quot;: … ,
+  &quot;created&quot;: &quot;2016-08-01T13:57:40.760Z&quot;,
+  &quot;files&quot;: …
+ }
+</code></pre>
+
+<h3 id="url-parameters-for-single-compendium-view">URL parameters for single compendium view</h3>
+<ul>
+<li><code>:id</code> - the compendiums id</li>
+</ul>
+<h3 id="error-responses-for-single-compendium-view">Error responses for single compendium view</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium with this id&quot;}
+</code></pre>
+
+<h2 id="list-related-execution-jobs">List related execution jobs</h2>
+<p><code>curl https://…/api/v1/compendium/$ID/jobs</code></p>
+<p><code>GET /api/v1/compendium/:id/jobs</code></p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;:[
+    &quot;nkm4L&quot;,
+    &quot;asdi5&quot;,
+    &quot;nb2sg&quot;,
+    …
+  ],
+  &quot;next&quot;:&quot;/api/v1/compendium/:id/jobs?limit=100&amp;start=3&quot;,
+  &quot;previous&quot;:&quot;/api/v1/compendium/:id/job?limit=100&amp;start=1&quot;
+}
+</code></pre>
+
+<h3 id="url-parameters-for-related-execution-jobs">URL parameters for related execution jobs</h3>
+<ul>
+<li><code>:id</code> - compendium id that the results should be related to</li>
+</ul>
+<h3 id="error-response-for-related-execution-jobs">Error response for related execution jobs</h3>
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;no job found&quot;}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../compendium_download/" class="btn btn-neutral float-right" title="Download">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../compendium_public_share/" class="btn btn-neutral" title="Public share submission"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../compendium_public_share/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../compendium_download/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

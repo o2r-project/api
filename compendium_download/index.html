@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>API upload - o2r web API</title>
+  <title>Download - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "API upload";
-    var mkdocs_page_input_path = "upload.md";
-    var mkdocs_page_url = "/upload/";
+    var mkdocs_page_name = "Download";
+    var mkdocs_page_input_path = "compendium_download.md";
+    var mkdocs_page_url = "/compendium_download/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -65,28 +65,15 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">API upload</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#upload-via-api">Upload via API</a></li>
-                
-                    <li><a class="toctree-l4" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a></li>
-                
-                    <li><a class="toctree-l4" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a></li>
-                
-                    <li><a class="toctree-l4" href="#example-data">Example data</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_upload/">API upload</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../public-share/">Public share submission</a>
+        <a class="" href="../compendium_public_share/">Public share submission</a>
         
     </li>
 
@@ -96,14 +83,39 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../compendium/">View and download</a>
+        <a class="" href="../compendium_view/">View</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Download</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#download-compendium">Download compendium</a></li>
+                
+                    <li><a class="toctree-l4" href="#requests">Requests</a></li>
+                
+                    <li><a class="toctree-l4" href="#response">Response</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../files/">Files in a compendium</a>
+        <a class="" href="../compendium_metadata/">Metadata</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../compendium_files/">Files in a compendium</a>
         
     </li>
 
@@ -164,12 +176,8 @@
           <li>Compendium &raquo;</li>
         
       
-        
-          <li>Create new compendium &raquo;</li>
-        
-      
     
-    <li>API upload</li>
+    <li>Download</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -179,41 +187,55 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload-via-api">Upload via API</h1>
-<p>Upload a unvalidated research compendium as a compressed <code>.zip</code> archive.</p>
-<p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
-<p>Upon successful extraction of archive, the <code>id</code> for the new compendium is returned.</p>
-<pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-    -F content_type=compendium_v1 http://…/api/v1/compendium \
-    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium 
-</code></pre>
-
-<pre><code class="json">200 OK
-
-{&quot;id&quot;:&quot;a4Ndl&quot;}
-</code></pre>
-
-<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
+                <h1 id="download-compendium">Download compendium</h1>
+<p>Download the complete compendium as an archive. Supported formats are as follows:</p>
 <ul>
-<li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
+<li><code>zip</code></li>
+<li><code>tar</code></li>
+<li><code>tar.gz</code> (gzipped tarball)</li>
 </ul>
-<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
-<pre><code class="json">401 Unauthorized
-
-{&quot;error&quot;:&quot;missing or wrong api key&quot;}
+<h2 id="requests">Requests</h2>
+<p><code>curl https://…/api/v1/compendium/$ID.zip</code></p>
+<p><code>wget https://…/api/v1/compendium/$ID.zip</code></p>
+<pre><code class="bash">GET /api/v1/compendium/:id.zip
+GET /api/v1/compendium/:id.tar
+GET /api/v1/compendium/:id.tar.gz
+GET /api/v1/compendium/:id.tar?gzip
+GET /api/v1/compendium/:id.zip?image=false
 </code></pre>
 
-<h2 id="example-data">Example data</h2>
-<p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
-<pre><code class="bash">docker run --rm o2rproject/examplecompendia -c &lt;my cookie&gt; -e 7 -b 0003 -b 0004 -b 0005
+<h3 id="url-parameters-for-compendium-download">URL parameters for compendium download</h3>
+<ul>
+<li><code>:id</code> - the compendiums id</li>
+<li><code>?gzip</code> - <em>only for .tar endpoint</em> - compress tarball with gzip</li>
+<li><code>?image=true</code> or <code>?image=false</code> - include tarball of Docker image in the archive, default is <code>true</code></li>
+</ul>
+<h2 id="response">Response</h2>
+<p>The response is a file attachment. The suggested file name is available in the HTTP header <code>content-disposition</code> using the respective file extension (i.e. <code>.zip</code>, <code>.tar</code>, and <code>.tar.gz</code>).</p>
+<p>The <code>content-type</code> header also reflects the respective format, which can take the following values:</p>
+<ul>
+<li><code>application/zip</code> for ZIP archive</li>
+<li><code>application/x-tar</code> for TAR archive</li>
+<li><code>application/octet-stream</code> for gzipped TAR</li>
+</ul>
+<pre><code class="txt">200 OK
+Content-Type: application/zip
+Transfer-Encoding: chunked
+Content-Disposition: attachment; filename=&quot;$ID.zip&quot;
+X-Response-Time: 13.556ms
 </code></pre>
 
-<p>For more configuration details, see the project's README file.</p>
+<p>The zip file contains a comment with the original URL.</p>
+<pre><code class="bash">$ unzip -z CXE1c.zip
+Archive:  CXE1c.zip
+Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
+</code></pre>
+
+<h3 id="error-responses-for-compendium-download">Error responses for compendium download</h3>
+<pre><code class="bash">404 Not Found
+
+{&quot;error&quot;:&quot;no compendium with this id&quot;}
+</code></pre>
               
             </div>
           </div>
@@ -221,10 +243,10 @@ The following command executes the container and uploads 7 empty examples and tw
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../public-share/" class="btn btn-neutral float-right" title="Public share submission">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../compendium_metadata/" class="btn btn-neutral float-right" title="Metadata">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium_view/" class="btn btn-neutral" title="View"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -250,10 +272,10 @@ The following command executes the container and uploads 7 empty examples and tw
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../compendium_view/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../public-share/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../compendium_metadata/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
