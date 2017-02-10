@@ -4,8 +4,9 @@
 
 **Current version of the API**: `v1` (subject to change)
 
-The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](https://github.com/o2r-project/architecture/) and the [web interface](https://github.com/o2r-project/o2r-platform).
-It includes functionality to [upload](upload.md) and examine [executable research compendia](compendium.md) and run and examine [execution jobs](job.md).
+The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](http://o2r.info/architecture/) and the [web interface](https://github.com/o2r-project/o2r-platform).
+
+The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented **[in the ERC spec](http://o2r.info/erc-spec)**.
 
 It is implemented as a RESTful API. The entrypoint for the current version is `/api/v1`.
 

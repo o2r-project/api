@@ -3,10 +3,12 @@ pages:
   - Home: index.md
   - Compendium:
     - Create new compendium:
-      - API upload: upload.md
-      - Public share submission: public-share.md
-    - View and download: compendium.md
-    - Files in a compendium: files.md
+      - API upload: compendium_upload.md
+      - Public share submission: compendium_public_share.md
+    - View: compendium_view.md
+    - Download: compendium_download.md
+    - Metadata: compendium_metadata.md
+    - Files in a compendium: compendium_files.md
   - Job: job.md
   - Search: search.md
   - Shipment: shipment.md
