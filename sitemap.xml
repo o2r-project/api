@@ -18,25 +18,25 @@
     </url>
         
     <url>
-     <loc>/compendium_view/</loc>
+     <loc>/compendium/view/</loc>
      <lastmod>2017-02-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/compendium_download/</loc>
+     <loc>/compendium/download/</loc>
      <lastmod>2017-02-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/compendium_metadata/</loc>
+     <loc>/compendium/metadata/</loc>
      <lastmod>2017-02-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/compendium_files/</loc>
+     <loc>/compendium/files/</loc>
      <lastmod>2017-02-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
