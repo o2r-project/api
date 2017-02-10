@@ -53,7 +53,7 @@ The `path` property for each file in the listing is a link to the raw file. Addi
 
 ### `type` property
 
-The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the [list of extension to type mapping](files-mime.md) for specific details.
+The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.
 
 ## File extension to MIME type mappings
 

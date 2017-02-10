@@ -142,7 +142,7 @@ The overall job state can be added to the job list response:
 
 ## View single job
 
-View details for a single job. Filelisting format is described in [Files](files.md)
+View details for a single job. The file listing format is described in [compendium files](compendium/files.md)
 
 `curl https://…/api/v1/job/$ID`
 
