@@ -42,7 +42,7 @@ You can also get only the compendia uploaded by a specific user.
 
 - `job_id` - Comma-separated list of related job ids to filter by.
 - `user` - Public user identifier to filter by.
-- `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
+- `start` - Starting point of the result list. `start - 1` results are skipped. Defaults to 1.
 - `limit` - Limits the number of results in the response. Defaults to 100.
 
 ### Error responses for compendium lists

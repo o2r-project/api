@@ -135,7 +135,7 @@ The overall job state can be added to the job list response:
 ### GET query parameters for listing jobs
 
 - `compendium_id` - Comma-separated list of related compendium ids to filter by.
-- `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
+- `start` - Starting point of the result list. `start - 1` results are skipped. Defaults to 1.
 - `limit` - Limits the number of results in the response. Defaults to 100.
 - `status` - Specify status to filter by. Can contain following `status`: `success`, `failure`, `running`.
 - `user` - Public user identifier to filter by.
