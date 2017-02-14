@@ -2,7 +2,7 @@
 
 ## List compendia
 
-Will return up to 100 results by default. For pagination purposes, URLs for previous and next results are provided if applicable.
+Will return up to 100 results by default.
 
 `curl https://…/api/v1/compendium?limit=100&start=2`
 
@@ -17,13 +17,11 @@ Will return up to 100 results by default. For pagination purposes, URLs for prev
     "asdis",
     "nb2sm",
     …
-  ],
-  "next":"/api/v1/compendium?limit=100&start=3",
-  "previous":"/api/v1/compendium?limit=100&start=1"
+  ]
 }
 ```
 
-You can also get only the compendia uploaded by a specific user. A user filter can be combined with pagination.
+You can also get only the compendia uploaded by a specific user.
 
 `curl http://…/api/v1/compendium?user=0000-0001-6021-1617`
 
@@ -44,8 +42,8 @@ You can also get only the compendia uploaded by a specific user. A user filter c
 
 - `job_id` - Comma-separated list of related job ids to filter by.
 - `user` - Public user identifier to filter by.
-- `start` - List from specific search result onwards. 1-indexed. Defaults to 1.
-- `limit` - Specify maximum amount of results per page. Defaults to 100.
+- `start` - Starting point of the result list. `start - 1` results are skipped. Defaults to 1.
+- `limit` - Limits the number of results in the response. Defaults to 100.
 
 ### Error responses for compendium lists
 
@@ -100,9 +98,7 @@ This includes the complete metadata set, related job ids and a tree representati
     "asdi5",
     "nb2sg",
     …
-  ],
-  "next":"/api/v1/compendium/:id/jobs?limit=100&start=3",
-  "previous":"/api/v1/compendium/:id/job?limit=100&start=1"
+  ]
 }
 ```
 
