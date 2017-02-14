@@ -8,8 +8,8 @@ Upon successful download from the public share, the `id` for the new compendium 
 
 ```bash
 curl -d "content_type=compendium_v1" \
-    -d "share_url=http://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
-    -d "path=/sleeptainer" \
+    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
+    -d "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
      http://…:8088/api/v2/compendium
 ```
