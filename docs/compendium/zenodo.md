@@ -28,7 +28,7 @@ curl -d "content_type=compendium_v1" \
   - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 - `filename` - Filename of your compendium. For now, only zip-files are supported. (required)
 
-## Error responses for creating compendium from public share
+## Error responses for creating compendium from a Zenodo record
 
 ```json
 401 Unauthorized
