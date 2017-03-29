@@ -5,7 +5,6 @@ pages:
     - Create new compendium:
       - API upload: compendium/upload.md
       - Public share submission: compendium/public_share.md
-      - Zenodo submission: compendium/zenodo.md
     - View: compendium/view.md
     - Download: compendium/download.md
     - Metadata: compendium/metadata.md
