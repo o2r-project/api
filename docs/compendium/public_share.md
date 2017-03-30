@@ -1,6 +1,11 @@
 # Public share
 
-Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, sciebo (https://www.sciebo.de/en/) and Zenodo (https://sandbox.zenodo.org) is supported.
+Upload an unvalidated research compendium by submitting a link to a cloud resource.
+
+Currently, the following repositories are supported:
+
+- Sciebo (https://sciebo.de)
+- Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
 
 The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
 
@@ -19,12 +24,7 @@ curl -d "content_type=compendium_v1" \
 {"id":"b9Faz"}
 ```
 
-Currently, the following repositories are supported:
-
-- Sciebo (https://sciebo.de)
-- Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
-
-They both use the same API endpoint `http://…:8088/api/v2/compendium` but with different required/optional parameters:
+Both use the same API endpoint `http://…:8088/api/v2/compendium` but with different required/optional parameters:
 
 ## Sciebo 
 
@@ -125,6 +125,10 @@ curl -d "content_type=compendium_v1" \
     --cookie "connect.sid=<code string here>" \
      http://…:8088/api/v2/compendium
 ```
+If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` parameter, or if the `share_url` parameter is a `doi.org` URL, a default base URL for the file download is used as selected by the API maintainer. This may be:
+
+- `https://zenodo.org` or
+- `https://sandbox.zenodo.org`
 
 ### Error responses for creating compendium from a Zenodo record
 
