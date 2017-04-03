@@ -1,6 +1,6 @@
 # Ship compendia and metadata
 
-Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
+Shipments are used to deliver ERCs or their metadata to third party repositories or archives. This section covers shipment related requests, including repository file management.
 
 ## List shipments
 
@@ -69,6 +69,42 @@ You can start a transmission to a repository at the same endpoint using a `POST`
 {
   "recipient": "zenodo",
   "id": "dc351fc6-314f-4947-a235-734ab5971eff"
+}
+```
+
+### File management in a repository depot
+
+## Get a list of all files that are in a depot
+
+`curl https://…/api/v1/shipment
+-H "Content-Type: application/json"
+--data '[{"action":"r"}, {"recipient":"zenodo"}, {"depot": "12345"}]'
+`
+
+```json
+200
+
+{
+  "checksum": "2345720d53e9dbac16b42e88d9a06f4f", 
+  "filename": "4XgD9.zip", 
+  "filesize": 393320, 
+  "id": "110d667c-7691-4fc9-93e7-5652a52df6f2"
+  ...
+}
+```
+
+## Delete a specific file from a depot
+
+`curl https://…/api/v1/shipment
+-H "Content-Type: application/json"
+--data '[{"action":"d"}, {"recipient":"zenodo"}, {"depot": "12345"}, {"file_id": "110d667c-7691-4fc9-93e7-5652a52df6f2"]'
+`
+
+```json
+204
+
+{
+"deleted": "110d667c-7691-4fc9-93e7-5652a52df6f2"
 }
 ```
 
