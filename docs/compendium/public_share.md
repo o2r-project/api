@@ -13,7 +13,7 @@ Upon successful download from the public share, the `id` for the new compendium 
 
 ```bash
 curl -d "content_type=compendium_v1" \
-    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
+    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     --cookie "connect.sid=<code string here>" \
      http://…:8088/api/v2/compendium
 ```
@@ -50,7 +50,7 @@ Depending on the file structure, the public share contents are treated different
 
 ```bash
 curl -d "content_type=compendium_v1" \
-    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"  \
+    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     -d "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
      http://…:8088/api/v2/compendium
@@ -158,9 +158,10 @@ If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` para
 
 ### Example data
 
-For testing purposes you can use the following zenodo record in the zenodo sandbox. It contains the _metatainer_ compendium found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+For testing purposes you can use the following public shares. These contain the _metatainer_ compendium found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
 
-`https://sandbox.zenodo.org/record/69114`
+- Sciebo: `https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA`
+- Zenodo: `https://sandbox.zenodo.org/record/69114`
 
 
 
