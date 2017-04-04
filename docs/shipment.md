@@ -39,7 +39,7 @@ You can also get only the shipments belonging to a specific id or compendium id.
 }
 ```
 
-_Note that returned deposition urls from Zenodo (records) will only be active after publishing._
+_Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be active after publishing._
 
 ### URL parameters for shipment lists
 
@@ -71,6 +71,9 @@ You can start a transmission to a repository at the same endpoint using a `POST`
   "id": "dc351fc6-314f-4947-a235-734ab5971eff"
 }
 ```
+
+Possible recipients: _zenodo_, _eudat_
+
 
 ### File management in a repository depot
 
