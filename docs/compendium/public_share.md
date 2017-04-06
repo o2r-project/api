@@ -15,7 +15,7 @@ Upon successful download from the public share, the `id` for the new compendium 
 curl -d "content_type=compendium_v1" \
     -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v2/compendium
+     http://…:8088/api/v1/compendium
 ```
 
 ```json
@@ -24,7 +24,7 @@ curl -d "content_type=compendium_v1" \
 {"id":"b9Faz"}
 ```
 
-Both use the same API endpoint `http://…:8088/api/v2/compendium` but with different required/optional parameters:
+Both use the same API endpoint `http://…:8088/api/v1/compendium` but with different required/optional parameters:
 
 ## Sciebo 
 
@@ -53,7 +53,7 @@ curl -d "content_type=compendium_v1" \
     -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     -d "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v2/compendium
+     http://…:8088/api/v1/compendium
 ```
 
 ### Error responses for creating compendium from public share
@@ -105,7 +105,7 @@ curl -d "content_type=compendium_v1" \
     -d "zenodo_url=https://sandbox.zenodo.org/record/69114"  \
     -d "filename=metatainer.zip" \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v2/compendium
+     http://…:8088/api/v1/compendium
 ```
 
 2. DOI
@@ -114,7 +114,7 @@ curl -d "content_type=compendium_v1" \
 curl -d "content_type=compendium_v1" \
     -d "doi=10.5072/zenodo.69114"  \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v2/compendium
+     http://…:8088/api/v1/compendium
 ```
 
 3. Zenodo Record ID
@@ -123,7 +123,7 @@ curl -d "content_type=compendium_v1" \
 curl -d "content_type=compendium_v1" \
     -d "zenodo_record_id=69114"  \
     --cookie "connect.sid=<code string here>" \
-     http://…:8088/api/v2/compendium
+     http://…:8088/api/v1/compendium
 ```
 If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` parameter, or if the `share_url` parameter is a `doi.org` URL, a default base URL for the file download is used as selected by the API maintainer. This may be:
 
