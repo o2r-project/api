@@ -72,17 +72,31 @@ You can start a transmission to a repository at the same endpoint using a `POST`
 }
 ```
 
-Possible recipients: _zenodo_, _eudat_
+Currently the following recipients are possible: `zenodo` (Zenodo.org) and `eudat` (Eudat b2share).
 
 
 ### Shipment status
 
 A shipment can have two possible status: Fristly its status can be `shipped`. That means a deposition has been created at a repository and completed the necessary metadata for publication. Secondly its status can be `published`. That means the contents of the shipment are published on the repository, in which case it the publishment can not be undone. 
 
+To query a shipment for its current status you may use:
+
+`GET api/v1/shipment/<shipment_id>/status`
+
+
+```json
+200
+
+{
+"id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+"status": "shipped"
+}
+```
+
 
 ### File management in a repository depot
 
-## Get a list of all files that are in a depot
+## Get a list of all files and their properties that are in a depot
 
 `GET api/v1/shipment/<shipment_id>/files`
 
@@ -108,10 +122,7 @@ You can find the `id` of the file you want to interact with in this json list ob
 
 ## Delete a specific file from a depot
 
-`curl https://…/api/v1/shipment
--H "Content-Type: application/json"
---data '[{"action":"d"}, {"recipient":"zenodo"}, {"depot": "12345"}, {"file_id": "110d667c-7691-4fc9-93e7-5652a52df6f2"]'
-`
+`DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
 
 ```json
 204
@@ -120,6 +131,9 @@ You can find the `id` of the file you want to interact with in this json list ob
 "deleted": "110d667c-7691-4fc9-93e7-5652a52df6f2"
 }
 ```
+
+In order to delete from a depot, you need state the `file_id` that can be retrieve from querying a shipments files object.
+
 
 ### Body parameters for new shipment creation
 
