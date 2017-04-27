@@ -4,9 +4,7 @@ Shipments are used to deliver ERCs or their metadata to third party repositories
 
 ## List shipments
 
-Will return the complete list of shipments, currently without pagination.
-
-`curl https://…/api/v1/shipment`
+This is a basic request to list all available shipments (no pagination yet).
 
 `GET /api/v1/shipment`
 
@@ -18,11 +16,9 @@ Will return the complete list of shipments, currently without pagination.
 }
 ```
 
-You can also get only the shipments belonging to a specific id or compendium id.
+### Get a single specific shipment
 
-`curl http://…/api/v1/shipment?compendium_id=4XgD9`
-
-`GET /api/v1/shipment?compendium_id=4XgD97`
+`GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff`
 
 ```json
 200 
@@ -33,42 +29,63 @@ You can also get only the shipments belonging to a specific id or compendium id.
   "id": "dc351fc6-314f-4947-a235-734ab5971eff",
   "deposition_id": "63179",
   "user": "0000-0001-6021-1617",
-  "status": "delivered",
+  "status": "shipped",
   "compendium_id": "4XgD9",
   "deposition_url": "https://sandbox.zenodo.org/record/63179"
 }
 ```
 
-_Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be active after publishing._
+You can also get only the shipments belonging to a compendium id (e.g. _4XgD97_).
 
-### URL parameters for shipment lists
+`GET /api/v1/shipment?compendium_id=4XgD97`
 
-- `id` - The identifier of a specific shipment.
+URL parameter:
 - `compendium_id` - The identifier of a specific compendium.
 
-### Error responses for shipment lists
-
 ```json
-400
+200 
 
-{"error":"bad request"}
+{
+  "last_modified": "2016-12-12 10:34:32.001475",
+  "recipient": "zenodo",
+  "id": "dc351fc6-314f-4947-a235-734ab5971eff",
+  "deposition_id": "63179",
+  "user": "0000-0001-6021-1617",
+  "status": "shipped",
+  "compendium_id": "4XgD9",
+  "deposition_url": "https://sandbox.zenodo.org/record/63179"
+}
 ```
 
+_Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be functional after publishing._
 
-## New shipment
 
-You can start a transmission to a repository at the same endpoint using a `POST` request.
 
-`curl https://…/api/v1/shipment`
+
+## Create a new shipment
+
+You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a `POST` request.
 
 `POST /api/v1/shipment`
 
+
+This requires the following parameters and conditions:
+
+- `compendium_id`: the id of the compendium
+- `recipient` (name of the repository; currently only `zenodo` is possible)
+- `cookie` user must be logged in with sufficient rights
+
+Optionally, you can specifiy a custom `shipment_id`.
+
+
 ```json
-200
+201
 
 {
+  "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
   "recipient": "zenodo",
-  "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e"
+  "status": "shipped",
+  "deposition_id": "79102"
 }
 ```
 
@@ -102,6 +119,7 @@ _Note that once published, a deposition can no longer be deleted on the supporte
 
 `PUT api/v1/shipment/<shipment_id>/publishment`
 
+
 ```json
 200
 
@@ -117,6 +135,8 @@ _Note that once published, a deposition can no longer be deleted on the supporte
 ## Get a list of all files and their properties that are in a depot
 
 `GET api/v1/shipment/<shipment_id>/publishment`
+
+
 
 ```json
 200
@@ -153,17 +173,8 @@ You can find the `id` of the file you want to interact with in this json list ob
 In order to delete from a depot, you need state the `file_id` that can be retrieve from querying a shipments files object.
 
 
-### Body parameters for new shipment creation
 
-This requires the following parameters and conditions:
-
-- `compendium_id`
-- `recipient` (name of the repository; _currently only `"zenodo"` is possible_)
-- `cookie` user must be logged in with sufficient rights
-
-Optionally, you can specifiy a custom `shipment_id`.
-
-### Error responses for new shipment creation
+## Error responses 
 
 ```json
 400
