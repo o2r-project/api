@@ -46,110 +46,89 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
 	<ul class="current">
+	  
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
           
-            <li>
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Compendium</span>
     <ul class="subnav">
-    <li><span>Compendium</span></li>
-
-        
-            
+                <li class="">
+                    
+    <span class="caption-text">Create new compendium</span>
     <ul class="subnav">
-    <li><span>Create new compendium</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/upload/">API upload</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/public_share/">Public share submission</a>
-        
-    </li>
-
-        
+                <li class="toctree-l3">
+                    
+    <a class="" href="../compendium/upload/">API upload</a>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../compendium/public_share/">Public share submission</a>
+                </li>
     </ul>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/view/">View</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/download/">Download</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/metadata/">Metadata</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../compendium/files/">Files in a compendium</a>
-        
-    </li>
-
-        
+                </li>
+                <li class="">
+                    
+    <a class="" href="../compendium/view/">View</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../compendium/download/">Download</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../compendium/metadata/">Metadata</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../compendium/files/">Files in a compendium</a>
+                </li>
     </ul>
-<li>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../job/">Job</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../job/">Job</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../search/">Search</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../search/">Search</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Shipment</a>
-        
-            <ul>
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Shipment</a>
+    <ul class="subnav">
             
-                <li class="toctree-l3"><a href="#ship-compendia-and-metadata">Ship compendia and metadata</a></li>
-                
-                    <li><a class="toctree-l4" href="#list-shipments">List shipments</a></li>
-                
-                    <li><a class="toctree-l4" href="#new-shipment">New shipment</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l2"><a href="#ship-compendia-and-metadata">Ship compendia and metadata</a></li>
+    
+        <ul>
         
-    </li>
-<li>
+            <li><a class="toctree-l3" href="#list-shipments">List shipments</a></li>
+        
+            <li><a class="toctree-l3" href="#create-a-new-shipment">Create a new shipment</a></li>
+        
+            <li><a class="toctree-l3" href="#get-a-list-of-all-files-and-their-properties-that-are-in-a-depot">Get a list of all files and their properties that are in a depot</a></li>
+        
+            <li><a class="toctree-l3" href="#delete-a-specific-file-from-a-depot">Delete a specific file from a depot</a></li>
+        
+            <li><a class="toctree-l3" href="#error-responses">Error responses</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../user/">User</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../user/">User</a>
+	    </li>
           
         </ul>
       </div>
@@ -184,10 +163,9 @@
             <div class="section">
               
                 <h1 id="ship-compendia-and-metadata">Ship compendia and metadata</h1>
-<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives.</p>
+<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives. This section covers shipment related requests, including repository file management.</p>
 <h2 id="list-shipments">List shipments</h2>
-<p>Will return the complete list of shipments, currently without pagination.</p>
-<p><code>curl https://…/api/v1/shipment</code></p>
+<p>This is a basic request to list all available shipments (no pagination yet).</p>
 <p><code>GET /api/v1/shipment</code></p>
 <pre><code class="json">200
 
@@ -196,9 +174,8 @@
 }
 </code></pre>
 
-<p>You can also get only the shipments belonging to a specific id or compendium id.</p>
-<p><code>curl http://…/api/v1/shipment?compendium_id=4XgD9</code></p>
-<p><code>GET /api/v1/shipment?compendium_id=4XgD97</code></p>
+<h3 id="get-a-single-specific-shipment">Get a single specific shipment</h3>
+<p><code>GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff</code></p>
 <pre><code class="json">200 
 
 {
@@ -207,45 +184,107 @@
   &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
   &quot;deposition_id&quot;: &quot;63179&quot;,
   &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
-  &quot;status&quot;: &quot;delivered&quot;,
+  &quot;status&quot;: &quot;shipped&quot;,
   &quot;compendium_id&quot;: &quot;4XgD9&quot;,
   &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
 }
 </code></pre>
 
-<p><em>Note that returned deposition urls from Zenodo (records) will only be active after publishing.</em></p>
-<h3 id="url-parameters-for-shipment-lists">URL parameters for shipment lists</h3>
-<ul>
-<li><code>id</code> - The identifier of a specific shipment.</li>
-<li><code>compendium_id</code> - The identifier of a specific compendium.</li>
-</ul>
-<h3 id="error-responses-for-shipment-lists">Error responses for shipment lists</h3>
-<pre><code class="json">400
-
-{&quot;error&quot;:&quot;bad request&quot;}
-</code></pre>
-
-<h2 id="new-shipment">New shipment</h2>
-<p>You can start a transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
-<p><code>curl https://…/api/v1/shipment</code></p>
-<p><code>POST /api/v1/shipment</code></p>
-<pre><code class="json">200
+<p>You can also get only the shipments belonging to a compendium id (e.g. <em>4XgD97</em>).</p>
+<p><code>GET /api/v1/shipment?compendium_id=4XgD97</code></p>
+<p>URL parameter:
+- <code>compendium_id</code> - The identifier of a specific compendium.</p>
+<pre><code class="json">200 
 
 {
+  &quot;last_modified&quot;: &quot;2016-12-12 10:34:32.001475&quot;,
   &quot;recipient&quot;: &quot;zenodo&quot;,
-  &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;
+  &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
+  &quot;deposition_id&quot;: &quot;63179&quot;,
+  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+  &quot;status&quot;: &quot;shipped&quot;,
+  &quot;compendium_id&quot;: &quot;4XgD9&quot;,
+  &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
 }
 </code></pre>
 
-<h3 id="body-parameters-for-new-shipment-creation">Body parameters for new shipment creation</h3>
+<p><em>Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</em></p>
+<h2 id="create-a-new-shipment">Create a new shipment</h2>
+<p>You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
+<p><code>POST /api/v1/shipment</code></p>
 <p>This requires the following parameters and conditions:</p>
 <ul>
-<li><code>compendium_id</code></li>
-<li><code>recipient</code> (name of the repository; <em>currently only <code>"zenodo"</code> is possible</em>)</li>
+<li><code>compendium_id</code>: the id of the compendium</li>
+<li><code>recipient</code> (name of the repository; currently only <code>zenodo</code> is possible)</li>
 <li><code>cookie</code> user must be logged in with sufficient rights</li>
 </ul>
 <p>Optionally, you can specifiy a custom <code>shipment_id</code>.</p>
-<h3 id="error-responses-for-new-shipment-creation">Error responses for new shipment creation</h3>
+<pre><code class="json">201
+
+{
+  &quot;id&quot;: &quot;9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e&quot;,
+  &quot;recipient&quot;: &quot;zenodo&quot;,
+  &quot;status&quot;: &quot;shipped&quot;,
+  &quot;deposition_id&quot;: &quot;79102&quot;
+}
+</code></pre>
+
+<p>Currently the following recipients are possible: <code>zenodo</code> (Zenodo.org) and <code>eudat</code> (Eudat b2share).</p>
+<h3 id="shipment-status">Shipment status</h3>
+<p>A shipment can have two possible status: Fristly its status can be <code>shipped</code>. That means a deposition has been created at a repository and completed the necessary metadata for publication. Secondly its status can be <code>published</code>. That means the contents of the shipment are published on the repository, in which case it the publishment can not be undone. </p>
+<p>To query a shipment for its current status you may use:</p>
+<p><code>GET api/v1/shipment/&lt;shipment_id&gt;/status</code></p>
+<pre><code class="json">200
+
+{
+&quot;id&quot;: &quot;9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e&quot;,
+&quot;status&quot;: &quot;shipped&quot;
+}
+</code></pre>
+
+<h3 id="publish-a-deposition-on-a-supported-repository">Publish a deposition on a supported repository</h3>
+<p>The publishment is supposed to have completed the status <code>shipped</code> where metadata requirements for publication have been checked.</p>
+<p><em>Note that once published, a deposition can no longer be deleted on the supported repositories.</em></p>
+<p><code>PUT api/v1/shipment/&lt;shipment_id&gt;/publishment</code></p>
+<pre><code class="json">200
+
+{
+&quot;id&quot;: &quot;9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e&quot;,
+&quot;status&quot;: &quot;published&quot;
+}
+</code></pre>
+
+<h3 id="file-management-in-a-repository-depot">File management in a repository depot</h3>
+<h2 id="get-a-list-of-all-files-and-their-properties-that-are-in-a-depot">Get a list of all files and their properties that are in a depot</h2>
+<p><code>GET api/v1/shipment/&lt;shipment_id&gt;/publishment</code></p>
+<pre><code class="json">200
+
+{
+&quot;files&quot;: [{
+    &quot;filesize&quot;: 393320,
+    &quot;id&quot;: &quot;bae2a60c-bd59-47e1-a443-b34bb7d0a981&quot;,
+    &quot;filename&quot;: &quot;4XgD9.zip&quot;,
+    &quot;checksum&quot;: &quot;702f4db3e53b22176d1d5ddcda462a27&quot;,
+    &quot;links&quot;: {
+        &quot;self&quot;: &quot;https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981&quot;,
+        &quot;download&quot;: &quot;https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip&quot;
+    }
+}]
+}
+</code></pre>
+
+<p>You can find the <code>id</code> of the file you want to interact with in this json list object at <code>files[n].id</code>, where <code>n</code> is the position of that file in the array. Files can be identified in this response by either their id in the depot, their filename or their checksum.</p>
+<h2 id="delete-a-specific-file-from-a-depot">Delete a specific file from a depot</h2>
+<p><code>DELETE api/v1/shipment/&lt;shipment_id&gt;/files/&lt;file_id&gt;</code></p>
+<pre><code class="json">204
+
+{
+&quot;deleted&quot;: &quot;110d667c-7691-4fc9-93e7-5652a52df6f2&quot;
+}
+</code></pre>
+
+<p>In order to delete from a depot, you need state the <code>file_id</code> that can be retrieve from querying a shipments files object.</p>
+<h2 id="error-responses">Error responses</h2>
 <pre><code class="json">400
 
 {&quot;error&quot;:&quot;bad request&quot;}
