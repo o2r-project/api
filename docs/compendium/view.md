@@ -21,11 +21,19 @@ Will return up to 100 results by default.
 }
 ```
 
-You can also get only the compendia uploaded by a specific user.
+You can also filter the results:
 
-`curl http://…/api/v1/compendium?user=0000-0001-6021-1617`
+- Filter by user:
 
-`GET /api/v1/compendium?user=0000-0001-6021-1617`
+  `curl http://…/api/v1/compendium?user=0000-0001-6021-1617`
+
+  `GET /api/v1/compendium?user=0000-0001-6021-1617`
+
+- Filter by DOI (make sure the DOI is url-encoded):
+
+  `curl http://…/api/v1/compendium?doi=10.9999%2Ftest`
+
+  `GET /api/v1/compendium?doi=10.9999%2Ftest`
 
 ```json
 200 OK
@@ -42,6 +50,7 @@ You can also get only the compendia uploaded by a specific user.
 
 - `job_id` - Comma-separated list of related job ids to filter by.
 - `user` - Public user identifier to filter by.
+- `doi` - DOI (http://www.doi.org/) to filter by.
 - `start` - Starting point of the result list. `start - 1` results are skipped. Defaults to 1.
 - `limit` - Limits the number of results in the response. Defaults to 100.
 
