@@ -74,13 +74,9 @@
     
         <ul>
         
-            <li><a class="toctree-l5" href="#file-selection">File selection</a></li>
+            <li><a class="toctree-l5" href="#sciebo">Sciebo</a></li>
         
-            <li><a class="toctree-l5" href="#body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</a></li>
-        
-            <li><a class="toctree-l5" href="#error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</a></li>
-        
-            <li><a class="toctree-l5" href="#example-data">Example data</a></li>
+            <li><a class="toctree-l5" href="#zenodo">Zenodo</a></li>
         
         </ul>
     
@@ -169,14 +165,18 @@
             <div class="section">
               
                 <h1 id="public-share">Public share</h1>
-<p>Upload an unvalidated research compendium by submitting a link to a cloud resource. Currently, only sciebo (https://www.sciebo.de/en/) is supported.</p>
+<p>Upload an unvalidated research compendium by submitting a link to a cloud resource.</p>
+<p>Currently, the following repositories are supported:</p>
+<ul>
+<li>Sciebo (https://sciebo.de)</li>
+<li>Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)</li>
+</ul>
 <p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful download from the public share, the <code>id</code> for the new compendium is returned.</p>
 <pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO&quot;  \
-    -d &quot;path=/metatainer&quot; \
+    -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…:8088/api/v2/compendium
+     http://…/api/v1/compendium
 </code></pre>
 
 <pre><code class="json">200 OK
@@ -184,7 +184,9 @@
 {&quot;id&quot;:&quot;b9Faz&quot;}
 </code></pre>
 
-<h2 id="file-selection">File selection</h2>
+<p>Both use the same API endpoint <code>http://…/api/v1/compendium</code> but with different required/optional parameters:</p>
+<h2 id="sciebo">Sciebo</h2>
+<h3 id="file-selection">File selection</h3>
 <p>Depending on the file structure, the public share contents are treated differently:</p>
 <ol>
 <li>If a file named <code>bagit.txt</code> is found, the directory will be treated as a research compendium</li>
@@ -192,16 +194,28 @@
 <li>If a single subdirectory is found, the loader will look for subdirectories and analyze their contents <em>(NOT_IMPLEMENTED)</em></li>
 <li>If multiple files or subdirectories are found, the public share contents are treated as a workspace <em>(NOT IMPLEMENTED)</em></li>
 </ol>
-<h2 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h2>
+<h3 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h3>
 <ul>
 <li><code>share_url</code> - The sciebo link to the public share (required)</li>
-<li><code>content_type</code> - Form of archive. One of the following (required):</li>
+<li><code>content_type</code> - Form of archive. One of the following (required):<ul>
 <li><code>compendium_v1</code> compendium in Bagtainer format</li>
 <li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
-<li><code>path</code> - Path to a subdirectory in the public share (optional)</li>
+</ul>
+</li>
+<li><code>path</code> - Path to a subdirectory in the public share (optional)<ul>
 <li>default is <code>/</code></li>
 </ul>
-<h2 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</h2>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
+    -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
+    -d &quot;path=/metatainer&quot; \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     http://…/api/v1/compendium
+</code></pre>
+
+<h3 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;unauthorized: user level does not allow compendium creation&quot;}
@@ -212,10 +226,93 @@
 {&quot;error&quot;:&quot;public share host is not allowed&quot;}
 </code></pre>
 
-<h2 id="example-data">Example data</h2>
+<h3 id="example-data">Example data</h3>
 <p>For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project:</p>
 <p><code>https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO</code></p>
-<p>For more configuration details, see the project's README file.</p>
+<h2 id="zenodo">Zenodo</h2>
+<h3 id="body-parameters-for-creating-compendium-from-a-zenodo-record">Body parameters for creating compendium from a Zenodo record</h3>
+<ul>
+<li><code>share_url</code> - The link to the zenodo record (optional). May be a link to https://zenodo.org or https://doi.org</li>
+<li><code>doi</code> - A <a href="https://doi.org">DOI</a> resolving to the zenodo record (optional)</li>
+<li><code>zenodo_record_id</code> - The ID of the zenodo record (optional)</li>
+<li><code>content_type</code> - Form of archive. One of the following (required):<ul>
+<li><code>compendium_v1</code> compendium in Bagtainer format</li>
+<li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
+</ul>
+</li>
+<li><code>filename</code> - Filename of your compendium. For now, only zip-files are supported. (optional)<ul>
+<li>if no <code>filename</code> is provided the first zip file is selected</li>
+<li>multiple files are currently not supported</li>
+</ul>
+</li>
+</ul>
+<p>There must at least one url parameter that resolves to a zenodo record. I.e. one of the following:</p>
+<ul>
+<li><code>share_url</code></li>
+<li><code>doi</code></li>
+<li><code>zenodo_record_id</code></li>
+</ul>
+<h3 id="examples_1">Examples</h3>
+<ol>
+<li>Zenodo Record URL (with optional filename parameter)</li>
+</ol>
+<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
+    -d &quot;zenodo_url=https://sandbox.zenodo.org/record/69114&quot;  \
+    -d &quot;filename=metatainer.zip&quot; \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     http://…/api/v1/compendium
+</code></pre>
+
+<ol>
+<li>DOI</li>
+</ol>
+<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
+    -d &quot;doi=10.5072/zenodo.69114&quot;  \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     http://…/api/v1/compendium
+</code></pre>
+
+<ol>
+<li>Zenodo Record ID</li>
+</ol>
+<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
+    -d &quot;zenodo_record_id=69114&quot;  \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     http://…/api/v1/compendium
+</code></pre>
+
+<p>If the Zenodo record id is supplied through the <code>doi</code> or <code>zenodo_record_id</code> parameter, or if the <code>share_url</code> parameter is a <code>doi.org</code> URL, a default base URL for the file download is used as selected by the API maintainer. This may be:</p>
+<ul>
+<li><code>https://zenodo.org</code> or</li>
+<li><code>https://sandbox.zenodo.org</code></li>
+</ul>
+<h3 id="error-responses-for-creating-compendium-from-a-zenodo-record">Error responses for creating compendium from a Zenodo record</h3>
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;unauthorized: user level does not allow compendium creation&quot;}
+</code></pre>
+
+<pre><code class="json">403 Forbidden
+
+{&quot;error&quot;:&quot;host is not allowed&quot;}
+</code></pre>
+
+<pre><code class="json">422 Unprocessable Entity
+
+{&quot;error&quot;:&quot;public share URL is invalid&quot;}
+</code></pre>
+
+<pre><code class="json">422 Unprocessable Entity
+
+{&quot;error&quot;:&quot;DOI is invalid&quot;}
+</code></pre>
+
+<h3 id="example-data_1">Example data</h3>
+<p>For testing purposes you can use the following public shares. These contain the <em>metatainer</em> compendium found in the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project:</p>
+<ul>
+<li>Sciebo: <code>https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA</code></li>
+<li>Zenodo: <code>https://sandbox.zenodo.org/record/69114</code></li>
+</ul>
               
             </div>
           </div>
