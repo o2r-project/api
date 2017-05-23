@@ -52,6 +52,139 @@ Future sub-properties might expose `enriched` or `harvested` metadata.
 
 - `:id` - compendium id
 
+### Spatial MD
+
+For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files _TDB_, geotiffs _TDB_ or jpegs _TDB_).
+
+The following structure will be made available per file:
+
+````{json}
+    "spatial": {
+        "files": [
+            {
+                "geojson": {
+                    "bbox": [
+                        -2.362060546875,
+                        52.0862573323384,
+                        -1.285400390625,
+                        52.649729197309426
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    -2.362060546875,
+                                    52.0862573323384
+                                ],
+                                [
+                                    -1.285400390625,
+                                    52.649729197309426
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file1.geojson"
+            },
+            {
+                "geojson": {
+                    "bbox": [
+                        7.595369517803192,
+                        51.96245837645124,
+                        7.62162297964096,
+                        51.96966694957956
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    7.595369517803192,
+                                    51.96245837645124
+                                ],
+                                [
+                                    7.62162297964096,
+                                    51.96966694957956
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file2.shp"
+            }
+        ],
+        "union": {
+            "geojson": {
+                "bbox": [
+                    -2.362060546875,
+                    51.96245837645124,
+                    7.62162297964096,
+                    51.96245837645124
+                ],
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -2.362060546875,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            52.649729197309426
+                        ],
+                        [
+                            -2.362060546875,
+                            52.649729197309426
+                        ]
+                    ],
+                    "type": "Polygon"
+                },
+                "type": "Feature"
+            }
+        }
+    }
+```
+The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
+
+### URL parameters for metadata
+
+- `:id` - compendium id
+
+### GET metadata - example request and response
+
+`curl https://…/api/v1/$ID`
+
+`GET /api/v1/compendium/:id`
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "raw": {
+      "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
+      "author": "John M. Chambers.   "
+    },
+    "o2r": {
+      "title": "Programming with Data",
+      "creator": "John M. Chambers",
+      "year": 1998
+    }, {
+      …
+    }
+  },
+  "created": …,
+  "files": …
+}
+```
+
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
