@@ -2,7 +2,7 @@
 
 ## List users
 
-Return a list of user ids. [Pagination (including defaults) as described for compendia](compendium.md) is available for users.
+Return a list of user ids. [Pagination (including defaults) as described for compendia](compendium/view.md) is available for users.
 
 `curl https://…/api/v1/user`
 
