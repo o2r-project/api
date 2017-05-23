@@ -205,6 +205,135 @@
 <ul>
 <li><code>:id</code> - compendium id</li>
 </ul>
+<h3 id="spatial-md">Spatial MD</h3>
+<p>For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files <em>TDB</em>, geotiffs <em>TDB</em> or jpegs <em>TDB</em>).</p>
+<p>The following structure will be made available per file:</p>
+<p>````{json}
+    "spatial": {
+        "files": [
+            {
+                "geojson": {
+                    "bbox": [
+                        -2.362060546875,
+                        52.0862573323384,
+                        -1.285400390625,
+                        52.649729197309426
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    -2.362060546875,
+                                    52.0862573323384
+                                ],
+                                [
+                                    -1.285400390625,
+                                    52.649729197309426
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file1.geojson"
+            },
+            {
+                "geojson": {
+                    "bbox": [
+                        7.595369517803192,
+                        51.96245837645124,
+                        7.62162297964096,
+                        51.96966694957956
+                    ],
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    7.595369517803192,
+                                    51.96245837645124
+                                ],
+                                [
+                                    7.62162297964096,
+                                    51.96966694957956
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    },
+                    "type": "Feature"
+                },
+                "source_file": "path/to/file2.shp"
+            }
+        ],
+        "union": {
+            "geojson": {
+                "bbox": [
+                    -2.362060546875,
+                    51.96245837645124,
+                    7.62162297964096,
+                    51.96245837645124
+                ],
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -2.362060546875,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            51.96245837645124
+                        ],
+                        [
+                            7.62162297964096,
+                            52.649729197309426
+                        ],
+                        [
+                            -2.362060546875,
+                            52.649729197309426
+                        ]
+                    ],
+                    "type": "Polygon"
+                },
+                "type": "Feature"
+            }
+        }
+    }</p>
+<pre><code>The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
+
+### URL parameters for metadata
+
+- `:id` - compendium id
+
+### GET metadata - example request and response
+
+`curl https://…/api/v1/$ID`
+
+`GET /api/v1/compendium/:id`
+
+```json
+200 OK
+
+{
+  &quot;id&quot;:&quot;compendium_id&quot;,
+  &quot;metadata&quot;: {
+    &quot;raw&quot;: {
+      &quot;title&quot;: &quot;Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.&quot;,
+      &quot;author&quot;: &quot;John M. Chambers.   &quot;
+    },
+    &quot;o2r&quot;: {
+      &quot;title&quot;: &quot;Programming with Data&quot;,
+      &quot;creator&quot;: &quot;John M. Chambers&quot;,
+      &quot;year&quot;: 1998
+    }, {
+      …
+    }
+  },
+  &quot;created&quot;: …,
+  &quot;files&quot;: …
+}
+</code></pre>
+
 <h2 id="update-metadata">Update metadata</h2>
 <p>The following endpoint can be used to update the <code>o2r</code> metadata elements.
 <em>Only authors of a compendium can update the metadata.</em>
