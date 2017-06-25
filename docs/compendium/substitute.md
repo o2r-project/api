@@ -16,7 +16,7 @@ input of request-body for substitution
   "substFiles": [
     {
       "original": "base_datei",
-      "ersatz": "overlay_datei"
+      "xchange": "overlay_datei"
     }
   ],
   "overlay": "overlay_erc_id",
