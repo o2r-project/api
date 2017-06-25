@@ -73,8 +73,35 @@ input of request-body for substitution
 {"error":"Error during substitution"}
 ```
 
+## View single Compendium
+
 ### Request
 
-`GET`
+`GET /api/v1/compendium/:id`
 
 This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
+
+## View substituted Compendia
+
+### Request
+
+`GET /api/v1/substitutions/:id`
+
+### Response
+
+list of compendia that has been substituted out of a base erc
+```json
+200 OK
+{
+  "results":[
+    "nkm4L",
+    "asdi5",
+    "nb2sg",
+    …
+  ]
+}
+```
+
+### URL parameters for substititions
+
+- `id` - id of the base erc
