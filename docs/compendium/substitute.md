@@ -1,109 +1,58 @@
-# Substitute compendia
+# Substitute two compendia
 
-Introduction to substitution of two compendia. <br/>
-A new compendium will be the result. Merged out of choosen data and files of two existing compendia, the new compendium will give the user an opportunity to exchange datasets or analysis and more or less create a new compendium.
+Substitution is the combination of an base erc and an overlay erc.
+A user can choose files from the overlay erc that will be replaced with some of the base erc or uniquely added.
 
 ## Create substitution
-
-
-### Request
-
-`GET /api/vl/substitution/:base_id/overlay_id`
-
-### URL parameters for substititions
-
-- `base_id`
-- `overlay_id`
-
-> initialize substitution with two compendia after choosing files on base-ercView
-
-### Response
-
-```json
-200 OK
-
-{
-  "base_id": "base_id",
-  "overlay_id": "overlay_id"
-}
-```
-
-### URL parameters for substititions
-
-- `base` ?
-- `overlay` ?
-
-### Error responses
-
-```json
-401 Unauthorized
-
-{"error":"not authenticated or not allowed"}
-```
-
-```json
-404 Not Found
-
-{"error":"compendia ids not found"}
-```
 
 ### Request
 
 `POST /api/v1/substitution`
 
-input of request-body for substitution <br/>
-( where `checked` will be a list of files choosen for substitution )
+input of request-body for substitution
 ```json
 {
-  "user": "user_id",
-  "ercs": [
+  "base": "base_erc_id",
+  "substFiles": [
     {
-      "id": "base_erc_id",
-      "checked": [],
-      "user": "creator_id"
-    },
-    {
-      "id": "base_erc_id",
-      "checked": [],
-      "user": "creator_id"
+      "original": "base_datei",
+      "ersatz": "overlay_datei"
     }
-  ]
+  ],
+  "overlay": "overlay_erc_id",
 }
 ```
+
+### body parameters for substititions
+
+- `base` - id of the base erc
+- `substfiles` - array objects specified by `original` and `xchange`
+  - `original` - filename of the file from the base erc
+  - `xchange` - filename of the overlay erc that will be exchanged for the original file
+- `overlay` - id of the overlay erc
 
 ### Response
 
 ```json
-200 OK
+201 CREATED
 
 {
-  "user": "user_orcid_id",
-  "ercs": [
-    {
-      "id": "base_erc_id",
-      "checked": [],
-      "user": "creator_id"
-    },
-    {
-      "id": "base_erc_id",
-      "checked": [],
-      "user": "creator_id"
-    }
-  ]
+  "id": "new_erc_id"
 }
 ```
-
-### URL parameters for substititions
-
-- `base` ?
-- `overlay` ?
 
 ### Error responses
 
 ```json
 401 Unauthorized
 
-{"error":"not authenticated or not allowed"}
+{"error":"not authenticated"}
+```
+
+```json
+401 Unauthorized
+
+{"error":"not allowed"}
 ```
 
 ```json
@@ -123,3 +72,9 @@ input of request-body for substitution <br/>
 
 {"error":"Error during substitution"}
 ```
+
+### Request
+
+`GET`
+
+This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
