@@ -1,7 +1,7 @@
 # Substitute two compendia
 
 Substitution is the combination of an base erc and an overlay erc.
-A user can choose files from the overlay erc that will be replaced with some of the base erc or uniquely added.
+A user can choose files from the overlay erc that will be replaced with files of the base erc or uniquely added.
 
 ## Create substitution
 
@@ -104,4 +104,4 @@ list of compendia that has been substituted out of a base erc
 
 ### URL parameters for substititions
 
-- `id` - id of the base erc
+- `:id` - id of the base erc
