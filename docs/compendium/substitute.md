@@ -1,7 +1,7 @@
 # Substitute two compendia
 
-Substitution is the combination of an base erc and an overlay erc.
-A user can choose files from the overlay erc that will be replaced with files of the base erc or uniquely added.
+Substitution is the combination of an base ERC and an overlay ERC.
+A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added.
 
 ## Create substitution
 
@@ -12,24 +12,24 @@ A user can choose files from the overlay erc that will be replaced with files of
 input of request-body for substitution
 ```json
 {
-  "base": "base_erc_id",
-  "substFiles": [
+  "base": "<base ERC id>",
+  "overlay": "<overlay ERC id>",
+  "substitutionFiles": [
     {
-      "original": "base_datei",
-      "xchange": "overlay_datei"
+      "original": "<filename of base ERC>",
+      "xchange": "<filename of overlay ERC>"
     }
-  ],
-  "overlay": "overlay_erc_id",
+  ]
 }
 ```
 
-### body parameters for substititions
+### Request body properties
 
-- `base` - id of the base erc
-- `substfiles` - array objects specified by `original` and `xchange`
-  - `original` - filename of the file from the base erc
-  - `xchange` - filename of the overlay erc that will be exchanged for the original file
-- `overlay` - id of the overlay erc
+- `base` - id of the base ERC
+- `substfiles` - array of file substitutions specified by `original` and `xchange`
+  - `original` - filename of the file from the base ERC
+  - `xchange` - filename of the overlay ERC that will be exchanged for the original file
+- `overlay` - id of the overlay ERC
 
 ### Response
 
@@ -81,6 +81,30 @@ input of request-body for substitution
 
 This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
 
+### Response
+
+additional metadata of a substituted ERC
+```json
+{
+  ...
+  "metadata": {
+      ...
+      "substitution": true,
+      "overlay": {
+          "id": "<overlay ERC id>",
+          "substitutionFiles": [
+            {
+              "original": "<filename of base ERC>",
+              "xchange": "<filename of overlay ERC>"
+            }
+          ]
+      },
+      ...
+      },
+  ...
+}
+```
+
 ## View substituted Compendia
 
 ### Request
@@ -89,7 +113,7 @@ This request will be handled as a GET-request of an usual compendium. ( [Click f
 
 ### Response
 
-list of compendia that has been substituted out of a base erc
+Result will be a list of compendia ids that have been substituted out of a choosen base ERC
 ```json
 200 OK
 {
@@ -104,4 +128,4 @@ list of compendia that has been substituted out of a base erc
 
 ### URL parameters for substititions
 
-- `:id` - id of the base erc
+- `:id` - id of the base ERC
