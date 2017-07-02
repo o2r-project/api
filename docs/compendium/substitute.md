@@ -12,12 +12,12 @@ A user can choose files from the overlay ERC that will replace files of the base
 input of request-body for substitution
 ```json
 {
-  "base": "<base ERC id>",
-  "overlay": "<overlay ERC id>",
+  "base": "G92NL",
+  "overlay": "9fCTR",
   "substitutionFiles": [
     {
-      "original": "<filename of base ERC>",
-      "xchange": "<filename of overlay ERC>"
+      "original": "climate-timeseries.csv",
+      "xchange": "mytimeseries_data.csv"
     }
   ]
 }
@@ -37,7 +37,7 @@ input of request-body for substitution
 201 CREATED
 
 {
-  "id": "new_erc_id"
+  "id": "oMMFn"
 }
 ```
 
@@ -58,13 +58,13 @@ input of request-body for substitution
 ```json
 404 Not Found
 
-{"error":"base erc not found"}
+{"error":"base ERC not found"}
 ```
 
 ```json
 404 Not Found
 
-{"error":"overlay erc not found"}
+{"error":"overlay ERC not found"}
 ```
 
 ```json
@@ -86,16 +86,18 @@ This request will be handled as a GET-request of an usual compendium. ( [Click f
 additional metadata of a substituted ERC
 ```json
 {
+  "id": "oMMFn",
   ...
   "metadata": {
       ...
-      "substitution": true,
-      "overlay": {
-          "id": "<overlay ERC id>",
+      "substituted": true,
+      "substitution": {
+          "base": "G92NL",
+          "overlay": "9fCTR",
           "substitutionFiles": [
             {
-              "original": "<filename of base ERC>",
-              "xchange": "<filename of overlay ERC>"
+              "original": "climate-timeseries.csv"
+              "xchange": "mytimeseries_data.csv"
             }
           ]
       },
@@ -118,7 +120,7 @@ Result will be a list of compendia ids that have been substituted out of a choos
 200 OK
 {
   "results":[
-    "nkm4L",
+    "oMMFn",
     "asdi5",
     "nb2sg",
     …
