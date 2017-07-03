@@ -37,7 +37,9 @@ curl -XGET 'https://…/api/v1/search' -d '{
 }'
 ```
 
+
 ## Advanced Search 
+
 The keyword combined with spatial and temporal parameters are used to search for ERC which fall within the parameters set by the search.
 
 ### Example requests
@@ -50,6 +52,7 @@ Query with URL Encoding
 - [https://…/api/v1/search?q=*&from=2014-01-01T00%3A00%3A00&to=2016-04-11T00%3A00%3A00&coords=%5B%5B%5B-86.98%2C54.23%5D%2C%5B-86.98%2C84.06%5D%2C%5B-11.05%2C84.06%5D%2C%5B-11.05%2C54.23%5D%2C%5B-86.98%2C54.23%5D%5D%5D&keyword=geosciences](https://…/api/v1/search?q=*&from=2014-01-01T00%3A00%3A00&to=2016-04-11T00%3A00%3A00&coords=%5B%5B%5B-86.98%2C54.23%5D%2C%5B-86.98%2C84.06%5D%2C%5B-11.05%2C84.06%5D%2C%5B-11.05%2C54.23%5D%2C%5B-86.98%2C54.23%5D%5D%5D&keyword=geosciences)
 
 ### Example Response
+
 
 ```json
 {
@@ -579,17 +582,20 @@ Query with URL Encoding
 
 }}
 ```
+
 ### List of URL Parameters
 
 The Search API and it's URL consist of certain parameters based on [Elasticsearch DSL queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) which help to fetch a specific ERC.
 
 #### Parameters for Temporal Searching
 
-`from` :- This takes in the value as a timestamp according to ISO 8601 standards when the creation of ERC was started. (currently it's restricted to 2014-01-01 which can be modified on the basis of data).
+`from` :- This takes in the value as a timestamp according to ISO 8601 standards when the creation of ERC was started. (currently it's restricted to 2014-01-01 which can be modified on the basis of data). The cardinality for `from` is 
+`1 until n` and the input has to be provided by the user. 
 
-`to` :- This takes in the value as a timestamp according to ISO 8601 standards when the creation of ERC was ended.Current date and time can be entered as a value in this case.
+`to` :- This takes in the value as a timestamp according to ISO 8601 standards when the creation of ERC was ended.Current date and time can be entered as a value in this case.The cardinality for `to` is `1 until n` and the input has to be provided by the user. Both parameters can be used multiple times by providing the inputs in a sequential order.
 
-The values from the parameters are used in a pre-configured Elasticsearch [range query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html) which queries the database for defined duration 
+The values from the parameters are used in a pre-configured Elasticsearch [range query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html) which queries the database for defined duration
+
 ```json
 {
     "range": {
@@ -611,7 +617,8 @@ The values from the parameters are used in a pre-configured Elasticsearch [range
 #### Parameters for Spatial Searching 
 
 `coords` :- This should cater for the coordinates defined by the bounding box. A 2-d array of coordinates is expected as a parameter. The coordinates are to be pairs of latitude longitude values describing a closed polygon.
-The value from this parameter is used in a pre-configured Elasticsearch [spatial query](https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html) which applies a `geo_shape` filter to fetch the desired ERC according to spatial parameters.
+The value from this parameter is used in a pre-configured Elasticsearch [spatial query](https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html) which applies a `geo_shape` filter to fetch the desired ERC according to spatial parameters.The cardinality for `coords` is `1 until n` and the input has to be provided by the user. The parameter can be used multiple times to perform searching in different regions.
+
 ```json
 {
     "bool": {
@@ -632,17 +639,17 @@ The value from this parameter is used in a pre-configured Elasticsearch [spatial
      }
 }
 ```
+
 The filter has been nested within a `boolean/must match` query so that it completely matches the documents being queried. The filter has been applied to the `metadata.o2r.spatial.geometry` field of the dataset with a `within` relation so that the ERC that matches the document's coordinates completely are fetched.
 
-#### Parameters for Keyword Searching 
+#### Parameters for Keyword Searching
+
 `keyword` :- Any word, phrase in the form of text that should be used to match the title of ERC.
-A simple match query is used at the back-end to match the query value with the values in dataset
+A simple match query is used at the back-end to match the query value with the values in dataset.The cardinality for `coords` is `n` and the input has to be provided by the user. The parameter can be used multiple times to perform searching.
+
 ```json
 {
     "match" : { "metadata.o2r.title" : keyword}
   }
   ```
  
-## Suggesters - WORK IN PROGRESS
-
-[Elasticsearch suggest API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html) 
