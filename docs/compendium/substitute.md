@@ -10,6 +10,7 @@ A user can choose files from the overlay ERC that will replace files of the base
 `POST /api/v1/substitution`
 
 input of request-body for substitution
+
 ```json
 {
   "base": "G92NL",
@@ -84,6 +85,7 @@ This request will be handled as a GET-request of an usual compendium. ( [Click f
 ### Response
 
 additional metadata of a substituted ERC
+
 ```json
 {
   "id": "oMMFn",
@@ -96,7 +98,7 @@ additional metadata of a substituted ERC
           "overlay": "9fCTR",
           "substitutionFiles": [
             {
-              "original": "climate-timeseries.csv"
+              "original": "climate-timeseries.csv",
               "xchange": "mytimeseries_data.csv"
             }
           ]
@@ -107,15 +109,16 @@ additional metadata of a substituted ERC
 }
 ```
 
-## View substituted Compendia
+## List substituted Compendia
 
 ### Request
 
-`GET /api/v1/substitutions/:id`
+`GET /api/v1/substitution/`
 
 ### Response
 
-Result will be a list of compendia ids that have been substituted out of a choosen base ERC
+Result will be a list of compendia ids that have been substituted
+
 ```json
 200 OK
 {
@@ -128,6 +131,54 @@ Result will be a list of compendia ids that have been substituted out of a choos
 }
 ```
 
-### URL parameters for substititions
+## List related substituted Compendia
 
-- `:id` - id of the base ERC
+Filter by base and/or overlay compendium id
+
+- `GET /api/v1/substitution/?base=compendium_id&overlay=compendium_id`
+
+### Response
+
+Result will be a list of compendia ids that have been substituted out of a choosen base and/or overlay ERC
+
+```json
+200 OK
+{
+  "results":[
+    "oMMFn",
+    "asdi5",
+    …
+  ]
+}
+```
+
+### Error responses
+
+```json
+401 Unauthorized
+
+{"error":"not authenticated"}
+```
+
+```json
+401 Unauthorized
+
+{"error":"not allowed"}
+```
+
+```json
+404 Not Found
+
+{"error":"base ERC not found"}
+```
+
+```json
+404 Not Found
+
+{"error":"overlay ERC not found"}
+```
+
+### URL parameters for substituted compendium lists
+
+- `:base` - id of the base ERC that the results should be related to
+- `:overlay` - id of the base ERC that the results should be related to
