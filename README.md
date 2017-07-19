@@ -38,9 +38,8 @@ The variable `GH_TOKEN` is used in the deploy script. The token generated on the
 
 This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/o2r-web-api/settings), so that malicious changes to the Travis configuration file will be noticed by the repository maintainer before merging a pull request.
 
-
 ## License
 
-The o2r Web API specification is licensed under Creative Commons CC-BY-4.0 License, see file `LICENSE`.
-
-Copyright (C) 2017 - o2r project.
+The o2r Web API specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file `LICENSE`.
+To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.
+This work is published from: Germany.
