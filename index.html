@@ -55,6 +55,16 @@
             
     <li class="toctree-l2"><a href="#o2r-web-api-documentation">o2r web API documentation</a></li>
     
+        <ul>
+        
+            <li><a class="toctree-l3" href="#about">About</a></li>
+        
+            <li><a class="toctree-l3" href="#general-notes">General notes</a></li>
+        
+            <li><a class="toctree-l3" href="#license">License</a></li>
+        
+        </ul>
+    
 
     </ul>
 	    </li>
@@ -151,13 +161,20 @@
                 <h1 id="o2r-web-api-documentation">o2r web API documentation</h1>
 <p><a href="http://o2r.info"><img alt="Opening Reproducible Research" src="./logo.png" /></a></p>
 <p><strong>Current version of the API</strong>: <code>v1</code> (subject to change)</p>
+<h2 id="about">About</h2>
 <p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="http://o2r.info/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.</p>
 <p>The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented <strong><a href="http://o2r.info/erc-spec">in the ERC spec</a></strong>.</p>
+<h2 id="general-notes">General notes</h2>
 <p>It is implemented as a RESTful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
 <p>Unless specified otherwise, responses are always in JSON format.
 Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.
 Requests to the API should always be made with a secure connection using <code>HTTPS</code>.</p>
 <p>We also provide a <a href="https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json">simple Postman collection</a> (<a href="https://www.getpostman.com/">getpostman.com</a>), so that you can comfortably explore the API.</p>
+<h2 id="license">License</h2>
+<p><img alt="CC-0 Button" src="https://licensebuttons.net/p/zero/1.0/88x31.png" /></p>
+<p>The o2r Executable Research Compendium specification is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 1.0 Universal License</a>, see file <code>LICENSE</code>.
+To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.
+This work is published from: Germany.</p>
               
             </div>
           </div>
@@ -204,5 +221,5 @@ Requests to the API should always be made with a secure connection using <code>H
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-07-18 15:11:57
+Build Date UTC : 2017-07-19 11:31:58
 -->

@@ -2,13 +2,28 @@
     "docs": [
         {
             "location": "/",
-            "text": "o2r web API documentation\n\n\n\n\nCurrent version of the API\n: \nv1\n (subject to change)\n\n\nThe o2r web API acts as the interface between the \no2r\n \nmicroservices\n and the \nweb interface\n.\n\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented \nin the ERC spec\n.\n\n\nIt is implemented as a RESTful API. The entrypoint for the current version is \n/api/v1\n.\n\n\nUnless specified otherwise, responses are always in JSON format.\nBody parameters in \nPOST\n requests are expected in \nmultipart/form-data\n format.\nRequests to the API should always be made with a secure connection using \nHTTPS\n.\n\n\nWe also provide a \nsimple Postman collection\n (\ngetpostman.com\n), so that you can comfortably explore the API.",
+            "text": "o2r web API documentation\n\n\n\n\nCurrent version of the API\n: \nv1\n (subject to change)\n\n\nAbout\n\n\nThe o2r web API acts as the interface between the \no2r\n \nmicroservices\n and the \nweb interface\n.\n\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented \nin the ERC spec\n.\n\n\nGeneral notes\n\n\nIt is implemented as a RESTful API. The entrypoint for the current version is \n/api/v1\n.\n\n\nUnless specified otherwise, responses are always in JSON format.\nBody parameters in \nPOST\n requests are expected in \nmultipart/form-data\n format.\nRequests to the API should always be made with a secure connection using \nHTTPS\n.\n\n\nWe also provide a \nsimple Postman collection\n (\ngetpostman.com\n), so that you can comfortably explore the API.\n\n\nLicense\n\n\n\n\nThe o2r Executable Research Compendium specification is licensed under \nCreative Commons CC0 1.0 Universal License\n, see file \nLICENSE\n.\nTo the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.\nThis work is published from: Germany.",
             "title": "Home"
         },
         {
             "location": "/#o2r-web-api-documentation",
-            "text": "Current version of the API :  v1  (subject to change)  The o2r web API acts as the interface between the  o2r   microservices  and the  web interface .  The API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented  in the ERC spec .  It is implemented as a RESTful API. The entrypoint for the current version is  /api/v1 .  Unless specified otherwise, responses are always in JSON format.\nBody parameters in  POST  requests are expected in  multipart/form-data  format.\nRequests to the API should always be made with a secure connection using  HTTPS .  We also provide a  simple Postman collection  ( getpostman.com ), so that you can comfortably explore the API.",
+            "text": "Current version of the API :  v1  (subject to change)",
             "title": "o2r web API documentation"
+        },
+        {
+            "location": "/#about",
+            "text": "The o2r web API acts as the interface between the  o2r   microservices  and the  web interface .  The API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented  in the ERC spec .",
+            "title": "About"
+        },
+        {
+            "location": "/#general-notes",
+            "text": "It is implemented as a RESTful API. The entrypoint for the current version is  /api/v1 .  Unless specified otherwise, responses are always in JSON format.\nBody parameters in  POST  requests are expected in  multipart/form-data  format.\nRequests to the API should always be made with a secure connection using  HTTPS .  We also provide a  simple Postman collection  ( getpostman.com ), so that you can comfortably explore the API.",
+            "title": "General notes"
+        },
+        {
+            "location": "/#license",
+            "text": "The o2r Executable Research Compendium specification is licensed under  Creative Commons CC0 1.0 Universal License , see file  LICENSE .\nTo the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.\nThis work is published from: Germany.",
+            "title": "License"
         },
         {
             "location": "/compendium/upload/",
