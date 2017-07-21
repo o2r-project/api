@@ -78,6 +78,8 @@ input of request-body for substitution
 
 ### Request
 
+`curl https://.../api/v1/compendium/$ID`
+
 `GET /api/v1/compendium/:id`
 
 This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
@@ -87,6 +89,8 @@ This request will be handled as a GET-request of an usual compendium. ( [Click f
 additional metadata of a substituted ERC
 
 ```json
+200 OK
+
 {
   "id": "oMMFn",
   ...
@@ -113,7 +117,9 @@ additional metadata of a substituted ERC
 
 ### Request
 
-`GET /api/v1/substitution/`
+`curl https://.../api/v1/substitutions`
+
+`GET /api/v1/substitutions`
 
 ### Response
 
@@ -121,6 +127,7 @@ Result will be a list of compendia ids that have been substituted
 
 ```json
 200 OK
+
 {
   "results":[
     "oMMFn",
@@ -133,9 +140,13 @@ Result will be a list of compendia ids that have been substituted
 
 ## List related substituted Compendia
 
-Filter by base and/or overlay compendium id
+With the same request as "List substituted Compendiua", but the opportunity to use filters to only show compendia related by their base id and/or overlay id.
 
-- `GET /api/v1/substitution/?base=compendium_id&overlay=compendium_id`
+### Request
+
+`curl https://.../api/v1/substitutions?base=$BASE_ID&overlay=$OVERLAY_ID`
+
+`GET /api/v1/substitutions?base=base_id&overlay=overlay_id`
 
 ### Response
 
@@ -143,10 +154,72 @@ Result will be a list of compendia ids that have been substituted out of a choos
 
 ```json
 200 OK
+
 {
   "results":[
     "oMMFn",
     "asdi5",
+    "Co3jf",
+    …
+  ]
+}
+```
+
+### Filter results with following parameters:
+
+- Filter by `base`:
+
+`curl https://.../api/v1/substitutions?base=jfL3w`
+
+`GET /api/v1/substitutions?base=jfL3w`
+
+Result will be a list of compendia ids that have been substituted out of a choosen base ERC
+
+```json
+200 OK
+
+{
+  "results":[
+    "wGmFn",
+    …
+  ]
+}
+```
+
+- Filter by `overlay`:
+
+`curl https://.../api/v1/substitutions?overlay=as4Kj`
+
+`GET /api/v1/substitutions?overlay=as4Kj`
+
+Result will be a list of compendia ids that have been substituted out of a choosen overlay ERC
+
+```json
+200 OK
+
+{
+  "results":[
+    "9pQ34",
+    "1Tnd3",
+    …
+  ]
+}
+```
+
+- Filter by `base` and `overlay`:
+
+`curl https://.../api/v1/substitutions?base=lO3Td&overlay=as4Kj`
+
+`GET /api/v1/substitutions?base=lO3Td&overlay=as4Kj`
+
+Result will be a list of compendia ids that have been substituted out of a choosen base and overlay ERC
+
+```json
+200 OK
+
+{
+  "results":[
+    "9pQ34",
     …
   ]
 }
