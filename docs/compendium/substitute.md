@@ -138,34 +138,11 @@ Result will be a list of compendia ids that have been substituted
 }
 ```
 
-## List related substituted Compendia
-
-With the same request as "List substituted Compendiua", but the opportunity to use filters to only show compendia related by their base id and/or overlay id.
-
-### Request
+### Filter results with following parameters:
 
 `curl https://.../api/v1/substitutions?base=$BASE_ID&overlay=$OVERLAY_ID`
 
 `GET /api/v1/substitutions?base=base_id&overlay=overlay_id`
-
-### Response
-
-Result will be a list of compendia ids that have been substituted out of a choosen base and/or overlay ERC
-
-```json
-200 OK
-
-{
-  "results":[
-    "oMMFn",
-    "asdi5",
-    "Co3jf",
-    …
-  ]
-}
-```
-
-### Filter results with following parameters:
 
 - Filter by `base`:
 
