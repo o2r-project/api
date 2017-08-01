@@ -34,6 +34,12 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 {"error":"missing or wrong api key"}
 ```
 
+```json
+422 Unprocessable Entity
+
+{"error":"encoding not supported"}
+```
+
 ## Example data
 
 For local testing you can quickly upload some of the example compendia using a Docker image that is part of the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
