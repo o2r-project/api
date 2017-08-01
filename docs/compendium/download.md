@@ -59,3 +59,9 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 
 {"error":"no compendium with this id"}
 ```
+
+```json
+500 Internal Server Error
+
+{"error":"no job found for this compendium, run a job before downloading with image"}
+```
