@@ -37,7 +37,7 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 ```json
 422 Unprocessable Entity
 
-{"error":"encoding not supported"}
+{"error":"files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"}
 ```
 
 ## Example data
