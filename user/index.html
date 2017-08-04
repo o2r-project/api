@@ -120,6 +120,8 @@
         
             <li><a class="toctree-l3" href="#authentication">Authentication</a></li>
         
+            <li><a class="toctree-l3" href="#user-levels">User levels</a></li>
+        
             <li><a class="toctree-l3" href="#edit-user">Edit user</a></li>
         
         </ul>
@@ -246,6 +248,23 @@
 }
 </code></pre>
 
+<h2 id="user-levels">User levels</h2>
+<p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> assocciated with an account.
+On registration, each account is assigned a level <code>0</code>.
+Only admin users and the user herself can read the level of a user.</p>
+<p>The following is a list of actions and the corresponding required user level.</p>
+<ul>
+<li><code>0</code> <em>Users</em> (everybody)</li>
+<li>Create new jobs</li>
+<li>View compendia, jobs, user details</li>
+<li><code>100</code> <em>Known users</em></li>
+<li>Upload new compendium</li>
+<li>Create shipments</li>
+<li><code>500</code> <em>Editors</em></li>
+<li>Edit user levels</li>
+<li><code>1000</code> and above are <em>Admins</em></li>
+<li>View status pages of microservices</li>
+</ul>
 <h2 id="edit-user">Edit user</h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
 <h3 id="request-for-user-level-change">Request for user level change</h3>
