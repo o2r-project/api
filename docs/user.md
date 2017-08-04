@@ -121,6 +121,25 @@ When no session cookie was included, or the included session cookie does not bel
 }
 ```
 
+## User levels
+
+Users are authenticated via OAuth and the actions on the website are limited by the `level` assocciated with an account.
+On registration, each account is assigned a level `0`.
+Only admin users and the user herself can read the level of a user.
+
+The following is a list of actions and the corresponding required user level.
+
+- `0` _Users_ (everybody)
+  - Create new jobs
+  - View compendia, jobs, user details
+- `100` _Known users_
+  - Upload new compendium
+  - Create shipments
+- `500` _Editors_
+  - Edit user levels
+- `1000` and above are _Admins_
+  - View status pages of microservices
+
 ## Edit user
 
 You can update information of an existing user using the `HTTP` operation `PATCH`.
