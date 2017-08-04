@@ -130,15 +130,15 @@ Only admin users and the user herself can read the level of a user.
 The following is a list of actions and the corresponding required user level.
 
 - `0` _Users_ (everybody)
-  - Create new jobs
-  - View compendia, jobs, user details
+    - Create new jobs
+    - View compendia, jobs, user details
 - `100` _Known users_
-  - Upload new compendium
-  - Create shipments
+    - Upload new compendium
+    - Create shipments
 - `500` _Editors_
-  - Edit user levels
+    - Edit user levels
 - `1000` and above are _Admins_
-  - View status pages of microservices
+    - View status pages of microservices
 
 ## Edit user
 
