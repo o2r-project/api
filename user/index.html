@@ -253,25 +253,23 @@
 On registration, each account is assigned a level <code>0</code>.
 Only admin users and the user herself can read the level of a user.</p>
 <p>The following is a list of actions and the corresponding required user level.</p>
+<h3 id="0-users-everybody"><code>0</code> <em>Users</em> (everybody)</h3>
 <ul>
-<li><code>0</code> <em>Users</em> (everybody)<ul>
 <li>Create new jobs</li>
 <li>View compendia, jobs, user details</li>
 </ul>
-</li>
-<li><code>100</code> <em>Known users</em><ul>
+<h3 id="100-known-users"><code>100</code> <em>Known users</em></h3>
+<ul>
 <li>Upload new compendium</li>
 <li>Create shipments</li>
 </ul>
-</li>
-<li><code>500</code> <em>Editors</em><ul>
+<h3 id="500-editors"><code>500</code> <em>Editors</em></h3>
+<ul>
 <li>Edit user levels</li>
 </ul>
-</li>
-<li><code>1000</code> and above are <em>Admins</em><ul>
+<h3 id="1000-and-above-are-admins"><code>1000</code> and above are <em>Admins</em></h3>
+<ul>
 <li>View status pages of microservices</li>
-</ul>
-</li>
 </ul>
 <h2 id="edit-user">Edit user</h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
