@@ -252,31 +252,40 @@
 <p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> assocciated with an account.
 On registration, each account is assigned a level <code>0</code>.
 Only admin users and the user herself can read the level of a user.</p>
-<p>The following is a list of actions and the corresponding required user level.</p>
-<h3 id="0-users-everybody"><code>0</code> <em>Users</em> (everybody)</h3>
+<p>The following is a list of actions and the corresponding required <em>minimum</em> user level.</p>
 <ul>
+<li><code>0</code> <em>Users</em> (everybody)<ul>
 <li>Create new jobs</li>
 <li>View compendia, jobs, user details</li>
 </ul>
-<h3 id="100-known-users"><code>100</code> <em>Known users</em></h3>
-<ul>
+</li>
+<li><code>100</code> <em>Known users</em><ul>
 <li>Upload new compendium</li>
 <li>Create shipments</li>
+<li>Create substitutions</li>
 </ul>
-<h3 id="500-editors"><code>500</code> <em>Editors</em></h3>
-<ul>
+</li>
+<li><code>500</code> <em>Editors</em><ul>
 <li>Edit user levels</li>
+<li>Edit metadata of other user's compendia</li>
 </ul>
-<h3 id="1000-and-above-are-admins"><code>1000</code> and above are <em>Admins</em></h3>
-<ul>
+</li>
+<li><code>1000</code> <em>Admins</em><ul>
 <li>View status pages of microservices</li>
+</ul>
+</li>
 </ul>
 <h2 id="edit-user">Edit user</h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
-<h3 id="request-for-user-level-change">Request for user level change</h3>
-<p>The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. <code>..?level=&lt;new level value&gt;</code>.
-The value must be an <code>int</code>.
+<h3 id="change-user-level-request">Change user level request</h3>
+<p>The user level can be changed with an <code>HTTP</code> <code>PATCH</code> request.
+The new level is passed to the API via a query parameter, i.e. <code>..?level=&lt;new level value&gt;</code>.
+The value must be an <code>int</code> (integer).
 The response is the full user document with the updated value.</p>
+<div class="admonition note">
+<p class="admonition-title">Required user level</p>
+<p>The user sending the request to change the level must have the required <a href="./#user-levels">user level</a>.</p>
+</div>
 <pre><code class="bash">curl --request PATCH --cookie &quot;connect.sid=&lt;session cookie here&gt;&quot; \
   https://…/api/v1/user/0000-0001-6021-1617?level=42`
 </code></pre>

@@ -173,6 +173,10 @@
 </ul>
 <p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful download from the public share, the <code>id</code> for the new compendium is returned.</p>
+<div class="admonition note">
+<p class="admonition-title">Required user level</p>
+<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
+</div>
 <pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
     -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \

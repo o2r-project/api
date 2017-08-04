@@ -208,7 +208,10 @@
 }
 </code></pre>
 
-<p><em>Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
+</div>
 <h2 id="create-a-new-shipment">Create a new shipment</h2>
 <p>You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
 <p><code>POST /api/v1/shipment</code></p>
@@ -219,6 +222,10 @@
 <li><code>cookie</code> user must be logged in with sufficient rights</li>
 </ul>
 <p>Optionally, you can specifiy a custom <code>shipment_id</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Required user level</p>
+<p>The user sending the request to create a shipment must have the required <a href="../user/#user-levels">user level</a>.</p>
+</div>
 <pre><code class="json">201
 
 {
@@ -244,7 +251,10 @@
 
 <h3 id="publish-a-deposition-on-a-supported-repository">Publish a deposition on a supported repository</h3>
 <p>The publishment is supposed to have completed the status <code>shipped</code> where metadata requirements for publication have been checked.</p>
-<p><em>Note that once published, a deposition can no longer be deleted on the supported repositories.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once published, a deposition can no longer be deleted on the supported repositories.</p>
+</div>
 <p><code>PUT api/v1/shipment/&lt;shipment_id&gt;/publishment</code></p>
 <pre><code class="json">200
 
@@ -254,7 +264,8 @@
 }
 </code></pre>
 
-<h3 id="file-management-in-a-repository-depot">File management in a repository depot</h3>
+<!--### File management in a repository depot-->
+
 <h2 id="get-a-list-of-all-files-and-their-properties-that-are-in-a-depot">Get a list of all files and their properties that are in a depot</h2>
 <p><code>GET api/v1/shipment/&lt;shipment_id&gt;/publishment</code></p>
 <pre><code class="json">200
@@ -273,7 +284,8 @@
 }
 </code></pre>
 
-<p>You can find the <code>id</code> of the file you want to interact with in this json list object at <code>files[n].id</code>, where <code>n</code> is the position of that file in the array. Files can be identified in this response by either their id in the depot, their filename or their checksum.</p>
+<p>You can find the <code>id</code> of the file you want to interact with in this json list object at <code>files[n].id</code>, where <code>n</code> is the position of that file in the array.
+Files can be identified in this response by either their id in the depot, their filename or their checksum.</p>
 <h2 id="delete-a-specific-file-from-a-depot">Delete a specific file from a depot</h2>
 <p><code>DELETE api/v1/shipment/&lt;shipment_id&gt;/files/&lt;file_id&gt;</code></p>
 <pre><code class="json">204

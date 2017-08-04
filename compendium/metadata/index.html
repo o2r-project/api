@@ -174,7 +174,10 @@
 <li><code>datacite</code> (TBD) holds DataCite XML</li>
 <li><code>zenodo</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo</li>
 </ul>
-<p><strong>Note:</strong> The information in each sub-property are subject to independent workflows and may differ from one another.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The information in each sub-property are subject to independent workflows and may differ from one another.</p>
+</div>
 <p>Future sub-properties might expose <code>enriched</code> or <code>harvested</code> metadata.</p>
 <h2 id="request-and-response">Request and response</h2>
 <p><code>curl https://…/api/v1/$ID</code></p>
@@ -208,19 +211,18 @@
 <h3 id="spatial-md">Spatial MD</h3>
 <p>For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files <em>TDB</em>, geotiffs <em>TDB</em> or jpegs <em>TDB</em>).</p>
 <p>The following structure will be made available per file:</p>
-<p>````{json}
-    "spatial": {
-        "files": [
+<pre><code class="json">    &quot;spatial&quot;: {
+        &quot;files&quot;: [
             {
-                "geojson": {
-                    "bbox": [
+                &quot;geojson&quot;: {
+                    &quot;bbox&quot;: [
                         -2.362060546875,
                         52.0862573323384,
                         -1.285400390625,
                         52.649729197309426
                     ],
-                    "geometry": {
-                        "coordinates": [
+                    &quot;geometry&quot;: {
+                        &quot;coordinates&quot;: [
                             [
                                 [
                                     -2.362060546875,
@@ -232,22 +234,22 @@
                                 ]
                             ]
                         ],
-                        "type": "Polygon"
+                        &quot;type&quot;: &quot;Polygon&quot;
                     },
-                    "type": "Feature"
+                    &quot;type&quot;: &quot;Feature&quot;
                 },
-                "source_file": "path/to/file1.geojson"
+                &quot;source_file&quot;: &quot;path/to/file1.geojson&quot;
             },
             {
-                "geojson": {
-                    "bbox": [
+                &quot;geojson&quot;: {
+                    &quot;bbox&quot;: [
                         7.595369517803192,
                         51.96245837645124,
                         7.62162297964096,
                         51.96966694957956
                     ],
-                    "geometry": {
-                        "coordinates": [
+                    &quot;geometry&quot;: {
+                        &quot;coordinates&quot;: [
                             [
                                 [
                                     7.595369517803192,
@@ -259,23 +261,23 @@
                                 ]
                             ]
                         ],
-                        "type": "Polygon"
+                        &quot;type&quot;: &quot;Polygon&quot;
                     },
-                    "type": "Feature"
+                    &quot;type&quot;: &quot;Feature&quot;
                 },
-                "source_file": "path/to/file2.shp"
+                &quot;source_file&quot;: &quot;path/to/file2.shp&quot;
             }
         ],
-        "union": {
-            "geojson": {
-                "bbox": [
+        &quot;union&quot;: {
+            &quot;geojson&quot;: {
+                &quot;bbox&quot;: [
                     -2.362060546875,
                     51.96245837645124,
                     7.62162297964096,
                     51.96245837645124
                 ],
-                "geometry": {
-                    "coordinates": [
+                &quot;geometry&quot;: {
+                    &quot;coordinates&quot;: [
                         [
                             -2.362060546875,
                             51.96245837645124
@@ -293,26 +295,23 @@
                             52.649729197309426
                         ]
                     ],
-                    "type": "Polygon"
+                    &quot;type&quot;: &quot;Polygon&quot;
                 },
-                "type": "Feature"
+                &quot;type&quot;: &quot;Feature&quot;
             }
         }
-    }</p>
-<pre><code>The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
+    }
+</code></pre>
 
-### URL parameters for metadata
-
-- `:id` - compendium id
-
-### GET metadata - example request and response
-
-`curl https://…/api/v1/$ID`
-
-`GET /api/v1/compendium/:id`
-
-```json
-200 OK
+<p>The <code>spatial</code> key has a <code>union</code> bounding box, that wraps all extracted bounding boxes.</p>
+<h3 id="url-parameters-for-metadata_1">URL parameters for metadata</h3>
+<ul>
+<li><code>:id</code> - compendium id</li>
+</ul>
+<h3 id="get-metadata-example-request-and-response">GET metadata - example request and response</h3>
+<p><code>curl https://…/api/v1/$ID</code></p>
+<p><code>GET /api/v1/compendium/:id</code></p>
+<pre><code class="json">200 OK
 
 {
   &quot;id&quot;:&quot;compendium_id&quot;,
@@ -336,8 +335,11 @@
 
 <h2 id="update-metadata">Update metadata</h2>
 <p>The following endpoint can be used to update the <code>o2r</code> metadata elements.
-<em>Only authors of a compendium can update the metadata.</em>
 All other metadata sub-properties are only updated by the platform itself.</p>
+<div class="admonition note">
+<p class="admonition-title">Metadata update rights</p>
+<p>Only authors of a compendium can update the metadata, or users with the required <a href="user.md#user-levels">user level</a>.</p>
+</div>
 <h3 id="metadata-update-request">Metadata update request</h3>
 <pre><code class="bash">curl -H 'Content-Type: application/json' \
   -X PUT \

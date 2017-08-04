@@ -160,15 +160,16 @@
               
                 <h1 id="o2r-web-api-documentation">o2r web API documentation</h1>
 <p><a href="http://o2r.info"><img alt="Opening Reproducible Research" src="./logo.png" /></a></p>
-<p><strong>Current version of the API</strong>: <code>v1</code> (subject to change)</p>
+<p><strong>Current version of the API</strong>: <code>v1</code></p>
 <h2 id="about">About</h2>
 <p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="http://o2r.info/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.</p>
 <p>The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented <strong><a href="http://o2r.info/erc-spec">in the ERC spec</a></strong>.</p>
 <h2 id="general-notes">General notes</h2>
-<p>It is implemented as a RESTful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
+<p>The API is implemented as a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>ful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
 <p>Unless specified otherwise, responses are always in JSON format.
 Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.
-Requests to the API should always be made with a secure connection using <code>HTTPS</code>.</p>
+Requests to the API should always be made with a secure connection using <code>HTTPS</code>.
+Some requests require <a href="user/#authentication">authentication</a> with a specific <a href="user/#user-levels">user level</a>.</p>
 <p>We also provide a <a href="https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json">simple Postman collection</a> (<a href="https://www.getpostman.com/">getpostman.com</a>), so that you can comfortably explore the API.</p>
 <h2 id="license">License</h2>
 <p><img alt="CC-0 Button" src="https://licensebuttons.net/p/zero/1.0/88x31.png" /></p>
@@ -221,5 +222,5 @@ This work is published from: Germany.</p>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-08-04 10:20:32
+Build Date UTC : 2017-08-04 13:23:11
 -->
