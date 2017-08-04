@@ -11,6 +11,10 @@ The upload is only allowed for logged in users. To run the upload from the comma
 
 Upon successful download from the public share, the `id` for the new compendium is returned.
 
+!!! note "Required user level"
+
+    The user creating a new compendium must have the required [user level](../user.md#user-levels).
+
 ```bash
 curl -d "content_type=compendium_v1" \
     -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \

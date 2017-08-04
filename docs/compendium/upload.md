@@ -6,6 +6,10 @@ The upload is only allowed for logged in users. To run the upload from the comma
 
 Upon successful extraction of archive, the `id` for the new compendium is returned.
 
+!!! note "Required user level"
+
+    The user creating a new compendium must have the required [user level](../user.md#user-levels).
+
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
     -F content_type=compendium_v1 http://…/api/v1/compendium \

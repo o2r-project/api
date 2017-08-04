@@ -15,7 +15,9 @@ The sub-properties and their features are
 - `datacite` (TBD) holds DataCite XML
 - `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo
 
-**Note:** The information in each sub-property are subject to independent workflows and may differ from one another.
+!!!note
+
+    The information in each sub-property are subject to independent workflows and may differ from one another.
 
 Future sub-properties might expose `enriched` or `harvested` metadata.
 
@@ -58,7 +60,7 @@ For discovery purposes, the Metadata will included extracted geojson bounding bo
 
 The following structure will be made available per file:
 
-````{json}
+```{json}
     "spatial": {
         "files": [
             {
@@ -188,8 +190,11 @@ The `spatial` key has a `union` bounding box, that wraps all extracted bounding 
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
-_Only authors of a compendium can update the metadata._
 All other metadata sub-properties are only updated by the platform itself.
+
+!!! note "Metadata update rights"
+
+    Only authors of a compendium can update the metadata, or users with the required [user level](user.md#user-levels).
 
 ### Metadata update request
 

@@ -127,35 +127,35 @@ Users are authenticated via OAuth and the actions on the website are limited by 
 On registration, each account is assigned a level `0`.
 Only admin users and the user herself can read the level of a user.
 
-The following is a list of actions and the corresponding required user level.
+The following is a list of actions and the corresponding required _minimum_ user level.
 
-### `0` _Users_ (everybody)
-
-- Create new jobs
-- View compendia, jobs, user details
-
-### `100` _Known users_
-
-- Upload new compendium
-- Create shipments
-
-### `500` _Editors_
-
-- Edit user levels
-
-### `1000` and above are _Admins_
-
-- View status pages of microservices
+- `0` _Users_ (everybody)
+    - Create new jobs
+    - View compendia, jobs, user details
+- `100` _Known users_
+    - Upload new compendium
+    - Create shipments
+    - Create substitutions
+- `500` _Editors_
+    - Edit user levels
+    - Edit metadata of other user's compendia
+- `1000` _Admins_
+    - View status pages of microservices
 
 ## Edit user
 
 You can update information of an existing user using the `HTTP` operation `PATCH`.
 
-### Request for user level change
+### Change user level request
 
-The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
-The value must be an `int`.
+The user level can be changed with an `HTTP` `PATCH` request.
+The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
+The value must be an `int` (integer).
 The response is the full user document with the updated value.
+
+!!! note "Required user level"
+
+    The user sending the request to change the level must have the required [user level](user.md#user-levels).
 
 ```bash
 curl --request PATCH --cookie "connect.sid=<session cookie here>" \

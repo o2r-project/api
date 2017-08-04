@@ -57,17 +57,15 @@ URL parameter:
 }
 ```
 
-_Note that returned deposition urls from Zenodo as well as Eudat b2share (records) will only be functional after publishing._
+!!! note
 
-
-
+    Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
 
 ## Create a new shipment
 
 You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a `POST` request.
 
 `POST /api/v1/shipment`
-
 
 This requires the following parameters and conditions:
 
@@ -76,6 +74,10 @@ This requires the following parameters and conditions:
 - `cookie` user must be logged in with sufficient rights
 
 Optionally, you can specifiy a custom `shipment_id`.
+
+!!! note "Required user level"
+
+    The user sending the request to create a shipment must have the required [user level](user.md#user-levels).
 
 
 ```json
@@ -110,12 +112,13 @@ To query a shipment for its current status you may use:
 }
 ```
 
-
 ### Publish a deposition on a supported repository
 
 The publishment is supposed to have completed the status `shipped` where metadata requirements for publication have been checked.
 
-_Note that once published, a deposition can no longer be deleted on the supported repositories._
+!!!note
+
+    Once published, a deposition can no longer be deleted on the supported repositories.
 
 `PUT api/v1/shipment/<shipment_id>/publishment`
 
@@ -129,14 +132,11 @@ _Note that once published, a deposition can no longer be deleted on the supporte
 }
 ```
 
-
-### File management in a repository depot
+<!--### File management in a repository depot-->
 
 ## Get a list of all files and their properties that are in a depot
 
 `GET api/v1/shipment/<shipment_id>/publishment`
-
-
 
 ```json
 200
@@ -155,8 +155,8 @@ _Note that once published, a deposition can no longer be deleted on the supporte
 }
 ```
 
-You can find the `id` of the file you want to interact with in this json list object at `files[n].id`, where `n` is the position of that file in the array. Files can be identified in this response by either their id in the depot, their filename or their checksum.
-
+You can find the `id` of the file you want to interact with in this json list object at `files[n].id`, where `n` is the position of that file in the array.
+Files can be identified in this response by either their id in the depot, their filename or their checksum.
 
 ## Delete a specific file from a depot
 
@@ -171,8 +171,6 @@ You can find the `id` of the file you want to interact with in this json list ob
 ```
 
 In order to delete from a depot, you need state the `file_id` that can be retrieve from querying a shipments files object.
-
-
 
 ## Error responses 
 

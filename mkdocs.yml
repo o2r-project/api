@@ -16,3 +16,5 @@ pages:
 theme: readthedocs # flatly, cinder
 site_dir: site
 extra_css: [o2r.css]
+markdown_extensions:
+  - markdown.extensions.admonition

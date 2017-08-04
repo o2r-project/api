@@ -2,7 +2,7 @@
 
 [![Opening Reproducible Research](logo.png)](http://o2r.info)
 
-**Current version of the API**: `v1` (subject to change)
+**Current version of the API**: `v1`
 
 ## About
 
@@ -12,11 +12,12 @@ The API provides services around the executable research compendium (ERC), or "c
 
 ## General notes
 
-It is implemented as a RESTful API. The entrypoint for the current version is `/api/v1`.
+The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is `/api/v1`.
 
 Unless specified otherwise, responses are always in JSON format.
 Body parameters in `POST` requests are expected in `multipart/form-data` format.
 Requests to the API should always be made with a secure connection using `HTTPS`.
+Some requests require [authentication](user.md#authentication) with a specific [user level](user.md#user-levels).
 
 We also provide a [simple Postman collection](https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json) ([getpostman.com](https://www.getpostman.com/)), so that you can comfortably explore the API.
 

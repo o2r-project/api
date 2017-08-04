@@ -8,6 +8,10 @@ introduction...
 
 `POST /api/v1/..`
 
+!!! note "Required user level"
+
+    The user creating a new substitution must have the required [user level](../user.md#user-levels).
+
 ### Response
 
 ```json
