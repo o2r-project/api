@@ -18,7 +18,8 @@ input of request-body for substitution
   "substitutionFiles": [
     {
       "original": "climate-timeseries.csv",
-      "xchange": "mytimeseries_data.csv"
+      "xchange": "mytimeseries_data.csv",
+      "filename": "default"
     }
   ]
 }
@@ -30,6 +31,7 @@ input of request-body for substitution
 - `substfiles` - array of file substitutions specified by `original` and `xchange`
   - `original` - filename of the file from the base ERC
   - `xchange` - filename of the overlay ERC that will be exchanged for the original file
+  - `filename` - set as default. Final name of a substituted file will be set, when ERC is saved
 - `overlay` - id of the overlay ERC
 
 ### Response
@@ -103,7 +105,8 @@ additional metadata of a substituted ERC
           "substitutionFiles": [
             {
               "original": "climate-timeseries.csv",
-              "xchange": "mytimeseries_data.csv"
+              "xchange": "mytimeseries_data.csv",
+              "filename": "climate-timeseries.csv"
             }
           ]
       },
