@@ -74,6 +74,12 @@ curl -d "content_type=compendium_v1" \
 {"error":"public share host is not allowed"}
 ```
 
+```json
+422 Unprocessable Entity
+
+{"error":"files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"}
+```
+
 ### Example data
 
 For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
@@ -158,6 +164,12 @@ If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` para
 422 Unprocessable Entity
 
 {"error":"DOI is invalid"}
+```
+
+```json
+422 Unprocessable Entity
+
+{"error":"files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"}
 ```
 
 ### Example data
