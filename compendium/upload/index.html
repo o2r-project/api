@@ -198,6 +198,11 @@
 {&quot;error&quot;:&quot;missing or wrong api key&quot;}
 </code></pre>
 
+<pre><code class="json">422 Unprocessable Entity
+
+{&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
+</code></pre>
+
 <h2 id="example-data">Example data</h2>
 <p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
 The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
