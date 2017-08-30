@@ -76,7 +76,7 @@ input of request-body for substitution(create)
 
 ### Request
 
-`POST /api/v1/substitution/run`
+`POST /api/v1/substitution`
 
 input of request-body for substitution(run)
 
@@ -144,8 +144,7 @@ input of request-body for substitution(run)
 {"error":"Error during substitution"}
 ```
 
-
-## View single Compendium
+## View substituted Compendium
 
 ### Request
 
@@ -157,7 +156,9 @@ This request will be handled as a GET-request of an usual compendium. ( [Click f
 
 ### Response
 
-additional metadata of a substituted ERC
+A substituted ERC will be saved as a usual ERC, but with additional metadata specifying this as a substituted ERC and giving information about the substitution.
+
+Example 01 - in case there are no conflicts between filenames of any basefile and overlayfile :
 
 ```json
 200 OK
@@ -184,6 +185,45 @@ additional metadata of a substituted ERC
   ...
 }
 ```
+
+Example 02 - in case the overlayfile has the same filename as one of the existing basefiles :
+
+```json
+200 OK
+
+{
+  "id": "oMMFn",
+  ...
+  "metadata": {
+      ...
+      "substituted": true,
+      "substitution": {
+          "base": "G92NL",
+          "overlay": "9fCTR",
+          "substitutionFiles": [
+            {
+              "base": "climate-timeseries.csv",
+              "overlay": "input.csv",
+              "filename": "overlay_input.csv"
+            }
+          ]
+      },
+      ...
+      },
+  ...
+}
+```
+
+### Response additional metadata
+
+- `substituted` - will be set `true`
+- `substitution` - object, specifying information about the substitution
+  - `base` - id of the base ERC
+  - `overlay` - id of the overlay ERC
+  - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
+    - `base` - filename of the file from the base ERC
+    - `overlay` - filename of the file from the overlay ERC
+    - `filename` - as seen in the examples above, `filename` will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
 
 ## List substituted Compendia
 
