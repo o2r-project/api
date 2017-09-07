@@ -1,13 +1,16 @@
 # Public share
 
-Upload an unvalidated research compendium by submitting a link to a cloud resource.
+Upload a research compendium by submitting a link to a cloud resource using a regular HTTP `POST` request ("URL encoded". `application/x-www-form-urlencoded`).
 
 Currently, the following repositories are supported:
 
 - Sciebo (https://sciebo.de)
 - Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
 
-The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
+The upload is only allowed for logged in users.
+To run the upload from the command line, login on the website and open you browser cookies.
+Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Copy the contents of the cookie into the request example below.
 
 Upon successful download from the public share, the `id` for the new compendium is returned.
 

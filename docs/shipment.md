@@ -68,7 +68,7 @@ You can start a initial creation of a shipment, leading to transmission to a rep
 
 `POST /api/v1/shipment`
 
-This **requires** the following parameters as [form-encoded data](http://docs.python-requests.org/en/master/user/quickstart/#more-complicated-post-requests):
+This **requires** the following parameters as `multipart/form-data` or `application/x-www-form-urlencoded` encoded data:
 
 - `compendium_id` (`string`): the id of the compendium
 - `recipient` (`string`): identifier for the repository

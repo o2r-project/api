@@ -1,8 +1,11 @@
 # Upload via API
 
-Upload a unvalidated research compendium as a compressed `.zip` archive.
+Upload a research compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
 
-The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
+The upload is only allowed for logged in users.
+To run the upload from the command line, login on the website and open you browser cookies.
+Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Copy the contents of the cookie into the request example below.
 
 Upon successful extraction of archive, the `id` for the new compendium is returned.
 

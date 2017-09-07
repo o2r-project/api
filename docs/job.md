@@ -46,7 +46,8 @@ The step status is one of:
 
 ## New job
 
-Create and run a new execution job. Requires a `compendium_id`.
+Create and run a new execution job with an HTTP `POST` request using `multipart/form-data`.
+Requires a `compendium_id`.
 
 `curl -F compendium_id=$ID https://…/api/v1/job`
 
@@ -60,9 +61,7 @@ Create and run a new execution job. Requires a `compendium_id`.
 
 ### Body parameters for new jobs
 
-- `compendium_id` - The `id` of the compendium to base this job on.
-- `steps` - **TODO** select steps that will be executed (skip some steps in successive executions?)
-- `inputs` - **_proposal_** - Array with one or more `FileDescriptor`.
+- `compendium_id` (`string`): __Required__ The identifier of the compendium to base this job on.
 
 ### Error responses for new jobs
 
@@ -89,7 +88,7 @@ Results can be filtered:
 - by `status` i.e. `status=success` or
 - by `user` i.e. `user=0000-0000-0000-0001`
 
-`curl -F compendium_id=$ID https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`
+`curl https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`
 
 `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success`
 
