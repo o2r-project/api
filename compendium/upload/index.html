@@ -167,8 +167,11 @@
             <div class="section">
               
                 <h1 id="upload-via-api">Upload via API</h1>
-<p>Upload a unvalidated research compendium as a compressed <code>.zip</code> archive.</p>
-<p>The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Copy the contents of the cookie into the request example below.</p>
+<p>Upload a research compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
+<p>The upload is only allowed for logged in users.
+To run the upload from the command line, login on the website and open you browser cookies.
+Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Copy the contents of the cookie into the request example below.</p>
 <p>Upon successful extraction of archive, the <code>id</code> for the new compendium is returned.</p>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>

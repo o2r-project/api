@@ -163,7 +163,8 @@
             <div class="section">
               
                 <h1 id="ship-compendia-and-metadata">Ship compendia and metadata</h1>
-<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives. This section covers shipment related requests, including repository file management.</p>
+<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
+This section covers shipment related requests, including repository file management.</p>
 <h2 id="list-shipments">List shipments</h2>
 <p>This is a basic request to list all available shipments (no pagination yet).</p>
 <p><code>GET /api/v1/shipment</code></p>
@@ -215,17 +216,23 @@
 <h2 id="create-a-new-shipment">Create a new shipment</h2>
 <p>You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
 <p><code>POST /api/v1/shipment</code></p>
-<p>This requires the following parameters and conditions:</p>
+<p>This <strong>requires</strong> the following parameters as <code>multipart/form-data</code> or <code>application/x-www-form-urlencoded</code> encoded data:</p>
 <ul>
-<li><code>compendium_id</code>: the id of the compendium</li>
-<li><code>recipient</code> (name of the repository; currently only <code>zenodo</code> is possible)</li>
-<li><code>cookie</code> user must be logged in with sufficient rights</li>
+<li><code>compendium_id</code> (<code>string</code>): the id of the compendium</li>
+<li><code>recipient</code> (<code>string</code>): identifier for the repository</li>
 </ul>
-<p>Optionally, you can specifiy a custom <code>shipment_id</code>.</p>
+<p>The following are <strong>optional parameters</strong>:</p>
+<ul>
+<li><code>update_packaging</code> (<code>boolean</code>, default: <code>false</code>): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to <code>true</code>, the shipment package is updated during the shipment creation in order to make it valid, if set to <code>false</code> the shipment creation will result in an error.</li>
+<li><code>cookie</code> (<code>string</code>): an authentication cookie must be set in the request header, but it may also be provided via a <code>cookie</code> form parameter as a fallback</li>
+<li><code>shipment_id</code> (<code>string</code>): a user-defined identifier for the shipment (see <code>id</code> in response)</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>
 <p>The user sending the request to create a shipment must have the required <a href="../user/#user-levels">user level</a>.</p>
 </div>
+<h3 id="creation-response">Creation response</h3>
+<p>The response contains the shipment identifier (<code>id</code>) and the <code>deposition_id</code>, i.e. an identifier provided by the shipment recipient.</p>
 <pre><code class="json">201
 
 {
@@ -236,9 +243,20 @@
 }
 </code></pre>
 
-<p>Currently the following recipients are possible: <code>zenodo</code> (Zenodo.org) and <code>eudat</code> (Eudat b2share).</p>
+<h3 id="packaging">Packaging</h3>
+<p>Currently, the shipment process always creates <a href="http://tools.ietf.org/html/draft-kunze-bagit">BagIt</a> bags to package a compendium.</p>
+<h3 id="supported-recipients">Supported recipients</h3>
+<ul>
+<li><code>zenodo</code> (<a href="https://zenodo.org">Zenodo</a>)</li>
+<li><code>eudat</code> (<a href="https://b2share.eudat.eu/">EUDAT B2SHARE</a>).</li>
+</ul>
 <h3 id="shipment-status">Shipment status</h3>
-<p>A shipment can have two possible status: Fristly its status can be <code>shipped</code>. That means a deposition has been created at a repository and completed the necessary metadata for publication. Secondly its status can be <code>published</code>. That means the contents of the shipment are published on the repository, in which case it the publishment can not be undone. </p>
+<p>A shipment can have three possible status:</p>
+<ul>
+<li><code>shipped</code>: a deposition has been created at a repository and completed the necessary metadata for publication.</li>
+<li><code>published</code>: the contents of the shipment are published on the repository, in which case the publishment can not be undone.</li>
+<li><code>error</code>: an error occurred during shipment or publishing.</li>
+</ul>
 <p>To query a shipment for its current status you may use:</p>
 <p><code>GET api/v1/shipment/&lt;shipment_id&gt;/status</code></p>
 <pre><code class="json">200
