@@ -107,7 +107,6 @@ Currently, the shipment process always creates [BagIt](http://tools.ietf.org/htm
 - `zenodo` ([Zenodo](https://zenodo.org))
 - `eudat` ([EUDAT B2SHARE](https://b2share.eudat.eu/)).
 
-
 ### Shipment status
 
 A shipment can have three possible status:
@@ -119,7 +118,6 @@ A shipment can have three possible status:
 To query a shipment for its current status you may use:
 
 `GET api/v1/shipment/<shipment_id>/status`
-
 
 ```json
 200
