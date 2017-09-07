@@ -1,6 +1,7 @@
 # Ship compendia and metadata
 
-Shipments are used to deliver ERCs or their metadata to third party repositories or archives. This section covers shipment related requests, including repository file management.
+Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
+This section covers shipment related requests, including repository file management.
 
 ## List shipments
 
@@ -67,18 +68,24 @@ You can start a initial creation of a shipment, leading to transmission to a rep
 
 `POST /api/v1/shipment`
 
-This requires the following parameters and conditions:
+This **requires** the following parameters as [form-encoded data](http://docs.python-requests.org/en/master/user/quickstart/#more-complicated-post-requests):
 
-- `compendium_id`: the id of the compendium
-- `recipient` (name of the repository; currently only `zenodo` is possible)
-- `cookie` user must be logged in with sufficient rights
+- `compendium_id` (`string`): the id of the compendium
+- `recipient` (`string`): identifier for the repository
 
-Optionally, you can specifiy a custom `shipment_id`.
+The following are **optional parameters**:
+
+- `update_packaging` (`boolean`, default: `false`): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation will result in an error.
+- `cookie` (`string`): an authentication cookie must be set in the request header, but it may also be provided via a `cookie` form parameter as a fallback
+- `shipment_id` (`string`): a user-defined identifier for the shipment (see `id` in response)
 
 !!! note "Required user level"
 
     The user sending the request to create a shipment must have the required [user level](user.md#user-levels).
 
+### Creation response
+
+The response contains the shipment identifier (`id`) and the `deposition_id`, i.e. an identifier provided by the shipment recipient.
 
 ```json
 201
@@ -91,12 +98,23 @@ Optionally, you can specifiy a custom `shipment_id`.
 }
 ```
 
-Currently the following recipients are possible: `zenodo` (Zenodo.org) and `eudat` (Eudat b2share).
+### Packaging
+
+Currently, the shipment process always creates [BagIt](http://tools.ietf.org/html/draft-kunze-bagit) bags to package a compendium.
+
+### Supported recipients
+
+- `zenodo` ([Zenodo](https://zenodo.org))
+- `eudat` ([EUDAT B2SHARE](https://b2share.eudat.eu/)).
 
 
 ### Shipment status
 
-A shipment can have two possible status: Fristly its status can be `shipped`. That means a deposition has been created at a repository and completed the necessary metadata for publication. Secondly its status can be `published`. That means the contents of the shipment are published on the repository, in which case it the publishment can not be undone. 
+A shipment can have three possible status:
+
+- `shipped`: a deposition has been created at a repository and completed the necessary metadata for publication.
+- `published`: the contents of the shipment are published on the repository, in which case the publishment can not be undone.
+- `error`: an error occurred during shipment or publishing.
 
 To query a shipment for its current status you may use:
 
