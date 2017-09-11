@@ -1,6 +1,6 @@
 # Public share
 
-Upload a research compendium by submitting a link to a cloud resource using a regular HTTP `POST` request ("URL encoded". `application/x-www-form-urlencoded`).
+Upload a research compendium by submitting a link to a cloud resource using an HTTP `POST` request using `multipart/form-data`.
 
 Currently, the following repositories are supported:
 
@@ -19,8 +19,8 @@ Upon successful download from the public share, the `id` for the new compendium 
     The user creating a new compendium must have the required [user level](../user.md#user-levels).
 
 ```bash
-curl -d "content_type=compendium_v1" \
-    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
+curl -F "content_type=compendium_v1" \
+    -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium
 ```
@@ -56,9 +56,9 @@ Depending on the file structure, the public share contents are treated different
 ### Examples
 
 ```bash
-curl -d "content_type=compendium_v1" \
-    -d "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
-    -d "path=/metatainer" \
+curl -F "content_type=compendium_v1" \
+    -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
+    -F "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium
 ```
@@ -114,9 +114,9 @@ There must at least one url parameter that resolves to a zenodo record. I.e. one
 1. Zenodo Record URL (with optional filename parameter)
 
 ```bash
-curl -d "content_type=compendium_v1" \
-    -d "zenodo_url=https://sandbox.zenodo.org/record/69114"  \
-    -d "filename=metatainer.zip" \
+curl -F "content_type=compendium_v1" \
+    -F "zenodo_url=https://sandbox.zenodo.org/record/69114"  \
+    -F "filename=metatainer.zip" \
     --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium
 ```
@@ -124,8 +124,8 @@ curl -d "content_type=compendium_v1" \
 2. DOI
 
 ```bash
-curl -d "content_type=compendium_v1" \
-    -d "doi=10.5072/zenodo.69114"  \
+curl -F "content_type=compendium_v1" \
+    -F "doi=10.5072/zenodo.69114"  \
     --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium
 ```
@@ -133,8 +133,8 @@ curl -d "content_type=compendium_v1" \
 3. Zenodo Record ID
 
 ```bash
-curl -d "content_type=compendium_v1" \
-    -d "zenodo_record_id=69114"  \
+curl -F "content_type=compendium_v1" \
+    -F "zenodo_record_id=69114"  \
     --cookie "connect.sid=<code string here>" \
      http://…/api/v1/compendium
 ```
