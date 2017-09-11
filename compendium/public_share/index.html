@@ -165,7 +165,7 @@
             <div class="section">
               
                 <h1 id="public-share">Public share</h1>
-<p>Upload a research compendium by submitting a link to a cloud resource using a regular HTTP <code>POST</code> request ("URL encoded". <code>application/x-www-form-urlencoded</code>).</p>
+<p>Upload a research compendium by submitting a link to a cloud resource using an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
 <p>Currently, the following repositories are supported:</p>
 <ul>
 <li>Sciebo (https://sciebo.de)</li>
@@ -180,10 +180,10 @@ Copy the contents of the cookie into the request example below.</p>
 <p class="admonition-title">Required user level</p>
 <p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
-<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
+<pre><code class="bash">curl -F &quot;content_type=compendium_v1&quot; \
+    -F &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 </code></pre>
 
 <pre><code class="json">200 OK
@@ -191,7 +191,7 @@ Copy the contents of the cookie into the request example below.</p>
 {&quot;id&quot;:&quot;b9Faz&quot;}
 </code></pre>
 
-<p>Both use the same API endpoint <code>http://…/api/v1/compendium</code> but with different required/optional parameters:</p>
+<p>Both use the same API endpoint <code>https://…/api/v1/compendium</code> but with different required/optional parameters:</p>
 <h2 id="sciebo">Sciebo</h2>
 <h3 id="file-selection">File selection</h3>
 <p>Depending on the file structure, the public share contents are treated differently:</p>
@@ -215,11 +215,11 @@ Copy the contents of the cookie into the request example below.</p>
 </li>
 </ul>
 <h3 id="examples">Examples</h3>
-<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
-    -d &quot;path=/metatainer&quot; \
+<pre><code class="bash">curl -F &quot;content_type=compendium_v1&quot; \
+    -F &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
+    -F &quot;path=/metatainer&quot; \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 </code></pre>
 
 <h3 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</h3>
@@ -268,29 +268,29 @@ Copy the contents of the cookie into the request example below.</p>
 <ol>
 <li>Zenodo Record URL (with optional filename parameter)</li>
 </ol>
-<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;zenodo_url=https://sandbox.zenodo.org/record/69114&quot;  \
-    -d &quot;filename=metatainer.zip&quot; \
+<pre><code class="bash">curl -F &quot;content_type=compendium_v1&quot; \
+    -F &quot;zenodo_url=https://sandbox.zenodo.org/record/69114&quot;  \
+    -F &quot;filename=metatainer.zip&quot; \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 </code></pre>
 
 <ol>
 <li>DOI</li>
 </ol>
-<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;doi=10.5072/zenodo.69114&quot;  \
+<pre><code class="bash">curl -F &quot;content_type=compendium_v1&quot; \
+    -F &quot;doi=10.5072/zenodo.69114&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 </code></pre>
 
 <ol>
 <li>Zenodo Record ID</li>
 </ol>
-<pre><code class="bash">curl -d &quot;content_type=compendium_v1&quot; \
-    -d &quot;zenodo_record_id=69114&quot;  \
+<pre><code class="bash">curl -F &quot;content_type=compendium_v1&quot; \
+    -F &quot;zenodo_record_id=69114&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 </code></pre>
 
 <p>If the Zenodo record id is supplied through the <code>doi</code> or <code>zenodo_record_id</code> parameter, or if the <code>share_url</code> parameter is a <code>doi.org</code> URL, a default base URL for the file download is used as selected by the API maintainer. This may be:</p>

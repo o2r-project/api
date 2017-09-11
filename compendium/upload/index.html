@@ -178,9 +178,9 @@ Copy the contents of the cookie into the request example below.</p>
 <p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
 <pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    -F content_type=compendium_v1 https://…/api/v1/compendium \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/compendium 
+     https://…/api/v1/compendium 
 </code></pre>
 
 <pre><code class="json">200 OK

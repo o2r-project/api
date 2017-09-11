@@ -216,7 +216,7 @@
 <h3 id="access-authentication-information-for-direct-api-access">Access authentication information for direct API access</h3>
 <p>To run commands which require authentication from the command line, a user must login on the website first. Then open you browser cookies and find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Use the the contents of the cookie for your requests, for example as shown below when using curl.</p>
 <pre><code class="bash">curl [...] --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     http://…/api/v1/endpoint
+     https://…/api/v1/endpoint
 </code></pre>
 
 <h3 id="authentication-within-microservices">Authentication within microservices</h3>
