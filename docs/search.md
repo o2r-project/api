@@ -11,7 +11,7 @@
 The search is based on [Elasticsearch](https://www.elastic.co/) and the regular [Elasticsearch search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html) is exposed at
 
 ```bash
-http://…/api/v1/search
+https://…/api/v1/search
 ```
 
 ### Example requests

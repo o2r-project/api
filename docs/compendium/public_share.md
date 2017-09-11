@@ -22,7 +22,7 @@ Upon successful download from the public share, the `id` for the new compendium 
 curl -F "content_type=compendium_v1" \
     -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 ```
 
 ```json
@@ -31,7 +31,7 @@ curl -F "content_type=compendium_v1" \
 {"id":"b9Faz"}
 ```
 
-Both use the same API endpoint `http://…/api/v1/compendium` but with different required/optional parameters:
+Both use the same API endpoint `https://…/api/v1/compendium` but with different required/optional parameters:
 
 ## Sciebo 
 
@@ -60,7 +60,7 @@ curl -F "content_type=compendium_v1" \
     -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     -F "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 ```
 
 ### Error responses for creating compendium from public share
@@ -118,7 +118,7 @@ curl -F "content_type=compendium_v1" \
     -F "zenodo_url=https://sandbox.zenodo.org/record/69114"  \
     -F "filename=metatainer.zip" \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 ```
 
 2. DOI
@@ -127,7 +127,7 @@ curl -F "content_type=compendium_v1" \
 curl -F "content_type=compendium_v1" \
     -F "doi=10.5072/zenodo.69114"  \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 ```
 
 3. Zenodo Record ID
@@ -136,7 +136,7 @@ curl -F "content_type=compendium_v1" \
 curl -F "content_type=compendium_v1" \
     -F "zenodo_record_id=69114"  \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium
+     https://…/api/v1/compendium
 ```
 If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` parameter, or if the `share_url` parameter is a `doi.org` URL, a default base URL for the file download is used as selected by the API maintainer. This may be:
 

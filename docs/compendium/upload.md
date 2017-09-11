@@ -15,9 +15,9 @@ Upon successful extraction of archive, the `id` for the new compendium is return
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    -F content_type=compendium_v1 https://…/api/v1/compendium \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium 
+     https://…/api/v1/compendium 
 ```
 
 ```json

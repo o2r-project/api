@@ -73,7 +73,7 @@ To run commands which require authentication from the command line, a user must 
 
 ```bash
 curl [...] --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/endpoint
+     https://…/api/v1/endpoint
 ```
 
 ### Authentication within microservices
