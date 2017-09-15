@@ -5,7 +5,8 @@ A user can choose files from the overlay ERC that will replace files of the base
 
 ## Create substitution
 
-`Create substitution` will produce a new ERC with metadata, saved to mongoDB.
+`Create substitution` will produce a new ERC with metadata, saved to MongoDB.
+A substitution will be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`. Required are the IDs of the base and overlay ERC and at least one pair of substitution files, consisting of a base and an overlayfile.
 
 ### Request
 
