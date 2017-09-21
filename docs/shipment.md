@@ -10,7 +10,7 @@ Currently, the shipment process always creates [BagIt](http://tools.ietf.org/htm
 
 ### Supported recipients
 
-Use the _recipient_ endpoint to find out, which repositories are available and configured. The reponse is list of tuples with id and name of each repository. The id is the repository identifier to be used in requests to the /shipment endpoint, e.g. to define the recipient, while label is a human-readable text string suitable for display in user interfaces.
+Use the _recipient_ endpoint to find out, which repositories are available and configured. The reponse is list of tuples with `id` and `label` of each repository. The `id` is the repository identifier to be used in requests to the `/shipment` endpoint, e.g. to define the recipient, while `label` is a human-readable text string suitable for display in user interfaces.
 
 
 `GET api/v1/recipient`
