@@ -3,6 +3,43 @@
 Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
 This section covers shipment related requests, including repository file management.
 
+
+### Packaging
+
+Currently, the shipment process always creates [BagIt](http://tools.ietf.org/html/draft-kunze-bagit) bags to package a compendium.
+
+### Supported recipients
+
+Use the _recipient_ endpoint to find out, which repositories are available and configured.
+
+`GET api/v1/recipient`
+
+
+```json
+200
+
+{
+	"recipients": [{
+		"id": "download",
+		"label": "Download"
+	}, {
+		"id": "b2share",
+		"label": "Eudat b2share Sandbox"
+	}, {
+		"id": "zenodo",
+		"label": "Zenodo Sandbox"
+	}]
+}
+```
+
+This makes use of the following webservices:
+- `eudat` ([EUDAT b2share](https://b2share.eudat.eu/)).
+- `zenodo` ([Zenodo](https://zenodo.org))
+
+The _download_ recipient is a surrogate to enable shipping to the user's own harddrive / storage.
+
+
+
 ## List shipments
 
 This is a basic request to list all available shipments (no pagination yet).
@@ -98,14 +135,7 @@ The response contains the shipment identifier (`id`) and the `deposition_id`, i.
 }
 ```
 
-### Packaging
 
-Currently, the shipment process always creates [BagIt](http://tools.ietf.org/html/draft-kunze-bagit) bags to package a compendium.
-
-### Supported recipients
-
-- `zenodo` ([Zenodo](https://zenodo.org))
-- `eudat` ([EUDAT B2SHARE](https://b2share.eudat.eu/)).
 
 ### Shipment status
 
