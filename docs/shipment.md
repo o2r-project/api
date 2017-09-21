@@ -10,7 +10,8 @@ Currently, the shipment process always creates [BagIt](http://tools.ietf.org/htm
 
 ### Supported recipients
 
-Use the _recipient_ endpoint to find out, which repositories are available and configured.
+Use the _recipient_ endpoint to find out, which repositories are available and configured. The reponse is list of tuples with id and name of each repository. The id is the repository identifier to be used in requests to the /shipment endpoint, e.g. to define the recipient, while label is a human-readable text string suitable for display in user interfaces.
+
 
 `GET api/v1/recipient`
 
@@ -33,7 +34,7 @@ Use the _recipient_ endpoint to find out, which repositories are available and c
 ```
 
 This makes use of the following webservices:
-- `eudat` ([EUDAT b2share](https://b2share.eudat.eu/)).
+- `eudat` ([Eudat b2share](https://b2share.eudat.eu/)).
 - `zenodo` ([Zenodo](https://zenodo.org))
 
 The _download_ recipient is a surrogate to enable shipping to the user's own harddrive / storage.
