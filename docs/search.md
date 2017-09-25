@@ -58,9 +58,9 @@ A simple search allows searching for search terms.
 
 ### Complex Search
 
-A complex search is enabled via `POST` requests with payload. This allows filtering, aggregation and spatio-temporal search. The payload MUST be a `Query DSL` ([more information](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)).
+A complex search is enabled via `POST` requests with payload. This allows e.g. filtering, aggregation and spatio-temporal search. The payload MUST be a [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)).
 
-`curl -XPOST 'http://../api/v1/search' -d '{$QUERY_DSL}'`
+`curl -XPOST 'http://../api/v1/search' -d '$QUERY_DSL'`
 
 `POST /api/v1/search`
 
