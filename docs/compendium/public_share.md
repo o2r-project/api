@@ -7,6 +7,10 @@ Currently, the following repositories are supported:
 - Sciebo (https://sciebo.de)
 - Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
 
+## Common
+
+All repositories use the same API endpoint `https://…/api/v1/compendium`, but with different required/optional parameters.
+
 The upload is only allowed for logged in users.
 To run the upload from the command line, login on the website and open you browser cookies.
 Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
@@ -31,7 +35,8 @@ curl -F "content_type=compendium_v1" \
 {"id":"b9Faz"}
 ```
 
-Both use the same API endpoint `https://…/api/v1/compendium` but with different required/optional parameters:
+!!! Warning "Important"
+    After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.
 
 ## Sciebo 
 

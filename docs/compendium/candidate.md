@@ -1,0 +1,39 @@
+# Candidate process
+
+After upload a compendium is _not_ directly publicly available.
+It is merely a **candidate**, because metadata must be complete for the compendium to be valid.
+
+The following process models this intermediate state of a compendium.
+
+## Creation and view
+
+Candidates can be identified by the property `candidate`.
+It is set to `true` directly after creating a new compendium by [upload](upload.md) or [public share submission](public_share.md).
+
+**Example:**
+
+```json
+{
+  "id":"12345",
+  "metadata": … ,
+  "created": "2016-08-01T13:57:40.760Z",
+  "files": …,
+  "candidate": true
+}
+```
+
+Only the creating user and editors can view a candidate and see the `candidate` property (independent of its value).
+
+When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list will be extended by available candidates.
+The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.
+
+## Metadata review and saving
+
+After the user has reviewed and potentially updated the metadata as required and [saved it](metadata.md#update-metadata) successfully, then the candidate status is changed (`candidate: false`) and the compendium is publicly available.
+The `candidate` property is not exposed anymore.
+
+It is _not_ possible to save invalid metadata, therefore a compendium cannot become a candidate after successful completion of the creation.
+
+## Deletion
+
+Unlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](delete.md).
