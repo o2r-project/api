@@ -15,7 +15,7 @@ Upon successful extraction of archive, the `id` for the new compendium is return
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-    -F content_type=compendium_v1 https://…/api/v1/compendium \
+    -F content_type=compendium https://…/api/v1/compendium \
     --cookie "connect.sid=<code string here>" \
      https://…/api/v1/compendium 
 ```
@@ -30,15 +30,30 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 - `compendium` - The archive file
 - `content_type` - Form of archive. One of the following:
-  - `compendium_v1` - _default_ - compendium in Bagtainer format
-  - `workspace` - _WORK IN PROGRESS_ - formless workspace
+    - `compendium` - compendium, which is expected to be complete and valid, for _examination_ of a compendium
+    - `workspace` - formless workspace, for _creation_ of a compendium
+
+!!! warning
+    If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.
 
 ## Error responses for compendium upload
 
 ```json
+400 Bad Request
+
+{"error":"provided content_type not implemented"}
+```
+
+```json
 401 Unauthorized
 
-{"error":"missing or wrong api key"}
+{"error":"user is not authenticated"}
+```
+
+```json
+401 Unauthorized
+
+{"error":"user level does not allow compendium creation"}
 ```
 
 ```json
@@ -46,14 +61,3 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 {"error":"files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"}
 ```
-
-## Example data
-
-For local testing you can quickly upload some of the example compendia using a Docker image that is part of the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.
-
-```bash
-docker run --rm o2rproject/examplecompendia -c <my cookie> -e 7 -b 0003 -b 0004 -b 0005
-```
-
-For more configuration details, see the project's README file.

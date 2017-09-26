@@ -79,11 +79,12 @@ Requires a `compendium_id`.
 
 ## List jobs
 
-Lists jobs. Will return up to 100 results by default.
+Lists jobs with filtering and pagination, returning up to 100 results by default.
 
 Results will be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
 
 Results can be filtered:
+
 - by `compendium_id` i.e. `compendium_id=a4Dnm`,
 - by `status` i.e. `status=success` or
 - by `user` i.e. `user=0000-0000-0000-0001`
