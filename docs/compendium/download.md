@@ -1,6 +1,13 @@
 # Download compendium
 
-Download the complete compendium as an archive. Supported formats are as follows:
+Download compendium files as an archive.
+
+!!! Warning
+    This download feature does _not_ provide access to complete and valid ERCs, because it does not comprise an update of the BagIt bag.
+
+    To download an ERC, create a [shipment](../shipment.md) with the appropriate recipient.
+
+Supported formats are as follows:
 
 - `zip`
 - `tar`
@@ -28,7 +35,7 @@ GET /api/v1/compendium/:id.zip?image=false
 
 ## Response
 
-The response is a file attachment. The suggested file name is available in the HTTP header `content-disposition` using the respective file extension (i.e. `.zip`, `.tar`, and `.tar.gz`).
+The response is a file attachment. The suggested file name is available in the HTTP header `content-disposition` using the respective file extension for a file named with the compendium identifier (e.g. `wdpV9.zip`, `Uh1o0.tar`, or `LBIt1.tar.gz`).
 
 The `content-type` header also reflects the respective format, which can take the following values:
 
@@ -61,7 +68,7 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 ```
 
 ```json
-500 Internal Server Error
+400 Bad Request
 
 {"error":"no job found for this compendium, run a job before downloading with image"}
 ```
