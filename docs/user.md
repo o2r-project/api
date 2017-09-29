@@ -142,7 +142,7 @@ The following is a list of actions and the corresponding required _minimum_ user
     - Edit metadata of other user's compendia
     - View other user's candidates
 - `1000` _Admins_
-    - Delete compendia
+    - Delete candidates
     - View status pages of microservices
 
 ## Edit user
