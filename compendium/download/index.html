@@ -161,7 +161,13 @@
             <div class="section">
               
                 <h1 id="download-compendium">Download compendium</h1>
-<p>Download the complete compendium as an archive. Supported formats are as follows:</p>
+<p>Download compendium files as an archive.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This download feature does <em>not</em> provide access to complete and valid ERCs, because it does not comprise an update of the BagIt bag.</p>
+<p>To download an ERC, create a <a href="../../shipment/">shipment</a> with the appropriate recipient.</p>
+</div>
+<p>Supported formats are as follows:</p>
 <ul>
 <li><code>zip</code></li>
 <li><code>tar</code></li>
@@ -184,7 +190,7 @@ GET /api/v1/compendium/:id.zip?image=false
 <li><code>?image=true</code> or <code>?image=false</code> - include tarball of Docker image in the archive, default is <code>true</code></li>
 </ul>
 <h2 id="response">Response</h2>
-<p>The response is a file attachment. The suggested file name is available in the HTTP header <code>content-disposition</code> using the respective file extension (i.e. <code>.zip</code>, <code>.tar</code>, and <code>.tar.gz</code>).</p>
+<p>The response is a file attachment. The suggested file name is available in the HTTP header <code>content-disposition</code> using the respective file extension for a file named with the compendium identifier (e.g. <code>wdpV9.zip</code>, <code>Uh1o0.tar</code>, or <code>LBIt1.tar.gz</code>).</p>
 <p>The <code>content-type</code> header also reflects the respective format, which can take the following values:</p>
 <ul>
 <li><code>application/zip</code> for ZIP archive</li>
@@ -210,7 +216,7 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 {&quot;error&quot;:&quot;no compendium with this id&quot;}
 </code></pre>
 
-<pre><code class="json">500 Internal Server Error
+<pre><code class="json">400 Bad Request
 
 {&quot;error&quot;:&quot;no job found for this compendium, run a job before downloading with image&quot;}
 </code></pre>
