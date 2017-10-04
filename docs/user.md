@@ -133,13 +133,16 @@ The following is a list of actions and the corresponding required _minimum_ user
     - Create new jobs
     - View compendia, jobs, user details
 - `100` _Known users_
-    - Upload new compendium
+    - Create new compendium
     - Create shipments
     - Create substitutions
+    - Delete own candidates
 - `500` _Editors_
     - Edit user levels
     - Edit metadata of other user's compendia
+    - View other user's candidates
 - `1000` _Admins_
+    - Delete candidates
     - View status pages of microservices
 
 ## Edit user
