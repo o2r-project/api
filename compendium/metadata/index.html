@@ -69,11 +69,19 @@
                     
     <a class="" href="../public_share/">Public share submission</a>
                 </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../candidate/">Candidates</a>
+                </li>
     </ul>
                 </li>
                 <li class="">
                     
     <a class="" href="../view/">View</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../delete/">Delete</a>
                 </li>
                 <li class="">
                     
@@ -89,6 +97,8 @@
         <ul>
         
             <li><a class="toctree-l4" href="#basics">Basics</a></li>
+        
+            <li><a class="toctree-l4" href="#metadata-formats">Metadata formats</a></li>
         
             <li><a class="toctree-l4" href="#request-and-response">Request and response</a></li>
         
@@ -165,20 +175,22 @@
                 <h1 id="compendium-metadata">Compendium metadata</h1>
 <h2 id="basics">Basics</h2>
 <p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;metadata_model&gt;.&lt;format&gt;</code>, sometimes preprended with <code>metadata_</code> for clarity, e.g. <code>metadata_raw.json</code>, <code>metadata_o2r.json</code>, <code>zenodo.json</code>, or <code>datacite.xml</code>.</p>
-<p>A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property. <em>This API always returns the database copy of the metadata elements.</em> You can download the respective files to access the normative metadata documents.</p>
-<p>Both the files and the sub-properties are only available <em>on-demand</em>, so for example after a shipment to Zenodo is initiated. After creation the metadata is persisted to file and database.</p>
-<p>The sub-properties and their features are</p>
+<p>A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
+<em>This API always returns the database copy of the metadata elements.</em>
+You can download the respective files to access the normative metadata documents.</p>
+<h2 id="metadata-formats">Metadata formats</h2>
+<p>The files are available on demand, but metadata variants are created after each metadata update.</p>
+<p>The sub-properties of the <code>metadata</code> and their content are</p>
 <ul>
 <li><code>raw</code> contains raw metadata extracted automatically</li>
-<li><code>o2r</code> holds the <strong>main information for display</strong> and is modelled according the the o2r metadata model. This metadata is first an automatic transformation of raw metadata and should then be checked by the uploading user during the upload process.</li>
-<li><code>datacite</code> (TBD) holds DataCite XML</li>
-<li><code>zenodo</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo</li>
+<li><code>o2r</code> holds the <strong>main information for display</strong> and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats.</li>
+<li><code>zenodo</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo and is translated from <code>o2r</code> metadata</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The information in each sub-property are subject to independent workflows and may differ from one another.</p>
+<p>The information in each sub-property are subject to independent workflows and may differ from one another.
+The term <strong>brokering</strong> is used for translation from one metadata format into another.</p>
 </div>
-<p>Future sub-properties might expose <code>enriched</code> or <code>harvested</code> metadata.</p>
 <h2 id="request-and-response">Request and response</h2>
 <p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
@@ -195,7 +207,8 @@
       &quot;title&quot;: &quot;Programming with Data&quot;,
       &quot;creator&quot;: &quot;John M. Chambers&quot;,
       &quot;year&quot;: 1998
-    }, {
+    },
+    &quot;zenodo&quot;: {
       …
     }
   },
@@ -204,13 +217,20 @@
 }
 </code></pre>
 
-<h3 id="url-parameters-for-metadata">URL parameters for metadata</h3>
+<p>The following endpoint allows to access <em>only</em> the metadata element:</p>
+<p><code>curl https://…/api/v1/$ID/metadata</code></p>
+<p><code>GET /api/v1/compendium/:id/metadata</code></p>
+<h3 id="url-parameters">URL parameters</h3>
 <ul>
 <li><code>:id</code> - compendium id</li>
 </ul>
-<h3 id="spatial-md">Spatial MD</h3>
-<p>For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files <em>TDB</em>, geotiffs <em>TDB</em> or jpegs <em>TDB</em>).</p>
-<p>The following structure will be made available per file:</p>
+<h3 id="spatial-metadata">Spatial metadata</h3>
+<p>For discovery purposes, the metadata will included extracted <a href="http://geojson.org/">GeoJSON</a> bounding boxes, if suggested by the source files in a workspace.</p>
+<p>Currently supported spatial data sources:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Shapefile">shapefiles</a></li>
+</ul>
+<p>The following structure is made available per file:</p>
 <pre><code class="json">    &quot;spatial&quot;: {
         &quot;files&quot;: [
             {
@@ -304,11 +324,11 @@
 </code></pre>
 
 <p>The <code>spatial</code> key has a <code>union</code> bounding box, that wraps all extracted bounding boxes.</p>
-<h3 id="url-parameters-for-metadata_1">URL parameters for metadata</h3>
+<h3 id="url-parameters-for-metadata">URL parameters for metadata</h3>
 <ul>
 <li><code>:id</code> - compendium id</li>
 </ul>
-<h3 id="get-metadata-example-request-and-response">GET metadata - example request and response</h3>
+<h3 id="get-full-metadata">GET full metadata</h3>
 <p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <pre><code class="json">200 OK
@@ -333,12 +353,14 @@
 }
 </code></pre>
 
+<h3 id="get">GET</h3>
 <h2 id="update-metadata">Update metadata</h2>
 <p>The following endpoint can be used to update the <code>o2r</code> metadata elements.
-All other metadata sub-properties are only updated by the platform itself.</p>
+All other metadata sub-properties are only updated by the platform itself, i.e. brokered metadata.
+After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the <a href="../download/">download endpoint</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Metadata update rights</p>
-<p>Only authors of a compendium can update the metadata, or users with the required <a href="user.md#user-levels">user level</a>.</p>
+<p>Only authors of a compendium or users with the required <a href="user.md#user-levels">user level</a> can update a compendium's metadata.</p>
 </div>
 <h3 id="metadata-update-request">Metadata update request</h3>
 <pre><code class="bash">curl -H 'Content-Type: application/json' \
@@ -348,7 +370,11 @@ All other metadata sub-properties are only updated by the platform itself.</p>
   /api/v1/compendium/:id/metadata
 </code></pre>
 
-<p>The request will <em>overwrite</em> the existing metadata properties, so the full o2r metadata must be put with a JSON object called <code>o2r</code> at the root, even if only specific fields are changed.</p>
+<p>The request will <em>overwrite</em> the existing metadata properties, so the <em>full</em> o2r metadata must be put with a JSON object called <code>o2r</code> at the root, even if only specific fields are changed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This endpoint allows only to update the <code>metadata.o2r</code> elements. All other properties of </p>
+</div>
 <h3 id="metadata-update-response">Metadata update response</h3>
 <p>The response contains an excerpt of a compendium with only the o2r metadata property.</p>
 <pre><code class="json">200 OK
@@ -363,7 +389,6 @@ All other metadata sub-properties are only updated by the platform itself.</p>
 }
 </code></pre>
 
-<p>This response is also available at <code>GET /api/v1/compendium/:id/metadata</code>.</p>
 <h3 id="metadata-update-error-responses">Metadata update error responses</h3>
 <pre><code class="json">401 Unauthorized
 

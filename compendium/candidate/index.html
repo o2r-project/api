@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>API upload - o2r web API</title>
+  <title>Candidates - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "API upload";
-    var mkdocs_page_input_path = "compendium/upload.md";
-    var mkdocs_page_url = "/compendium/upload/";
+    var mkdocs_page_name = "Candidates";
+    var mkdocs_page_input_path = "compendium/candidate.md";
+    var mkdocs_page_url = "/compendium/candidate/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -61,33 +61,33 @@
                     
     <span class="caption-text">Create new compendium</span>
     <ul class="subnav">
-                <li class="toctree-l3 current">
+                <li class="toctree-l3">
                     
-    <a class="current" href="./">API upload</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l4"><a href="#upload-via-api">Upload via API</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l5" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a></li>
-        
-            <li><a class="toctree-l5" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a></li>
-        
-            <li><a class="toctree-l5" href="#example-data">Example data</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../upload/">API upload</a>
                 </li>
                 <li class="toctree-l3">
                     
     <a class="" href="../public_share/">Public share submission</a>
                 </li>
-                <li class="toctree-l3">
+                <li class="toctree-l3 current">
                     
-    <a class="" href="../candidate/">Candidates</a>
+    <a class="current" href="./">Candidates</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l4"><a href="#candidate-process">Candidate process</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l5" href="#creation-and-view">Creation and view</a></li>
+        
+            <li><a class="toctree-l5" href="#metadata-review-and-saving">Metadata review and saving</a></li>
+        
+            <li><a class="toctree-l5" href="#deletion">Deletion</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
     </ul>
                 </li>
@@ -164,7 +164,7 @@
         
       
     
-    <li>API upload</li>
+    <li>Candidates</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -174,57 +174,37 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload-via-api">Upload via API</h1>
-<p>Upload a research compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
-<p>The upload is only allowed for logged in users.
-To run the upload from the command line, you must login on the website and inspect your browser's cookies.
-Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
-Provide the content of the cookie when making requests to the API as shown in the request example below.</p>
-<p>Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.</p>
+                <h1 id="candidate-process">Candidate process</h1>
+<p>After uploading a compendium is <em>not</em> instantly publicly available.
+It is merely a <strong>candidate</strong>, because metadata still must be completed for the compendium to be valid.</p>
+<p>The following process models this intermediate state of a compendium.</p>
+<h2 id="creation-and-view">Creation and view</h2>
+<p>Candidates can be identified by the property <code>candidate</code>.
+It is set to <code>true</code> after creating a new compendium by <a href="../upload/">upload</a> or <a href="../public_share/">public share submission</a> <strong>and</strong> the authoring user having reviewed the metadata.</p>
 <div class="admonition note">
-<p class="admonition-title">Required user level</p>
-<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p class="admonition-title">Note</p>
+<p>It is not possible to circumvent the metadata review.
+Only a successful <a href="../metadata/#update-metadata">metadata update</a> can set <code>candidate: true</code>.</p>
 </div>
-<pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-    -F content_type=compendium_v1 https://…/api/v1/compendium \
-    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     https://…/api/v1/compendium 
+<p><strong>Example:</strong></p>
+<pre><code class="json">{
+  &quot;id&quot;:&quot;12345&quot;,
+  &quot;metadata&quot;: … ,
+  &quot;created&quot;: &quot;2016-08-01T13:57:40.760Z&quot;,
+  &quot;files&quot;: …,
+  &quot;candidate&quot;: true
+}
 </code></pre>
 
-<pre><code class="json">200 OK
-
-{&quot;id&quot;:&quot;a4Ndl&quot;}
-</code></pre>
-
-<div class="admonition warning">
-<p class="admonition-title">Important</p>
-<p>After successful load from a public share, the <strong><a href="./#candidate-process">candidate process</a></strong> applies.</p>
-</div>
-<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
-<ul>
-<li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
-</ul>
-<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
-<pre><code class="json">401 Unauthorized
-
-{&quot;error&quot;:&quot;missing or wrong api key&quot;}
-</code></pre>
-
-<pre><code class="json">422 Unprocessable Entity
-
-{&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
-</code></pre>
-
-<h2 id="example-data">Example data</h2>
-<p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
-<pre><code class="bash">docker run --rm o2rproject/examplecompendia -c &lt;my cookie&gt; -e 7 -b 0003 -b 0004 -b 0005
-</code></pre>
-
-<p>For more configuration details, see the project's README file.</p>
+<p>Only the creating user and users with <a href="../../user/#user-levels">required level</a> can view a candidate and see the <code>candidate</code> property while it is <code>true</code>.</p>
+<p>When accessing a <a href="../view/#list-compendia">list of compendia</a> for a specific user <em>as that user</em>, then this list will be extended by available candidates.
+The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.</p>
+<h2 id="metadata-review-and-saving">Metadata review and saving</h2>
+<p>After the user has reviewed and potentially updated the metadata as required and <a href="../metadata/#update-metadata">saved them</a> successfully, then the candidate status is changed (<code>candidate: false</code>) and the compendium is publicly available.</p>
+<p>The <code>candidate</code> property is not exposed any more if it is <code>false</code>.</p>
+<p>It is <em>not</em> possible to save invalid metadata or to manually change the <code>candidate</code> property, therefore a compendium cannot become a candidate again after successful completion of the creation.</p>
+<h2 id="deletion">Deletion</h2>
+<p>Unlike published compendia, a candidate can be deleted by a the authoring user, see <a href="../delete/">delete compendium</a>.</p>
               
             </div>
           </div>
@@ -232,10 +212,10 @@ The following command executes the container and uploads 7 empty examples and tw
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../public_share/" class="btn btn-neutral float-right" title="Public share submission">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../view/" class="btn btn-neutral float-right" title="View">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../public_share/" class="btn btn-neutral" title="Public share submission"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -261,10 +241,10 @@ The following command executes the container and uploads 7 empty examples and tw
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../public_share/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../public_share/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../view/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

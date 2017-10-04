@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -19,25 +19,31 @@
         
     <url>
      <loc>/compendium/view/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/compendium/delete/</loc>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/compendium/download/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/compendium/metadata/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/compendium/files/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -46,7 +52,7 @@
     
     <url>
      <loc>/job/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -54,7 +60,7 @@
     
     <url>
      <loc>/search/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -62,7 +68,7 @@
     
     <url>
      <loc>/shipment/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -70,7 +76,7 @@
     
     <url>
      <loc>/user/</loc>
-     <lastmod>2017-09-29</lastmod>
+     <lastmod>2017-10-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

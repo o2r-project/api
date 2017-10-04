@@ -74,6 +74,8 @@
     
         <ul>
         
+            <li><a class="toctree-l5" href="#common">Common</a></li>
+        
             <li><a class="toctree-l5" href="#sciebo">Sciebo</a></li>
         
             <li><a class="toctree-l5" href="#zenodo">Zenodo</a></li>
@@ -83,11 +85,19 @@
 
     </ul>
                 </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../candidate/">Candidates</a>
+                </li>
     </ul>
                 </li>
                 <li class="">
                     
     <a class="" href="../view/">View</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../delete/">Delete</a>
                 </li>
                 <li class="">
                     
@@ -171,6 +181,8 @@
 <li>Sciebo (https://sciebo.de)</li>
 <li>Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)</li>
 </ul>
+<h2 id="common">Common</h2>
+<p>All repositories use the same API endpoint <code>https://…/api/v1/compendium</code>, but with different required/optional parameters.</p>
 <p>The upload is only allowed for logged in users.
 To run the upload from the command line, login on the website and open you browser cookies.
 Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
@@ -191,7 +203,10 @@ Copy the contents of the cookie into the request example below.</p>
 {&quot;id&quot;:&quot;b9Faz&quot;}
 </code></pre>
 
-<p>Both use the same API endpoint <code>https://…/api/v1/compendium</code> but with different required/optional parameters:</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>After successful load from a public share, the <strong><a href="../upload/#candidate-process">candidate process</a></strong> applies.</p>
+</div>
 <h2 id="sciebo">Sciebo</h2>
 <h3 id="file-selection">File selection</h3>
 <p>Depending on the file structure, the public share contents are treated differently:</p>
@@ -337,7 +352,7 @@ Copy the contents of the cookie into the request example below.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../view/" class="btn btn-neutral float-right" title="View">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../candidate/" class="btn btn-neutral float-right" title="Candidates">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../upload/" class="btn btn-neutral" title="API upload"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -369,7 +384,7 @@ Copy the contents of the cookie into the request example below.</p>
         <span><a href="../upload/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../view/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../candidate/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

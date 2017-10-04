@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>API upload - o2r web API</title>
+  <title>Delete - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "API upload";
-    var mkdocs_page_input_path = "compendium/upload.md";
-    var mkdocs_page_url = "/compendium/upload/";
+    var mkdocs_page_name = "Delete";
+    var mkdocs_page_input_path = "compendium/delete.md";
+    var mkdocs_page_url = "/compendium/delete/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -57,29 +57,13 @@
 		
     <span class="caption-text">Compendium</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
     <span class="caption-text">Create new compendium</span>
     <ul class="subnav">
-                <li class="toctree-l3 current">
+                <li class="toctree-l3">
                     
-    <a class="current" href="./">API upload</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l4"><a href="#upload-via-api">Upload via API</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l5" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a></li>
-        
-            <li><a class="toctree-l5" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a></li>
-        
-            <li><a class="toctree-l5" href="#example-data">Example data</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../upload/">API upload</a>
                 </li>
                 <li class="toctree-l3">
                     
@@ -95,9 +79,25 @@
                     
     <a class="" href="../view/">View</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../delete/">Delete</a>
+    <a class="current" href="./">Delete</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#delete-compendium">Delete compendium</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#request">Request</a></li>
+        
+            <li><a class="toctree-l4" href="#response">Response</a></li>
+        
+            <li><a class="toctree-l4" href="#error-responses-for-compendium-delete">Error responses for compendium delete</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
@@ -159,12 +159,8 @@
           <li>Compendium &raquo;</li>
         
       
-        
-          <li>Create new compendium &raquo;</li>
-        
-      
     
-    <li>API upload</li>
+    <li>Delete</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -174,57 +170,43 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload-via-api">Upload via API</h1>
-<p>Upload a research compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
-<p>The upload is only allowed for logged in users.
-To run the upload from the command line, you must login on the website and inspect your browser's cookies.
-Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
-Provide the content of the cookie when making requests to the API as shown in the request example below.</p>
-<p>Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.</p>
+                <h1 id="delete-compendium">Delete compendium</h1>
+<p>To delete a compendium <strong>candidate</strong>, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Once a compendium is not a candidate anymore, it <strong>cannot</strong> be deleted via the API.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>
-<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p>The user deleting a candidate must be the author or have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
-<pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-    -F content_type=compendium_v1 https://…/api/v1/compendium \
-    --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
-     https://…/api/v1/compendium 
+<h2 id="request">Request</h2>
+<p>The following request deletes the compendium with the identifier <code>12345</code>, including metadata and files.</p>
+<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345 \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
 
-<pre><code class="json">200 OK
+<h2 id="response">Response</h2>
+<p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
+<pre><code class="bash">204 OK
 
-{&quot;id&quot;:&quot;a4Ndl&quot;}
 </code></pre>
 
-<div class="admonition warning">
-<p class="admonition-title">Important</p>
-<p>After successful load from a public share, the <strong><a href="./#candidate-process">candidate process</a></strong> applies.</p>
-</div>
-<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
-<ul>
-<li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
-</ul>
-<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
+<h2 id="error-responses-for-compendium-delete">Error responses for compendium delete</h2>
 <pre><code class="json">401 Unauthorized
 
-{&quot;error&quot;:&quot;missing or wrong api key&quot;}
+{&quot;error&quot;:&quot;not authorized&quot;}
 </code></pre>
 
-<pre><code class="json">422 Unprocessable Entity
+<pre><code class="json">403 Forbidden
 
-{&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
+{&quot;error&quot;:&quot;user level not sufficient to delete compendium&quot;}
 </code></pre>
 
-<h2 id="example-data">Example data</h2>
-<p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
-<pre><code class="bash">docker run --rm o2rproject/examplecompendia -c &lt;my cookie&gt; -e 7 -b 0003 -b 0004 -b 0005
-</code></pre>
+<pre><code class="json">404 Not Found
 
-<p>For more configuration details, see the project's README file.</p>
+{&quot;error&quot;:&quot;compendium not found&quot;}
+</code></pre>
               
             </div>
           </div>
@@ -232,10 +214,10 @@ The following command executes the container and uploads 7 empty examples and tw
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../public_share/" class="btn btn-neutral float-right" title="Public share submission">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../download/" class="btn btn-neutral float-right" title="Download">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../view/" class="btn btn-neutral" title="View"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -261,10 +243,10 @@ The following command executes the container and uploads 7 empty examples and tw
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../view/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../public_share/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../download/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
