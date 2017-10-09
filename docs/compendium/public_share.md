@@ -7,8 +7,14 @@ Currently, the following repositories are supported:
 - Sciebo (https://sciebo.de)
 - Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
 
-The load is only allowed for logged in users and for the cloud services listed above.
-Other links (even to other Owncloud instances) are not allowed.
+## Common
+
+All repositories use the same API endpoint `https://…/api/v1/compendium`, but with different required/optional parameters.
+
+The upload is only allowed for logged in users.
+To run the upload from the command line, login on the website and open you browser cookies.
+Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Copy the contents of the cookie into the request example below.
 
 !!! note "Required user level"
 
@@ -33,9 +39,13 @@ curl -F "content_type=compendium" \
 {"id":"b9Faz"}
 ```
 
-Both use the same API endpoint `https://…/api/v1/compendium` but with different required/optional parameters:
+!!! Warning "Important"
+    After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.
 
-## Sciebo 
+## Sciebo
+
+[Sciebo](http://www.sciebo.de/en/about/index.html) is a cloud storage service at North Rhine-Westphalian universities.
+Although it builds on ownCloud and the implementation might be able to handle any ownCloud link, only Sciebo's publish shares are supported by this API. 
 
 ### File selection
 
