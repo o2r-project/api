@@ -48,12 +48,14 @@ The **response** is `JSON` with the root element is `hits`, which has the same a
 
 ### Query parameters for simple search
 
-- `q` - search term(s)
+- `q` - search term(s), must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding)
 
 ### Example requests
 
 - [http://o2r.uni-muenster.de/api/v1/search?q=*](http://o2r.uni-muenster.de/api/v1/search?q=*)
-- [http://o2r.uni-muenster.de/api/v1/search?q=spatial](http://o2r.uni-muenster.de/api/v1/search?q=spatial)
+- [http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis](http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis)
+- [http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis](http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis)
+- [http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678](http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678)
 
 ## Complex Search
 
@@ -62,7 +64,20 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
 
 `curl -X POST -H 'Content-Type: application/json' 'https://.../api/v1/search' -d '$QUERY_DSL'`
 
-**Example:**
+The **response** structure is the same as for [simple search](#simple-search).
+
+### Query fields  for complex search
+
+The following fields are especially relevant to build queries.
+
+- `metadata.o2r.temporal.begin` and `metadata.o2r.temporal.end` provide a compendium's temporal extent
+- `metadata.o2r.spatial.geometry` has the compendium's spatial extent
+
+Besides these fields, all metadata of the [`o2r` metadata format](compendium/metadata.md#metadata-formats) can be used.
+
+### Examples
+
+#### Temporal search
 
 ```bash
 POST /api/v1/search -d '{
@@ -94,7 +109,33 @@ POST /api/v1/search -d '{
 }'
 ```
 
-The **response** structure is the same as for [simple search](#simple-search).
+#### Spatial search
+
+```json
+{
+    "bool": {
+        "must": {
+            "match_all": {}
+         },
+         "filter": {
+              "geo_shape": {
+                   "metadata.o2r.spatial.geometry": {
+                        "shape": {
+                            "type": "polygon",
+                            "coordinates": [... GeoJSON coordinates...]
+                         },
+                         "relation": "within"
+                    }
+               }
+          }
+     }
+}
+```
+
+In this example a filter has been nested within a [boolean/must match](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) query.
+The filter has been applied to the `metadata.o2r.spatial.geometry` field of the dataset with a `within` relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.
+
+#### Response
 
 ```json
 200 ok
@@ -116,3 +157,4 @@ The **response** structure is the same as for [simple search](#simple-search).
   }
 }
 ```
+

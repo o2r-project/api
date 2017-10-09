@@ -2,7 +2,7 @@
 
 ## Basics
 
-Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes preprended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes prepended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
 
 A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 _This API always returns the database copy of the metadata elements._
@@ -15,7 +15,7 @@ The files are available on demand, but metadata variants are created after each 
 The sub-properties of the `metadata` and their content are
 
 - `raw` contains raw metadata extracted automatically
-- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats.
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).
 - `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is translated from `o2r` metadata
 
 !!! note
@@ -202,8 +202,6 @@ The `spatial` key has a `union` bounding box, that wraps all extracted bounding 
   "files": …
 }
 ```
-
-### GET 
 
 ## Update metadata
 
