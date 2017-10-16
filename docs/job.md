@@ -32,6 +32,8 @@ One job consists of a series of steps. All of these steps can be in one of three
   Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged `bagtainer:<jobid>`.
 - **image_execute**
   Run the container and return based on status code of program that ran inside the container.
+- **check**
+  Run a check on the contents of the container. Validate the results of the executed calculations.
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
@@ -76,6 +78,12 @@ Create and run a new execution job. Requires a `compendium_id`.
 500 Internal Server Error
 
 {"error":"could not create job"}
+```
+
+```json
+500 Internal Server Error
+
+{"error":"image contents invalid"}
 ```
 
 ## List jobs
@@ -139,7 +147,7 @@ The overall job state can be added to the job list response:
 - `limit` - Limits the number of results in the response. Defaults to 100.
 - `status` - Specify status to filter by. Can contain following `status`: `success`, `failure`, `running`.
 - `user` - Public user identifier to filter by.
-- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status`. Defaults to none.
+- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status, check`. Defaults to none.
 
 ## View single job
 
@@ -166,6 +174,9 @@ View details for a single job. The file listing format is described in [compendi
     },
     …
   },
+  "check": {
+    ...     // see erc-checker documentation @ https://github.com/o2r-project/erc-checker
+  }
   "files":{
     {FileListing}
   }
