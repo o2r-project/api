@@ -104,6 +104,8 @@
         
             <li><a class="toctree-l4" href="#update-metadata">Update metadata</a></li>
         
+            <li><a class="toctree-l4" href="#non-metadata-properties">Non-metadata properties</a></li>
+        
         </ul>
     
 
@@ -174,7 +176,7 @@
               
                 <h1 id="compendium-metadata">Compendium metadata</h1>
 <h2 id="basics">Basics</h2>
-<p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;metadata_model&gt;.&lt;format&gt;</code>, sometimes preprended with <code>metadata_</code> for clarity, e.g. <code>metadata_raw.json</code>, <code>metadata_o2r.json</code>, <code>zenodo.json</code>, or <code>datacite.xml</code>.</p>
+<p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;metadata_model&gt;.&lt;format&gt;</code>, sometimes prepended with <code>metadata_</code> for clarity, e.g. <code>metadata_raw.json</code>, <code>metadata_o2r.json</code>, <code>zenodo.json</code>, or <code>datacite.xml</code>.</p>
 <p>A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 <em>This API always returns the database copy of the metadata elements.</em>
 You can download the respective files to access the normative metadata documents.</p>
@@ -403,6 +405,26 @@ After creation the metadata is persisted to both files and database, so updating
 <pre><code class="json">422 Unprocessable Entity
 
 {&quot;error&quot;:&quot;JSON with root element 'o2r' required&quot;}
+</code></pre>
+
+<h2 id="non-metadata-properties">Non-metadata properties</h2>
+<p>Besides the <code>metadata</code> element, a compendium has some other properties that can be used by client applications to improve the user experience.</p>
+<ul>
+<li><code>bag</code> - a boolean showing if the uploaded artefact was detected as a BagIt bag (detection file: <code>bagit.txt</code>)</li>
+<li><code>compendium</code> - a boolean showing if the uploaded artefact was detected as a compendium (detection file: <code>erc.yml</code>)</li>
+</ul>
+<p><strong>Example:</strong></p>
+<p>(Properties <code>metadata</code> and <code>files</code> not shown for brevity.)</p>
+<pre><code class="json">{
+
+    &quot;id&quot;: &quot;U9IZ7&quot;,
+    &quot;metadata&quot;: {},
+    &quot;created&quot;: &quot;2017-01-01T00:00:42.000Z&quot;,
+    &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;bag&quot;: false,
+    &quot;compendium&quot;: false,
+    &quot;files&quot;: {}
+}
 </code></pre>
               
             </div>
