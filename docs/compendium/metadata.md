@@ -2,7 +2,7 @@
 
 ## Basics
 
-Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes preprended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes prepended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
 
 A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 _This API always returns the database copy of the metadata elements._
@@ -265,4 +265,28 @@ The response contains an excerpt of a compendium with only the o2r metadata prop
 422 Unprocessable Entity
 
 {"error":"JSON with root element 'o2r' required"}
+```
+
+## Non-metadata properties
+
+Besides the `metadata` element, a compendium has some other properties that can be used by client applications to improve the user experience.
+
+- `bag` - a boolean showing if the uploaded artefact was detected as a BagIt bag (detection file: `bagit.txt`)
+- `compendium` - a boolean showing if the uploaded artefact was detected as a compendium (detection file: `erc.yml`)
+
+**Example:**
+
+(Properties `metadata` and `files` not shown for brevity.)
+
+```json
+{
+
+    "id": "U9IZ7",
+    "metadata": {},
+    "created": "2017-01-01T00:00:42.000Z",
+    "user": "0000-0001-6021-1617",
+    "bag": false,
+    "compendium": false,
+    "files": {}
+}
 ```
