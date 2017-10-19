@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Substitution - o2r web API</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../o2r.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Substitution";
+    var mkdocs_page_input_path = "compendium/substitute.md";
+    var mkdocs_page_url = "/compendium/substitute/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> o2r web API</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Compendium</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <span class="caption-text">Create new compendium</span>
+    <ul class="subnav">
+                <li class="toctree-l3">
+                    
+    <a class="" href="../upload/">API upload</a>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../public_share/">Public share submission</a>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../candidate/">Candidates</a>
+                </li>
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../view/">View</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../delete/">Delete</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../download/">Download</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../metadata/">Metadata</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../files/">Files in a compendium</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Substitution</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#substitute-two-compendia">Substitute two compendia</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#create-substitution">Create substitution</a></li>
+        
+            <li><a class="toctree-l4" href="#run-substitution">Run substitution</a></li>
+        
+            <li><a class="toctree-l4" href="#view-substituted-compendium">View substituted Compendium</a></li>
+        
+            <li><a class="toctree-l4" href="#list-substituted-compendia">List substituted Compendia</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../job/">Job</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../search/">Search</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../shipment/">Shipment</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../user/">User</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">o2r web API</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Compendium &raquo;</li>
+        
+      
+    
+    <li>Substitution</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="substitute-two-compendia">Substitute two compendia</h1>
+<p>Substitution is the combination of an base ERC and an overlay ERC.
+A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added.</p>
+<h2 id="create-substitution">Create substitution</h2>
+<p><code>Create substitution</code> will produce a new ERC with metadata, saved to MongoDB.
+A substitution will be created with an HTTP <code>POST</code> request using <code>multipart/form-data</code> and content-type <code>JSON</code>. Required are the IDs of the base and overlay ERC and at least one pair of substitution files, consisting of a base and an overlayfile.</p>
+<h3 id="request">Request</h3>
+<p><code>POST /api/v1/substitution</code></p>
+<p>input of request-body for substitution</p>
+<pre><code class="json">{
+  &quot;base&quot;: &quot;G92NL&quot;,
+  &quot;overlay&quot;: &quot;9fCTR&quot;,
+  &quot;substitutionFiles&quot;: [
+    {
+      &quot;base&quot;: &quot;climate-timeseries.csv&quot;,
+      &quot;overlay&quot;: &quot;mytimeseries_data.csv&quot;
+    }
+  ]
+}
+</code></pre>
+
+<h3 id="request-body-properties">Request body properties</h3>
+<ul>
+<li><code>base</code> - id of the base ERC</li>
+<li><code>overlay</code> - id of the overlay ERC</li>
+<li><code>substitutionFiles</code> - array of file substitutions specified by <code>base</code> and <code>overlay</code></li>
+<li><code>base</code> - filename of the file from the base ERC</li>
+<li><code>overlay</code> - filename of the overlay ERC that will be exchanged for the original file</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Required user level</p>
+<p>The user creating a new substitution must have the required <a href="../../user/#user-levels">user level</a>.</p>
+</div>
+<h3 id="response">Response</h3>
+<pre><code class="json">201 CREATED
+
+{
+  &quot;id&quot;: &quot;oMMFn&quot;
+}
+</code></pre>
+
+<h3 id="error-responses">Error responses</h3>
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;not authenticated&quot;}
+</code></pre>
+
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;not allowed&quot;}
+</code></pre>
+
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;base ERC not found&quot;}
+</code></pre>
+
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;overlay ERC not found&quot;}
+</code></pre>
+
+<h2 id="run-substitution">Run substitution</h2>
+<p><code>Run substitution</code> will run the analysis of a substitution in a docker container.
+This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
+<h2 id="view-substituted-compendium">View substituted Compendium</h2>
+<h3 id="request_1">Request</h3>
+<p><code>curl https://.../api/v1/compendium/$ID</code></p>
+<p><code>GET /api/v1/compendium/:id</code></p>
+<p>This request will be handled as a GET-request of an usual compendium. ( <a href="http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium">Click for more information.</a> )</p>
+<h3 id="response_1">Response</h3>
+<p>A substituted ERC will be saved as a usual ERC, but with additional metadata specifying this as a substituted ERC and giving information about the substitution.</p>
+<p>Example 01 - in case there are no conflicts between filenames of any basefile and overlayfile :</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;id&quot;: &quot;oMMFn&quot;,
+  ...
+  &quot;metadata&quot;: {
+      ...
+      &quot;substituted&quot;: true,
+      &quot;substitution&quot;: {
+          &quot;base&quot;: &quot;G92NL&quot;,
+          &quot;overlay&quot;: &quot;9fCTR&quot;,
+          &quot;substitutionFiles&quot;: [
+            {
+              &quot;base&quot;: &quot;climate-timeseries.csv&quot;,
+              &quot;overlay&quot;: &quot;mytimeseries_data.csv&quot;,
+              &quot;filename&quot;: &quot;climate-timeseries.csv&quot;
+            }
+          ]
+      },
+      ...
+      },
+  ...
+}
+</code></pre>
+
+<p>Example 02 - in case the overlayfile has the same filename as one of the existing basefiles :</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;id&quot;: &quot;oMMFn&quot;,
+  ...
+  &quot;metadata&quot;: {
+      ...
+      &quot;substituted&quot;: true,
+      &quot;substitution&quot;: {
+          &quot;base&quot;: &quot;G92NL&quot;,
+          &quot;overlay&quot;: &quot;9fCTR&quot;,
+          &quot;substitutionFiles&quot;: [
+            {
+              &quot;base&quot;: &quot;climate-timeseries.csv&quot;,
+              &quot;overlay&quot;: &quot;input.csv&quot;,
+              &quot;filename&quot;: &quot;overlay_input.csv&quot;
+            }
+          ]
+      },
+      ...
+      },
+  ...
+}
+</code></pre>
+
+<h3 id="response-additional-metadata">Response additional metadata</h3>
+<ul>
+<li><code>substituted</code> - will be set <code>true</code></li>
+<li><code>substitution</code> - object, specifying information about the substitution</li>
+<li><code>base</code> - id of the base ERC</li>
+<li><code>overlay</code> - id of the overlay ERC</li>
+<li><code>substitutionFiles</code> - array of file substitutions specified by <code>base</code> and <code>overlay</code><ul>
+<li><code>base</code> - filename of the file from the base ERC</li>
+<li><code>overlay</code> - filename of the file from the overlay ERC</li>
+<li><code>filename</code> - as seen in the examples above, <code>filename</code> will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "<strong>overlay_</strong>" prepended (see Example 02). <em>(optional add)</em></li>
+</ul>
+</li>
+</ul>
+<h2 id="list-substituted-compendia">List substituted Compendia</h2>
+<h3 id="request_2">Request</h3>
+<p><code>curl https://.../api/v1/substitution</code></p>
+<p><code>GET /api/v1/substitution</code></p>
+<h3 id="response_2">Response</h3>
+<p>Result will be a list of compendia ids that have been substituted</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;oMMFn&quot;,
+    &quot;asdi5&quot;,
+    &quot;nb2sg&quot;,
+    …
+  ]
+}
+</code></pre>
+
+<h3 id="filter-results-with-following-parameters">Filter results with following parameters:</h3>
+<p><code>curl https://.../api/v1/substitution?base=$BASE_ID&amp;overlay=$OVERLAY_ID</code></p>
+<p><code>GET /api/v1/substitution?base=base_id&amp;overlay=overlay_id</code></p>
+<ul>
+<li>Filter by <code>base</code>:</li>
+</ul>
+<p><code>curl https://.../api/v1/substitution?base=jfL3w</code></p>
+<p><code>GET /api/v1/substitution?base=jfL3w</code></p>
+<p>Result will be a list of compendia ids that have been substituted out of a choosen base ERC</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;wGmFn&quot;,
+    …
+  ]
+}
+</code></pre>
+
+<ul>
+<li>Filter by <code>overlay</code>:</li>
+</ul>
+<p><code>curl https://.../api/v1/substitution?overlay=as4Kj</code></p>
+<p><code>GET /api/v1/substitution?overlay=as4Kj</code></p>
+<p>Result will be a list of compendia ids that have been substituted out of a choosen overlay ERC</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;9pQ34&quot;,
+    &quot;1Tnd3&quot;,
+    …
+  ]
+}
+</code></pre>
+
+<ul>
+<li>Filter by <code>base</code> and <code>overlay</code>:</li>
+</ul>
+<p><code>curl https://.../api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
+<p><code>GET /api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
+<p>Result will be a list of compendia ids that have been substituted out of a choosen base and overlay ERC</p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;:[
+    &quot;9pQ34&quot;,
+    …
+  ]
+}
+</code></pre>
+
+<h3 id="error-responses_1">Error responses</h3>
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;not authenticated&quot;}
+</code></pre>
+
+<pre><code class="json">401 Unauthorized
+
+{&quot;error&quot;:&quot;not allowed&quot;}
+</code></pre>
+
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;base ERC not found&quot;}
+</code></pre>
+
+<pre><code class="json">404 Not Found
+
+{&quot;error&quot;:&quot;overlay ERC not found&quot;}
+</code></pre>
+
+<h3 id="url-parameters-for-substituted-compendium-lists">URL parameters for substituted compendium lists</h3>
+<ul>
+<li><code>:base</code> - id of the base ERC that the results should be related to</li>
+<li><code>:overlay</code> - id of the base ERC that the results should be related to</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../files/" class="btn btn-neutral" title="Files in a compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../files/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../job/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../js/theme.js"></script>
+
+</body>
+</html>
