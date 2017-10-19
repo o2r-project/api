@@ -117,6 +117,10 @@
     
         <ul>
         
+            <li><a class="toctree-l3" href="#packaging">Packaging</a></li>
+        
+            <li><a class="toctree-l3" href="#supported-recipients">Supported recipients</a></li>
+        
             <li><a class="toctree-l3" href="#list-shipments">List shipments</a></li>
         
             <li><a class="toctree-l3" href="#create-a-new-shipment">Create a new shipment</a></li>
@@ -173,6 +177,31 @@
                 <h1 id="ship-compendia-and-metadata">Ship compendia and metadata</h1>
 <p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
 This section covers shipment related requests, including repository file management.</p>
+<h3 id="packaging">Packaging</h3>
+<p>Currently, the shipment process always creates <a href="http://tools.ietf.org/html/draft-kunze-bagit">BagIt</a> bags to package a compendium.</p>
+<h3 id="supported-recipients">Supported recipients</h3>
+<p>Use the <em>recipient</em> endpoint to find out, which repositories are available and configured. The reponse is list of tuples with <code>id</code> and <code>label</code> of each repository. The <code>id</code> is the repository identifier to be used in requests to the <code>/shipment</code> endpoint, e.g. to define the recipient, while <code>label</code> is a human-readable text string suitable for display in user interfaces.</p>
+<p><code>GET api/v1/recipient</code></p>
+<pre><code class="json">200
+
+{
+    &quot;recipients&quot;: [{
+        &quot;id&quot;: &quot;download&quot;,
+        &quot;label&quot;: &quot;Download&quot;
+    }, {
+        &quot;id&quot;: &quot;b2share&quot;,
+        &quot;label&quot;: &quot;Eudat b2share Sandbox&quot;
+    }, {
+        &quot;id&quot;: &quot;zenodo&quot;,
+        &quot;label&quot;: &quot;Zenodo Sandbox&quot;
+    }]
+}
+</code></pre>
+
+<p>This makes use of the following webservices:
+- <code>eudat</code> (<a href="https://b2share.eudat.eu/">Eudat b2share</a>).
+- <code>zenodo</code> (<a href="https://zenodo.org">Zenodo</a>)</p>
+<p>The <em>download</em> recipient is a surrogate to enable shipping to the user's own harddrive / storage.</p>
 <h2 id="list-shipments">List shipments</h2>
 <p>This is a basic request to list all available shipments (no pagination yet).</p>
 <p><code>GET /api/v1/shipment</code></p>
@@ -251,13 +280,6 @@ This section covers shipment related requests, including repository file managem
 }
 </code></pre>
 
-<h3 id="packaging">Packaging</h3>
-<p>Currently, the shipment process always creates <a href="http://tools.ietf.org/html/draft-kunze-bagit">BagIt</a> bags to package a compendium.</p>
-<h3 id="supported-recipients">Supported recipients</h3>
-<ul>
-<li><code>zenodo</code> (<a href="https://zenodo.org">Zenodo</a>)</li>
-<li><code>eudat</code> (<a href="https://b2share.eudat.eu/">EUDAT B2SHARE</a>).</li>
-</ul>
 <h3 id="shipment-status">Shipment status</h3>
 <p>A shipment can have three possible status:</p>
 <ul>
