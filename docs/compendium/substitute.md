@@ -46,9 +46,9 @@ In case of a file naming conflict, the overlay file is preprended with `overlay_
     {
       "base": "climate-timeseries.csv",
       "overlay": {
-        "filetype": "text/plain",
-        "filename": "substitution.txt",
-        "base64": "T3BlbmluZyBSZXByb2R1Y2libGUgUmVzZWFyY2gK"
+        "filetype": "text/csv",
+        "filename": "my-data.csv",
+        "base64": "aWQsZGF0ZSx0ZW1wZXJhdHVyZVxuMSwyMDE3LTAxLTAxLDE3XG4yLDIwMTctMDEtMDIsNDIK"
       }
     }
   ]
@@ -58,13 +58,13 @@ In case of a file naming conflict, the overlay file is preprended with `overlay_
 The above example was created as follows:
 
 ```bash
-$ echo "Opening Reproducible Research" >> substitution.txt
-$ base64 -w 0 substitution.txt
-T3BlbmluZyBSZXByb2R1Y2libGUgUmVzZWFyY2gK
-$ echo T3BlbmluZyBSZXByb2R1Y2libGUgUmVzZWFyY2gK | base64 -d
-Opening Reproducible Research
-$ mimetype substitution.txt
-substitution.txt: text/plain
+$ echo "id,date,temperature\n1,2017-01-01,17\n2,2017-01-02,42" >> my-data.csv
+$ base64 -w 0 my-data.csv
+aWQsZGF0ZSx0ZW1wZXJhdHVyZVxuMSwyMDE3LTAxLTAxLDE3XG4yLDIwMTctMDEtMDIsNDIK
+$ echo aWQsZGF0ZSx0ZW1wZXJhdHVyZVxuMSwyMDE3LTAxLTAxLDE3XG4yLDIwMTctMDEtMDIsNDIK | base64 -d
+id,date,temperature\n1,2017-01-01,17\n2,2017-01-02,42
+$ mimetype my-data.csv
+my-data.csv: text/csv
 ```
 
 ### Request body properties
