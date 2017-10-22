@@ -6,10 +6,23 @@
     background-color: #434553;
 }
 
+.wy-nav-top {
+    background-color: #004286;
+}
+
+.wy-menu-vertical a:active{
+    background-color:#004286;
+}
+
 .wy-menu a {
     color: #ffffff;
 }
 
 .wy-menu-vertical a:hover {
 	background:#004286;
+}
+
+h3, h4, h5, h6 {
+    color: #004286;
+    font-weight: 300
 }
