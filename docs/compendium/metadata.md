@@ -203,8 +203,6 @@ The `spatial` key has a `union` bounding box, that wraps all extracted bounding 
 }
 ```
 
-### GET 
-
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
