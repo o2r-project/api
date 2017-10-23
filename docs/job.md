@@ -152,7 +152,7 @@ View details for a single job. The file listing format is described in [compendi
 `GET /api/v1/job/:id`
 
 ```json
-//200 OK
+200 OK
 
 {
   "id": "nkm4L",
@@ -184,30 +184,27 @@ View details for a single job. The file listing format is described in [compendi
     },
     "image_execute": {
       "text": "PING 127.0.0.1 (127.0.0.1): 56 data bytes\r\n64 bytes from 127.0.0.1: seq=0 ttl=64 [TRUNCATED FOR EXAMPLE]",
-       "status": "success",
+      "status": "success",
       "start": "2017-10-23T08:44:31.561Z",
       "end": "2017-10-23T08:45:01.160Z",
       "statuscode": 0
     },
     "check": {
-        "status": "success",
-        "images": [
-            {
-                "imageIndex": 0,
-                "resizeOperationCode": 0,
-                "compareResults": {
-                    "differences": 0,
-                    "dimension": 1290240
-                }
-            }
-        ],
-        "resultHTML": "[merged HTML with difference highlighting for images]",
-        "timeOfCheck":
+      "status": "success",
+      "images": [
         {
-            "start": "2017-10-23T08:45:01.168Z",
-            "end": "2017-10-23T08:45:02.193Z"
-        },
-        "errorsEncountered": []
+          "imageIndex": 0,
+          "resizeOperationCode": 0,
+          "compareResults": {
+            "differences": 0,
+            "dimension": 1290240
+          }
+        }
+      ],
+      "resultHTML": "[merged HTML with difference highlighting for images]",
+      "start": "2017-10-23T08:45:01.168Z",
+      "end": "2017-10-23T08:45:02.193Z",
+      "errorsEncountered": []
     },
     "cleanup": {
       "text": "Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.",
