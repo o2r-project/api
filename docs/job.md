@@ -147,9 +147,9 @@ The overall job state can be added to the job list response:
 
 View details for a single job. The file listing format is described in [compendium files](compendium/files.md)
 
-`curl https://…/api/v1/job/$ID`
+`curl https://…/api/v1/job/$ID?details=all`
 
-`GET /api/v1/job/:id`
+`GET /api/v1/job/:id?details=all`
 
 ```json
 200 OK
