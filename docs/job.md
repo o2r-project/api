@@ -80,12 +80,6 @@ Create and run a new execution job. Requires a `compendium_id`.
 {"error":"could not create job"}
 ```
 
-```json
-500 Internal Server Error
-
-{"error":"image contents invalid"}
-```
-
 ## List jobs
 
 Lists jobs. Will return up to 100 results by default.
@@ -147,7 +141,7 @@ The overall job state can be added to the job list response:
 - `limit` - Limits the number of results in the response. Defaults to 100.
 - `status` - Specify status to filter by. Can contain following `status`: `success`, `failure`, `running`.
 - `user` - Public user identifier to filter by.
-- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status, check`. Defaults to none.
+- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status`. Defaults to none.
 
 ## View single job
 
@@ -158,35 +152,80 @@ View details for a single job. The file listing format is described in [compendi
 `GET /api/v1/job/:id`
 
 ```json
-200 OK
+//200 OK
 
 {
-  "id":"nkm4L",
-  "compendium_id":"a4Dnm",
-  "creation_date": Date,
+  "id": "nkm4L",
+  "compendium_id": "a4Dnm",
+  "user": "0000-0001-9757-xxxx",
   "status": "failure",
-  "steps":{
-    "unpack":{
-      "status":"failure",
-      "start": Date,
-      "end": Date,
-      "text":"not a valid archive"
+  "steps": {
+    "validate-bag": {
+      "status":"skipped",
+      "text": "bag validation during job execution is disabled"
     },
-    …
-  },
-  "check": {
-    ...     // see erc-checker documentation @ https://github.com/o2r-project/erc-checker
-  }
-  "files":{
-    {FileListing}
-  }
+    "validate_compendium": {
+      "text": "compendium is invalid, but execution may continue",
+      "status": "failure",
+      "start": "2017-10-23T08:44:30.768Z",
+      "end": "2017-10-23T08:44:30.785Z"
+    },
+    "image_prepare": {
+     "text": "payload with 12800 total bytes",
+     "status": "success",
+     "start": "2017-10-23T08:44:30.789Z",
+     "end": "2017-10-23T08:44:31.013Z"
+    },
+    "image_build": {
+      "text": "Step 1/6 : FROM alpine\nStep 3/6 : ENV HOST 127.0.0.1\nSuccessfully tagged erc:nkm4L\n",
+      "status": "success",
+      "start": "2017-10-23T08:44:31.043Z",
+      "end": "2017-10-23T08:44:31.405Z"
+    },
+    "image_execute": {
+      "text": "PING 127.0.0.1 (127.0.0.1): 56 data bytes\r\n64 bytes from 127.0.0.1: seq=0 ttl=64 [TRUNCATED FOR EXAMPLE]",
+       "status": "success",
+      "start": "2017-10-23T08:44:31.561Z",
+      "end": "2017-10-23T08:45:01.160Z",
+      "statuscode": 0
+    },
+    "check": {
+        "status": "success",
+        "images": [
+            {
+                "imageIndex": 0,
+                "resizeOperationCode": 0,
+                "compareResults": {
+                    "differences": 0,
+                    "dimension": 1290240
+                }
+            }
+        ],
+        "resultHTML": "[merged HTML with difference highlighting for images]",
+        "timeOfCheck":
+        {
+            "start": "2017-10-23T08:45:01.168Z",
+            "end": "2017-10-23T08:45:02.193Z"
+        },
+        "errorsEncountered": []
+    },
+    "cleanup": {
+      "text": "Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.",
+      "status": "success",
+      "start": "2017-10-23T08:45:01.201Z",
+      "end": "2017-10-23T08:45:01.226Z"
+    }
+  },  
+  "createdAt": "2017-10-23T08:44:30.693Z",
+  "updatedAt": "2017-10-23T08:45:01.237Z"
 }
 ```
 
 ### URL parameters for single job view
 
 - `:id` - id of the job to be viewed
-
+- `details` - Details of steps to be loaded. By default, only `status`, `start` and `end` of any step will be loaded. 
+Can contain the following `details`: `all, validate-bag, validate_compendium, image_prepare, image_build, image_execute, `
 ### Steps
 
 The answer will contain information regaring the job steps.
