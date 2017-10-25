@@ -157,7 +157,7 @@ View details for a single job. The file listing format is described in [compendi
 {
   "id": "nkm4L",
   "compendium_id": "a4Dnm",
-  "user": "0000-0001-9757-xxxx",
+  "user": "0000-0001-6021-1617",
   "status": "failure",
   "steps": {
     "validate-bag": {
@@ -201,7 +201,7 @@ View details for a single job. The file listing format is described in [compendi
           }
         }
       ],
-      "resultHTML": "[merged HTML with difference highlighting for images]",
+      "diffHTML": "[merged HTML with difference highlighting for images]",
       "start": "2017-10-23T08:45:01.168Z",
       "end": "2017-10-23T08:45:02.193Z",
       "errorsEncountered": []
@@ -221,8 +221,12 @@ View details for a single job. The file listing format is described in [compendi
 ### URL parameters for single job view
 
 - `:id` - id of the job to be viewed
-- `details` - Details of steps to be loaded. By default, only `status`, `start` and `end` of any step will be loaded. 
-Can contain the following `details`: `all, validate-bag, validate_compendium, image_prepare, image_build, image_execute, `
+- `details` - Details of steps to be loaded.  
+
+By default, only `status`, `start` and `end` of any step will be loaded.
+
+`details` may either be `all`, or a comma separated list of one or more step identifiers. Any other step values for `details` than the listed ones will return the default (e.g. `details=no`).
+
 ### Steps
 
 The answer will contain information regaring the job steps.
