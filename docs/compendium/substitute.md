@@ -177,7 +177,7 @@ Result will be a list of compendia ids that have been substituted
 200 OK
 
 {
-  "results":[
+  "results": [
     "oMMFn",
     "asdi5",
     "nb2sg",
@@ -204,7 +204,7 @@ Result will be a list of compendia ids that have been substituted out of a choos
 200 OK
 
 {
-  "results":[
+  "results": [
     "wGmFn",
     …
   ]
@@ -223,7 +223,7 @@ Result will be a list of compendia ids that have been substituted out of a choos
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     "1Tnd3",
     …
@@ -243,7 +243,7 @@ Result will be a list of compendia ids that have been substituted out of a choos
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     …
   ]

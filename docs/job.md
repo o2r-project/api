@@ -96,7 +96,7 @@ Results can be filtered:
 200 OK
 
 {
-  "results":[
+  "results": [
     "nkm4L",
     "asdi5",
     "nb2sg",
@@ -113,7 +113,7 @@ The overall job state can be added to the job list response:
 200 OK
 
 {
-  "results":[
+  "results": [
     {
       "id":"nkm4L",
       "status":"failure"
@@ -128,6 +128,15 @@ The overall job state can be added to the job list response:
     },
     …
   ]
+}
+```
+
+If there are no jobs, the returned list is empty:
+
+```json
+200 OK
+{
+  "results": [ ]
 }
 ```
 
