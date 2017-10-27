@@ -19,6 +19,30 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 }
 ```
 
+If there are no users, the returned list is empty:
+
+```json
+200 OK
+{
+  "results": [ ]
+}
+```
+
+Pagination is supported using the query parameters `start` and `limit`.
+
+- `limit` is the number of results in the response, defaults to `10`. It numeric and larger than `0`.
+- `start` is the index of the first list item in the response, defaults to `1`. It must be numeric and larger than `0`.
+
+`GET /api/v1/user?start=5&limit=10`
+
+### Error responses for user list
+
+```json
+400 Bad Request
+
+{"error":"limit must be larger than 0"}
+```
+
 ## View single user
 
 Show the details of a user.
