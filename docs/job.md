@@ -20,29 +20,33 @@ More information about `steps` can be found in subsection `Steps` of section `Vi
 
 ## Steps of a job
 
-One job consists of a series of steps. All of these steps can be in one of three status: `running`, `failure`, or `success`. The are executed in order.
+One job consists of a series of steps.
+The are executed in order.
 
 - **validate_bag**
-  Validate the BagIt bag based on npm's [bagit](https://www.npmjs.com/package/bagit).
+  Validate the BagIt bag using npm's [bagit](https://www.npmjs.com/package/bagit); may be skipped if compendium is not a bag, will usually fail because of added metadata files during upload.
+- **generate_configuration**
+  Create a compendium configuration file; may be skipped if configuration file is already present.
 - **validate_compendium**
-  Parses and validate the bagtainer configuration and metadta.
+  Parses and validates the bagtainer configuration file.
+- **generate_manifest**
+  Executes the given analysis to create a container manifest; may be skipped if manifest file is already present.
 - **image_prepare**
-  Create an archive of the payload of the BagIt bag, which allows to build and run the image also on remote Docker hosts.
+  Create an archive of the payload (i.e. the workspace, or the data in a BagIt bag), which allows to build and run the image also on remote hosts.
 - **image_build**
-  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged `bagtainer:<jobid>`.
+  Build an image and tag it `erc:<jobid>`.
 - **image_execute**
   Run the container and return based on status code of program that ran inside the container.
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
-The step status is one of:
+All of these steps can be in one of the following status:
 
-- `queued`
-- `running`
-- `success`
-- `failure`
-- `warning`
-- `skipped`
+- `queued`: step is not yet started
+- `running`: step is currently running
+- `success`: step is completed successfully
+- `failure`: step is completed unsuccessfully
+- `skipped`: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces
 
 ## New job
 
