@@ -23,7 +23,7 @@ The sub-properties of the `metadata` and their content are
     The information in each sub-property are subject to independent workflows and may differ from one another.
     The term **brokering** is used for translation from one metadata format into another.
 
-## Request and response
+## Get all compendium metadata
 
 `curl https://…/api/v1/$ID`
 
@@ -53,11 +53,28 @@ The sub-properties of the `metadata` and their content are
 }
 ```
 
-The following endpoint allows to access _only_ the metadata element:
+## Get o2r metadata
+
+The following endpoint allows to access _only_ the normative o2r-metadata element:
 
 `curl https://…/api/v1/$ID/metadata`
 
 `GET /api/v1/compendium/:id/metadata`
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "o2r": {
+      "title": "Programming with Data",
+      "creator": "John M. Chambers",
+      "year": 1998
+    }
+  }
+}
+```
 
 ### URL parameters
 
@@ -65,7 +82,7 @@ The following endpoint allows to access _only_ the metadata element:
 
 ### Spatial metadata
 
-For discovery purposes, the metadata will included extracted [GeoJSON](http://geojson.org/) bounding boxes, if suggested by the source files in a workspace.
+For discovery purposes, the metadata includes extracted [GeoJSON](http://geojson.org/) bounding boxes based on data files in a workspace.
 
 Currently supported spatial data sources:
 
@@ -76,7 +93,7 @@ Currently supported spatial data sources:
 
 The following structure is made available per file:
 
-```{json}
+```json
     "spatial": {
         "files": [
             {
@@ -170,41 +187,6 @@ The following structure is made available per file:
 ```
 The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
 
-### URL parameters for metadata
-
-- `:id` - compendium id
-
-### GET full metadata
-
-`curl https://…/api/v1/$ID`
-
-`GET /api/v1/compendium/:id`
-
-```json
-200 OK
-
-{
-  "id":"compendium_id",
-  "metadata": {
-    "raw": {
-      "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
-      "author": "John M. Chambers.   "
-    },
-    "o2r": {
-      "title": "Programming with Data",
-      "creator": "John M. Chambers",
-      "year": 1998
-    }, {
-      …
-    }
-  },
-  "created": …,
-  "files": …
-}
-```
-
-### GET 
-
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
@@ -229,6 +211,10 @@ The request will _overwrite_ the existing metadata properties, so the _full_ o2r
 
 !!! Note
     This endpoint allows only to update the `metadata.o2r` elements. All other properties of 
+
+### URL parameters
+
+- `:id` - compendium id
 
 ### Metadata update response
 
@@ -267,9 +253,9 @@ The response contains an excerpt of a compendium with only the o2r metadata prop
 {"error":"JSON with root element 'o2r' required"}
 ```
 
-## Non-metadata properties
+## Other metadata properties
 
-Besides the `metadata` element, a compendium has some other properties that can be used by client applications to improve the user experience.
+Besides the `metadata` element, a compendium persists some additional properties to reduce computation on the server, and to allows client applications to improve the user experience.
 
 - `bag` - a boolean showing if the uploaded artefact was detected as a BagIt bag (detection file: `bagit.txt`)
 - `compendium` - a boolean showing if the uploaded artefact was detected as a compendium (detection file: `erc.yml`)
