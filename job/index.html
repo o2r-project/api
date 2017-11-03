@@ -202,6 +202,8 @@
   Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged <code>bagtainer:&lt;jobid&gt;</code>.</li>
 <li><strong>image_execute</strong>
   Run the container and return based on status code of program that ran inside the container.</li>
+<li><strong>check</strong>
+  Run a check on the contents of the container. Validate the results of the executed calculations.</li>
 <li><strong>cleanup</strong>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
@@ -294,34 +296,83 @@ Requires a <code>compendium_id</code>.</p>
 </ul>
 <h2 id="view-single-job">View single job</h2>
 <p>View details for a single job. The file listing format is described in <a href="../compendium/files/">compendium files</a></p>
-<p><code>curl https://…/api/v1/job/$ID</code></p>
-<p><code>GET /api/v1/job/:id</code></p>
+<p><code>curl https://…/api/v1/job/$ID?details=all</code></p>
+<p><code>GET /api/v1/job/:id?details=all</code></p>
 <pre><code class="json">200 OK
 
 {
-  &quot;id&quot;:&quot;nkm4L&quot;,
-  &quot;compendium_id&quot;:&quot;a4Dnm&quot;,
-  &quot;creation_date&quot;: Date,
+  &quot;id&quot;: &quot;nkm4L&quot;,
+  &quot;compendium_id&quot;: &quot;a4Dnm&quot;,
+  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
   &quot;status&quot;: &quot;failure&quot;,
-  &quot;steps&quot;:{
-    &quot;unpack&quot;:{
-      &quot;status&quot;:&quot;failure&quot;,
-      &quot;start&quot;: Date,
-      &quot;end&quot;: Date,
-      &quot;text&quot;:&quot;not a valid archive&quot;
+  &quot;steps&quot;: {
+    &quot;validate-bag&quot;: {
+      &quot;status&quot;:&quot;skipped&quot;,
+      &quot;text&quot;: &quot;bag validation during job execution is disabled&quot;
     },
-    …
-  },
-  &quot;files&quot;:{
-    {FileListing}
-  }
+    &quot;validate_compendium&quot;: {
+      &quot;text&quot;: &quot;compendium is invalid, but execution may continue&quot;,
+      &quot;status&quot;: &quot;failure&quot;,
+      &quot;start&quot;: &quot;2017-10-23T08:44:30.768Z&quot;,
+      &quot;end&quot;: &quot;2017-10-23T08:44:30.785Z&quot;
+    },
+    &quot;image_prepare&quot;: {
+     &quot;text&quot;: &quot;payload with 12800 total bytes&quot;,
+     &quot;status&quot;: &quot;success&quot;,
+     &quot;start&quot;: &quot;2017-10-23T08:44:30.789Z&quot;,
+     &quot;end&quot;: &quot;2017-10-23T08:44:31.013Z&quot;
+    },
+    &quot;image_build&quot;: {
+      &quot;text&quot;: &quot;Step 1/6 : FROM alpine\nStep 3/6 : ENV HOST 127.0.0.1\nSuccessfully tagged erc:nkm4L\n&quot;,
+      &quot;status&quot;: &quot;success&quot;,
+      &quot;start&quot;: &quot;2017-10-23T08:44:31.043Z&quot;,
+      &quot;end&quot;: &quot;2017-10-23T08:44:31.405Z&quot;
+    },
+    &quot;image_execute&quot;: {
+      &quot;text&quot;: &quot;PING 127.0.0.1 (127.0.0.1): 56 data bytes\r\n64 bytes from 127.0.0.1: seq=0 ttl=64 [TRUNCATED FOR EXAMPLE]&quot;,
+      &quot;status&quot;: &quot;success&quot;,
+      &quot;start&quot;: &quot;2017-10-23T08:44:31.561Z&quot;,
+      &quot;end&quot;: &quot;2017-10-23T08:45:01.160Z&quot;,
+      &quot;statuscode&quot;: 0
+    },
+    &quot;check&quot;: {
+      &quot;status&quot;: &quot;success&quot;,
+      &quot;images&quot;: [
+        {
+          &quot;imageIndex&quot;: 0,
+          &quot;resizeOperationCode&quot;: 0,
+          &quot;compareResults&quot;: {
+            &quot;differences&quot;: 0,
+            &quot;dimension&quot;: 1290240
+          }
+        }
+      ],
+      &quot;display&quot;: {
+        &quot;diff&quot;: &quot;[merged HTML with difference highlighting for images]&quot;
+      },
+      &quot;start&quot;: &quot;2017-10-23T08:45:01.168Z&quot;,
+      &quot;end&quot;: &quot;2017-10-23T08:45:02.193Z&quot;,
+      &quot;errors&quot;: []
+    },
+    &quot;cleanup&quot;: {
+      &quot;text&quot;: &quot;Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.&quot;,
+      &quot;status&quot;: &quot;success&quot;,
+      &quot;start&quot;: &quot;2017-10-23T08:45:01.201Z&quot;,
+      &quot;end&quot;: &quot;2017-10-23T08:45:01.226Z&quot;
+    }
+  },  
+  &quot;createdAt&quot;: &quot;2017-10-23T08:44:30.693Z&quot;,
+  &quot;updatedAt&quot;: &quot;2017-10-23T08:45:01.237Z&quot;
 }
 </code></pre>
 
 <h3 id="url-parameters-for-single-job-view">URL parameters for single job view</h3>
 <ul>
 <li><code>:id</code> - id of the job to be viewed</li>
+<li><code>details</code> - Details of steps to be loaded.  </li>
 </ul>
+<p>By default, only <code>status</code>, <code>start</code> and <code>end</code> of any step will be loaded.</p>
+<p><code>details</code> may either be <code>all</code>, or a comma separated list of one or more step identifiers. Any other step values for <code>details</code> than the listed ones will return the default (e.g. <code>details=no</code>).</p>
 <h3 id="steps">Steps</h3>
 <p>The answer will contain information regaring the job steps.</p>
 <p>Additional explanations to their status will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
