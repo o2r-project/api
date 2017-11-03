@@ -142,7 +142,7 @@ The overall job state can be added to the job list response:
 - `limit` - Limits the number of results in the response. Defaults to 100.
 - `status` - Specify status to filter by. Can contain following `status`: `success`, `failure`, `running`.
 - `user` - Public user identifier to filter by.
-- `fields` - Specify if/which additional attributes results should contain. Can contain following `fields`: `status`. Defaults to none.
+- `fields` - Specify which additional attributes results list should contain. Can contain following fields: `status`, `user`. Defaults to none.
 
 ## View single job
 
@@ -203,5 +203,3 @@ The job log is available at `https://o2r.uni-muenster.de` under the namespace `a
 # create a socket.io client:
 var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
 ```
-
-__TODO__: add documentation on messages on the socket.
