@@ -201,10 +201,12 @@ View details for a single job. The file listing format is described in [compendi
           }
         }
       ],
-      "diffHTML": "[merged HTML with difference highlighting for images]",
+      "display": {
+        "diff": "[merged HTML with difference highlighting for images]"
+      },
       "start": "2017-10-23T08:45:01.168Z",
       "end": "2017-10-23T08:45:02.193Z",
-      "errorsEncountered": []
+      "errors": []
     },
     "cleanup": {
       "text": "Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.",
