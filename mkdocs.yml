@@ -11,6 +11,7 @@ pages:
     - Download: compendium/download.md
     - Metadata: compendium/metadata.md
     - Files in a compendium: compendium/files.md
+    - Substitution: compendium/substitute.md
   - Job: job.md
   - Search: search.md
   - Shipment: shipment.md
