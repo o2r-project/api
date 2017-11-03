@@ -127,11 +127,9 @@
         
             <li><a class="toctree-l3" href="#list-shipments">List shipments</a></li>
         
+            <li><a class="toctree-l3" href="#get-a-single-shipment">Get a single shipment</a></li>
+        
             <li><a class="toctree-l3" href="#create-a-new-shipment">Create a new shipment</a></li>
-        
-            <li><a class="toctree-l3" href="#get-a-list-of-all-files-and-their-properties-that-are-in-a-depot">Get a list of all files and their properties that are in a depot</a></li>
-        
-            <li><a class="toctree-l3" href="#delete-a-specific-file-from-a-depot">Delete a specific file from a depot</a></li>
         
             <li><a class="toctree-l3" href="#error-responses">Error responses</a></li>
         
@@ -179,13 +177,16 @@
             <div class="section">
               
                 <h1 id="ship-compendia-and-metadata">Ship compendia and metadata</h1>
-<p>Shipments are used to deliver ERCs or their metadata to third party repositories or archives.
+<p>Shipments are used to deliver compendia and their metadata to third party repositories or archives.
 This section covers shipment related requests, including repository file management.</p>
-<h3 id="packaging">Packaging</h3>
-<p>Currently, the shipment process always creates <a href="http://tools.ietf.org/html/draft-kunze-bagit">BagIt</a> bags to package a compendium.</p>
-<h3 id="supported-recipients">Supported recipients</h3>
-<p>Use the <em>recipient</em> endpoint to find out, which repositories are available and configured. The reponse is list of tuples with <code>id</code> and <code>label</code> of each repository. The <code>id</code> is the repository identifier to be used in requests to the <code>/shipment</code> endpoint, e.g. to define the recipient, while <code>label</code> is a human-readable text string suitable for display in user interfaces.</p>
-<p><code>GET api/v1/recipient</code></p>
+<h2 id="packaging">Packaging</h2>
+<p>The packaging of a compendium ensures a recipient can verify the integrity of the transported data.
+Currently, the shipment process always creates <a href="http://tools.ietf.org/html/draft-kunze-bagit">BagIt</a> bags to package a compendium.</p>
+<h2 id="supported-recipients">Supported recipients</h2>
+<p>Use the <em>recipient</em> endpoint to find out, which repositories are available and configured.
+The response is list of tuples with <code>id</code> and <code>label</code> of each repository.
+The <code>id</code> is the repository identifier to be used in requests to the <code>/shipment</code> endpoint, e.g. to define the recipient, while <code>label</code> is a human-readable text string suitable for display in user interfaces.</p>
+<p><code>GET /api/v1/recipient</code></p>
 <pre><code class="json">200
 
 {
@@ -193,30 +194,45 @@ This section covers shipment related requests, including repository file managem
         &quot;id&quot;: &quot;download&quot;,
         &quot;label&quot;: &quot;Download&quot;
     }, {
-        &quot;id&quot;: &quot;b2share&quot;,
+        &quot;id&quot;: &quot;b2share_sandbox&quot;,
         &quot;label&quot;: &quot;Eudat b2share Sandbox&quot;
     }, {
-        &quot;id&quot;: &quot;zenodo&quot;,
+        &quot;id&quot;: &quot;zenodo_sandbox&quot;,
         &quot;label&quot;: &quot;Zenodo Sandbox&quot;
     }]
 }
 </code></pre>
 
-<p>This makes use of the following webservices:
-- <code>eudat</code> (<a href="https://b2share.eudat.eu/">Eudat b2share</a>).
-- <code>zenodo</code> (<a href="https://zenodo.org">Zenodo</a>)</p>
-<p>The <em>download</em> recipient is a surrogate to enable shipping to the user's own harddrive / storage.</p>
+<p>An implementation may support one or more of the following repositories:</p>
+<ul>
+<li><code>b2share</code> - <a href="https://b2share.eudat.eu/">Eudat b2share</a></li>
+<li><code>b2share_sandbox</code> - <a href="https://trng-b2share.eudat.eu/">Eudat b2share Sandbox</a></li>
+<li><code>zenodo</code> - <a href="https://zenodo.org">Zenodo Sandbox</a></li>
+<li><code>zenodo_sandbox</code> - <a href="https://sandbox.zenodo.org">Zenodo Sandbox</a></li>
+</ul>
+<p>The <code>download</code> recipient is a surrogate to enable shipping to the user's local storage.</p>
 <h2 id="list-shipments">List shipments</h2>
-<p>This is a basic request to list all available shipments (no pagination yet).</p>
+<p>This is a basic request to list all shipment identifiers.</p>
 <p><code>GET /api/v1/shipment</code></p>
 <pre><code class="json">200
 
-{
-  &quot;shipments&quot;: [&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
-}
+[&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
+
 </code></pre>
 
-<h3 id="get-a-single-specific-shipment">Get a single specific shipment</h3>
+<p>You can also get only the shipment identifiers belonging to a compendium id (e.g. <code>4XgD97</code>).</p>
+<p><code>GET /api/v1/shipment?compendium_id=4XgD97</code></p>
+<p>URL parameter:</p>
+<ul>
+<li><code>compendium_id</code> - the identifier of a specific compendium</li>
+</ul>
+<pre><code class="json">200 
+
+[&quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;, &quot;...&quot;]
+
+</code></pre>
+
+<h2 id="get-a-single-shipment">Get a single shipment</h2>
 <p><code>GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff</code></p>
 <pre><code class="json">200 
 
@@ -227,26 +243,8 @@ This section covers shipment related requests, including repository file managem
   &quot;deposition_id&quot;: &quot;63179&quot;,
   &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
   &quot;status&quot;: &quot;shipped&quot;,
-  &quot;compendium_id&quot;: &quot;4XgD9&quot;,
-  &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
-}
-</code></pre>
-
-<p>You can also get only the shipments belonging to a compendium id (e.g. <em>4XgD97</em>).</p>
-<p><code>GET /api/v1/shipment?compendium_id=4XgD97</code></p>
-<p>URL parameter:
-- <code>compendium_id</code> - The identifier of a specific compendium.</p>
-<pre><code class="json">200 
-
-{
-  &quot;last_modified&quot;: &quot;2016-12-12 10:34:32.001475&quot;,
-  &quot;recipient&quot;: &quot;zenodo&quot;,
-  &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
-  &quot;deposition_id&quot;: &quot;63179&quot;,
-  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
-  &quot;status&quot;: &quot;shipped&quot;,
-  &quot;compendium_id&quot;: &quot;4XgD9&quot;,
-  &quot;deposition_url&quot;: &quot;https://sandbox.zenodo.org/record/63179&quot;
+  &quot;compendium_id&quot;: &quot;4XgD97&quot;,
+  &quot;deposition_url&quot;: &quot;https://zenodo.org/record/63179&quot;
 }
 </code></pre>
 
@@ -255,7 +253,7 @@ This section covers shipment related requests, including repository file managem
 <p>Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
 </div>
 <h2 id="create-a-new-shipment">Create a new shipment</h2>
-<p>You can start a initial creation of a shipment, leading to transmission to a repository at the same endpoint using a <code>POST</code> request.</p>
+<p>You can start a initial creation of a shipment, leading to transmission to a repository and creation of a deposition, using a <code>POST</code> request.</p>
 <p><code>POST /api/v1/shipment</code></p>
 <p>This <strong>requires</strong> the following parameters as <code>multipart/form-data</code> or <code>application/x-www-form-urlencoded</code> encoded data:</p>
 <ul>
@@ -287,11 +285,11 @@ This section covers shipment related requests, including repository file managem
 <h3 id="shipment-status">Shipment status</h3>
 <p>A shipment can have three possible status:</p>
 <ul>
-<li><code>shipped</code>: a deposition has been created at a repository and completed the necessary metadata for publication.</li>
-<li><code>published</code>: the contents of the shipment are published on the repository, in which case the publishment can not be undone.</li>
-<li><code>error</code>: an error occurred during shipment or publishing.</li>
+<li>`shipped - a deposition has been created at a repository and completed the necessary metadata for publication.</li>
+<li><code>published</code> - the contents of the shipment are published on the repository, in which case the publishment can not be undone.</li>
+<li><code>error</code> - an error occurred during shipment or publishing.</li>
 </ul>
-<p>To query a shipment for its current status you may use:</p>
+<p>To get only a shipment's current status you may use the sub-resource <code>/status</code>:</p>
 <p><code>GET api/v1/shipment/&lt;shipment_id&gt;/status</code></p>
 <pre><code class="json">200
 
@@ -301,7 +299,7 @@ This section covers shipment related requests, including repository file managem
 }
 </code></pre>
 
-<h3 id="publish-a-deposition-on-a-supported-repository">Publish a deposition on a supported repository</h3>
+<h3 id="publish-a-deposition">Publish a deposition</h3>
 <p>The publishment is supposed to have completed the status <code>shipped</code> where metadata requirements for publication have been checked.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -316,9 +314,9 @@ This section covers shipment related requests, including repository file managem
 }
 </code></pre>
 
-<!--### File management in a repository depot-->
-
-<h2 id="get-a-list-of-all-files-and-their-properties-that-are-in-a-depot">Get a list of all files and their properties that are in a depot</h2>
+<h3 id="files-in-a-deposition">Files in a deposition</h3>
+<h4 id="list-deposition-files">List deposition files</h4>
+<p>You can request a list of all files in a deposition and their properties with the sub-resource <code>/publishment</code>.</p>
 <p><code>GET api/v1/shipment/&lt;shipment_id&gt;/publishment</code></p>
 <pre><code class="json">200
 
@@ -338,7 +336,10 @@ This section covers shipment related requests, including repository file managem
 
 <p>You can find the <code>id</code> of the file you want to interact with in this json list object at <code>files[n].id</code>, where <code>n</code> is the position of that file in the array.
 Files can be identified in this response by either their id in the depot, their filename or their checksum.</p>
-<h2 id="delete-a-specific-file-from-a-depot">Delete a specific file from a depot</h2>
+<h4 id="delete-a-specific-file-from-a-deposition">Delete a specific file from a deposition</h4>
+<p>You can delete files from a <code>shipped</code> shipment's deposition.
+You must state a file's identifier, which can be retrieved from the shipment's deposition files property <code>id</code>, as the <code>file_id</code> path parameter.
+Files for a <code>published</code> shipment cannot be deleted.</p>
 <p><code>DELETE api/v1/shipment/&lt;shipment_id&gt;/files/&lt;file_id&gt;</code></p>
 <pre><code class="json">204
 
@@ -347,7 +348,6 @@ Files can be identified in this response by either their id in the depot, their 
 }
 </code></pre>
 
-<p>In order to delete from a depot, you need state the <code>file_id</code> that can be retrieve from querying a shipments files object.</p>
 <h2 id="error-responses">Error responses</h2>
 <pre><code class="json">400
 
@@ -382,12 +382,12 @@ Files can be identified in this response by either their id in the depot, their 
 
   Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-	  
+      
         </div>
       </div>
 
     </section>
-    
+
   </div>
 
   <div class="rst-versions" role="note" style="cursor: pointer">
@@ -401,7 +401,10 @@ Files can be identified in this response by either their id in the depot, their 
       
     </span>
 </div>
+    <script>var base_url = '..';</script>
     <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
 
 </body>
 </html>
