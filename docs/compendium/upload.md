@@ -52,11 +52,4 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 ## Example data
 
-For local testing you can quickly upload some of the example compendia using a Docker image that is part of the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.
-
-```bash
-docker run --rm o2rproject/examplecompendia -c <my cookie> -e 7 -b 0003 -b 0004 -b 0005
-```
-
-For more configuration details, see the project's README file.
+For local testing you can quickly upload some of the example compendia and workspaces from the [erc-examples](https://github.com/o2r-project/erc-examples) project.
