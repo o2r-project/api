@@ -15,7 +15,7 @@ Upon successful extraction of archive and processing of the contents, the `id` f
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-    -F content_type=compendium_v1 https://…/api/v1/compendium \
+    -F content_type=compendium https://…/api/v1/compendium \
     --cookie "connect.sid=<code string here>" \
      https://…/api/v1/compendium 
 ```
@@ -33,7 +33,7 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 - `compendium` - The archive file
 - `content_type` - Form of archive. One of the following:
-  - `compendium_v1` - _default_ - compendium in Bagtainer format
+  - `compendium` - _default_ - compendium in Bagtainer format
   - `workspace` - _WORK IN PROGRESS_ - formless workspace
 
 ## Error responses for compendium upload

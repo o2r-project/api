@@ -4,8 +4,9 @@ Upload a research compendium by submitting a link to a cloud resource using an H
 
 Currently, the following repositories are supported:
 
-- Sciebo (https://sciebo.de)
-- Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
+- [Sciebo](https://sciebo.de)
+- [Zenodo](https://zenodo.org)
+- [Zenodo Sandbox](https://sandbox.zenodo.org)
 
 ## Common
 
@@ -19,11 +20,10 @@ Copy the contents of the cookie into the request example below.
 Upon successful download from the public share, the `id` for the new compendium is returned.
 
 !!! note "Required user level"
-
     The user creating a new compendium must have the required [user level](../user.md#user-levels).
 
 ```bash
-curl -F "content_type=compendium_v1" \
+curl -F "content_type=compendium" \
     -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     --cookie "connect.sid=<code string here>" \
      https://…/api/v1/compendium
@@ -53,7 +53,7 @@ Depending on the file structure, the public share contents are treated different
 
 - `share_url` - The sciebo link to the public share (required)
 - `content_type` - Form of archive. One of the following (required):
-    - `compendium_v1` compendium in Bagtainer format
+    - `compendium` compendium in Bagtainer format
     - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 - `path` - Path to a subdirectory in the public share (optional)
     - default is `/`
@@ -61,7 +61,7 @@ Depending on the file structure, the public share contents are treated different
 ### Examples
 
 ```bash
-curl -F "content_type=compendium_v1" \
+curl -F "content_type=compendium" \
     -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
     -F "path=/metatainer" \
     --cookie "connect.sid=<code string here>" \
@@ -102,7 +102,7 @@ For testing purposes you can use the following public share. It contains a few r
 - `doi` - A [DOI](https://doi.org) resolving to the zenodo record (optional)
 - `zenodo_record_id` - The ID of the zenodo record (optional)
 - `content_type` - Form of archive. One of the following (required):
-    - `compendium_v1` compendium in Bagtainer format
+    - `compendium` compendium in Bagtainer format
     - `workspace` - _[NOT IMPLEMENTED]_ - formless workspace
 - `filename` - Filename of your compendium. For now, only zip-files are supported. (optional)
     - if no `filename` is provided the first zip file is selected
@@ -119,7 +119,7 @@ There must at least one url parameter that resolves to a zenodo record. I.e. one
 1. Zenodo Record URL (with optional filename parameter)
 
 ```bash
-curl -F "content_type=compendium_v1" \
+curl -F "content_type=compendium" \
     -F "zenodo_url=https://sandbox.zenodo.org/record/69114"  \
     -F "filename=metatainer.zip" \
     --cookie "connect.sid=<code string here>" \
@@ -129,7 +129,7 @@ curl -F "content_type=compendium_v1" \
 2. DOI
 
 ```bash
-curl -F "content_type=compendium_v1" \
+curl -F "content_type=compendium" \
     -F "doi=10.5072/zenodo.69114"  \
     --cookie "connect.sid=<code string here>" \
      https://…/api/v1/compendium
@@ -138,7 +138,7 @@ curl -F "content_type=compendium_v1" \
 3. Zenodo Record ID
 
 ```bash
-curl -F "content_type=compendium_v1" \
+curl -F "content_type=compendium" \
     -F "zenodo_record_id=69114"  \
     --cookie "connect.sid=<code string here>" \
      https://…/api/v1/compendium
