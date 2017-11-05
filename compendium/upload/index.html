@@ -190,7 +190,7 @@ Provide the content of the cookie when making requests to the API as shown in th
 <p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
 <pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
-    -F content_type=compendium_v1 https://…/api/v1/compendium \
+    -F content_type=compendium https://…/api/v1/compendium \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
      https://…/api/v1/compendium 
 </code></pre>
@@ -208,7 +208,7 @@ Provide the content of the cookie when making requests to the API as shown in th
 <ul>
 <li><code>compendium</code> - The archive file</li>
 <li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium_v1</code> - <em>default</em> - compendium in Bagtainer format</li>
+<li><code>compendium</code> - <em>default</em> - compendium in Bagtainer format</li>
 <li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
 </ul>
 <h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
@@ -223,12 +223,7 @@ Provide the content of the cookie when making requests to the API as shown in th
 </code></pre>
 
 <h2 id="example-data">Example data</h2>
-<p>For local testing you can quickly upload some of the example compendia using a Docker image that is part of the <a href="https://github.com/o2r-project/o2r-bagtainers">o2r-bagtainers</a> project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.</p>
-<pre><code class="bash">docker run --rm o2rproject/examplecompendia -c &lt;my cookie&gt; -e 7 -b 0003 -b 0004 -b 0005
-</code></pre>
-
-<p>For more configuration details, see the project's README file.</p>
+<p>For local testing you can quickly upload some of the example compendia and workspaces from the <a href="https://github.com/o2r-project/erc-examples">erc-examples</a> project.</p>
               
             </div>
           </div>
