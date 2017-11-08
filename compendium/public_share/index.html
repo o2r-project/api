@@ -179,7 +179,7 @@
             <div class="section">
               
                 <h1 id="public-share">Public share</h1>
-<p>Upload a research compendium by submitting a link to a cloud resource using an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
+<p>Load a research compendium by submitting a link to a cloud resource using an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
 <p>Currently, the following repositories are supported:</p>
 <ul>
 <li><a href="https://sciebo.de">Sciebo</a></li>
@@ -192,11 +192,14 @@
 To run the upload from the command line, login on the website and open you browser cookies.
 Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
 Copy the contents of the cookie into the request example below.</p>
-<p>Upon successful download from the public share, the <code>id</code> for the new compendium is returned.</p>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>
 <p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
+<p>To run the load from the command line, login on the website and open you browser cookies.
+Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Copy the contents of the cookie into the request example below.</p>
+<p>Upon successful download from the public share, the <code>id</code> for the new compendium is returned.</p>
 <pre><code class="bash">curl -F &quot;content_type=compendium&quot; \
     -F &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
@@ -213,20 +216,22 @@ Copy the contents of the cookie into the request example below.</p>
 <p>After successful load from a public share, the <strong><a href="../upload/#candidate-process">candidate process</a></strong> applies.</p>
 </div>
 <h2 id="sciebo">Sciebo</h2>
+<p><a href="http://www.sciebo.de/en/about/index.html">Sciebo</a> is a cloud storage service at North Rhine-Westphalian universities.
+Although it builds on ownCloud and the implementation might be able to handle any ownCloud link, only Sciebo's publish shares are supported by this API. </p>
 <h3 id="file-selection">File selection</h3>
-<p>Depending on the file structure, the public share contents are treated differently:</p>
+<p>Depending on the public share contents different processes are triggered:</p>
 <ol>
-<li>If a file named <code>bagit.txt</code> is found, the directory will be treated as a research compendium</li>
-<li>If a single zip file is found, the file will be extracted and treated as a research compendium</li>
-<li>If a single subdirectory is found, the loader will look for subdirectories and analyze their contents <em>(NOT_IMPLEMENTED)</em></li>
-<li>If multiple files or subdirectories are found, the public share contents are treated as a workspace <em>(NOT IMPLEMENTED)</em></li>
+<li>If a file named <code>bagit.txt</code> is found, the directory will checked for Bagit validity</li>
+<li>If a single zip file is found, the file will be extracted, if multiple zip files are found, an error is returned.</li>
+<li>If a single subdirectory is found, the loader will use that subdirectory</li>
+<li>Depending on the value of <code>content_type</code> (see below), the public share contents are treated as a complete compendium or as a  workspace</li>
 </ol>
 <h3 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h3>
 <ul>
-<li><code>share_url</code> - The sciebo link to the public share (required)</li>
+<li><code>share_url</code> - The Sciebo link to the public share (required)</li>
 <li><code>content_type</code> - Form of archive. One of the following (required):<ul>
-<li><code>compendium</code> compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
+<li><code>compendium</code> - complete compendium</li>
+<li><code>workspace</code> - formless workspace</li>
 </ul>
 </li>
 <li><code>path</code> - Path to a subdirectory in the public share (optional)<ul>
@@ -262,14 +267,17 @@ Copy the contents of the cookie into the request example below.</p>
 <p>For testing purposes you can use the following public share, which contains a few ready-to-use compendia:</p>
 <p><a href="https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"><code>https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO</code></a></p>
 <h2 id="zenodo">Zenodo</h2>
-<h3 id="body-parameters-for-creating-compendium-from-a-zenodo-record">Body parameters for creating compendium from a Zenodo record</h3>
+<h3 id="body-parameters-for-creating-a-compendium-from-a-zenodo-record">Body parameters for creating a compendium from a Zenodo record</h3>
 <ul>
+<li>Identification of the Zenodo record, one of the folloing is required:<ul>
 <li><code>share_url</code> - The link to the zenodo record (optional). May be a link to https://zenodo.org or https://doi.org</li>
 <li><code>doi</code> - A <a href="https://doi.org">DOI</a> resolving to the zenodo record (optional)</li>
 <li><code>zenodo_record_id</code> - The ID of the zenodo record (optional)</li>
+</ul>
+</li>
 <li><code>content_type</code> - Form of archive. One of the following (required):<ul>
-<li><code>compendium</code> compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>[NOT IMPLEMENTED]</em> - formless workspace</li>
+<li><code>compendium</code> - complete compendium for <em>inspection</em></li>
+<li><code>workspace</code> - formless workspace for <em>creation</em></li>
 </ul>
 </li>
 <li><code>filename</code> - Filename of your compendium. For now, only zip-files are supported. (optional)<ul>
@@ -279,11 +287,6 @@ Copy the contents of the cookie into the request example below.</p>
 </li>
 </ul>
 <p>There must at least one url parameter that resolves to a zenodo record. I.e. one of the following:</p>
-<ul>
-<li><code>share_url</code></li>
-<li><code>doi</code></li>
-<li><code>zenodo_record_id</code></li>
-</ul>
 <h3 id="examples_1">Examples</h3>
 <ol>
 <li>Zenodo Record URL (with optional filename parameter)</li>

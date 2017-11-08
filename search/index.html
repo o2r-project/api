@@ -116,11 +116,9 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#indexed-information">Indexed information</a></li>
-        
             <li><a class="toctree-l3" href="#simple-search">Simple search</a></li>
         
-            <li><a class="toctree-l3" href="#suggesters-work-in-progress">Suggesters - WORK IN PROGRESS</a></li>
+            <li><a class="toctree-l3" href="#complex-search">Complex Search</a></li>
         
         </ul>
     
@@ -171,38 +169,141 @@
             <div class="section">
               
                 <h1 id="search">Search</h1>
-<h2 id="indexed-information">Indexed information</h2>
+<p>The search uses a document database to provide high speed and powerful search capabilities for compendia, including spatial and temporal properties.</p>
+<p>The search structure is based on <a href="https://www.elastic.co/">Elasticsearch</a> and thereby eases an implementation, because the requests and responses shown here can be directly mapped to respectively from <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html">Elasticsearch's API</a>.</p>
+<p><strong>Indexed information:</strong></p>
 <ul>
-<li>compendium metadata</li>
-<li>text files in a compendium</li>
-<li>PDF documents in a compendium (TBD)</li>
+<li>compendium <em>metadata</em> (including harvested and user-edited metadata such as temporal ranges and spatial extents)</li>
+<li><em>full texts</em> of text files in a compendium</li>
 </ul>
 <h2 id="simple-search">Simple search</h2>
-<p>The search is based on <a href="https://www.elastic.co/">Elasticsearch</a> and the regular <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html">Elasticsearch search API</a> is exposed at</p>
-<pre><code class="bash">https://…/api/v1/search
+<p>A simple search allows searching for search terms using an <code>HTTP GET</code> request accepting <code>application/json</code> content type.</p>
+<p><code>curl -H 'Content-Type: application/json' https://.../api/v1/search?q=$SEARCHTERM</code></p>
+<p><code>GET /api/v1/search?q=Reproducible</code></p>
+<p><code>GET /api/v1/search?q=great reproducible research</code></p>
+<p>The <strong>response</strong> is <code>JSON</code> with the root element is <code>hits</code>, which has the same as the <code>hits</code> element from an Elasticsearch response but may not include internal fields such as <code>_index</code>, <code>_type</code>, and <code>_id</code>.</p>
+<pre><code class="json">200 ok
+
+{
+  &quot;hits&quot;: {
+    &quot;total&quot;: 1,
+    &quot;max_score&quot;: 1.0586987,
+    &quot;hits&quot;: [
+      {
+        &quot;_score&quot;: 1.0586987,
+        &quot;_source&quot;: {
+          &quot;metadata&quot;: {
+            &quot;o2r&quot;: ...
+          },
+        }
+      }
+    ]
+  }
+}
 </code></pre>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The available metadata is a synced clone of the compendium metadata stored in the main database.
+For more information on the mapping from the main database to the search database, take a look at the <a href="https://github.com/o2r-project/o2r-finder"><code>o2r-finder</code> microservice</a>.</p>
+</div>
+<h3 id="query-parameters-for-simple-search">Query parameters for simple search</h3>
+<ul>
+<li><code>q</code> - search term(s), must be <a href="https://en.wikipedia.org/wiki/Percent-encoding">URL-encoded</a></li>
+</ul>
 <h3 id="example-requests">Example requests</h3>
 <ul>
 <li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*">http://o2r.uni-muenster.de/api/v1/search?q=*</a></li>
-<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=term">http://o2r.uni-muenster.de/api/v1/search?q=term</a></li>
-<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id">http://o2r.uni-muenster.de/api/v1/search?q=*&amp;fields=compendium_id</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis">http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis">http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678">http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678</a></li>
 </ul>
-<h3 id="security">Security</h3>
-<p>Only reading requsts, i.e. <code>GET</code> requests, are allowed at the moment. This means that Kibana cannot be run against this interface, and neither can complex queries requiring <code>POST</code> requests. <code>GET</code> requests with payloads are allowed.</p>
-<p>Example query:</p>
-<pre><code class="bash">curl -XGET 'https://…/api/v1/search' -d '{
-    &quot;query&quot;: {
-            &quot;type&quot; : {
-                &quot;value&quot; : &quot;jobs&quot;
-            }
-        }
-    }
+<h2 id="complex-search">Complex Search</h2>
+<p>A complex search is enabled via <code>POST</code> requests with a <code>JSON</code> payload as <code>HTTP POST</code> data (<em>not</em> <code>multipart/form-data</code>) accepting an <code>application/json</code> content type as response.
+Queries can include filters, aggregation and spatio-temporal operations as defined in the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">Elasticsearch Query DSL</a>.</p>
+<p><code>curl -X POST -H 'Content-Type: application/json' 'https://.../api/v1/search' -d '$QUERY_DSL'</code></p>
+<p>The <strong>response</strong> structure is the same as for <a href="#simple-search">simple search</a>.</p>
+<h3 id="query-fields-for-complex-search">Query fields  for complex search</h3>
+<p>The following fields are especially relevant to build queries.</p>
+<ul>
+<li><code>metadata.o2r.temporal.begin</code> and <code>metadata.o2r.temporal.end</code> provide a compendium's temporal extent</li>
+<li><code>metadata.o2r.spatial.geometry</code> has the compendium's spatial extent</li>
+</ul>
+<p>Besides these fields, all metadata of the <a href="../compendium/metadata/#metadata-formats"><code>o2r</code> metadata format</a> can be used.</p>
+<h3 id="examples">Examples</h3>
+<h4 id="temporal-search">Temporal search</h4>
+<pre><code class="bash">POST /api/v1/search -d '{
+  &quot;query&quot;: {
+      &quot;bool&quot;: {
+          &quot;must&quot;: {
+              &quot;match_all&quot;: {}
+          },
+          &quot;filter&quot;: [
+              {
+                  &quot;range&quot;: {
+                      &quot;metadata.o2r.temporal.begin&quot;: {
+                          &quot;from&quot;: &quot;2015-03-01T00:00:00.000Z&quot;
+                      }
+                  }
+              },
+              {
+                  &quot;range&quot;: {
+                      &quot;metadata.o2r.temporal.end&quot;: {
+                          &quot;to&quot;: &quot;2017-10-01T00:00:00.000Z&quot;
+                      }
+                  }
+              }
+          ]
+      }
+  },
+  &quot;from&quot;: 0,
+  &quot;size&quot;: 10
 }'
 </code></pre>
 
-<h2 id="suggesters-work-in-progress">Suggesters - WORK IN PROGRESS</h2>
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html">Elasticsearch suggest API</a> </p>
+<h4 id="spatial-search">Spatial search</h4>
+<pre><code class="json">{
+    &quot;bool&quot;: {
+        &quot;must&quot;: {
+            &quot;match_all&quot;: {}
+         },
+         &quot;filter&quot;: {
+              &quot;geo_shape&quot;: {
+                   &quot;metadata.o2r.spatial.geometry&quot;: {
+                        &quot;shape&quot;: {
+                            &quot;type&quot;: &quot;polygon&quot;,
+                            &quot;coordinates&quot;: [... GeoJSON coordinates...]
+                         },
+                         &quot;relation&quot;: &quot;within&quot;
+                    }
+               }
+          }
+     }
+}
+</code></pre>
+
+<p>In this example a filter has been nested within a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html">boolean/must match</a> query.
+The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> field of the dataset with a <code>within</code> relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.</p>
+<h4 id="response">Response</h4>
+<pre><code class="json">200 ok
+
+{
+  &quot;hits&quot;: {
+    &quot;total&quot;: 1,
+    &quot;max_score&quot;: 1.0586987,
+    &quot;hits&quot;: [
+      {
+        &quot;_score&quot;: 1.0586987,
+        &quot;_source&quot;: {
+          &quot;metadata&quot;: {
+            &quot;o2r&quot;: ...
+          },
+        }
+      }
+    ]
+  }
+}
+</code></pre>
               
             </div>
           </div>

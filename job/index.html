@@ -242,12 +242,14 @@ Requires a <code>compendium_id</code>.</p>
 </code></pre>
 
 <h2 id="list-jobs">List jobs</h2>
-<p>Lists jobs. Will return up to 100 results by default.</p>
+<p>Lists jobs with filtering and pagination, returning up to 100 results by default.</p>
 <p>Results will be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
-<p>Results can be filtered:
-- by <code>compendium_id</code> i.e. <code>compendium_id=a4Dnm</code>,
-- by <code>status</code> i.e. <code>status=success</code> or
-- by <code>user</code> i.e. <code>user=0000-0000-0000-0001</code></p>
+<p>Results can be filtered:</p>
+<ul>
+<li>by <code>compendium_id</code> i.e. <code>compendium_id=a4Dnm</code>,</li>
+<li>by <code>status</code> i.e. <code>status=success</code> or</li>
+<li>by <code>user</code> i.e. <code>user=0000-0000-0000-0001</code></li>
+</ul>
 <p><code>curl https://…/api/v1/job?limit=100&amp;start=2&amp;compendium_id=$ID&amp;status=success&amp;fields=status</code></p>
 <p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;status=success</code></p>
 <pre><code class="json">200 OK

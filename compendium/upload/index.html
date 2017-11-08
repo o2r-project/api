@@ -74,8 +74,6 @@
         
             <li><a class="toctree-l5" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a></li>
         
-            <li><a class="toctree-l5" href="#example-data">Example data</a></li>
-        
         </ul>
     
 
@@ -207,22 +205,34 @@ Provide the content of the cookie when making requests to the API as shown in th
 <h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
 <ul>
 <li><code>compendium</code> - The archive file</li>
-<li><code>content_type</code> - Form of archive. One of the following:</li>
-<li><code>compendium</code> - <em>default</em> - compendium in Bagtainer format</li>
-<li><code>workspace</code> - <em>WORK IN PROGRESS</em> - formless workspace</li>
+<li><code>content_type</code> - Form of archive. One of the following:<ul>
+<li><code>compendium</code> - compendium, which is expected to be complete and valid, for <em>examination</em> of a compendium</li>
+<li><code>workspace</code> - formless workspace, for <em>creation</em> of a compendium</li>
 </ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>
+</div>
 <h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
+<pre><code class="json">400 Bad Request
+
+{&quot;error&quot;:&quot;provided content_type not implemented&quot;}
+</code></pre>
+
 <pre><code class="json">401 Unauthorized
 
-{&quot;error&quot;:&quot;missing or wrong api key&quot;}
+{&quot;error&quot;:&quot;user is not authenticated&quot;}
 </code></pre>
 
-<pre><code class="json">422 Unprocessable Entity
+<pre><code class="json">401 Unauthorized
 
-{&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
+{&quot;error&quot;:&quot;user level does not allow compendium creation&quot;}
 </code></pre>
 
-<h2 id="example-data">Example data</h2>
+<p>```json
+422 Unprocessable Entity</p>
 <p>For local testing you can quickly upload some of the example compendia and workspaces from the <a href="https://github.com/o2r-project/erc-examples">erc-examples</a> project.</p>
               
             </div>
