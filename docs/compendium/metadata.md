@@ -15,7 +15,7 @@ The files are available on demand, but metadata variants are created after each 
 The sub-properties of the `metadata` and their content are
 
 - `raw` contains raw metadata extracted automatically
-- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats.
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).
 - `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is translated from `o2r` metadata
 
 !!! note
