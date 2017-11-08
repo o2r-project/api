@@ -4,8 +4,9 @@ Load a research compendium by submitting a link to a cloud resource using an HTT
 
 Currently, the following repositories are supported:
 
-- Sciebo (https://sciebo.de)
-- Zenodo or Zenodo Sandbox (https://zenodo.org or https://sandbox.zenodo.org)
+- [Sciebo](https://sciebo.de)
+- [Zenodo](https://zenodo.org)
+- [Zenodo Sandbox](https://sandbox.zenodo.org)
 
 ## Common
 
@@ -17,7 +18,6 @@ Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
 Copy the contents of the cookie into the request example below.
 
 !!! note "Required user level"
-
     The user creating a new compendium must have the required [user level](../user.md#user-levels).
 
 To run the load from the command line, login on the website and open you browser cookies.
@@ -97,9 +97,9 @@ curl -F "content_type=compendium" \
 
 ### Example data
 
-For testing purposes you can use the following public share. It contains a few ready-to-use compendia found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+For testing purposes you can use the following public share, which contains a few ready-to-use compendia:
 
-`https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`
+[`https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`](https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO)
 
 ## Zenodo
 
@@ -186,10 +186,8 @@ If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` para
 
 ### Example data
 
-For testing purposes you can use the following public shares. These contain the _metatainer_ compendium found in the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project:
+For testing purposes you can use the following public shares.
+They contain the a compendium with metadata.
 
-- Sciebo: `https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA`
-- Zenodo: `https://sandbox.zenodo.org/record/69114`
-
-
-
+- Sciebo: [`https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA`](https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA)
+- Zenodo: [`https://sandbox.zenodo.org/record/69114`](https://sandbox.zenodo.org/record/69114)
