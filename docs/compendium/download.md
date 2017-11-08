@@ -3,21 +3,18 @@
 Download compendium files as an archive.
 
 !!! Warning
-    This download feature does _not_ provide access to complete and valid ERCs, because it does not comprise an update of the BagIt bag.
-
-    To download an ERC, create a [shipment](../shipment.md) with the appropriate recipient.
+    This download feature does _not_ provide access to complete and valid compendia, because it does not comprise an update of the [packaging](../shipment.md#packaging), while it does include [brokered metadata files](metadata.md#update-metadata).
+    To download a valid compendium, create a [shipment](../shipment.md) with the appropriate recipient.
 
 Supported formats are as follows:
 
 - `zip`
 - `tar`
-- `tar.gz` (gzipped tarball)
+- `tar.gz`
 
 ## Requests
 
-`curl https://…/api/v1/compendium/$ID.zip`
-
-`wget https://…/api/v1/compendium/$ID.zip`
+`GET /api/v1/compendium/$ID.zip`
 
 ```bash
 GET /api/v1/compendium/:id.zip
@@ -61,7 +58,7 @@ Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 
 ### Error responses for compendium download
 
-```bash
+```json
 404 Not Found
 
 {"error":"no compendium with this id"}
