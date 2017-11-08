@@ -90,7 +90,7 @@ URL parameter:
 ```
 
 !!! note
-    Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
+    Returned deposition URLs from Zenodo as well as Eudat b2share (records) are only functional after publishing.
 
 ## Create a new shipment
 
@@ -105,7 +105,7 @@ This **requires** the following parameters as `multipart/form-data` or `applicat
 
 The following are **optional parameters**:
 
-- `update_packaging` (`boolean`, default: `false`): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation will result in an error.
+- `update_packaging` (`boolean`, default: `false`): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation results in an error.
 - `cookie` (`string`): an authentication cookie must be set in the request header, but it may also be provided via a `cookie` form parameter as a fallback
 - `shipment_id` (`string`): a user-defined identifier for the shipment (see `id` in response)
 

@@ -2,7 +2,7 @@
 
 ## List compendia
 
-Will return up to 100 results by default.
+Returns up to 100 results by default.
 
 `curl https://…/api/v1/compendium?limit=100&start=2`
 

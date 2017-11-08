@@ -207,7 +207,7 @@ curl -H 'Content-Type: application/json' \
   /api/v1/compendium/:id/metadata
 ```
 
-The request will _overwrite_ the existing metadata properties, so the _full_ o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+The request _overwrites_ the existing metadata properties, so the _full_ o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
 
 !!! Note
     This endpoint allows only to update the `metadata.o2r` elements. All other properties of 

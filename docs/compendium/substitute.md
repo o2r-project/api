@@ -1,7 +1,7 @@
 # Substitution
 
 Substitution is the combination of an base compendium, "base" for short, and an overlay compendium, or "overlay".
-A user can choose files from the overlay that will replace files of the base or will be uniquely added.
+A user can choose files from the overlay to replace files of the base, or upload new files.
 
 ## Create substitution
 
@@ -84,7 +84,7 @@ Request body for a new substitution:
 
 `GET /api/v1/compendium/:id`
 
-This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
+This request is handled as regular GET request of a compendium (see [View single compendium](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium)).
 
 ### Response
 
@@ -148,14 +148,14 @@ Example 02 - in case the overlay file has the same filename as one of the existi
 
 ### Response additional metadata
 
-- `substituted` - will be set `true`
+- `substituted` - is `true`
 - `substitution` - object, specifying information about the substitution
   - `base` - id of the base compendium
   - `overlay` - id of the overlay compendium
   - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
     - `base` - filename of the file from the base compendium
     - `overlay` - filename of the file from the overlay compendium
-    - `filename` - as seen in the examples above, `filename` will be created if there is a conflict with any base file name and an overlay file name. In this case the overlay file name will get the prefix `overlay_` (see Example 02).
+    - `filename` - as seen in the examples above, `filename` is created if there is a conflict with any base file name and an overlay file name. In this case the overlay file name is given the prefix `overlay_` (see Example 02).
 
 ## List substituted Compendia
 
@@ -203,7 +203,7 @@ If there are no substitutions yet, the returned list is empty.
 
 `GET /api/v1/substitution?base=jfL3w`
 
-Result will be a list of compendia ids that have been substituted using the given base:
+Result is a list of compendia ids that have been substituted using the given base:
 
 ```json
 200 OK
@@ -222,7 +222,7 @@ Result will be a list of compendia ids that have been substituted using the give
 
 `GET /api/v1/substitution?overlay=as4Kj`
 
-Result will be a list of compendia ids that have been substituted using the given overlay:
+Result is be a list of compendia ids that have been substituted using the given overlay:
 
 ```json
 200 OK
@@ -242,7 +242,7 @@ Result will be a list of compendia ids that have been substituted using the give
 
 `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
 
-Result will be a list of compendia ids that have been substituted using the given base and overlay:
+Result is be a list of compendia ids that have been substituted using the given base and overlay:
 
 ```json
 200 OK

@@ -106,11 +106,14 @@ curl [...] --cookie "connect.sid=<code string here>" \
 
 #### Authentication provider
 
-Session authentication is done using the OAuth 2.0 protocol. Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
+Session authentication is done using the OAuth 2.0 protocol.
+Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
 
 #### Start OAuth login
 
-Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
+Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
 If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, where the o2r platform webinterface resides.
 
@@ -118,7 +121,7 @@ If the login is unsuccessful, the user is not redirected back to the site and no
 
 #### Request authentication status
 
-As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
+As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
 `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
 
@@ -135,7 +138,7 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 
 #### Error response for requests requiring authentication
 
-When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a `401 Unauthorized` message.
+When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service responds with a `401 Unauthorized` message.
 
 ```json
 401 Unauthorized
@@ -147,7 +150,7 @@ When no session cookie was included, or the included session cookie does not bel
 
 ## User levels
 
-Users are authenticated via OAuth and the actions on the website are limited by the `level` assocciated with an account.
+Users are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.
 On registration, each account is assigned a level `0`.
 Only admin users and the user herself can read the level of a user.
 

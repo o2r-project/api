@@ -8,9 +8,9 @@ A trivial execution job would be a completely unmodified research compendium, to
 
 ## State of a job
 
-The property `>job>.state` shows the overall state of a job.
+The property `job.status` shows the **overall status** of a job.
 
-The status will be one of following:
+The overall status can be one of following:
 
 - `success` - if state of all steps is `success`.
 - `failure` - if state of at least one step is `failure`.
@@ -83,7 +83,7 @@ Requires a `compendium_id`.
 
 Lists jobs with filtering and pagination, returning up to 100 results by default.
 
-Results will be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
+Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
 
 Results can be filtered:
 
@@ -234,15 +234,17 @@ View details for a single job. The file listing format is described in [compendi
 - `:id` - id of the job to be viewed
 - `details` - Details of steps to be loaded.  
 
-By default, only `status`, `start` and `end` of any step will be loaded.
+By default, only `status`, `start` and `end` of any step are included.
 
-`details` may either be `all`, or a comma separated list of one or more step identifiers. Any other step values for `details` than the listed ones will return the default (e.g. `details=no`).
+`details` may either be `all`, or a comma separated list of one or more step identifiers.
+Any other step values for `details` than the listed ones returns only the default (e.g. `details=no`).
 
 ### Steps
 
-The answer will contain information regaring the job steps.
+The answer contains information on the job steps.
 
-Additional explanations to their status will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+Additional explanations to their status are included in the `text` property.
+The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
 ### Error responses for single job view
 
@@ -254,7 +256,8 @@ Additional explanations to their status will be transmitted in the `text` proper
 
 ## Job status updates
 
-You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket). The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
+You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket).
+The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
 
 The job log is available at `https://o2r.uni-muenster.de` under the namespace `api/v1/logs/job`.
 
