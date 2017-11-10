@@ -23,13 +23,13 @@ More information about `steps` can be found in subsection `Steps` of section `Vi
 One job consists of a series of steps. All of these steps can be in one of three status: `running`, `failure`, or `success`. The are executed in order.
 
 - **validate_bag**
-  Validate the BagIt bag based on npm's [bagit](https://www.npmjs.com/package/bagit).
+  Validate the BagIt bag based on the npm library [bagit](https://www.npmjs.com/package/bagit).
 - **validate_compendium**
-  Parses and validate the bagtainer configuration and metadta.
+  Parses and validate the bagtainer configuration and metadata.
 - **image_prepare**
   Create an archive of the payload of the BagIt bag, which allows to build and run the image also on remote Docker hosts.
 - **image_build**
-  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged `bagtainer:<jobid>`.
+  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged `erc:<job_id>`.
 - **image_execute**
   Run the container and return based on status code of program that ran inside the container.
 - **check**
@@ -231,7 +231,7 @@ By default, only `status`, `start` and `end` of any step will be loaded.
 
 ### Steps
 
-The answer will contain information regaring the job steps.
+The answer will contain information regarding the job steps.
 
 Additional explanations to their status will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
