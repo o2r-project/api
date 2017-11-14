@@ -38,7 +38,7 @@ The are executed in order.
 - **image_execute**
   Run the container and return based on status code of program that ran inside the container.
 - **check**
-  Run a check on the contents of the container. Validate the results of the executed calculations.
+  Run a check on the contents of the container. Validate the results of the executed calculations. The check provides either a list of errors or a reference to displayable content in the property `display.diff`.
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
@@ -206,7 +206,7 @@ View details for a single job. The file listing format is described in [compendi
         }
       ],
       "display": {
-        "diff": "[merged HTML with difference highlighting for images]"
+        "diff": "/api/v1/job/nkm4L/data/diffHTML.html"
       },
       "start": "2017-10-23T08:45:01.168Z",
       "end": "2017-10-23T08:45:02.193Z",
