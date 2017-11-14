@@ -193,13 +193,13 @@
 <p>One job consists of a series of steps. All of these steps can be in one of three status: <code>running</code>, <code>failure</code>, or <code>success</code>. The are executed in order.</p>
 <ul>
 <li><strong>validate_bag</strong>
-  Validate the BagIt bag based on npm's <a href="https://www.npmjs.com/package/bagit">bagit</a>.</li>
+  Validate the BagIt bag based on the npm library <a href="https://www.npmjs.com/package/bagit">bagit</a>.</li>
 <li><strong>validate_compendium</strong>
-  Parses and validate the bagtainer configuration and metadta.</li>
+  Parses and validate the bagtainer configuration and metadata.</li>
 <li><strong>image_prepare</strong>
   Create an archive of the payload of the BagIt bag, which allows to build and run the image also on remote Docker hosts.</li>
 <li><strong>image_build</strong>
-  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged <code>bagtainer:&lt;jobid&gt;</code>.</li>
+  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged <code>erc:&lt;job_id&gt;</code>.</li>
 <li><strong>image_execute</strong>
   Run the container and return based on status code of program that ran inside the container.</li>
 <li><strong>check</strong>
@@ -376,7 +376,7 @@ Requires a <code>compendium_id</code>.</p>
 <p>By default, only <code>status</code>, <code>start</code> and <code>end</code> of any step will be loaded.</p>
 <p><code>details</code> may either be <code>all</code>, or a comma separated list of one or more step identifiers. Any other step values for <code>details</code> than the listed ones will return the default (e.g. <code>details=no</code>).</p>
 <h3 id="steps">Steps</h3>
-<p>The answer will contain information regaring the job steps.</p>
+<p>The answer will contain information regarding the job steps.</p>
 <p>Additional explanations to their status will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
 <h3 id="error-responses-for-single-job-view">Error responses for single job view</h3>
 <pre><code class="json">404 Not Found
