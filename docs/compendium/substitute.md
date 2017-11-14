@@ -9,6 +9,11 @@ A user can choose files from the overlay to replace files of the base, or upload
 A substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
 Required content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.
 
+!!! Note
+    A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (`/data` directory).
+
+    The overlay file is stripped of all paths and is copied directly into the substitution's root directory.
+
 ### Request
 
 `POST /api/v1/substitution`
@@ -118,7 +123,7 @@ Example 01 - in case there are no conflicts between filenames of any base file a
 }
 ```
 
-Example 02 - in case the overlay file has the same filename as one of the existing base files:
+Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:
 
 ```json
 200 OK
@@ -135,7 +140,7 @@ Example 02 - in case the overlay file has the same filename as one of the existi
           "substitutionFiles": [
             {
               "base": "climate-timeseries.csv",
-              "overlay": "input.csv",
+              "overlay": "dataFiles/input.csv",
               "filename": "overlay_input.csv"
             }
           ]
