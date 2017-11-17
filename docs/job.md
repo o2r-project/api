@@ -42,6 +42,8 @@ The are executed in order.
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
+### Status
+
 All of these steps can be in one of the following status:
 
 - `queued`: step is not yet started
@@ -49,6 +51,16 @@ All of these steps can be in one of the following status:
 - `success`: step is completed successfully
 - `failure`: step is completed unsuccessfully
 - `skipped`: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces
+
+### Step metadata
+
+Additional explanations on steps' status will be transmitted in the `text` property.
+`text` is an array, with the latest element holding the newest information.
+During long running steps, the `text` element is updated by appending new information when available.
+
+The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+
+Specific steps may carry more information in additional properties.
 
 ## New job
 
@@ -159,85 +171,132 @@ View details for a single job. The file listing format is described in [compendi
 200 OK
 
 {
-  "id": "nkm4L",
-  "compendium_id": "a4Dnm",
-  "user": "0000-0001-6021-1617",
-  "status": "failure",
-  "steps": {
-    "validate-bag": {
+  "id":"UMmJ7",
+  "compendium_id":"BSgxj",
+  "steps":{
+    "validate_bag":{
       "status":"skipped",
-      "text": "bag validation during job execution is disabled"
+      "text":[
+        "Not a bag"
+      ],
+      "end":"2017-11-17T13:22:48.105Z",
+      "start":"2017-11-17T13:22:48.105Z"
     },
-    "validate_compendium": {
-      "text": "compendium is invalid, but execution may continue",
-      "status": "failure",
-      "start": "2017-10-23T08:44:30.768Z",
-      "end": "2017-10-23T08:44:30.785Z"
+    "generate_configuration":{
+      "status":"success",
+      "text":[
+        "configuration file not found, generating it...",
+        "Saved configuration file to job and compendium"
+      ],
+      "end":"2017-11-17T13:22:48.119Z",
+      "start":"2017-11-17T13:22:48.113Z"
     },
-    "image_prepare": {
-     "text": "payload with 12800 total bytes",
-     "status": "success",
-     "start": "2017-10-23T08:44:30.789Z",
-     "end": "2017-10-23T08:44:31.013Z"
+    "validate_compendium":{
+      "status":"success",
+      "text":[
+        "all checks passed"
+      ],
+      "end":"2017-11-17T13:22:48.127Z",
+      "start":"2017-11-17T13:22:48.125Z"
     },
-    "image_build": {
-      "text": "Step 1/6 : FROM alpine\nStep 3/6 : ENV HOST 127.0.0.1\nSuccessfully tagged erc:nkm4L\n",
-      "status": "success",
-      "start": "2017-10-23T08:44:31.043Z",
-      "end": "2017-10-23T08:44:31.405Z"
+    "generate_manifest":{
+      "status":"success",
+      "text":[
+        /* abbreviated */
+        "INFO [2017-11-17 13:22:56] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)",
+        "INFO [2017-11-17 13:22:56] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB",
+        "INFO [2017-11-17 13:22:58] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml",
+        "INFO [2017-11-17 13:22:58] Created Dockerfile-Object based on /erc/main.Rmd",
+        "INFO [2017-11-17 13:22:58] Writing dockerfile to /erc/Dockerfile",
+        /* abbreviated */
+        "generated manifest"
+      ],
+      "manifest":"Dockerfile",
+      "end":"2017-11-17T13:22:58.865Z",
+      "start":"2017-11-17T13:22:48.129Z"
     },
-    "image_execute": {
-      "text": "PING 127.0.0.1 (127.0.0.1): 56 data bytes\r\n64 bytes from 127.0.0.1: seq=0 ttl=64 [TRUNCATED FOR EXAMPLE]",
-      "status": "success",
-      "start": "2017-10-23T08:44:31.561Z",
-      "end": "2017-10-23T08:45:01.160Z",
-      "statuscode": 0
+    "image_prepare":{
+      "status":"success",
+      "text":[
+        "payload with 756224 total bytes created"
+      ],
+      "end":"2017-11-17T13:22:58.906Z",
+      "start":"2017-11-17T13:22:58.875Z"
     },
-    "check": {
-      "status": "success",
-      "images": [
+    "image_build":{
+      "status":"success",
+      "text":[
+        "Step 1/6 : FROM rocker/r-ver:3.4.2",
+        "---> 3cf05960bf30",
+        /* abbreviated */
+        "---> Running in eb7ccd432592",
+        "---> 84db129215f6",
+        "Removing intermediate container eb7ccd432592",
+        "Successfully built 84db129215f6",
+        "Successfully tagged erc:UMmJ7"
+      ],
+      "end":"2017-11-17T13:22:59.899Z",
+      "start":"2017-11-17T13:22:58.912Z"
+    },
+    "image_execute":{
+      "status":"success",
+      "text":[
+        "[started image execution]",
+        /* abbreviated */
+        "Output created: display.html\r\n> \r\n>",
+        "[finished image execution]"
+      ],
+      "statuscode":0,
+      "start":"2017-11-17T13:22:59.904Z"
+    },
+    "check":{
+      "status":"failure",
+      "text":[
+        "Check failed"
+      ],
+      "images":[
         {
-          "imageIndex": 0,
-          "resizeOperationCode": 0,
-          "compareResults": {
-            "differences": 0,
-            "dimension": 1290240
+          "imageIndex":0,
+          "resizeOperationCode":0,
+          "compareResults":{
+            "differences":204786,
+            "dimension":1290240
           }
         }
       ],
-      "display": {
-        "diff": "/api/v1/job/nkm4L/data/diffHTML.html"
+      "display":{
+        "diff":"/api/v1/job/UMmJ7/data/diffHTML.html"
       },
-      "start": "2017-10-23T08:45:01.168Z",
-      "end": "2017-10-23T08:45:02.193Z",
-      "errors": []
+      "errors":[ ],
+      "checkSuccessful":false,
+      "end":"2017-11-17T13:23:04.439Z",
+      "start":"2017-11-17T13:23:03.479Z"
     },
-    "cleanup": {
-      "text": "Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.",
-      "status": "success",
-      "start": "2017-10-23T08:45:01.201Z",
-      "end": "2017-10-23T08:45:01.226Z"
+    "cleanup":{
+      "status":"success",
+      "text":[
+        "Running regular cleanup",
+        "Removed image with tag erc:UMmJ7: [{\"Untagged\":\"erc:UMmJ7\"},{\"Deleted\":\"sha256:84db129215f60f805320e0f70c54a706b6e4030f4627c74abfb1e17f287fefa8\"},{\"Deleted\":\"sha256:0dc5b951dc58a10e50ea42dd14a1cd59b080199d9ca40cadd0a4fc8ae5e0d139\"},{\"Deleted\":\"sha256:ea88669b92a1c67dc2825f9f6d90d334a6032882d3d31bc85671afbd04adaa70\"}]",
+        "Deleted temporary payload file."
+      ],
+      "end":"2017-11-17T13:23:05.592Z",
+      "start":"2017-11-17T13:23:04.575Z"
     }
-  },  
-  "createdAt": "2017-10-23T08:44:30.693Z",
-  "updatedAt": "2017-10-23T08:45:01.237Z"
+  },
+  "status":"failure",
+  "files":{ /* see compendium */  }
 }
 ```
 
 ### URL parameters for single job view
 
 - `:id` - id of the job to be viewed
-- `details` - Details of steps to be loaded.  
+- `steps` - Steps to be loaded with full details
 
-By default, only `status`, `start` and `end` of any step will be loaded.
+By default, only `status`, `start` and `end` of all steps are included in the response.
 
-`details` may either be `all`, or a comma separated list of one or more step identifiers. Any other step values for `details` than the listed ones will return the default (e.g. `details=no`).
-
-### Steps
-
-The answer will contain information regarding the job steps.
-
-Additional explanations to their status will be transmitted in the `text` property. The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+`steps` may either be `all`, or a comma separated list of one or more step names.
+Any other step values for `details` than the listed ones will return the default (e.g. `details=no`).
 
 ### Error responses for single job view
 
