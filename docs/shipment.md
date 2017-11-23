@@ -127,6 +127,19 @@ The response contains the shipment identifier (`id`) and the `deposition_id`, i.
 }
 ```
 
+If the recipient is the **download** surrogate, the response will be a zip stream:
+
+Content type is: `application/zip`
+
+Some browsers or applications might interpret the stream as a link that starts the streaming:
+
+```
+202
+
+http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
+```
+
+
 ### Shipment status
 
 A shipment can have three possible status:
@@ -166,6 +179,8 @@ The publishment is supposed to have completed the status `shipped` where metadat
 "status": "published"
 }
 ```
+Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
+
 
 ### Files in a deposition
 
