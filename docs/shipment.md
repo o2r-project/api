@@ -214,16 +214,12 @@ Files can be identified in this response by either their id in the depot, their 
 
 You can delete files from a `shipped` shipment's deposition.
 You must state a file's identifier, which can be retrieved from the shipment's deposition files property `id`, as the `file_id` path parameter.
-Files for a `published` shipment cannot be deleted.
+Files for a `published` shipment usually cannot be deleted.
 
 `DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
 
-```json
+```
 204
-
-{
-"deleted": "110d667c-7691-4fc9-93e7-5652a52df6f2"
-}
 ```
 
 ## Error responses 
