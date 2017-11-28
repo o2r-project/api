@@ -127,15 +127,16 @@ The response contains the shipment identifier (`id`) and the `deposition_id`, i.
 }
 ```
 
-If the recipient is the **download** surrogate, the response will be a zip stream:
-
-Content type is: `application/zip`
-
-Some browsers or applications might interpret the stream as a link that starts the streaming:
+If the recipient is the **download** surrogate, the response will be `202` and a zip stream with the Content type `application/zip`.
 
 ```
 202
+```
+(zip stream starting point)
 
+The download zip stream is also available under the url of the shipment plus `/dl`, once it has been created, e.g.:  
+
+``` 
 http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
 ```
 
@@ -144,7 +145,7 @@ http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
 
 A shipment can have three possible status:
 
-- `shipped - a deposition has been created at a repository and completed the necessary metadata for publication.
+- `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.
 - `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.
 - `error` - an error occurred during shipment or publishing.
 
