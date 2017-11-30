@@ -1,7 +1,7 @@
 # Substitute two compendia
 
 Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added.
+A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added. Additionally the user can choose, if the metadata of the base ERC will be adopted for substitution or there will be a new extraction of the metadata for the substituted ERC, that will be merged into the existing metadata of the base ERC.
 
 ## Create substitution
 
@@ -23,7 +23,8 @@ input of request-body for substitution
       "base": "climate-timeseries.csv",
       "overlay": "mytimeseries_data.csv"
     }
-  ]
+  ],
+  "metadataextraction": "keep"
 }
 ```
 
@@ -34,6 +35,7 @@ input of request-body for substitution
 - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
   - `base` - filename of the file from the base ERC
   - `overlay` - filename of the overlay ERC that will be exchanged for the original file
+- `metadataextraction` - variable to specify, if the metadata of the base ERC will be adopted (`keep` = **keep metadata** for new ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extract` = **extract and merge metadata** for new ERC)
 
 !!! note "Required user level"
 
@@ -104,7 +106,6 @@ Example 01 - in case there are no conflicts between filenames of any basefile an
   ...
   "metadata": {
       ...
-      "substituted": true,
       "substitution": {
           "base": "G92NL",
           "overlay": "9fCTR",
@@ -114,10 +115,12 @@ Example 01 - in case there are no conflicts between filenames of any basefile an
               "overlay": "mytimeseries_data.csv",
               "filename": "climate-timeseries.csv"
             }
-          ]
+          ],
+          "metadataextraction": "keep"
       },
       ...
-      },
+  },
+  "substituted": true,
   ...
 }
 ```
@@ -132,7 +135,6 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
   ...
   "metadata": {
       ...
-      "substituted": true,
       "substitution": {
           "base": "G92NL",
           "overlay": "9fCTR",
@@ -142,17 +144,18 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
               "overlay": "input.csv",
               "filename": "overlay_input.csv"
             }
-          ]
+          ],
+          "metadataextraction": "keep"
       },
       ...
-      },
+  },
+  "substituted": true,
   ...
 }
 ```
 
 ### Response additional metadata
 
-- `substituted` - will be set `true`
 - `substitution` - object, specifying information about the substitution
   - `base` - id of the base ERC
   - `overlay` - id of the overlay ERC
@@ -160,6 +163,8 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
     - `base` - filename of the file from the base ERC
     - `overlay` - filename of the file from the overlay ERC
     - `filename` - as seen in the examples above, `filename` will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
+- `metadataextraction` - variable to specify, if the metadata of the base ERC will be adopted (`keep` = **keep metadata** for new ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extract` = **extract and merge metadata** for new ERC)
+- `substituted` - will be set `true`
 
 ## List substituted Compendia
 
