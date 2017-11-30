@@ -35,6 +35,10 @@ input of request-body for substitution
   - `base` - filename of the file from the base ERC
   - `overlay` - filename of the overlay ERC that will be exchanged for the original file
 
+!!! note "Required user level"
+
+    The user creating a new substitution must have the required [user level](../user.md#user-levels).
+
 ### Response
 
 ```json

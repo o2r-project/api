@@ -5,14 +5,20 @@ pages:
     - Create new compendium:
       - API upload: compendium/upload.md
       - Public share submission: compendium/public_share.md
+      - Candidates: compendium/candidate.md
     - View: compendium/view.md
+    - Delete: compendium/delete.md
     - Download: compendium/download.md
     - Metadata: compendium/metadata.md
     - Files in a compendium: compendium/files.md
+    - Substitution: compendium/substitute.md
   - Job: job.md
   - Search: search.md
   - Shipment: shipment.md
   - User: user.md
 theme: readthedocs # flatly, cinder
 site_dir: site
+site_url: http://o2r.info/o2r-web-api/
 extra_css: [o2r.css]
+markdown_extensions:
+  - markdown.extensions.admonition

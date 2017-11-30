@@ -13,7 +13,7 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 
 {
     "results": [
-        "0000-0002-0024-5046",
+        "0000-0002-1825-0097",
         "0000-0001-6021-1617"
     ]
 }
@@ -73,7 +73,7 @@ To run commands which require authentication from the command line, a user must 
 
 ```bash
 curl [...] --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/endpoint
+     https://…/api/v1/endpoint
 ```
 
 ### Authentication within microservices
@@ -121,15 +121,44 @@ When no session cookie was included, or the included session cookie does not bel
 }
 ```
 
+## User levels
+
+Users are authenticated via OAuth and the actions on the website are limited by the `level` assocciated with an account.
+On registration, each account is assigned a level `0`.
+Only admin users and the user herself can read the level of a user.
+
+The following is a list of actions and the corresponding required _minimum_ user level.
+
+- `0` _Users_ (everybody)
+    - Create new jobs
+    - View compendia, jobs, user details
+- `100` _Known users_
+    - Create new compendium
+    - Create shipments
+    - Create substitutions
+    - Delete own candidates
+- `500` _Editors_
+    - Edit user levels
+    - Edit metadata of other user's compendia
+    - View other user's candidates
+- `1000` _Admins_
+    - Delete candidates
+    - View status pages of microservices
+
 ## Edit user
 
 You can update information of an existing user using the `HTTP` operation `PATCH`.
 
-### Request for user level change
+### Change user level request
 
-The request must be made by an authenticated user with an appropriate level. The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
-The value must be an `int`.
+The user level can be changed with an `HTTP` `PATCH` request.
+The new level is passed to the API via a query parameter, i.e. `..?level=<new level value>`.
+The value must be an `int` (integer).
 The response is the full user document with the updated value.
+
+!!! note "Required user level"
+
+    The user sending the request to change the level must have the required [user level](user.md#user-levels).
 
 ```bash
 curl --request PATCH --cookie "connect.sid=<session cookie here>" \

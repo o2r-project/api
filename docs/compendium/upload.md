@@ -1,16 +1,23 @@
 # Upload via API
 
-Upload a unvalidated research compendium as a compressed `.zip` archive.
+Upload a research compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
 
-The upload is only allowed for logged in users. To run the upload from the command line, login on the website and open you browser cookies. Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Copy the contents of the cookie into the request example below.
+The upload is only allowed for logged in users.
+To run the upload from the command line, you must login on the website and inspect your browser's cookies.
+Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Provide the content of the cookie when making requests to the API as shown in the request example below.
 
-Upon successful extraction of archive, the `id` for the new compendium is returned.
+Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
+
+!!! note "Required user level"
+
+    The user creating a new compendium must have the required [user level](../user.md#user-levels).
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-    -F content_type=compendium_v1 http://…/api/v1/compendium \
+    -F content_type=compendium https://…/api/v1/compendium \
     --cookie "connect.sid=<code string here>" \
-     http://…/api/v1/compendium 
+     https://…/api/v1/compendium 
 ```
 
 ```json
@@ -19,28 +26,40 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 {"id":"a4Ndl"}
 ```
 
+!!! Warning "Important"
+    After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.
+
 ## Body parameters for compendium upload
 
 - `compendium` - The archive file
 - `content_type` - Form of archive. One of the following:
-  - `compendium_v1` - _default_ - compendium in Bagtainer format
-  - `workspace` - _WORK IN PROGRESS_ - formless workspace
+    - `compendium` - compendium, which is expected to be complete and valid, for _examination_ of a compendium
+    - `workspace` - formless workspace, for _creation_ of a compendium
+
+!!! warning
+    If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.
 
 ## Error responses for compendium upload
 
 ```json
+400 Bad Request
+
+{"error":"provided content_type not implemented"}
+```
+
+```json
 401 Unauthorized
 
-{"error":"missing or wrong api key"}
+{"error":"user is not authenticated"}
 ```
 
-## Example data
+```json
+401 Unauthorized
 
-For local testing you can quickly upload some of the example compendia using a Docker image that is part of the [o2r-bagtainers](https://github.com/o2r-project/o2r-bagtainers) project.
-The following command executes the container and uploads 7 empty examples and two selected bagtainers to a server running at the Docker host IP.
-
-```bash
-docker run --rm o2rproject/examplecompendia -c <my cookie> -e 7 -b 0003 -b 0004 -b 0005
+{"error":"user level does not allow compendium creation"}
 ```
 
-For more configuration details, see the project's README file.
+```json
+422 Unprocessable Entity
+
+For local testing you can quickly upload some of the example compendia and workspaces from the [erc-examples](https://github.com/o2r-project/erc-examples) project.

@@ -2,24 +2,28 @@
 
 ## Basics
 
-Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes preprended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes prepended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
 
-A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property. _This API always returns the database copy of the metadata elements._ You can download the respective files to access the normative metadata documents.
+A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
+_This API always returns the database copy of the metadata elements._
+You can download the respective files to access the normative metadata documents.
 
-Both the files and the sub-properties are only available _on-demand_, so for example after a shipment to Zenodo is initiated. After creation the metadata is persisted to file and database.
+## Metadata formats
 
-The sub-properties and their features are
+The files are available on demand, but metadata variants are created after each metadata update.
+
+The sub-properties of the `metadata` and their content are
 
 - `raw` contains raw metadata extracted automatically
-- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is first an automatic transformation of raw metadata and should then be checked by the uploading user during the upload process.
-- `datacite` (TBD) holds DataCite XML
-- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).
+- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is translated from `o2r` metadata
 
-**Note:** The information in each sub-property are subject to independent workflows and may differ from one another.
+!!! note
 
-Future sub-properties might expose `enriched` or `harvested` metadata.
+    The information in each sub-property are subject to independent workflows and may differ from one another.
+    The term **brokering** is used for translation from one metadata format into another.
 
-## Request and response
+## Get all compendium metadata
 
 `curl https://…/api/v1/$ID`
 
@@ -39,7 +43,8 @@ Future sub-properties might expose `enriched` or `harvested` metadata.
       "title": "Programming with Data",
       "creator": "John M. Chambers",
       "year": 1998
-    }, {
+    },
+    "zenodo": {
       …
     }
   },
@@ -48,17 +53,47 @@ Future sub-properties might expose `enriched` or `harvested` metadata.
 }
 ```
 
-### URL parameters for metadata
+## Get o2r metadata
+
+The following endpoint allows to access _only_ the normative o2r-metadata element:
+
+`curl https://…/api/v1/$ID/metadata`
+
+`GET /api/v1/compendium/:id/metadata`
+
+```json
+200 OK
+
+{
+  "id":"compendium_id",
+  "metadata": {
+    "o2r": {
+      "title": "Programming with Data",
+      "creator": "John M. Chambers",
+      "year": 1998
+    }
+  }
+}
+```
+
+### URL parameters
 
 - `:id` - compendium id
 
-### Spatial MD
+### Spatial metadata
 
-For discovery purposes, the Metadata will included extracted geojson bounding boxes, if suggested by the source files in a workspace (shapefiles, geojson files _TDB_, geotiffs _TDB_ or jpegs _TDB_).
+For discovery purposes, the metadata includes extracted [GeoJSON](http://geojson.org/) bounding boxes based on data files in a workspace.
 
-The following structure will be made available per file:
+Currently supported spatial data sources:
 
-````{json}
+- [shapefiles](https://en.wikipedia.org/wiki/Shapefile)
+[//]: # (- GeoJSON)
+[//]: # (- GeoTIFF)
+[//]: # (- GeoJPEG2000)
+
+The following structure is made available per file:
+
+```json
     "spatial": {
         "files": [
             {
@@ -152,44 +187,15 @@ The following structure will be made available per file:
 ```
 The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
 
-### URL parameters for metadata
-
-- `:id` - compendium id
-
-### GET metadata - example request and response
-
-`curl https://…/api/v1/$ID`
-
-`GET /api/v1/compendium/:id`
-
-```json
-200 OK
-
-{
-  "id":"compendium_id",
-  "metadata": {
-    "raw": {
-      "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
-      "author": "John M. Chambers.   "
-    },
-    "o2r": {
-      "title": "Programming with Data",
-      "creator": "John M. Chambers",
-      "year": 1998
-    }, {
-      …
-    }
-  },
-  "created": …,
-  "files": …
-}
-```
-
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
-_Only authors of a compendium can update the metadata._
-All other metadata sub-properties are only updated by the platform itself.
+All other metadata sub-properties are only updated by the platform itself, i.e. brokered metadata.
+After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the [download endpoint](download.md).
+
+!!! note "Metadata update rights"
+
+    Only authors of a compendium or users with the required [user level](user.md#user-levels) can update a compendium's metadata.
 
 ### Metadata update request
 
@@ -201,7 +207,14 @@ curl -H 'Content-Type: application/json' \
   /api/v1/compendium/:id/metadata
 ```
 
-The request will _overwrite_ the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+The request will _overwrite_ the existing metadata properties, so the _full_ o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+
+!!! Note
+    This endpoint allows only to update the `metadata.o2r` elements. All other properties of 
+
+### URL parameters
+
+- `:id` - compendium id
 
 ### Metadata update response
 
@@ -219,8 +232,6 @@ The response contains an excerpt of a compendium with only the o2r metadata prop
   }
 }
 ```
-
-This response is also available at `GET /api/v1/compendium/:id/metadata`.
 
 ### Metadata update error responses
 
@@ -240,4 +251,28 @@ This response is also available at `GET /api/v1/compendium/:id/metadata`.
 422 Unprocessable Entity
 
 {"error":"JSON with root element 'o2r' required"}
+```
+
+## Other metadata properties
+
+Besides the `metadata` element, a compendium persists some additional properties to reduce computation on the server, and to allows client applications to improve the user experience.
+
+- `bag` - a boolean showing if the uploaded artefact was detected as a BagIt bag (detection file: `bagit.txt`)
+- `compendium` - a boolean showing if the uploaded artefact was detected as a compendium (detection file: `erc.yml`)
+
+**Example:**
+
+(Properties `metadata` and `files` not shown for brevity.)
+
+```json
+{
+
+    "id": "U9IZ7",
+    "metadata": {},
+    "created": "2017-01-01T00:00:42.000Z",
+    "user": "0000-0001-6021-1617",
+    "bag": false,
+    "compendium": false,
+    "files": {}
+}
 ```
