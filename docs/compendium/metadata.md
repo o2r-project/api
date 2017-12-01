@@ -15,11 +15,11 @@ The files are available on demand, but metadata variants are created after each 
 The sub-properties of the `metadata` and their content are
 
 - `raw` contains raw metadata extracted automatically
-- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats.
-- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is translated from `o2r` metadata
+- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).
+- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is brokered from `o2r` metadata
+- `zenodo_sandbox` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo Sandbox, i.e. a clone of `zenodo` metadata
 
 !!! note
-
     The information in each sub-property are subject to independent workflows and may differ from one another.
     The term **brokering** is used for translation from one metadata format into another.
 
@@ -207,7 +207,7 @@ curl -H 'Content-Type: application/json' \
   /api/v1/compendium/:id/metadata
 ```
 
-The request will _overwrite_ the existing metadata properties, so the _full_ o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+The request _overwrites_ the existing metadata properties, so the _full_ o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
 
 !!! Note
     This endpoint allows only to update the `metadata.o2r` elements. All other properties of 

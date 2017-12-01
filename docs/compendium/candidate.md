@@ -28,7 +28,7 @@ It is set to `true` after creating a new compendium by [upload](upload.md) or [p
 
 Only the creating user and users with [required level](../user.md#user-levels) can view a candidate and see the `candidate` property while it is `true`.
 
-When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list will be extended by available candidates.
+When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list is extended by available candidates.
 The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.
 
 ## Metadata review and saving

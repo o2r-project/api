@@ -90,7 +90,7 @@ URL parameter:
 ```
 
 !!! note
-    Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
+    Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
 
 ## Create a new shipment
 
@@ -105,7 +105,7 @@ This **requires** the following parameters as `multipart/form-data` or `applicat
 
 The following are **optional parameters**:
 
-- `update_packaging` (`boolean`, default: `false`): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation will result in an error.
+- `update_packaging` (`boolean`, default: `false`): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation results in an error.
 - `cookie` (`string`): an authentication cookie must be set in the request header, but it may also be provided via a `cookie` form parameter as a fallback
 - `shipment_id` (`string`): a user-defined identifier for the shipment (see `id` in response)
 
@@ -114,7 +114,8 @@ The following are **optional parameters**:
 
 ### Creation response
 
-The response contains the shipment identifier (`id`) and the `deposition_id`, i.e. an identifier provided by the shipment recipient.
+The response contains the shipment document, see [Get a single shipment](#get-a-single.shipment).
+Some of the fields are not available (have value `null`) until after [publishing](#publish-a-deposition), e.g. `deposition_url`.
 
 ```json
 201
@@ -127,11 +128,25 @@ The response contains the shipment identifier (`id`) and the `deposition_id`, i.
 }
 ```
 
+If the recipient is the **download** surrogate, the response will be `202` and a zip stream with the Content type `application/zip`.
+
+```
+202
+```
+(zip stream starting point)
+
+The download zip stream is also available under the url of the shipment plus `/dl`, once it has been created, e.g.:  
+
+``` 
+http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
+```
+
+
 ### Shipment status
 
 A shipment can have three possible status:
 
-- `shipped - a deposition has been created at a repository and completed the necessary metadata for publication.
+- `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.
 - `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.
 - `error` - an error occurred during shipment or publishing.
 
@@ -166,6 +181,8 @@ The publishment is supposed to have completed the status `shipped` where metadat
 "status": "published"
 }
 ```
+Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
+
 
 ### Files in a deposition
 
@@ -199,16 +216,12 @@ Files can be identified in this response by either their id in the depot, their 
 
 You can delete files from a `shipped` shipment's deposition.
 You must state a file's identifier, which can be retrieved from the shipment's deposition files property `id`, as the `file_id` path parameter.
-Files for a `published` shipment cannot be deleted.
+Files for a `published` shipment usually cannot be deleted.
 
 `DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
 
-```json
+```
 204
-
-{
-"deleted": "110d667c-7691-4fc9-93e7-5652a52df6f2"
-}
 ```
 
 ## Error responses 

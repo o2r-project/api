@@ -1,4 +1,4 @@
-# Substitute two compendia
+# Substitution
 
 Substitution is the combination of an base ERC and an overlay ERC.
 A user can choose files from the overlay ERC that will replace files of the base ERC, or add new files to the substitution.
@@ -8,6 +8,11 @@ A user can choose files from the overlay ERC that will replace files of the base
 Creating a substitution produces a new ERC with its own metadata and files.
 A substitution is created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
 Required fields are the identifiers of base ERC and overlay ERC and at least one pair of substitution files, consisting of one base file and one overlay file.
+
+!!! Note
+    A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (`/data` directory).
+
+    The overlay file is stripped of all paths and is copied directly into the substitution's root directory.
 
 ### Created metadata and files
 
@@ -69,13 +74,13 @@ my-data.csv: text/csv
 
 ### Request body properties
 
-- `base` - id of the base ERC
-- `overlay` - id of the overlay ERC
-- `substitutionFiles` - array of file substitutions specified each by one `base` and one `overlay` property
-  - `base` - filename of a file from the base ERC
+  - `base` - name of the file from the base compendium
   - `overlay` - either a reference to a file in the overlay ERC, or embedded file upload
     - _overlay file_: filename of a file in the overlay ERC, which is exchanged for the file from the base ERC
     - _file upload_: JSON object with metadata and content of the file in the properties `filetype`, `filename` and `base64`, the latter being a [Base64](https://en.wikipedia.org/wiki/Base64) encoding of the file.
+- `base` - id of the base compendium
+- `overlay` - id of the overlay compendium
+- `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
 
 !!! note "Required user level"
 
@@ -108,13 +113,13 @@ my-data.csv: text/csv
 ```json
 404 Not Found
 
-{"error":"base ERC not found"}
+{"error":"base compendium not found"}
 ```
 
 ```json
 404 Not Found
 
-{"error":"overlay ERC not found"}
+{"error":"overlay compendium not found"}
 ```
 
 ## View substituted compendium
@@ -125,9 +130,9 @@ This request is the same as for a regular compendium, see [view compendium](view
 
 ### Response
 
-A substituted ERC response contains additional metadata (a) marking it as a substituted ERC with the property `metadata.substituted`, and (b) giving information about the substitution in the property `substitution`.
+A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.
 
-**Example** (no naming conflicts):
+Example 01 - in case there are no conflicts between filenames of any base file and overlay file :
 
 ```json
 200 OK
@@ -160,7 +165,7 @@ A substituted ERC response contains additional metadata (a) marking it as a subs
 }
 ```
 
-**Example** in case the overlay file has the same filename as one of the existing base files :
+Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:
 
 ```json
 200 OK
@@ -177,7 +182,7 @@ A substituted ERC response contains additional metadata (a) marking it as a subs
           "substitutionFiles": [
             {
               "base": "climate-timeseries.csv",
-              "overlay": "input.csv",
+              "overlay": "dataFiles/input.csv",
               "filename": "overlay_input.csv"
             }
           ]
@@ -190,14 +195,14 @@ A substituted ERC response contains additional metadata (a) marking it as a subs
 
 ### Response additional metadata
 
-- `substituted` - will be set `true`
+- `substituted` - is `true`
 - `substitution` - object, specifying information about the substitution
-  - `base` - id of the base ERC
-  - `overlay` - id of the overlay ERC
+  - `base` - id of the base compendium
+  - `overlay` - id of the overlay compendium
   - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
-    - `base` - filename of the file from the base ERC
-    - `overlay` - filename of the file from the overlay ERC
-    - `filename` - if there is a conflict with any base filename and an overlay filename, the overlay file is actually stored with `overlay_` prepended to the file name, which is stored in this property.
+    - `base` - filename of the file from the base compendium
+    - `overlay` - filename of the file from the overlay compendium
+    - `filename` - as seen in the examples above, `filename` is created if there is a conflict with any base file name and an overlay file name. In this case the overlay file name is given the prefix `overlay_` (see Example 02).
 
 ## List substituted compendia
 
@@ -215,7 +220,7 @@ Result will be a list of compendia ids which are created by a substitution proce
 200 OK
 
 {
-  "results":[
+  "results": [
     "oMMFn",
     "asdi5",
     "nb2sg",
@@ -225,6 +230,14 @@ Result will be a list of compendia ids which are created by a substitution proce
 ```
 
 ### Filter
+If there are no substitutions yet, the returned list is empty.
+
+```json
+200 OK
+{
+  "results": [ ]
+}
+```
 
 Results can be filtered with the parameters `base` and `overlay`.
 
@@ -238,13 +251,13 @@ Results can be filtered with the parameters `base` and `overlay`.
 
 `GET /api/v1/substitution?base=jfL3w`
 
-Result will be a list of compendia ids that have been substituted out of a choosen base ERC
+Result is a list of compendia ids that have been substituted using the given base:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "wGmFn",
     …
   ]
@@ -257,13 +270,13 @@ Result will be a list of compendia ids that have been substituted out of a choos
 
 `GET /api/v1/substitution?overlay=as4Kj`
 
-Result will be a list of compendia ids that have been substituted out of a chosen overlay ERC.
+Result is be a list of compendia ids that have been substituted using the given overlay:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     "1Tnd3",
     …
@@ -277,13 +290,13 @@ Result will be a list of compendia ids that have been substituted out of a chose
 
 `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
 
-The result is a list of compendia ids that have been substituted out of a chosen base and overlay ERC.
+Result is be a list of compendia ids that have been substituted using the given base and overlay:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     …
   ]
@@ -312,11 +325,16 @@ The result is a list of compendia ids that have been substituted out of a chosen
 ```json
 404 Not Found
 
-{"error":"base ERC not found"}
+{"error":"base compendium not found"}
 ```
 
 ```json
 404 Not Found
 
-{"error":"overlay ERC not found"}
+{"error":"overlay compendium not found"}
 ```
+
+### URL parameters for substituted compendium lists
+
+- `:base` - id of the base compendium that the results should be related to
+- `:overlay` - id of the overlay compendium that the results should be related to

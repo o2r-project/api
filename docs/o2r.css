@@ -21,8 +21,16 @@
 .wy-menu-vertical a:hover {
 	background:#004286;
 }
-
 h3, h4, h5, h6 {
+
     color: #004286;
     font-weight: 300
+}
+
+.subnav {
+    margin-left: 1em;
+}
+
+.caption-text {
+    font-weight: bolder;
 }

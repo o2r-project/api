@@ -2,7 +2,7 @@
 
 ## List compendia
 
-Will return up to 100 results by default.
+Returns up to 100 results by default.
 
 `curl https://…/api/v1/compendium?limit=100&start=2`
 
@@ -12,7 +12,7 @@ Will return up to 100 results by default.
 200 OK
 
 {
-  "results":[
+  "results": [
     "nkm4b",
     "asdis",
     "nb2sm",
@@ -21,28 +21,35 @@ Will return up to 100 results by default.
 }
 ```
 
-You can also filter the results:
+You can also filter the results.
 
 - Filter by `user`:
-
-  `curl https://…/api/v1/compendium?user=0000-0001-6021-1617`
-
-  `GET /api/v1/compendium?user=0000-0001-6021-1617`
-
+    - `curl https://…/api/v1/compendium?user=0000-0001-6021-1617`
+    - `GET /api/v1/compendium?user=0000-0001-6021-1617`
 - Filter by `doi`:
-
-  `curl https://…/api/v1/compendium?doi=10.9999%2Ftest`
-
-  `GET /api/v1/compendium?doi=10.9999%2Ftest`
+    - `curl https://…/api/v1/compendium?doi=10.9999%2Ftest`
+    - `GET /api/v1/compendium?doi=10.9999%2Ftest`
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "nkm4b",
     "nb2sm"
   ]
+}
+```
+
+If there is no compendium found, the service returns an empty list.
+
+`GET /api/v1/compendium?doi=not_a_doi`
+
+```json
+200 OK
+
+{
+  "results": []
 }
 ```
 
@@ -53,14 +60,6 @@ You can also filter the results:
 - `doi` - A [DOI](https://doi.org) to filter by.
 - `start` - Starting point of the result list. `start - 1` results are skipped. Defaults to `1`.
 - `limit` - Limits the number of results in the response. Defaults to `100`.
-
-### Error responses for compendium lists
-
-```json
-404 Not Found
-
-{"error":"no compendium found"}
-```
 
 ## View single compendium
 
@@ -102,7 +101,7 @@ This includes the complete metadata set, related job ids and a tree representati
 ```json
 200 OK
 {
-  "results":[
+  "results": [
     "nkm4L",
     "asdi5",
     "nb2sg",
@@ -111,14 +110,15 @@ This includes the complete metadata set, related job ids and a tree representati
 }
 ```
 
+If a compendium does not have any jobs yet, the returned list is empty.
+
+```json
+200 OK
+{
+  "results": [ ]
+}
+```
+
 ### URL parameters for related execution jobs
 
 - `:id` - compendium id that the results should be related to
-
-### Error response for related execution jobs
-
-```json
-404 Not Found
-
-{"error":"no job found"}
-```
