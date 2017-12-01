@@ -436,9 +436,10 @@ Requires a <code>compendium_id</code>.</p>
 <li><code>:id</code> - id of the job to be viewed</li>
 <li><code>steps</code> - Steps to be loaded with full details</li>
 </ul>
-<p>By default, only <code>status</code>, <code>start</code> and <code>end</code> of all steps are included in the response.</p>
-<p><code>steps</code> may either be <code>all</code>, or a comma separated list of one or more step names.
-Any other step values for <code>details</code> than the listed ones will return the default (e.g. <code>details=no</code>).</p>
+<p>The properties <code>status</code>, <code>start</code> and <code>end</code> of <em>all steps</em> are always included in the response.</p>
+<p>Supported values for <code>steps</code> are <code>all</code> or a comma separated list of one or more step names, e.g. <code>generate_configuration,check</code>.
+The response will contain the default properties for all steps but other properties only for the selected ones.
+Any other values for <code>steps</code> or not providing the parameter at all will return the default (e.g. <code>steps=no</code>).</p>
 <h3 id="error-responses-for-single-job-view">Error responses for single job view</h3>
 <pre><code class="json">404 Not Found
 
