@@ -1,25 +1,26 @@
 # Substitution
 
-Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC, or add new files to the substitution.
+Substitution is the combination of an base compendium and an overlay compendium.
+A user can choose files from the overlay compendium that will replace files of the base compendium, or add new files to the substitution.
 
 ## Create substitution
 
-Creating a substitution produces a new ERC with its own metadata and files.
+Creating a substitution produces a new compendium with its own metadata and files.
 A substitution is created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
-Required fields are the identifiers of base ERC and overlay ERC and at least one pair of substitution files, consisting of one base file and one overlay file.
+Required fields are the identifiers of base compendium and overlay compendium and at least one pair of _substitution files_, consisting of one base file and one overlay file.
 
 !!! Note
     A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (`/data` directory).
 
     The overlay file is stripped of all paths and is copied directly into the substitution's root directory.
+    The original path is preserved in the substitution metadata.
 
 ### Created metadata and files
 
 The substitution creation includes an update of the compendium metadata in the file **`erc.yml`**, which implements the actual substitution.
 After creation, subsequent [jobs](http://o2r.info/o2r-web-api/job/) consider these settings.
 
-The **files** of a substituted ERC comprise all base ERC files and the overlay files.
+The **files** of a substituted compendium comprise all base compendium files and the overlay files.
 In case of a file naming conflict, the overlay file is preprended with `overlay_`.
 
 ### Request
@@ -132,7 +133,7 @@ This request is the same as for a regular compendium, see [view compendium](view
 
 A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.
 
-Example 01 - in case there are no conflicts between filenames of any base file and overlay file :
+**Example** without naming conflicts:
 
 ```json
 200 OK
@@ -165,7 +166,7 @@ Example 01 - in case there are no conflicts between filenames of any base file a
 }
 ```
 
-Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:
+**Example** with naming conflicts and overlay from sub-directory:
 
 ```json
 200 OK
@@ -192,6 +193,8 @@ Example 02 - in case the overlay file has the same filename as one of the existi
   ...
 }
 ```
+
+Note that the base file must not be the file causing the naming conflict.
 
 ### Response additional metadata
 
