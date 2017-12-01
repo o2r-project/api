@@ -282,10 +282,19 @@ The <code>id</code> is the repository identifier to be used in requests to the <
 }
 </code></pre>
 
+<p>If the recipient is the <strong>download</strong> surrogate, the response will be <code>202</code> and a zip stream with the Content type <code>application/zip</code>.</p>
+<pre><code>202
+</code></pre>
+
+<p>(zip stream starting point)</p>
+<p>The download zip stream is also available under the url of the shipment plus <code>/dl</code>, once it has been created, e.g.:  </p>
+<pre><code>http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
+</code></pre>
+
 <h3 id="shipment-status">Shipment status</h3>
 <p>A shipment can have three possible status:</p>
 <ul>
-<li>`shipped - a deposition has been created at a repository and completed the necessary metadata for publication.</li>
+<li><code>shipped</code> - a deposition has been created at a repository and completed the necessary metadata for publication.</li>
 <li><code>published</code> - the contents of the shipment are published on the repository, in which case the publishment can not be undone.</li>
 <li><code>error</code> - an error occurred during shipment or publishing.</li>
 </ul>
@@ -314,6 +323,7 @@ The <code>id</code> is the repository identifier to be used in requests to the <
 }
 </code></pre>
 
+<p>Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.</p>
 <h3 id="files-in-a-deposition">Files in a deposition</h3>
 <h4 id="list-deposition-files">List deposition files</h4>
 <p>You can request a list of all files in a deposition and their properties with the sub-resource <code>/publishment</code>.</p>
@@ -339,13 +349,9 @@ Files can be identified in this response by either their id in the depot, their 
 <h4 id="delete-a-specific-file-from-a-deposition">Delete a specific file from a deposition</h4>
 <p>You can delete files from a <code>shipped</code> shipment's deposition.
 You must state a file's identifier, which can be retrieved from the shipment's deposition files property <code>id</code>, as the <code>file_id</code> path parameter.
-Files for a <code>published</code> shipment cannot be deleted.</p>
+Files for a <code>published</code> shipment usually cannot be deleted.</p>
 <p><code>DELETE api/v1/shipment/&lt;shipment_id&gt;/files/&lt;file_id&gt;</code></p>
-<pre><code class="json">204
-
-{
-&quot;deleted&quot;: &quot;110d667c-7691-4fc9-93e7-5652a52df6f2&quot;
-}
+<pre><code>204
 </code></pre>
 
 <h2 id="error-responses">Error responses</h2>
