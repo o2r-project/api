@@ -190,32 +190,43 @@
 </ul>
 <p>More information about <code>steps</code> can be found in subsection <code>Steps</code> of section <code>View single job</code>.</p>
 <h2 id="steps-of-a-job">Steps of a job</h2>
-<p>One job consists of a series of steps. All of these steps can be in one of three status: <code>running</code>, <code>failure</code>, or <code>success</code>. The are executed in order.</p>
+<p>One job consists of a series of steps.
+The are executed in order.</p>
 <ul>
 <li><strong>validate_bag</strong>
-  Validate the BagIt bag based on the npm library <a href="https://www.npmjs.com/package/bagit">bagit</a>.</li>
+  Validate the BagIt bag using the npm library <a href="https://www.npmjs.com/package/bagit">bagit</a>; may be skipped if compendium is not a bag, will usually fail because of added metadata files during upload.</li>
+<li><strong>generate_configuration</strong>
+  Create a compendium configuration file; may be skipped if configuration file is already present.</li>
 <li><strong>validate_compendium</strong>
-  Parses and validate the bagtainer configuration and metadata.</li>
+  Parses and validates the bagtainer configuration file.</li>
+<li><strong>generate_manifest</strong>
+  Executes the given analysis to create a container manifest; may be skipped if manifest file is already present.</li>
 <li><strong>image_prepare</strong>
-  Create an archive of the payload of the BagIt bag, which allows to build and run the image also on remote Docker hosts.</li>
+  Create an archive of the payload (i.e. the workspace, or the data in a BagIt bag), which allows to build and run the image also on remote hosts.</li>
 <li><strong>image_build</strong>
-  Send the bag's payload as a tarballed archive to Docker to build an image, which is tagged <code>erc:&lt;job_id&gt;</code>.</li>
+  Build an image and tag it <code>erc:&lt;job_id&gt;</code>.</li>
 <li><strong>image_execute</strong>
   Run the container and return based on status code of program that ran inside the container.</li>
 <li><strong>check</strong>
-  Run a check on the contents of the container. Validate the results of the executed calculations.</li>
+  Run a check on the contents of the container. Validate the results of the executed calculations. The check provides either a list of errors or a reference to displayable content in the property <code>display.diff</code>.</li>
 <li><strong>cleanup</strong>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
-<p>The step status is one of:</p>
+<h3 id="status">Status</h3>
+<p>All of these steps can be in one of the following status:</p>
 <ul>
-<li><code>queued</code></li>
-<li><code>running</code></li>
-<li><code>success</code></li>
-<li><code>failure</code></li>
-<li><code>warning</code></li>
-<li><code>skipped</code></li>
+<li><code>queued</code>: step is not yet started</li>
+<li><code>running</code>: step is currently running</li>
+<li><code>success</code>: step is completed successfully</li>
+<li><code>failure</code>: step is completed unsuccessfully</li>
+<li><code>skipped</code>: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces</li>
 </ul>
+<h3 id="step-metadata">Step metadata</h3>
+<p>Additional explanations on steps' status will be transmitted in the <code>text</code> property.
+<code>text</code> is an array, with the latest element holding the newest information.
+During long running steps, the <code>text</code> element is updated by appending new information when available.</p>
+<p>The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
+<p>Specific steps may carry more information in additional properties.</p>
 <h2 id="new-job">New job</h2>
 <p>Create and run a new execution job with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.
 Requires a <code>compendium_id</code>.</p>
@@ -294,7 +305,7 @@ Requires a <code>compendium_id</code>.</p>
 <li><code>limit</code> - Limits the number of results in the response. Defaults to 100.</li>
 <li><code>status</code> - Specify status to filter by. Can contain following <code>status</code>: <code>success</code>, <code>failure</code>, <code>running</code>.</li>
 <li><code>user</code> - Public user identifier to filter by.</li>
-<li><code>fields</code> - Specify if/which additional attributes results should contain. Can contain following <code>fields</code>: <code>status</code>. Defaults to none.</li>
+<li><code>fields</code> - Specify which additional attributes results list should contain. Can contain following fields: <code>status</code>, <code>user</code>. Defaults to none.</li>
 </ul>
 <h2 id="view-single-job">View single job</h2>
 <p>View details for a single job. The file listing format is described in <a href="../compendium/files/">compendium files</a></p>
@@ -303,81 +314,131 @@ Requires a <code>compendium_id</code>.</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;id&quot;: &quot;nkm4L&quot;,
-  &quot;compendium_id&quot;: &quot;a4Dnm&quot;,
-  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
-  &quot;status&quot;: &quot;failure&quot;,
-  &quot;steps&quot;: {
-    &quot;validate-bag&quot;: {
+  &quot;id&quot;:&quot;UMmJ7&quot;,
+  &quot;compendium_id&quot;:&quot;BSgxj&quot;,
+  &quot;steps&quot;:{
+    &quot;validate_bag&quot;:{
       &quot;status&quot;:&quot;skipped&quot;,
-      &quot;text&quot;: &quot;bag validation during job execution is disabled&quot;
+      &quot;text&quot;:[
+        &quot;Not a bag&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:22:48.105Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:48.105Z&quot;
     },
-    &quot;validate_compendium&quot;: {
-      &quot;text&quot;: &quot;compendium is invalid, but execution may continue&quot;,
-      &quot;status&quot;: &quot;failure&quot;,
-      &quot;start&quot;: &quot;2017-10-23T08:44:30.768Z&quot;,
-      &quot;end&quot;: &quot;2017-10-23T08:44:30.785Z&quot;
+    &quot;generate_configuration&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;configuration file not found, generating it...&quot;,
+        &quot;Saved configuration file to job and compendium&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:22:48.119Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:48.113Z&quot;
     },
-    &quot;image_prepare&quot;: {
-     &quot;text&quot;: &quot;payload with 12800 total bytes&quot;,
-     &quot;status&quot;: &quot;success&quot;,
-     &quot;start&quot;: &quot;2017-10-23T08:44:30.789Z&quot;,
-     &quot;end&quot;: &quot;2017-10-23T08:44:31.013Z&quot;
+    &quot;validate_compendium&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;all checks passed&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:22:48.127Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:48.125Z&quot;
     },
-    &quot;image_build&quot;: {
-      &quot;text&quot;: &quot;Step 1/6 : FROM alpine\nStep 3/6 : ENV HOST 127.0.0.1\nSuccessfully tagged erc:nkm4L\n&quot;,
-      &quot;status&quot;: &quot;success&quot;,
-      &quot;start&quot;: &quot;2017-10-23T08:44:31.043Z&quot;,
-      &quot;end&quot;: &quot;2017-10-23T08:44:31.405Z&quot;
+    &quot;generate_manifest&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        /* abbreviated */
+        &quot;INFO [2017-11-17 13:22:56] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)&quot;,
+        &quot;INFO [2017-11-17 13:22:56] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB&quot;,
+        &quot;INFO [2017-11-17 13:22:58] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml&quot;,
+        &quot;INFO [2017-11-17 13:22:58] Created Dockerfile-Object based on /erc/main.Rmd&quot;,
+        &quot;INFO [2017-11-17 13:22:58] Writing dockerfile to /erc/Dockerfile&quot;,
+        /* abbreviated */
+        &quot;generated manifest&quot;
+      ],
+      &quot;manifest&quot;:&quot;Dockerfile&quot;,
+      &quot;end&quot;:&quot;2017-11-17T13:22:58.865Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:48.129Z&quot;
     },
-    &quot;image_execute&quot;: {
-      &quot;text&quot;: &quot;PING 127.0.0.1 (127.0.0.1): 56 data bytes\r\n64 bytes from 127.0.0.1: seq=0 ttl=64 [TRUNCATED FOR EXAMPLE]&quot;,
-      &quot;status&quot;: &quot;success&quot;,
-      &quot;start&quot;: &quot;2017-10-23T08:44:31.561Z&quot;,
-      &quot;end&quot;: &quot;2017-10-23T08:45:01.160Z&quot;,
-      &quot;statuscode&quot;: 0
+    &quot;image_prepare&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;payload with 756224 total bytes created&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:22:58.906Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:58.875Z&quot;
     },
-    &quot;check&quot;: {
-      &quot;status&quot;: &quot;success&quot;,
-      &quot;images&quot;: [
+    &quot;image_build&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;Step 1/6 : FROM rocker/r-ver:3.4.2&quot;,
+        &quot;---&gt; 3cf05960bf30&quot;,
+        /* abbreviated */
+        &quot;---&gt; Running in eb7ccd432592&quot;,
+        &quot;---&gt; 84db129215f6&quot;,
+        &quot;Removing intermediate container eb7ccd432592&quot;,
+        &quot;Successfully built 84db129215f6&quot;,
+        &quot;Successfully tagged erc:UMmJ7&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:22:59.899Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:22:58.912Z&quot;
+    },
+    &quot;image_execute&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;[started image execution]&quot;,
+        /* abbreviated */
+        &quot;Output created: display.html\r\n&gt; \r\n&gt;&quot;,
+        &quot;[finished image execution]&quot;
+      ],
+      &quot;statuscode&quot;:0,
+      &quot;start&quot;:&quot;2017-11-17T13:22:59.904Z&quot;
+    },
+    &quot;check&quot;:{
+      &quot;status&quot;:&quot;failure&quot;,
+      &quot;text&quot;:[
+        &quot;Check failed&quot;
+      ],
+      &quot;images&quot;:[
         {
-          &quot;imageIndex&quot;: 0,
-          &quot;resizeOperationCode&quot;: 0,
-          &quot;compareResults&quot;: {
-            &quot;differences&quot;: 0,
-            &quot;dimension&quot;: 1290240
+          &quot;imageIndex&quot;:0,
+          &quot;resizeOperationCode&quot;:0,
+          &quot;compareResults&quot;:{
+            &quot;differences&quot;:204786,
+            &quot;dimension&quot;:1290240
           }
         }
       ],
-      &quot;display&quot;: {
-        &quot;diff&quot;: &quot;[merged HTML with difference highlighting for images]&quot;
+      &quot;display&quot;:{
+        &quot;diff&quot;:&quot;/api/v1/job/UMmJ7/data/diffHTML.html&quot;
       },
-      &quot;start&quot;: &quot;2017-10-23T08:45:01.168Z&quot;,
-      &quot;end&quot;: &quot;2017-10-23T08:45:02.193Z&quot;,
-      &quot;errors&quot;: []
+      &quot;errors&quot;:[ ],
+      &quot;checkSuccessful&quot;:false,
+      &quot;end&quot;:&quot;2017-11-17T13:23:04.439Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:23:03.479Z&quot;
     },
-    &quot;cleanup&quot;: {
-      &quot;text&quot;: &quot;Done: removed container.\nDone: kept image with tag erc:nkm4L for job nkm4L\nDone: deleted tmp payload file.&quot;,
-      &quot;status&quot;: &quot;success&quot;,
-      &quot;start&quot;: &quot;2017-10-23T08:45:01.201Z&quot;,
-      &quot;end&quot;: &quot;2017-10-23T08:45:01.226Z&quot;
+    &quot;cleanup&quot;:{
+      &quot;status&quot;:&quot;success&quot;,
+      &quot;text&quot;:[
+        &quot;Running regular cleanup&quot;,
+        &quot;Removed image with tag erc:UMmJ7: [{\&quot;Untagged\&quot;:\&quot;erc:UMmJ7\&quot;},{\&quot;Deleted\&quot;:\&quot;sha256:84db129215f60f805320e0f70c54a706b6e4030f4627c74abfb1e17f287fefa8\&quot;},{\&quot;Deleted\&quot;:\&quot;sha256:0dc5b951dc58a10e50ea42dd14a1cd59b080199d9ca40cadd0a4fc8ae5e0d139\&quot;},{\&quot;Deleted\&quot;:\&quot;sha256:ea88669b92a1c67dc2825f9f6d90d334a6032882d3d31bc85671afbd04adaa70\&quot;}]&quot;,
+        &quot;Deleted temporary payload file.&quot;
+      ],
+      &quot;end&quot;:&quot;2017-11-17T13:23:05.592Z&quot;,
+      &quot;start&quot;:&quot;2017-11-17T13:23:04.575Z&quot;
     }
-  },  
-  &quot;createdAt&quot;: &quot;2017-10-23T08:44:30.693Z&quot;,
-  &quot;updatedAt&quot;: &quot;2017-10-23T08:45:01.237Z&quot;
+  },
+  &quot;status&quot;:&quot;failure&quot;,
+  &quot;files&quot;:{ /* see compendium */  }
 }
 </code></pre>
 
 <h3 id="url-parameters-for-single-job-view">URL parameters for single job view</h3>
 <ul>
 <li><code>:id</code> - id of the job to be viewed</li>
-<li><code>details</code> - Details of steps to be loaded.  </li>
+<li><code>steps</code> - Steps to be loaded with full details</li>
 </ul>
-<p>By default, only <code>status</code>, <code>start</code> and <code>end</code> of any step will be loaded.</p>
-<p><code>details</code> may either be <code>all</code>, or a comma separated list of one or more step identifiers. Any other step values for <code>details</code> than the listed ones will return the default (e.g. <code>details=no</code>).</p>
-<h3 id="steps">Steps</h3>
-<p>The answer will contain information regarding the job steps.</p>
-<p>Additional explanations to their status will be transmitted in the <code>text</code> property. The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
+<p>By default, only <code>status</code>, <code>start</code> and <code>end</code> of all steps are included in the response.</p>
+<p><code>steps</code> may either be <code>all</code>, or a comma separated list of one or more step names.
+Any other step values for <code>details</code> than the listed ones will return the default (e.g. <code>details=no</code>).</p>
 <h3 id="error-responses-for-single-job-view">Error responses for single job view</h3>
 <pre><code class="json">404 Not Found
 
@@ -390,8 +451,6 @@ Requires a <code>compendium_id</code>.</p>
 <pre><code class="JavaScript"># create a socket.io client:
 var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
 </code></pre>
-
-<p><strong>TODO</strong>: add documentation on messages on the socket.</p>
               
             </div>
           </div>
