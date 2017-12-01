@@ -293,10 +293,11 @@ View details for a single job. The file listing format is described in [compendi
 - `:id` - id of the job to be viewed
 - `steps` - Steps to be loaded with full details
 
-By default, only `status`, `start` and `end` of all steps are included in the response.
+The properties `status`, `start` and `end` of _all steps_ are always included in the response.
 
-`steps` may either be `all`, or a comma separated list of one or more step names.
-Any other step values for `details` than the listed ones will return the default (e.g. `details=no`).
+Supported values for `steps` are `all` or a comma separated list of one or more step names, e.g. `generate_configuration,check`.
+The response will contain the default properties for all steps but other properties only for the selected ones.
+Any other values for `steps` or not providing the parameter at all will return the default (e.g. `steps=no`).
 
 ### Error responses for single job view
 
