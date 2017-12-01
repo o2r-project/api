@@ -90,7 +90,7 @@ URL parameter:
 ```
 
 !!! note
-    Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
+    Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.
 
 ## Create a new shipment
 
@@ -114,7 +114,8 @@ The following are **optional parameters**:
 
 ### Creation response
 
-The response contains the shipment identifier (`id`) and the `deposition_id`, i.e. an identifier provided by the shipment recipient.
+The response contains the shipment document, see [Get a single shipment](#get-a-single.shipment).
+Some of the fields are not available (have value `null`) until after [publishing](#publish-a-deposition), e.g. `deposition_url`.
 
 ```json
 201

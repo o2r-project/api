@@ -16,10 +16,10 @@ The sub-properties of the `metadata` and their content are
 
 - `raw` contains raw metadata extracted automatically
 - `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).
-- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is translated from `o2r` metadata
+- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is brokered from `o2r` metadata
+- `zenodo_sandbox` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo Sandbox, i.e. a clone of `zenodo` metadata
 
 !!! note
-
     The information in each sub-property are subject to independent workflows and may differ from one another.
     The term **brokering** is used for translation from one metadata format into another.
 
