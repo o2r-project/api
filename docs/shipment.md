@@ -127,11 +127,25 @@ The response contains the shipment identifier (`id`) and the `deposition_id`, i.
 }
 ```
 
+If the recipient is the **download** surrogate, the response will be `202` and a zip stream with the Content type `application/zip`.
+
+```
+202
+```
+(zip stream starting point)
+
+The download zip stream is also available under the url of the shipment plus `/dl`, once it has been created, e.g.:  
+
+``` 
+http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl
+```
+
+
 ### Shipment status
 
 A shipment can have three possible status:
 
-- `shipped - a deposition has been created at a repository and completed the necessary metadata for publication.
+- `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.
 - `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.
 - `error` - an error occurred during shipment or publishing.
 
@@ -166,6 +180,8 @@ The publishment is supposed to have completed the status `shipped` where metadat
 "status": "published"
 }
 ```
+Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
+
 
 ### Files in a deposition
 
@@ -199,16 +215,12 @@ Files can be identified in this response by either their id in the depot, their 
 
 You can delete files from a `shipped` shipment's deposition.
 You must state a file's identifier, which can be retrieved from the shipment's deposition files property `id`, as the `file_id` path parameter.
-Files for a `published` shipment cannot be deleted.
+Files for a `published` shipment usually cannot be deleted.
 
 `DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
 
-```json
+```
 204
-
-{
-"deleted": "110d667c-7691-4fc9-93e7-5652a52df6f2"
-}
 ```
 
 ## Error responses 
