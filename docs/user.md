@@ -14,7 +14,7 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 {
     "results": [
         "0000-0002-1825-0097",
-        "0000-0001-6021-1617"
+        "0000-0002-1825-0097"
     ]
 }
 ```
@@ -55,20 +55,20 @@ Show the details of a user.
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r"
 }
 ```
 
 The content of the response depends on the state and level of the user that requests the resource. The above response only contains the id and the publicly visible name. The following response contains more details and requires a certain user level of the authenticated user making the request:
 
-`curl --cookie "connect.sid=<session cookie here>" https://…/api/v1/user/0000-0001-6021-1617`
+`curl --cookie "connect.sid=<session cookie here>" https://…/api/v1/user/0000-0002-1825-0097`
 
 ```json
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r",
     "level": 0,
     "lastseen": "2016-08-15T12:32:23.972Z"
@@ -131,7 +131,7 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 200 OK
 
 {
-  "orcid": "0000-0001-6021-1617",
+  "orcid": "0000-0002-1825-0097",
   "name": "o2r"
 }
 ```
@@ -189,14 +189,14 @@ The response is the full user document with the updated value.
 
 ```bash
 curl --request PATCH --cookie "connect.sid=<session cookie here>" \
-  https://…/api/v1/user/0000-0001-6021-1617?level=42`
+  https://…/api/v1/user/0000-0002-1825-0097?level=42`
 ```
 
 ```json
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r",
     "level": 42,
     "lastseen": "2016-08-15T12:32:23.972Z"

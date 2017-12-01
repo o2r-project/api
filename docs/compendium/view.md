@@ -24,8 +24,8 @@ Returns up to 100 results by default.
 You can also filter the results.
 
 - Filter by `user`:
-    - `curl https://…/api/v1/compendium?user=0000-0001-6021-1617`
-    - `GET /api/v1/compendium?user=0000-0001-6021-1617`
+    - `curl https://…/api/v1/compendium?user=0000-0002-1825-0097`
+    - `GET /api/v1/compendium?user=0000-0002-1825-0097`
 - Filter by `doi`:
     - `curl https://…/api/v1/compendium?doi=10.9999%2Ftest`
     - `GET /api/v1/compendium?doi=10.9999%2Ftest`

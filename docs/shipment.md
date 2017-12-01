@@ -82,7 +82,7 @@ URL parameter:
   "recipient": "zenodo",
   "id": "dc351fc6-314f-4947-a235-734ab5971eff",
   "deposition_id": "63179",
-  "user": "0000-0001-6021-1617",
+  "user": "0000-0002-1825-0097",
   "status": "shipped",
   "compendium_id": "4XgD97",
   "deposition_url": "https://zenodo.org/record/63179"

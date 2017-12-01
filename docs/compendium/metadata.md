@@ -270,7 +270,7 @@ Besides the `metadata` element, a compendium persists some additional properties
     "id": "U9IZ7",
     "metadata": {},
     "created": "2017-01-01T00:00:42.000Z",
-    "user": "0000-0001-6021-1617",
+    "user": "0000-0002-1825-0097",
     "bag": false,
     "compendium": false,
     "files": {}
