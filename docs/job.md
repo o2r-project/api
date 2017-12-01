@@ -8,9 +8,9 @@ A trivial execution job would be a completely unmodified research compendium, to
 
 ## State of a job
 
-The property `>job>.state` shows the overall state of a job.
+The property `job.status` shows the **overall status** of a job.
 
-The status will be one of following:
+The overall status can be one of following:
 
 - `success` - if state of all steps is `success`.
 - `failure` - if state of at least one step is `failure`.
@@ -99,7 +99,7 @@ Requires a `compendium_id`.
 
 Lists jobs with filtering and pagination, returning up to 100 results by default.
 
-Results will be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
+Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
 
 Results can be filtered:
 
@@ -115,7 +115,7 @@ Results can be filtered:
 200 OK
 
 {
-  "results":[
+  "results": [
     "nkm4L",
     "asdi5",
     "nb2sg",
@@ -132,7 +132,7 @@ The overall job state can be added to the job list response:
 200 OK
 
 {
-  "results":[
+  "results": [
     {
       "id":"nkm4L",
       "status":"failure"
@@ -147,6 +147,15 @@ The overall job state can be added to the job list response:
     },
     …
   ]
+}
+```
+
+If there are no jobs, the returned list is empty:
+
+```json
+200 OK
+{
+  "results": [ ]
 }
 ```
 
@@ -309,7 +318,8 @@ Any other values for `steps` or not providing the parameter at all will return t
 
 ## Job status updates
 
-You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket). The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
+You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket).
+The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
 
 The job log is available at `https://o2r.uni-muenster.de` under the namespace `api/v1/logs/job`.
 

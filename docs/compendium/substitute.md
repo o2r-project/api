@@ -1,18 +1,24 @@
-# Substitute two compendia
+# Substitution
 
-Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added.
+Substitution is the combination of an base compendium, "base" for short, and an overlay compendium, or "overlay".
+A user can choose files from the overlay to replace files of the base, or upload new files.
 
 ## Create substitution
 
-`Create substitution` will produce a new ERC with metadata, saved to MongoDB.
-A substitution will be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`. Required are the IDs of the base and overlay ERC and at least one pair of substitution files, consisting of a base and an overlayfile.
+`Create substitution` produces a new compendium with its own files in the storage and metadata in the database.
+A substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
+Required content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.
+
+!!! Note
+    A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (`/data` directory).
+
+    The overlay file is stripped of all paths and is copied directly into the substitution's root directory.
 
 ### Request
 
 `POST /api/v1/substitution`
 
-input of request-body for substitution
+Request body for a new substitution:
 
 ```json
 {
@@ -29,11 +35,11 @@ input of request-body for substitution
 
 ### Request body properties
 
-- `base` - id of the base ERC
-- `overlay` - id of the overlay ERC
+- `base` - id of the base compendium
+- `overlay` - id of the overlay compendium
 - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
-  - `base` - filename of the file from the base ERC
-  - `overlay` - filename of the overlay ERC that will be exchanged for the original file
+  - `base` - name of the file from the base compendium
+  - `overlay` - name of the overlay compendium that is exchanged for the original file
 
 !!! note "Required user level"
 
@@ -66,19 +72,14 @@ input of request-body for substitution
 ```json
 404 Not Found
 
-{"error":"base ERC not found"}
+{"error":"base compendium not found"}
 ```
 
 ```json
 404 Not Found
 
-{"error":"overlay ERC not found"}
+{"error":"overlay compendium not found"}
 ```
-
-## Run substitution
-
-`Run substitution` will run the analysis of a substitution in a docker container.
-This is executed by a [job](http://o2r.info/o2r-web-api/job/).
 
 ## View substituted Compendium
 
@@ -88,13 +89,13 @@ This is executed by a [job](http://o2r.info/o2r-web-api/job/).
 
 `GET /api/v1/compendium/:id`
 
-This request will be handled as a GET-request of an usual compendium. ( [Click for more information.](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium) )
+This request is handled as regular GET request of a compendium (see [View single compendium](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium)).
 
 ### Response
 
-A substituted ERC will be saved as a usual ERC, but with additional metadata specifying this as a substituted ERC and giving information about the substitution.
+A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.
 
-Example 01 - in case there are no conflicts between filenames of any basefile and overlayfile :
+Example 01 - in case there are no conflicts between filenames of any base file and overlay file :
 
 ```json
 200 OK
@@ -122,7 +123,7 @@ Example 01 - in case there are no conflicts between filenames of any basefile an
 }
 ```
 
-Example 02 - in case the overlayfile has the same filename as one of the existing basefiles :
+Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:
 
 ```json
 200 OK
@@ -139,7 +140,7 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
           "substitutionFiles": [
             {
               "base": "climate-timeseries.csv",
-              "overlay": "input.csv",
+              "overlay": "dataFiles/input.csv",
               "filename": "overlay_input.csv"
             }
           ]
@@ -152,14 +153,14 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
 
 ### Response additional metadata
 
-- `substituted` - will be set `true`
+- `substituted` - is `true`
 - `substitution` - object, specifying information about the substitution
-  - `base` - id of the base ERC
-  - `overlay` - id of the overlay ERC
+  - `base` - id of the base compendium
+  - `overlay` - id of the overlay compendium
   - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
-    - `base` - filename of the file from the base ERC
-    - `overlay` - filename of the file from the overlay ERC
-    - `filename` - as seen in the examples above, `filename` will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
+    - `base` - filename of the file from the base compendium
+    - `overlay` - filename of the file from the overlay compendium
+    - `filename` - as seen in the examples above, `filename` is created if there is a conflict with any base file name and an overlay file name. In this case the overlay file name is given the prefix `overlay_` (see Example 02).
 
 ## List substituted Compendia
 
@@ -171,18 +172,27 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
 
 ### Response
 
-Result will be a list of compendia ids that have been substituted
+The result is be a list of compendia ids that have been substituted:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "oMMFn",
     "asdi5",
     "nb2sg",
     …
   ]
+}
+```
+
+If there are no substitutions yet, the returned list is empty.
+
+```json
+200 OK
+{
+  "results": [ ]
 }
 ```
 
@@ -198,13 +208,13 @@ Result will be a list of compendia ids that have been substituted
 
 `GET /api/v1/substitution?base=jfL3w`
 
-Result will be a list of compendia ids that have been substituted out of a choosen base ERC
+Result is a list of compendia ids that have been substituted using the given base:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "wGmFn",
     …
   ]
@@ -217,13 +227,13 @@ Result will be a list of compendia ids that have been substituted out of a choos
 
 `GET /api/v1/substitution?overlay=as4Kj`
 
-Result will be a list of compendia ids that have been substituted out of a choosen overlay ERC
+Result is be a list of compendia ids that have been substituted using the given overlay:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     "1Tnd3",
     …
@@ -237,13 +247,13 @@ Result will be a list of compendia ids that have been substituted out of a choos
 
 `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
 
-Result will be a list of compendia ids that have been substituted out of a choosen base and overlay ERC
+Result is be a list of compendia ids that have been substituted using the given base and overlay:
 
 ```json
 200 OK
 
 {
-  "results":[
+  "results": [
     "9pQ34",
     …
   ]
@@ -267,16 +277,16 @@ Result will be a list of compendia ids that have been substituted out of a choos
 ```json
 404 Not Found
 
-{"error":"base ERC not found"}
+{"error":"base compendium not found"}
 ```
 
 ```json
 404 Not Found
 
-{"error":"overlay ERC not found"}
+{"error":"overlay compendium not found"}
 ```
 
 ### URL parameters for substituted compendium lists
 
-- `:base` - id of the base ERC that the results should be related to
-- `:overlay` - id of the base ERC that the results should be related to
+- `:base` - id of the base compendium that the results should be related to
+- `:overlay` - id of the overlay compendium that the results should be related to

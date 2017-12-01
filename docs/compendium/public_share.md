@@ -51,9 +51,9 @@ Although it builds on ownCloud and the implementation might be able to handle an
 
 Depending on the public share contents different processes are triggered:
 
-1. If a file named `bagit.txt` is found, the directory will checked for Bagit validity
-2. If a single zip file is found, the file will be extracted, if multiple zip files are found, an error is returned.
-3. If a single subdirectory is found, the loader will use that subdirectory
+1. If a file named `bagit.txt` is found, the directory is checked for Bagit validity
+2. If a single zip file is found, the file is extracted, if multiple zip files are found, an error is returned
+3. If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading
 4. Depending on the value of `content_type` (see below), the public share contents are treated as a complete compendium or as a  workspace
 
 ### Body parameters for creating compendium from public share
