@@ -221,9 +221,9 @@ Although it builds on ownCloud and the implementation might be able to handle an
 <h3 id="file-selection">File selection</h3>
 <p>Depending on the public share contents different processes are triggered:</p>
 <ol>
-<li>If a file named <code>bagit.txt</code> is found, the directory will checked for Bagit validity</li>
-<li>If a single zip file is found, the file will be extracted, if multiple zip files are found, an error is returned.</li>
-<li>If a single subdirectory is found, the loader will use that subdirectory</li>
+<li>If a file named <code>bagit.txt</code> is found, the directory is checked for Bagit validity</li>
+<li>If a single zip file is found, the file is extracted, if multiple zip files are found, an error is returned</li>
+<li>If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading</li>
 <li>Depending on the value of <code>content_type</code> (see below), the public share contents are treated as a complete compendium or as a  workspace</li>
 </ol>
 <h3 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h3>

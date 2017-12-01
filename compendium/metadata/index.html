@@ -192,7 +192,8 @@ You can download the respective files to access the normative metadata documents
 <ul>
 <li><code>raw</code> contains raw metadata extracted automatically</li>
 <li><code>o2r</code> holds the <strong>main information for display</strong> and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for <a href="../../search/">search</a>.</li>
-<li><code>zenodo</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo and is translated from <code>o2r</code> metadata</li>
+<li><code>zenodo</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo and is brokered from <code>o2r</code> metadata</li>
+<li><code>zenodo_sandbox</code> holds <a href="https://zenodo.org/">Zenodo</a> metadata for shipments made to Zenodo Sandbox, i.e. a clone of <code>zenodo</code> metadata</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -363,7 +364,7 @@ After creation the metadata is persisted to both files and database, so updating
   /api/v1/compendium/:id/metadata
 </code></pre>
 
-<p>The request will <em>overwrite</em> the existing metadata properties, so the <em>full</em> o2r metadata must be put with a JSON object called <code>o2r</code> at the root, even if only specific fields are changed.</p>
+<p>The request <em>overwrites</em> the existing metadata properties, so the <em>full</em> o2r metadata must be put with a JSON object called <code>o2r</code> at the root, even if only specific fields are changed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This endpoint allows only to update the <code>metadata.o2r</code> elements. All other properties of </p>
@@ -415,7 +416,7 @@ After creation the metadata is persisted to both files and database, so updating
     &quot;id&quot;: &quot;U9IZ7&quot;,
     &quot;metadata&quot;: {},
     &quot;created&quot;: &quot;2017-01-01T00:00:42.000Z&quot;,
-    &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;user&quot;: &quot;0000-0002-1825-0097&quot;,
     &quot;bag&quot;: false,
     &quot;compendium&quot;: false,
     &quot;files&quot;: {}

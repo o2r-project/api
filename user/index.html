@@ -184,9 +184,28 @@
 {
     &quot;results&quot;: [
         &quot;0000-0002-1825-0097&quot;,
-        &quot;0000-0001-6021-1617&quot;
+        &quot;0000-0002-1825-0097&quot;
     ]
 }
+</code></pre>
+
+<p>If there are no users, the returned list is empty:</p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;: [ ]
+}
+</code></pre>
+
+<p>Pagination is supported using the query parameters <code>start</code> and <code>limit</code>.</p>
+<ul>
+<li><code>limit</code> is the number of results in the response, defaults to <code>10</code>. It numeric and larger than <code>0</code>.</li>
+<li><code>start</code> is the index of the first list item in the response, defaults to <code>1</code>. It must be numeric and larger than <code>0</code>.</li>
+</ul>
+<p><code>GET /api/v1/user?start=5&amp;limit=10</code></p>
+<h3 id="error-responses-for-user-list">Error responses for user list</h3>
+<pre><code class="json">400 Bad Request
+
+{&quot;error&quot;:&quot;limit must be larger than 0&quot;}
 </code></pre>
 
 <h2 id="view-single-user">View single user</h2>
@@ -196,17 +215,17 @@
 <pre><code class="json">200 OK
 
 {
-    &quot;id&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
     &quot;name&quot;: &quot;o2r&quot;
 }
 </code></pre>
 
 <p>The content of the response depends on the state and level of the user that requests the resource. The above response only contains the id and the publicly visible name. The following response contains more details and requires a certain user level of the authenticated user making the request:</p>
-<p><code>curl --cookie "connect.sid=&lt;session cookie here&gt;" https://…/api/v1/user/0000-0001-6021-1617</code></p>
+<p><code>curl --cookie "connect.sid=&lt;session cookie here&gt;" https://…/api/v1/user/0000-0002-1825-0097</code></p>
 <pre><code class="json">200 OK
 
 {
-    &quot;id&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
     &quot;name&quot;: &quot;o2r&quot;,
     &quot;level&quot;: 0,
     &quot;lastseen&quot;: &quot;2016-08-15T12:32:23.972Z&quot;
@@ -234,25 +253,28 @@
 <h3 id="authentication-within-microservices">Authentication within microservices</h3>
 <p><strong>Attention:</strong> The authentication process <em>requires</em> a secured connection, i.e. <code>HTTPS</code>.</p>
 <h4 id="authentication-provider">Authentication provider</h4>
-<p>Session authentication is done using the OAuth 2.0 protocol. Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.</p>
+<p>Session authentication is done using the OAuth 2.0 protocol.
+Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.</p>
 <h4 id="start-oauth-login">Start OAuth login</h4>
-<p>Navigate the webbrowser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
+<p>Navigate the webbrowser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
 <p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, where the o2r platform webinterface resides.</p>
 <p>If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.</p>
 <h4 id="request-authentication-status">Request authentication status</h4>
-<p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
+<p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
 <p><code>curl https://…/api/v1/auth/whoami --cookie "connect.sid=…</code></p>
 <p><code>GET /api/v1/auth/whoami</code></p>
 <pre><code class="json">200 OK
 
 {
-  &quot;orcid&quot;: &quot;0000-0001-6021-1617&quot;,
+  &quot;orcid&quot;: &quot;0000-0002-1825-0097&quot;,
   &quot;name&quot;: &quot;o2r&quot;
 }
 </code></pre>
 
 <h4 id="error-response-for-requests-requiring-authentication">Error response for requests requiring authentication</h4>
-<p>When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a <code>401 Unauthorized</code> message.</p>
+<p>When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service responds with a <code>401 Unauthorized</code> message.</p>
 <pre><code class="json">401 Unauthorized
 
 {
@@ -261,7 +283,7 @@
 </code></pre>
 
 <h2 id="user-levels">User levels</h2>
-<p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> assocciated with an account.
+<p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> associated with an account.
 On registration, each account is assigned a level <code>0</code>.
 Only admin users and the user herself can read the level of a user.</p>
 <p>The following is a list of actions and the corresponding required <em>minimum</em> user level.</p>
@@ -302,13 +324,13 @@ The response is the full user document with the updated value.</p>
 <p>The user sending the request to change the level must have the required <a href="./#user-levels">user level</a>.</p>
 </div>
 <pre><code class="bash">curl --request PATCH --cookie &quot;connect.sid=&lt;session cookie here&gt;&quot; \
-  https://…/api/v1/user/0000-0001-6021-1617?level=42`
+  https://…/api/v1/user/0000-0002-1825-0097?level=42`
 </code></pre>
 
 <pre><code class="json">200 OK
 
 {
-    &quot;id&quot;: &quot;0000-0001-6021-1617&quot;,
+    &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
     &quot;name&quot;: &quot;o2r&quot;,
     &quot;level&quot;: 42,
     &quot;lastseen&quot;: &quot;2016-08-15T12:32:23.972Z&quot;

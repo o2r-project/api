@@ -181,8 +181,8 @@
 <p>All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.</p>
 <p>A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.</p>
 <h2 id="state-of-a-job">State of a job</h2>
-<p>The property <code>&gt;job&gt;.state</code> shows the overall state of a job.</p>
-<p>The status will be one of following:</p>
+<p>The property <code>job.status</code> shows the <strong>overall status</strong> of a job.</p>
+<p>The overall status can be one of following:</p>
 <ul>
 <li><code>success</code> - if state of all steps is <code>success</code>.</li>
 <li><code>failure</code> - if state of at least one step is <code>failure</code>.</li>
@@ -254,7 +254,7 @@ Requires a <code>compendium_id</code>.</p>
 
 <h2 id="list-jobs">List jobs</h2>
 <p>Lists jobs with filtering and pagination, returning up to 100 results by default.</p>
-<p>Results will be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
+<p>Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
 <p>Results can be filtered:</p>
 <ul>
 <li>by <code>compendium_id</code> i.e. <code>compendium_id=a4Dnm</code>,</li>
@@ -266,7 +266,7 @@ Requires a <code>compendium_id</code>.</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;nkm4L&quot;,
     &quot;asdi5&quot;,
     &quot;nb2sg&quot;,
@@ -280,7 +280,7 @@ Requires a <code>compendium_id</code>.</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     {
       &quot;id&quot;:&quot;nkm4L&quot;,
       &quot;status&quot;:&quot;failure&quot;
@@ -295,6 +295,13 @@ Requires a <code>compendium_id</code>.</p>
     },
     …
   ]
+}
+</code></pre>
+
+<p>If there are no jobs, the returned list is empty:</p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;: [ ]
 }
 </code></pre>
 
@@ -447,7 +454,8 @@ Any other values for <code>steps</code> or not providing the parameter at all wi
 </code></pre>
 
 <h2 id="job-status-updates">Job status updates</h2>
-<p>You can subscribe to real time status updates on jobs using <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>. The implementation is based on <a href="http://socket.io">socket.io</a> and using their client is recommended.</p>
+<p>You can subscribe to real time status updates on jobs using <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>.
+The implementation is based on <a href="http://socket.io">socket.io</a> and using their client is recommended.</p>
 <p>The job log is available at <code>https://o2r.uni-muenster.de</code> under the namespace <code>api/v1/logs/job</code>.</p>
 <pre><code class="JavaScript"># create a socket.io client:
 var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');

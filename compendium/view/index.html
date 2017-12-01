@@ -176,13 +176,13 @@
               
                 <h1 id="view-compendium">View compendium</h1>
 <h2 id="list-compendia">List compendia</h2>
-<p>Will return up to 100 results by default.</p>
+<p>Returns up to 100 results by default.</p>
 <p><code>curl https://…/api/v1/compendium?limit=100&amp;start=2</code></p>
 <p><code>GET /api/v1/compendium?limit=100&amp;start=2</code></p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;nkm4b&quot;,
     &quot;asdis&quot;,
     &quot;nb2sm&quot;,
@@ -191,24 +191,35 @@
 }
 </code></pre>
 
-<p>You can also filter the results:</p>
+<p>You can also filter the results.</p>
 <ul>
-<li>Filter by <code>user</code>:</li>
+<li>Filter by <code>user</code>:<ul>
+<li><code>curl https://…/api/v1/compendium?user=0000-0002-1825-0097</code></li>
+<li><code>GET /api/v1/compendium?user=0000-0002-1825-0097</code></li>
 </ul>
-<p><code>curl https://…/api/v1/compendium?user=0000-0001-6021-1617</code></p>
-<p><code>GET /api/v1/compendium?user=0000-0001-6021-1617</code></p>
-<ul>
-<li>Filter by <code>doi</code>:</li>
+</li>
+<li>Filter by <code>doi</code>:<ul>
+<li><code>curl https://…/api/v1/compendium?doi=10.9999%2Ftest</code></li>
+<li><code>GET /api/v1/compendium?doi=10.9999%2Ftest</code></li>
 </ul>
-<p><code>curl https://…/api/v1/compendium?doi=10.9999%2Ftest</code></p>
-<p><code>GET /api/v1/compendium?doi=10.9999%2Ftest</code></p>
+</li>
+</ul>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;nkm4b&quot;,
     &quot;nb2sm&quot;
   ]
+}
+</code></pre>
+
+<p>If there is no compendium found, the service returns an empty list.</p>
+<p><code>GET /api/v1/compendium?doi=not_a_doi</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;results&quot;: []
 }
 </code></pre>
 
@@ -220,12 +231,6 @@
 <li><code>start</code> - Starting point of the result list. <code>start - 1</code> results are skipped. Defaults to <code>1</code>.</li>
 <li><code>limit</code> - Limits the number of results in the response. Defaults to <code>100</code>.</li>
 </ul>
-<h3 id="error-responses-for-compendium-lists">Error responses for compendium lists</h3>
-<pre><code class="json">404 Not Found
-
-{&quot;error&quot;:&quot;no compendium found&quot;}
-</code></pre>
-
 <h2 id="view-single-compendium">View single compendium</h2>
 <p>This includes the complete metadata set, related job ids and a tree representation of the included <a href="compendium/files.md">files</a>. The <code>created</code> timestamp refers to the upload of the compendium. It is formated as ISO8601.</p>
 <p><code>curl https://…/api/v1/$ID</code></p>
@@ -255,7 +260,7 @@
 <p><code>GET /api/v1/compendium/:id/jobs</code></p>
 <pre><code class="json">200 OK
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;nkm4L&quot;,
     &quot;asdi5&quot;,
     &quot;nb2sg&quot;,
@@ -264,15 +269,17 @@
 }
 </code></pre>
 
+<p>If a compendium does not have any jobs yet, the returned list is empty.</p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;: [ ]
+}
+</code></pre>
+
 <h3 id="url-parameters-for-related-execution-jobs">URL parameters for related execution jobs</h3>
 <ul>
 <li><code>:id</code> - compendium id that the results should be related to</li>
 </ul>
-<h3 id="error-response-for-related-execution-jobs">Error response for related execution jobs</h3>
-<pre><code class="json">404 Not Found
-
-{&quot;error&quot;:&quot;no job found&quot;}
-</code></pre>
               
             </div>
           </div>

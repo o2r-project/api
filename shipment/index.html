@@ -241,7 +241,7 @@ The <code>id</code> is the repository identifier to be used in requests to the <
   &quot;recipient&quot;: &quot;zenodo&quot;,
   &quot;id&quot;: &quot;dc351fc6-314f-4947-a235-734ab5971eff&quot;,
   &quot;deposition_id&quot;: &quot;63179&quot;,
-  &quot;user&quot;: &quot;0000-0001-6021-1617&quot;,
+  &quot;user&quot;: &quot;0000-0002-1825-0097&quot;,
   &quot;status&quot;: &quot;shipped&quot;,
   &quot;compendium_id&quot;: &quot;4XgD97&quot;,
   &quot;deposition_url&quot;: &quot;https://zenodo.org/record/63179&quot;
@@ -250,7 +250,7 @@ The <code>id</code> is the repository identifier to be used in requests to the <
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Returned deposition URLs from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
+<p>Returned deposition URLs (property <code>deposition_url</code>) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
 </div>
 <h2 id="create-a-new-shipment">Create a new shipment</h2>
 <p>You can start a initial creation of a shipment, leading to transmission to a repository and creation of a deposition, using a <code>POST</code> request.</p>
@@ -262,7 +262,7 @@ The <code>id</code> is the repository identifier to be used in requests to the <
 </ul>
 <p>The following are <strong>optional parameters</strong>:</p>
 <ul>
-<li><code>update_packaging</code> (<code>boolean</code>, default: <code>false</code>): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to <code>true</code>, the shipment package is updated during the shipment creation in order to make it valid, if set to <code>false</code> the shipment creation will result in an error.</li>
+<li><code>update_packaging</code> (<code>boolean</code>, default: <code>false</code>): the shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to <code>true</code>, the shipment package is updated during the shipment creation in order to make it valid, if set to <code>false</code> the shipment creation results in an error.</li>
 <li><code>cookie</code> (<code>string</code>): an authentication cookie must be set in the request header, but it may also be provided via a <code>cookie</code> form parameter as a fallback</li>
 <li><code>shipment_id</code> (<code>string</code>): a user-defined identifier for the shipment (see <code>id</code> in response)</li>
 </ul>
@@ -271,7 +271,8 @@ The <code>id</code> is the repository identifier to be used in requests to the <
 <p>The user sending the request to create a shipment must have the required <a href="../user/#user-levels">user level</a>.</p>
 </div>
 <h3 id="creation-response">Creation response</h3>
-<p>The response contains the shipment identifier (<code>id</code>) and the <code>deposition_id</code>, i.e. an identifier provided by the shipment recipient.</p>
+<p>The response contains the shipment document, see <a href="#get-a-single.shipment">Get a single shipment</a>.
+Some of the fields are not available (have value <code>null</code>) until after <a href="#publish-a-deposition">publishing</a>, e.g. <code>deposition_url</code>.</p>
 <pre><code class="json">201
 
 {

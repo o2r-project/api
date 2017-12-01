@@ -201,7 +201,7 @@ Only a successful <a href="../metadata/#update-metadata">metadata update</a> can
 </code></pre>
 
 <p>Only the creating user and users with <a href="../../user/#user-levels">required level</a> can view a candidate and see the <code>candidate</code> property while it is <code>true</code>.</p>
-<p>When accessing a <a href="../view/#list-compendia">list of compendia</a> for a specific user <em>as that user</em>, then this list will be extended by available candidates.
+<p>When accessing a <a href="../view/#list-compendia">list of compendia</a> for a specific user <em>as that user</em>, then this list is extended by available candidates.
 The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.</p>
 <h2 id="metadata-review-and-saving">Metadata review and saving</h2>
 <p>After the user has reviewed and potentially updated the metadata as required and <a href="../metadata/#update-metadata">saved them</a> successfully, then the candidate status is changed (<code>candidate: false</code>) and the compendium is publicly available.</p>

@@ -100,13 +100,11 @@
     <a class="current" href="./">Substitution</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#substitute-two-compendia">Substitute two compendia</a></li>
+    <li class="toctree-l3"><a href="#substitution">Substitution</a></li>
     
         <ul>
         
             <li><a class="toctree-l4" href="#create-substitution">Create substitution</a></li>
-        
-            <li><a class="toctree-l4" href="#run-substitution">Run substitution</a></li>
         
             <li><a class="toctree-l4" href="#view-substituted-compendium">View substituted Compendium</a></li>
         
@@ -176,15 +174,21 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="substitute-two-compendia">Substitute two compendia</h1>
-<p>Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added.</p>
+                <h1 id="substitution">Substitution</h1>
+<p>Substitution is the combination of an base compendium, "base" for short, and an overlay compendium, or "overlay".
+A user can choose files from the overlay to replace files of the base, or upload new files.</p>
 <h2 id="create-substitution">Create substitution</h2>
-<p><code>Create substitution</code> will produce a new ERC with metadata, saved to MongoDB.
-A substitution will be created with an HTTP <code>POST</code> request using <code>multipart/form-data</code> and content-type <code>JSON</code>. Required are the IDs of the base and overlay ERC and at least one pair of substitution files, consisting of a base and an overlayfile.</p>
+<p><code>Create substitution</code> produces a new compendium with its own files in the storage and metadata in the database.
+A substitution can be created with an HTTP <code>POST</code> request using <code>multipart/form-data</code> and content-type <code>JSON</code>.
+Required content of the request are the identifiers of the base and overlay compendia and at least one pair of <em>substitution files</em>, consisting of a base file and an overlay file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).</p>
+<p>The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>
+</div>
 <h3 id="request">Request</h3>
 <p><code>POST /api/v1/substitution</code></p>
-<p>input of request-body for substitution</p>
+<p>Request body for a new substitution:</p>
 <pre><code class="json">{
   &quot;base&quot;: &quot;G92NL&quot;,
   &quot;overlay&quot;: &quot;9fCTR&quot;,
@@ -199,11 +203,11 @@ A substitution will be created with an HTTP <code>POST</code> request using <cod
 
 <h3 id="request-body-properties">Request body properties</h3>
 <ul>
-<li><code>base</code> - id of the base ERC</li>
-<li><code>overlay</code> - id of the overlay ERC</li>
+<li><code>base</code> - id of the base compendium</li>
+<li><code>overlay</code> - id of the overlay compendium</li>
 <li><code>substitutionFiles</code> - array of file substitutions specified by <code>base</code> and <code>overlay</code></li>
-<li><code>base</code> - filename of the file from the base ERC</li>
-<li><code>overlay</code> - filename of the overlay ERC that will be exchanged for the original file</li>
+<li><code>base</code> - name of the file from the base compendium</li>
+<li><code>overlay</code> - name of the overlay compendium that is exchanged for the original file</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>
@@ -230,25 +234,22 @@ A substitution will be created with an HTTP <code>POST</code> request using <cod
 
 <pre><code class="json">404 Not Found
 
-{&quot;error&quot;:&quot;base ERC not found&quot;}
+{&quot;error&quot;:&quot;base compendium not found&quot;}
 </code></pre>
 
 <pre><code class="json">404 Not Found
 
-{&quot;error&quot;:&quot;overlay ERC not found&quot;}
+{&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
 
-<h2 id="run-substitution">Run substitution</h2>
-<p><code>Run substitution</code> will run the analysis of a substitution in a docker container.
-This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 <h2 id="view-substituted-compendium">View substituted Compendium</h2>
 <h3 id="request_1">Request</h3>
 <p><code>curl https://.../api/v1/compendium/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
-<p>This request will be handled as a GET-request of an usual compendium. ( <a href="http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium">Click for more information.</a> )</p>
+<p>This request is handled as regular GET request of a compendium (see <a href="http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium">View single compendium</a>).</p>
 <h3 id="response_1">Response</h3>
-<p>A substituted ERC will be saved as a usual ERC, but with additional metadata specifying this as a substituted ERC and giving information about the substitution.</p>
-<p>Example 01 - in case there are no conflicts between filenames of any basefile and overlayfile :</p>
+<p>A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.</p>
+<p>Example 01 - in case there are no conflicts between filenames of any base file and overlay file :</p>
 <pre><code class="json">200 OK
 
 {
@@ -274,7 +275,7 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 }
 </code></pre>
 
-<p>Example 02 - in case the overlayfile has the same filename as one of the existing basefiles :</p>
+<p>Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:</p>
 <pre><code class="json">200 OK
 
 {
@@ -289,7 +290,7 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
           &quot;substitutionFiles&quot;: [
             {
               &quot;base&quot;: &quot;climate-timeseries.csv&quot;,
-              &quot;overlay&quot;: &quot;input.csv&quot;,
+              &quot;overlay&quot;: &quot;dataFiles/input.csv&quot;,
               &quot;filename&quot;: &quot;overlay_input.csv&quot;
             }
           ]
@@ -302,14 +303,14 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 
 <h3 id="response-additional-metadata">Response additional metadata</h3>
 <ul>
-<li><code>substituted</code> - will be set <code>true</code></li>
+<li><code>substituted</code> - is <code>true</code></li>
 <li><code>substitution</code> - object, specifying information about the substitution</li>
-<li><code>base</code> - id of the base ERC</li>
-<li><code>overlay</code> - id of the overlay ERC</li>
+<li><code>base</code> - id of the base compendium</li>
+<li><code>overlay</code> - id of the overlay compendium</li>
 <li><code>substitutionFiles</code> - array of file substitutions specified by <code>base</code> and <code>overlay</code><ul>
-<li><code>base</code> - filename of the file from the base ERC</li>
-<li><code>overlay</code> - filename of the file from the overlay ERC</li>
-<li><code>filename</code> - as seen in the examples above, <code>filename</code> will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "<strong>overlay_</strong>" prepended (see Example 02). <em>(optional add)</em></li>
+<li><code>base</code> - filename of the file from the base compendium</li>
+<li><code>overlay</code> - filename of the file from the overlay compendium</li>
+<li><code>filename</code> - as seen in the examples above, <code>filename</code> is created if there is a conflict with any base file name and an overlay file name. In this case the overlay file name is given the prefix <code>overlay_</code> (see Example 02).</li>
 </ul>
 </li>
 </ul>
@@ -318,16 +319,23 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 <p><code>curl https://.../api/v1/substitution</code></p>
 <p><code>GET /api/v1/substitution</code></p>
 <h3 id="response_2">Response</h3>
-<p>Result will be a list of compendia ids that have been substituted</p>
+<p>The result is be a list of compendia ids that have been substituted:</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;oMMFn&quot;,
     &quot;asdi5&quot;,
     &quot;nb2sg&quot;,
     …
   ]
+}
+</code></pre>
+
+<p>If there are no substitutions yet, the returned list is empty.</p>
+<pre><code class="json">200 OK
+{
+  &quot;results&quot;: [ ]
 }
 </code></pre>
 
@@ -339,11 +347,11 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 </ul>
 <p><code>curl https://.../api/v1/substitution?base=jfL3w</code></p>
 <p><code>GET /api/v1/substitution?base=jfL3w</code></p>
-<p>Result will be a list of compendia ids that have been substituted out of a choosen base ERC</p>
+<p>Result is a list of compendia ids that have been substituted using the given base:</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;wGmFn&quot;,
     …
   ]
@@ -355,11 +363,11 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 </ul>
 <p><code>curl https://.../api/v1/substitution?overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?overlay=as4Kj</code></p>
-<p>Result will be a list of compendia ids that have been substituted out of a choosen overlay ERC</p>
+<p>Result is be a list of compendia ids that have been substituted using the given overlay:</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;9pQ34&quot;,
     &quot;1Tnd3&quot;,
     …
@@ -372,11 +380,11 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 </ul>
 <p><code>curl https://.../api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
-<p>Result will be a list of compendia ids that have been substituted out of a choosen base and overlay ERC</p>
+<p>Result is be a list of compendia ids that have been substituted using the given base and overlay:</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;results&quot;:[
+  &quot;results&quot;: [
     &quot;9pQ34&quot;,
     …
   ]
@@ -396,18 +404,18 @@ This is executed by a <a href="http://o2r.info/o2r-web-api/job/">job</a>.</p>
 
 <pre><code class="json">404 Not Found
 
-{&quot;error&quot;:&quot;base ERC not found&quot;}
+{&quot;error&quot;:&quot;base compendium not found&quot;}
 </code></pre>
 
 <pre><code class="json">404 Not Found
 
-{&quot;error&quot;:&quot;overlay ERC not found&quot;}
+{&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
 
 <h3 id="url-parameters-for-substituted-compendium-lists">URL parameters for substituted compendium lists</h3>
 <ul>
-<li><code>:base</code> - id of the base ERC that the results should be related to</li>
-<li><code>:overlay</code> - id of the base ERC that the results should be related to</li>
+<li><code>:base</code> - id of the base compendium that the results should be related to</li>
+<li><code>:overlay</code> - id of the overlay compendium that the results should be related to</li>
 </ul>
               
             </div>
