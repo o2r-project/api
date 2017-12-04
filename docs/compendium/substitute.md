@@ -1,7 +1,7 @@
 # Substitute two compendia
 
 Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added. Additionally the user can choose, if the metadata of the base ERC will be adopted for substitution (`keepBase`) or there will be a new extraction of the metadata for the substituted ERC, that will be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**).
+A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added. Additionally the user can choose, if the metadata of the base ERC will be adopted for substitution (`keepBase`) or there will be a new extraction of the metadata for the substituted ERC. This new extraction is divided into two choices. The user can let the new extracted metadata be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**) or just take the extracted metadata (`extract` - **not implemented**).
 
 ## Create substitution
 
@@ -35,7 +35,7 @@ input of request-body for substitution
 - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
   - `base` - filename of the file from the base ERC
   - `overlay` - filename of the overlay ERC that will be exchanged for the original file
-- `metadataHandling` - variable to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC)
+- `metadataHandling` - variable to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)
 
 !!! note "Required user level"
 
@@ -163,7 +163,7 @@ Example 02 - in case the overlayfile has the same filename as one of the existin
     - `base` - filename of the file from the base ERC
     - `overlay` - filename of the file from the overlay ERC
     - `filename` - as seen in the examples above, `filename` will be created if there is a conflict with any basefilename and an overlayfilename. In this case the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
-- `metadataextraction` - variable to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC)
+- `metadataextraction` - variable to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)
 - `substituted` - will be set `true`
 
 ## List substituted Compendia
