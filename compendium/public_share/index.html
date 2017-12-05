@@ -178,7 +178,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="public-share">Public share</h1>
+                <h1 id="public-share">Public share<a class="headerlink" href="#public-share" title="Permanent link">&para;</a></h1>
 <p>Load a research compendium by submitting a link to a cloud resource using an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
 <p>Currently, the following repositories are supported:</p>
 <ul>
@@ -186,7 +186,7 @@
 <li><a href="https://zenodo.org">Zenodo</a></li>
 <li><a href="https://sandbox.zenodo.org">Zenodo Sandbox</a></li>
 </ul>
-<h2 id="common">Common</h2>
+<h2 id="common">Common<a class="headerlink" href="#common" title="Permanent link">&para;</a></h2>
 <p>All repositories use the same API endpoint <code>https://…/api/v1/compendium</code>, but with different required/optional parameters.</p>
 <p>The upload is only allowed for logged in users.
 To run the upload from the command line, login on the website and open you browser cookies.
@@ -215,10 +215,10 @@ Copy the contents of the cookie into the request example below.</p>
 <p class="admonition-title">Important</p>
 <p>After successful load from a public share, the <strong><a href="../upload/#candidate-process">candidate process</a></strong> applies.</p>
 </div>
-<h2 id="sciebo">Sciebo</h2>
+<h2 id="sciebo">Sciebo<a class="headerlink" href="#sciebo" title="Permanent link">&para;</a></h2>
 <p><a href="http://www.sciebo.de/en/about/index.html">Sciebo</a> is a cloud storage service at North Rhine-Westphalian universities.
 Although it builds on ownCloud and the implementation might be able to handle any ownCloud link, only Sciebo's publish shares are supported by this API. </p>
-<h3 id="file-selection">File selection</h3>
+<h3 id="file-selection">File selection<a class="headerlink" href="#file-selection" title="Permanent link">&para;</a></h3>
 <p>Depending on the public share contents different processes are triggered:</p>
 <ol>
 <li>If a file named <code>bagit.txt</code> is found, the directory is checked for Bagit validity</li>
@@ -226,7 +226,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 <li>If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading</li>
 <li>Depending on the value of <code>content_type</code> (see below), the public share contents are treated as a complete compendium or as a  workspace</li>
 </ol>
-<h3 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share</h3>
+<h3 id="body-parameters-for-creating-compendium-from-public-share">Body parameters for creating compendium from public share<a class="headerlink" href="#body-parameters-for-creating-compendium-from-public-share" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>share_url</code> - The Sciebo link to the public share (required)</li>
 <li><code>content_type</code> - Form of archive. One of the following (required):<ul>
@@ -239,7 +239,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 </ul>
 </li>
 </ul>
-<h3 id="examples">Examples</h3>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <pre><code class="bash">curl -F &quot;content_type=compendium&quot; \
     -F &quot;share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA&quot;  \
     -F &quot;path=/metatainer&quot; \
@@ -247,7 +247,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
      https://…/api/v1/compendium
 </code></pre>
 
-<h3 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share</h3>
+<h3 id="error-responses-for-creating-compendium-from-public-share">Error responses for creating compendium from public share<a class="headerlink" href="#error-responses-for-creating-compendium-from-public-share" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;unauthorized: user level does not allow compendium creation&quot;}
@@ -263,11 +263,11 @@ Although it builds on ownCloud and the implementation might be able to handle an
 {&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
 </code></pre>
 
-<h3 id="example-data">Example data</h3>
+<h3 id="example-data">Example data<a class="headerlink" href="#example-data" title="Permanent link">&para;</a></h3>
 <p>For testing purposes you can use the following public share, which contains a few ready-to-use compendia:</p>
 <p><a href="https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"><code>https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO</code></a></p>
-<h2 id="zenodo">Zenodo</h2>
-<h3 id="body-parameters-for-creating-a-compendium-from-a-zenodo-record">Body parameters for creating a compendium from a Zenodo record</h3>
+<h2 id="zenodo">Zenodo<a class="headerlink" href="#zenodo" title="Permanent link">&para;</a></h2>
+<h3 id="body-parameters-for-creating-a-compendium-from-a-zenodo-record">Body parameters for creating a compendium from a Zenodo record<a class="headerlink" href="#body-parameters-for-creating-a-compendium-from-a-zenodo-record" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Identification of the Zenodo record, one of the folloing is required:<ul>
 <li><code>share_url</code> - The link to the zenodo record (optional). May be a link to https://zenodo.org or https://doi.org</li>
@@ -287,7 +287,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 </li>
 </ul>
 <p>There must at least one url parameter that resolves to a zenodo record. I.e. one of the following:</p>
-<h3 id="examples_1">Examples</h3>
+<h3 id="examples_1">Examples<a class="headerlink" href="#examples_1" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Zenodo Record URL (with optional filename parameter)</li>
 </ol>
@@ -321,7 +321,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 <li><code>https://zenodo.org</code> or</li>
 <li><code>https://sandbox.zenodo.org</code></li>
 </ul>
-<h3 id="error-responses-for-creating-compendium-from-a-zenodo-record">Error responses for creating compendium from a Zenodo record</h3>
+<h3 id="error-responses-for-creating-compendium-from-a-zenodo-record">Error responses for creating compendium from a Zenodo record<a class="headerlink" href="#error-responses-for-creating-compendium-from-a-zenodo-record" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;unauthorized: user level does not allow compendium creation&quot;}
@@ -347,7 +347,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 {&quot;error&quot;:&quot;files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]&quot;}
 </code></pre>
 
-<h3 id="example-data_1">Example data</h3>
+<h3 id="example-data_1">Example data<a class="headerlink" href="#example-data_1" title="Permanent link">&para;</a></h3>
 <p>For testing purposes you can use the following public shares.
 They contain the a compendium with metadata.</p>
 <ul>

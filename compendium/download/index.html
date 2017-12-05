@@ -172,7 +172,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="download-compendium">Download compendium</h1>
+                <h1 id="download-compendium">Download compendium<a class="headerlink" href="#download-compendium" title="Permanent link">&para;</a></h1>
 <p>Download compendium files as an archive.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -185,7 +185,7 @@ To download a valid compendium, create a <a href="../../shipment/">shipment</a> 
 <li><code>tar</code></li>
 <li><code>tar.gz</code></li>
 </ul>
-<h2 id="requests">Requests</h2>
+<h2 id="requests">Requests<a class="headerlink" href="#requests" title="Permanent link">&para;</a></h2>
 <p><code>GET /api/v1/compendium/$ID.zip</code></p>
 <pre><code class="bash">GET /api/v1/compendium/:id.zip
 GET /api/v1/compendium/:id.tar
@@ -194,13 +194,13 @@ GET /api/v1/compendium/:id.tar?gzip
 GET /api/v1/compendium/:id.zip?image=false
 </code></pre>
 
-<h3 id="url-parameters-for-compendium-download">URL parameters for compendium download</h3>
+<h3 id="url-parameters-for-compendium-download">URL parameters for compendium download<a class="headerlink" href="#url-parameters-for-compendium-download" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - the compendiums id</li>
 <li><code>?gzip</code> - <em>only for .tar endpoint</em> - compress tarball with gzip</li>
 <li><code>?image=true</code> or <code>?image=false</code> - include tarball of Docker image in the archive, default is <code>true</code></li>
 </ul>
-<h2 id="response">Response</h2>
+<h2 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
 <p>The response is a file attachment. The suggested file name is available in the HTTP header <code>content-disposition</code> using the respective file extension for a file named with the compendium identifier (e.g. <code>wdpV9.zip</code>, <code>Uh1o0.tar</code>, or <code>LBIt1.tar.gz</code>).</p>
 <p>The <code>content-type</code> header also reflects the respective format, which can take the following values:</p>
 <ul>
@@ -221,7 +221,7 @@ Archive:  CXE1c.zip
 Created by o2r [https://…/api/v1/compendium/CXE1c.zip]
 </code></pre>
 
-<h3 id="error-responses-for-compendium-download">Error responses for compendium download</h3>
+<h3 id="error-responses-for-compendium-download">Error responses for compendium download<a class="headerlink" href="#error-responses-for-compendium-download" title="Permanent link">&para;</a></h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this id&quot;}

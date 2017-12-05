@@ -180,13 +180,13 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="compendium-metadata">Compendium metadata</h1>
-<h2 id="basics">Basics</h2>
+                <h1 id="compendium-metadata">Compendium metadata<a class="headerlink" href="#compendium-metadata" title="Permanent link">&para;</a></h1>
+<h2 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
 <p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;metadata_model&gt;.&lt;format&gt;</code>, sometimes prepended with <code>metadata_</code> for clarity, e.g. <code>metadata_raw.json</code>, <code>metadata_o2r.json</code>, <code>zenodo.json</code>, or <code>datacite.xml</code>.</p>
 <p>A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 <em>This API always returns the database copy of the metadata elements.</em>
 You can download the respective files to access the normative metadata documents.</p>
-<h2 id="metadata-formats">Metadata formats</h2>
+<h2 id="metadata-formats">Metadata formats<a class="headerlink" href="#metadata-formats" title="Permanent link">&para;</a></h2>
 <p>The files are available on demand, but metadata variants are created after each metadata update.</p>
 <p>The sub-properties of the <code>metadata</code> and their content are</p>
 <ul>
@@ -200,7 +200,7 @@ You can download the respective files to access the normative metadata documents
 <p>The information in each sub-property are subject to independent workflows and may differ from one another.
 The term <strong>brokering</strong> is used for translation from one metadata format into another.</p>
 </div>
-<h2 id="get-all-compendium-metadata">Get all compendium metadata</h2>
+<h2 id="get-all-compendium-metadata">Get all compendium metadata<a class="headerlink" href="#get-all-compendium-metadata" title="Permanent link">&para;</a></h2>
 <p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <pre><code class="json">200 OK
@@ -226,7 +226,7 @@ The term <strong>brokering</strong> is used for translation from one metadata fo
 }
 </code></pre>
 
-<h2 id="get-o2r-metadata">Get o2r metadata</h2>
+<h2 id="get-o2r-metadata">Get o2r metadata<a class="headerlink" href="#get-o2r-metadata" title="Permanent link">&para;</a></h2>
 <p>The following endpoint allows to access <em>only</em> the normative o2r-metadata element:</p>
 <p><code>curl https://…/api/v1/$ID/metadata</code></p>
 <p><code>GET /api/v1/compendium/:id/metadata</code></p>
@@ -244,11 +244,11 @@ The term <strong>brokering</strong> is used for translation from one metadata fo
 }
 </code></pre>
 
-<h3 id="url-parameters">URL parameters</h3>
+<h3 id="url-parameters">URL parameters<a class="headerlink" href="#url-parameters" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - compendium id</li>
 </ul>
-<h3 id="spatial-metadata">Spatial metadata</h3>
+<h3 id="spatial-metadata">Spatial metadata<a class="headerlink" href="#spatial-metadata" title="Permanent link">&para;</a></h3>
 <p>For discovery purposes, the metadata includes extracted <a href="http://geojson.org/">GeoJSON</a> bounding boxes based on data files in a workspace.</p>
 <p>Currently supported spatial data sources:</p>
 <ul>
@@ -348,7 +348,7 @@ The term <strong>brokering</strong> is used for translation from one metadata fo
 </code></pre>
 
 <p>The <code>spatial</code> key has a <code>union</code> bounding box, that wraps all extracted bounding boxes.</p>
-<h2 id="update-metadata">Update metadata</h2>
+<h2 id="update-metadata">Update metadata<a class="headerlink" href="#update-metadata" title="Permanent link">&para;</a></h2>
 <p>The following endpoint can be used to update the <code>o2r</code> metadata elements.
 All other metadata sub-properties are only updated by the platform itself, i.e. brokered metadata.
 After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the <a href="../download/">download endpoint</a>.</p>
@@ -356,7 +356,7 @@ After creation the metadata is persisted to both files and database, so updating
 <p class="admonition-title">Metadata update rights</p>
 <p>Only authors of a compendium or users with the required <a href="user.md#user-levels">user level</a> can update a compendium's metadata.</p>
 </div>
-<h3 id="metadata-update-request">Metadata update request</h3>
+<h3 id="metadata-update-request">Metadata update request<a class="headerlink" href="#metadata-update-request" title="Permanent link">&para;</a></h3>
 <pre><code class="bash">curl -H 'Content-Type: application/json' \
   -X PUT \
   --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
@@ -369,11 +369,11 @@ After creation the metadata is persisted to both files and database, so updating
 <p class="admonition-title">Note</p>
 <p>This endpoint allows only to update the <code>metadata.o2r</code> elements. All other properties of </p>
 </div>
-<h3 id="url-parameters_1">URL parameters</h3>
+<h3 id="url-parameters_1">URL parameters<a class="headerlink" href="#url-parameters_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - compendium id</li>
 </ul>
-<h3 id="metadata-update-response">Metadata update response</h3>
+<h3 id="metadata-update-response">Metadata update response<a class="headerlink" href="#metadata-update-response" title="Permanent link">&para;</a></h3>
 <p>The response contains an excerpt of a compendium with only the o2r metadata property.</p>
 <pre><code class="json">200 OK
 
@@ -387,7 +387,7 @@ After creation the metadata is persisted to both files and database, so updating
 }
 </code></pre>
 
-<h3 id="metadata-update-error-responses">Metadata update error responses</h3>
+<h3 id="metadata-update-error-responses">Metadata update error responses<a class="headerlink" href="#metadata-update-error-responses" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}
@@ -403,7 +403,7 @@ After creation the metadata is persisted to both files and database, so updating
 {&quot;error&quot;:&quot;JSON with root element 'o2r' required&quot;}
 </code></pre>
 
-<h2 id="other-metadata-properties">Other metadata properties</h2>
+<h2 id="other-metadata-properties">Other metadata properties<a class="headerlink" href="#other-metadata-properties" title="Permanent link">&para;</a></h2>
 <p>Besides the <code>metadata</code> element, a compendium persists some additional properties to reduce computation on the server, and to allows client applications to improve the user experience.</p>
 <ul>
 <li><code>bag</code> - a boolean showing if the uploaded artefact was detected as a BagIt bag (detection file: <code>bagit.txt</code>)</li>

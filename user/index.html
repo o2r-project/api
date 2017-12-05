@@ -174,8 +174,8 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="user">User</h1>
-<h2 id="list-users">List users</h2>
+                <h1 id="user">User<a class="headerlink" href="#user" title="Permanent link">&para;</a></h1>
+<h2 id="list-users">List users<a class="headerlink" href="#list-users" title="Permanent link">&para;</a></h2>
 <p>Return a list of user ids. <a href="../compendium/view/">Pagination (including defaults) as described for compendia</a> is available for users.</p>
 <p><code>curl https://…/api/v1/user</code></p>
 <p><code>GET /api/v1/user</code></p>
@@ -202,13 +202,13 @@
 <li><code>start</code> is the index of the first list item in the response, defaults to <code>1</code>. It must be numeric and larger than <code>0</code>.</li>
 </ul>
 <p><code>GET /api/v1/user?start=5&amp;limit=10</code></p>
-<h3 id="error-responses-for-user-list">Error responses for user list</h3>
+<h3 id="error-responses-for-user-list">Error responses for user list<a class="headerlink" href="#error-responses-for-user-list" title="Permanent link">&para;</a></h3>
 <pre><code class="json">400 Bad Request
 
 {&quot;error&quot;:&quot;limit must be larger than 0&quot;}
 </code></pre>
 
-<h2 id="view-single-user">View single user</h2>
+<h2 id="view-single-user">View single user<a class="headerlink" href="#view-single-user" title="Permanent link">&para;</a></h2>
 <p>Show the details of a user.</p>
 <p><code>curl https://…/api/v1/user/$ID</code></p>
 <p><code>GET /api/v1/user/:id</code></p>
@@ -232,36 +232,36 @@
 }
 </code></pre>
 
-<h3 id="url-parameters-for-single-user-view">URL parameters for single user view</h3>
+<h3 id="url-parameters-for-single-user-view">URL parameters for single user view<a class="headerlink" href="#url-parameters-for-single-user-view" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - the user id</li>
 </ul>
-<h3 id="error-responses-for-single-user-view">Error responses for single user view</h3>
+<h3 id="error-responses-for-single-user-view">Error responses for single user view<a class="headerlink" href="#error-responses-for-single-user-view" title="Permanent link">&para;</a></h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no user with this id&quot;}
 </code></pre>
 
-<h2 id="authentication">Authentication</h2>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>User authentication is done via authenticated sessions, which are referenced with a cookie called <code>connect.sid</code>. For every endpoint that needs user authentication, a cookie with an authenticated session is required.</p>
-<h3 id="access-authentication-information-for-direct-api-access">Access authentication information for direct API access</h3>
+<h3 id="access-authentication-information-for-direct-api-access">Access authentication information for direct API access<a class="headerlink" href="#access-authentication-information-for-direct-api-access" title="Permanent link">&para;</a></h3>
 <p>To run commands which require authentication from the command line, a user must login on the website first. Then open you browser cookies and find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Use the the contents of the cookie for your requests, for example as shown below when using curl.</p>
 <pre><code class="bash">curl [...] --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
      https://…/api/v1/endpoint
 </code></pre>
 
-<h3 id="authentication-within-microservices">Authentication within microservices</h3>
+<h3 id="authentication-within-microservices">Authentication within microservices<a class="headerlink" href="#authentication-within-microservices" title="Permanent link">&para;</a></h3>
 <p><strong>Attention:</strong> The authentication process <em>requires</em> a secured connection, i.e. <code>HTTPS</code>.</p>
-<h4 id="authentication-provider">Authentication provider</h4>
+<h4 id="authentication-provider">Authentication provider<a class="headerlink" href="#authentication-provider" title="Permanent link">&para;</a></h4>
 <p>Session authentication is done using the OAuth 2.0 protocol.
 Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
 Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
 They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.</p>
-<h4 id="start-oauth-login">Start OAuth login</h4>
+<h4 id="start-oauth-login">Start OAuth login<a class="headerlink" href="#start-oauth-login" title="Permanent link">&para;</a></h4>
 <p>Navigate the webbrowser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
 <p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, where the o2r platform webinterface resides.</p>
 <p>If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.</p>
-<h4 id="request-authentication-status">Request authentication status</h4>
+<h4 id="request-authentication-status">Request authentication status<a class="headerlink" href="#request-authentication-status" title="Permanent link">&para;</a></h4>
 <p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
 <p><code>curl https://…/api/v1/auth/whoami --cookie "connect.sid=…</code></p>
 <p><code>GET /api/v1/auth/whoami</code></p>
@@ -273,7 +273,7 @@ They are then sent back to our authentication service, which verifies the authen
 }
 </code></pre>
 
-<h4 id="error-response-for-requests-requiring-authentication">Error response for requests requiring authentication</h4>
+<h4 id="error-response-for-requests-requiring-authentication">Error response for requests requiring authentication<a class="headerlink" href="#error-response-for-requests-requiring-authentication" title="Permanent link">&para;</a></h4>
 <p>When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service responds with a <code>401 Unauthorized</code> message.</p>
 <pre><code class="json">401 Unauthorized
 
@@ -282,7 +282,7 @@ They are then sent back to our authentication service, which verifies the authen
 }
 </code></pre>
 
-<h2 id="user-levels">User levels</h2>
+<h2 id="user-levels">User levels<a class="headerlink" href="#user-levels" title="Permanent link">&para;</a></h2>
 <p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> associated with an account.
 On registration, each account is assigned a level <code>0</code>.
 Only admin users and the user herself can read the level of a user.</p>
@@ -312,9 +312,9 @@ Only admin users and the user herself can read the level of a user.</p>
 </ul>
 </li>
 </ul>
-<h2 id="edit-user">Edit user</h2>
+<h2 id="edit-user">Edit user<a class="headerlink" href="#edit-user" title="Permanent link">&para;</a></h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
-<h3 id="change-user-level-request">Change user level request</h3>
+<h3 id="change-user-level-request">Change user level request<a class="headerlink" href="#change-user-level-request" title="Permanent link">&para;</a></h3>
 <p>The user level can be changed with an <code>HTTP</code> <code>PATCH</code> request.
 The new level is passed to the API via a query parameter, i.e. <code>..?level=&lt;new level value&gt;</code>.
 The value must be an <code>int</code> (integer).
@@ -337,7 +337,7 @@ The response is the full user document with the updated value.</p>
 }
 </code></pre>
 
-<h3 id="error-responses-for-user-level-change">Error responses for user level change</h3>
+<h3 id="error-responses-for-user-level-change">Error responses for user level change<a class="headerlink" href="#error-responses-for-user-level-change" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {

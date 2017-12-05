@@ -176,11 +176,11 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="execute-a-compendium">Execute a compendium</h1>
+                <h1 id="execute-a-compendium">Execute a compendium<a class="headerlink" href="#execute-a-compendium" title="Permanent link">&para;</a></h1>
 <p>Execution jobs are used to run the analysis in a compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.</p>
 <p>All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.</p>
 <p>A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.</p>
-<h2 id="state-of-a-job">State of a job</h2>
+<h2 id="state-of-a-job">State of a job<a class="headerlink" href="#state-of-a-job" title="Permanent link">&para;</a></h2>
 <p>The property <code>job.status</code> shows the <strong>overall status</strong> of a job.</p>
 <p>The overall status can be one of following:</p>
 <ul>
@@ -189,7 +189,7 @@
 <li><code>running</code> - if state of at least one step is <code>running</code> and no state is <code>failure</code>.</li>
 </ul>
 <p>More information about <code>steps</code> can be found in subsection <code>Steps</code> of section <code>View single job</code>.</p>
-<h2 id="steps-of-a-job">Steps of a job</h2>
+<h2 id="steps-of-a-job">Steps of a job<a class="headerlink" href="#steps-of-a-job" title="Permanent link">&para;</a></h2>
 <p>One job consists of a series of steps.
 The are executed in order.</p>
 <ul>
@@ -212,7 +212,7 @@ The are executed in order.</p>
 <li><strong>cleanup</strong>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
-<h3 id="status">Status</h3>
+<h3 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
 <p>All of these steps can be in one of the following status:</p>
 <ul>
 <li><code>queued</code>: step is not yet started</li>
@@ -221,13 +221,13 @@ The are executed in order.</p>
 <li><code>failure</code>: step is completed unsuccessfully</li>
 <li><code>skipped</code>: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces</li>
 </ul>
-<h3 id="step-metadata">Step metadata</h3>
+<h3 id="step-metadata">Step metadata<a class="headerlink" href="#step-metadata" title="Permanent link">&para;</a></h3>
 <p>Additional explanations on steps' status will be transmitted in the <code>text</code> property.
 <code>text</code> is an array, with the latest element holding the newest information.
 During long running steps, the <code>text</code> element is updated by appending new information when available.</p>
 <p>The <code>start</code> and <code>end</code> timestamps indicate the start and end time of the step. They are formatted as ISO8601.</p>
 <p>Specific steps may carry more information in additional properties.</p>
-<h2 id="new-job">New job</h2>
+<h2 id="new-job">New job<a class="headerlink" href="#new-job" title="Permanent link">&para;</a></h2>
 <p>Create and run a new execution job with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.
 Requires a <code>compendium_id</code>.</p>
 <p><code>curl -F compendium_id=$ID https://…/api/v1/job</code></p>
@@ -237,11 +237,11 @@ Requires a <code>compendium_id</code>.</p>
 {&quot;job_id&quot;:&quot;ngK4m&quot;}
 </code></pre>
 
-<h3 id="body-parameters-for-new-jobs">Body parameters for new jobs</h3>
+<h3 id="body-parameters-for-new-jobs">Body parameters for new jobs<a class="headerlink" href="#body-parameters-for-new-jobs" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>compendium_id</code> (<code>string</code>): <strong>Required</strong> The identifier of the compendium to base this job on.</li>
 </ul>
-<h3 id="error-responses-for-new-jobs">Error responses for new jobs</h3>
+<h3 id="error-responses-for-new-jobs">Error responses for new jobs<a class="headerlink" href="#error-responses-for-new-jobs" title="Permanent link">&para;</a></h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
@@ -252,7 +252,7 @@ Requires a <code>compendium_id</code>.</p>
 {&quot;error&quot;:&quot;could not create job&quot;}
 </code></pre>
 
-<h2 id="list-jobs">List jobs</h2>
+<h2 id="list-jobs">List jobs<a class="headerlink" href="#list-jobs" title="Permanent link">&para;</a></h2>
 <p>Lists jobs with filtering and pagination, returning up to 100 results by default.</p>
 <p>Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
 <p>Results can be filtered:</p>
@@ -305,7 +305,7 @@ Requires a <code>compendium_id</code>.</p>
 }
 </code></pre>
 
-<h3 id="get-query-parameters-for-listing-jobs">GET query parameters for listing jobs</h3>
+<h3 id="get-query-parameters-for-listing-jobs">GET query parameters for listing jobs<a class="headerlink" href="#get-query-parameters-for-listing-jobs" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>compendium_id</code> - Comma-separated list of related compendium ids to filter by.</li>
 <li><code>start</code> - Starting point of the result list. <code>start - 1</code> results are skipped. Defaults to 1.</li>
@@ -314,7 +314,7 @@ Requires a <code>compendium_id</code>.</p>
 <li><code>user</code> - Public user identifier to filter by.</li>
 <li><code>fields</code> - Specify which additional attributes results list should contain. Can contain following fields: <code>status</code>, <code>user</code>. Defaults to none.</li>
 </ul>
-<h2 id="view-single-job">View single job</h2>
+<h2 id="view-single-job">View single job<a class="headerlink" href="#view-single-job" title="Permanent link">&para;</a></h2>
 <p>View details for a single job. The file listing format is described in <a href="../compendium/files/">compendium files</a></p>
 <p><code>curl https://…/api/v1/job/$ID?details=all</code></p>
 <p><code>GET /api/v1/job/:id?details=all</code></p>
@@ -438,7 +438,7 @@ Requires a <code>compendium_id</code>.</p>
 }
 </code></pre>
 
-<h3 id="url-parameters-for-single-job-view">URL parameters for single job view</h3>
+<h3 id="url-parameters-for-single-job-view">URL parameters for single job view<a class="headerlink" href="#url-parameters-for-single-job-view" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - id of the job to be viewed</li>
 <li><code>steps</code> - Steps to be loaded with full details</li>
@@ -447,13 +447,13 @@ Requires a <code>compendium_id</code>.</p>
 <p>Supported values for <code>steps</code> are <code>all</code> or a comma separated list of one or more step names, e.g. <code>generate_configuration,check</code>.
 The response will contain the default properties for all steps but other properties only for the selected ones.
 Any other values for <code>steps</code> or not providing the parameter at all will return the default (e.g. <code>steps=no</code>).</p>
-<h3 id="error-responses-for-single-job-view">Error responses for single job view</h3>
+<h3 id="error-responses-for-single-job-view">Error responses for single job view<a class="headerlink" href="#error-responses-for-single-job-view" title="Permanent link">&para;</a></h3>
 <pre><code class="json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
 </code></pre>
 
-<h2 id="job-status-updates">Job status updates</h2>
+<h2 id="job-status-updates">Job status updates<a class="headerlink" href="#job-status-updates" title="Permanent link">&para;</a></h2>
 <p>You can subscribe to real time status updates on jobs using <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>.
 The implementation is based on <a href="http://socket.io">socket.io</a> and using their client is recommended.</p>
 <p>The job log is available at <code>https://o2r.uni-muenster.de</code> under the namespace <code>api/v1/logs/job</code>.</p>

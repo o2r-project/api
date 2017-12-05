@@ -176,7 +176,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="upload-via-api">Upload via API</h1>
+                <h1 id="upload-via-api">Upload via API<a class="headerlink" href="#upload-via-api" title="Permanent link">&para;</a></h1>
 <p>Upload a research compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
 <p>The upload is only allowed for logged in users.
 To run the upload from the command line, you must login on the website and inspect your browser's cookies.
@@ -202,7 +202,7 @@ Provide the content of the cookie when making requests to the API as shown in th
 <p class="admonition-title">Important</p>
 <p>After successful load from a public share, the <strong><a href="./#candidate-process">candidate process</a></strong> applies.</p>
 </div>
-<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload</h2>
+<h2 id="body-parameters-for-compendium-upload">Body parameters for compendium upload<a class="headerlink" href="#body-parameters-for-compendium-upload" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>compendium</code> - The archive file</li>
 <li><code>content_type</code> - Form of archive. One of the following:<ul>
@@ -215,7 +215,7 @@ Provide the content of the cookie when making requests to the API as shown in th
 <p class="admonition-title">Warning</p>
 <p>If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>
 </div>
-<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload</h2>
+<h2 id="error-responses-for-compendium-upload">Error responses for compendium upload<a class="headerlink" href="#error-responses-for-compendium-upload" title="Permanent link">&para;</a></h2>
 <pre><code class="json">400 Bad Request
 
 {&quot;error&quot;:&quot;provided content_type not implemented&quot;}

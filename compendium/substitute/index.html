@@ -174,10 +174,10 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="substitution">Substitution</h1>
+                <h1 id="substitution">Substitution<a class="headerlink" href="#substitution" title="Permanent link">&para;</a></h1>
 <p>Substitution is the combination of an base compendium, "base" for short, and an overlay compendium, or "overlay".
 A user can choose files from the overlay to replace files of the base, or upload new files.</p>
-<h2 id="create-substitution">Create substitution</h2>
+<h2 id="create-substitution">Create substitution<a class="headerlink" href="#create-substitution" title="Permanent link">&para;</a></h2>
 <p><code>Create substitution</code> produces a new compendium with its own files in the storage and metadata in the database.
 A substitution can be created with an HTTP <code>POST</code> request using <code>multipart/form-data</code> and content-type <code>JSON</code>.
 Required content of the request are the identifiers of the base and overlay compendia and at least one pair of <em>substitution files</em>, consisting of a base file and an overlay file.</p>
@@ -186,7 +186,7 @@ Required content of the request are the identifiers of the base and overlay comp
 <p>A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).</p>
 <p>The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>
 </div>
-<h3 id="request">Request</h3>
+<h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
 <p><code>POST /api/v1/substitution</code></p>
 <p>Request body for a new substitution:</p>
 <pre><code class="json">{
@@ -201,7 +201,7 @@ Required content of the request are the identifiers of the base and overlay comp
 }
 </code></pre>
 
-<h3 id="request-body-properties">Request body properties</h3>
+<h3 id="request-body-properties">Request body properties<a class="headerlink" href="#request-body-properties" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>base</code> - id of the base compendium</li>
 <li><code>overlay</code> - id of the overlay compendium</li>
@@ -213,7 +213,7 @@ Required content of the request are the identifiers of the base and overlay comp
 <p class="admonition-title">Required user level</p>
 <p>The user creating a new substitution must have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
-<h3 id="response">Response</h3>
+<h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
 <pre><code class="json">201 CREATED
 
 {
@@ -221,7 +221,7 @@ Required content of the request are the identifiers of the base and overlay comp
 }
 </code></pre>
 
-<h3 id="error-responses">Error responses</h3>
+<h3 id="error-responses">Error responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authenticated&quot;}
@@ -242,12 +242,12 @@ Required content of the request are the identifiers of the base and overlay comp
 {&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
 
-<h2 id="view-substituted-compendium">View substituted Compendium</h2>
-<h3 id="request_1">Request</h3>
+<h2 id="view-substituted-compendium">View substituted Compendium<a class="headerlink" href="#view-substituted-compendium" title="Permanent link">&para;</a></h2>
+<h3 id="request_1">Request<a class="headerlink" href="#request_1" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/compendium/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <p>This request is handled as regular GET request of a compendium (see <a href="http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium">View single compendium</a>).</p>
-<h3 id="response_1">Response</h3>
+<h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
 <p>A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.</p>
 <p>Example 01 - in case there are no conflicts between filenames of any base file and overlay file :</p>
 <pre><code class="json">200 OK
@@ -301,7 +301,7 @@ Required content of the request are the identifiers of the base and overlay comp
 }
 </code></pre>
 
-<h3 id="response-additional-metadata">Response additional metadata</h3>
+<h3 id="response-additional-metadata">Response additional metadata<a class="headerlink" href="#response-additional-metadata" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>substituted</code> - is <code>true</code></li>
 <li><code>substitution</code> - object, specifying information about the substitution</li>
@@ -314,11 +314,11 @@ Required content of the request are the identifiers of the base and overlay comp
 </ul>
 </li>
 </ul>
-<h2 id="list-substituted-compendia">List substituted Compendia</h2>
-<h3 id="request_2">Request</h3>
+<h2 id="list-substituted-compendia">List substituted Compendia<a class="headerlink" href="#list-substituted-compendia" title="Permanent link">&para;</a></h2>
+<h3 id="request_2">Request<a class="headerlink" href="#request_2" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/substitution</code></p>
 <p><code>GET /api/v1/substitution</code></p>
-<h3 id="response_2">Response</h3>
+<h3 id="response_2">Response<a class="headerlink" href="#response_2" title="Permanent link">&para;</a></h3>
 <p>The result is be a list of compendia ids that have been substituted:</p>
 <pre><code class="json">200 OK
 
@@ -339,7 +339,7 @@ Required content of the request are the identifiers of the base and overlay comp
 }
 </code></pre>
 
-<h3 id="filter-results-with-following-parameters">Filter results with following parameters:</h3>
+<h3 id="filter-results-with-following-parameters">Filter results with following parameters:<a class="headerlink" href="#filter-results-with-following-parameters" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/substitution?base=$BASE_ID&amp;overlay=$OVERLAY_ID</code></p>
 <p><code>GET /api/v1/substitution?base=base_id&amp;overlay=overlay_id</code></p>
 <ul>
@@ -391,7 +391,7 @@ Required content of the request are the identifiers of the base and overlay comp
 }
 </code></pre>
 
-<h3 id="error-responses_1">Error responses</h3>
+<h3 id="error-responses_1">Error responses<a class="headerlink" href="#error-responses_1" title="Permanent link">&para;</a></h3>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authenticated&quot;}
@@ -412,7 +412,7 @@ Required content of the request are the identifiers of the base and overlay comp
 {&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
 
-<h3 id="url-parameters-for-substituted-compendium-lists">URL parameters for substituted compendium lists</h3>
+<h3 id="url-parameters-for-substituted-compendium-lists">URL parameters for substituted compendium lists<a class="headerlink" href="#url-parameters-for-substituted-compendium-lists" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:base</code> - id of the base compendium that the results should be related to</li>
 <li><code>:overlay</code> - id of the overlay compendium that the results should be related to</li>

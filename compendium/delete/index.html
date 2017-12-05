@@ -174,7 +174,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="delete-compendium">Delete compendium</h1>
+                <h1 id="delete-compendium">Delete compendium<a class="headerlink" href="#delete-compendium" title="Permanent link">&para;</a></h1>
 <p>To delete a compendium <strong>candidate</strong>, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -184,18 +184,18 @@
 <p class="admonition-title">Required user level</p>
 <p>The user deleting a candidate must be the author or have the required <a href="../../user/#user-levels">user level</a>.</p>
 </div>
-<h2 id="request">Request</h2>
+<h2 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h2>
 <p>The following request deletes the compendium with the identifier <code>12345</code>, including metadata and files.</p>
 <pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345 \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
 
-<h2 id="response">Response</h2>
+<h2 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
 <p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
 <pre><code class="bash">204 OK
 </code></pre>
 
-<h2 id="error-responses-for-compendium-delete">Error responses for compendium delete</h2>
+<h2 id="error-responses-for-compendium-delete">Error responses for compendium delete<a class="headerlink" href="#error-responses-for-compendium-delete" title="Permanent link">&para;</a></h2>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}

@@ -172,7 +172,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="compendium-file-listing">Compendium file listing</h1>
+                <h1 id="compendium-file-listing">Compendium file listing<a class="headerlink" href="#compendium-file-listing" title="Permanent link">&para;</a></h1>
 <p>The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
 If a job has been run and the programme outputs new data, this new data is included as well.</p>
 <p>File listings are represented as a Object. The file structure for a synthetic job <code>nj141</code> is as follows.</p>
@@ -216,11 +216,11 @@ If a job has been run and the programme outputs new data, this new data is inclu
 }
 </code></pre>
 
-<h2 id="path-property"><code>path</code> property</h2>
+<h2 id="path-property"><code>path</code> property<a class="headerlink" href="#path-property" title="Permanent link">&para;</a></h2>
 <p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
-<h3 id="type-property"><code>type</code> property</h3>
+<h3 id="type-property"><code>type</code> property<a class="headerlink" href="#type-property" title="Permanent link">&para;</a></h3>
 <p>The <code>type</code> property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.</p>
-<h2 id="file-extension-to-mime-type-mappings">File extension to MIME type mappings</h2>
+<h2 id="file-extension-to-mime-type-mappings">File extension to MIME type mappings<a class="headerlink" href="#file-extension-to-mime-type-mappings" title="Permanent link">&para;</a></h2>
 <p>This list contains the custom mapping of file extensions to MIME types used in the server.</p>
 <table>
 <thead>
