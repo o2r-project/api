@@ -19,7 +19,7 @@ A simple search allows searching for search terms using an `HTTP GET` request ac
 
 `GET /api/v1/search?q=great reproducible research`
 
-The **response** is `JSON` with the root element is `hits`, which has the same as the `hits` element from an Elasticsearch response but may not include internal fields such as `_index`, `_type`, and `_id`.
+The **response** is `JSON` with the root element is `hits`, which has the same as the `hits` element from an Elasticsearch response but does not include internal fields such as `_index`, `_type`, and `_id`.
 
 ```json
 200 ok
