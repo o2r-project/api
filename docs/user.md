@@ -14,9 +14,33 @@ Return a list of user ids. [Pagination (including defaults) as described for com
 {
     "results": [
         "0000-0002-1825-0097",
-        "0000-0001-6021-1617"
+        "0000-0002-1825-0097"
     ]
 }
+```
+
+If there are no users, the returned list is empty:
+
+```json
+200 OK
+{
+  "results": [ ]
+}
+```
+
+Pagination is supported using the query parameters `start` and `limit`.
+
+- `limit` is the number of results in the response, defaults to `10`. It numeric and larger than `0`.
+- `start` is the index of the first list item in the response, defaults to `1`. It must be numeric and larger than `0`.
+
+`GET /api/v1/user?start=5&limit=10`
+
+### Error responses for user list
+
+```json
+400 Bad Request
+
+{"error":"limit must be larger than 0"}
 ```
 
 ## View single user
@@ -31,20 +55,20 @@ Show the details of a user.
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r"
 }
 ```
 
 The content of the response depends on the state and level of the user that requests the resource. The above response only contains the id and the publicly visible name. The following response contains more details and requires a certain user level of the authenticated user making the request:
 
-`curl --cookie "connect.sid=<session cookie here>" https://…/api/v1/user/0000-0001-6021-1617`
+`curl --cookie "connect.sid=<session cookie here>" https://…/api/v1/user/0000-0002-1825-0097`
 
 ```json
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r",
     "level": 0,
     "lastseen": "2016-08-15T12:32:23.972Z"
@@ -82,11 +106,14 @@ curl [...] --cookie "connect.sid=<code string here>" \
 
 #### Authentication provider
 
-Session authentication is done using the OAuth 2.0 protocol. Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service. Users will need to navigate to the login endpoint with their webbrowser and grant access to the o2r platform for their ORCID account. They will then be sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
+Session authentication is done using the OAuth 2.0 protocol.
+Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
 
 #### Start OAuth login
 
-Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which will then redirect the user and request access to your ORCID profile. After granting access, ORCID will redirect the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
+Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
 If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, where the o2r platform webinterface resides.
 
@@ -94,7 +121,7 @@ If the login is unsuccessful, the user is not redirected back to the site and no
 
 #### Request authentication status
 
-As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. webbrowsers) will need to know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
+As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
 `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
 
@@ -104,14 +131,14 @@ As the cookie is present in both authenticated and unauthenticated sessions, cli
 200 OK
 
 {
-  "orcid": "0000-0001-6021-1617",
+  "orcid": "0000-0002-1825-0097",
   "name": "o2r"
 }
 ```
 
 #### Error response for requests requiring authentication
 
-When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service will respond with a `401 Unauthorized` message.
+When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service responds with a `401 Unauthorized` message.
 
 ```json
 401 Unauthorized
@@ -123,7 +150,7 @@ When no session cookie was included, or the included session cookie does not bel
 
 ## User levels
 
-Users are authenticated via OAuth and the actions on the website are limited by the `level` assocciated with an account.
+Users are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.
 On registration, each account is assigned a level `0`.
 Only admin users and the user herself can read the level of a user.
 
@@ -162,14 +189,14 @@ The response is the full user document with the updated value.
 
 ```bash
 curl --request PATCH --cookie "connect.sid=<session cookie here>" \
-  https://…/api/v1/user/0000-0001-6021-1617?level=42`
+  https://…/api/v1/user/0000-0002-1825-0097?level=42`
 ```
 
 ```json
 200 OK
 
 {
-    "id": "0000-0001-6021-1617",
+    "id": "0000-0002-1825-0097",
     "name": "o2r",
     "level": 42,
     "lastseen": "2016-08-15T12:32:23.972Z"

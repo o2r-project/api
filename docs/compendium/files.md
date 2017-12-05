@@ -1,6 +1,7 @@
 # Compendium file listing
 
-The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state. If a job has been run and the programm outputs new data, this new data will be included as well.
+The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
+If a job has been run and the programme outputs new data, this new data is included as well.
 
 File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
 
@@ -12,7 +13,7 @@ nj141
     └── Dockerfile
 ```
 
-will be represented as
+is be represented as
 
 ```json
 {

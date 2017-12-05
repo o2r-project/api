@@ -24,7 +24,6 @@ The response has an HTTP status of `204` and an empty body for successful deleti
 
 ```bash
 204 OK
-
 ```
 
 ## Error responses for compendium delete
