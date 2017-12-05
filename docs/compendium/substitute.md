@@ -167,7 +167,8 @@ Example 02 - in case the overlay file has the same filename as one of the existi
   - `substitutionFiles` - array of file substitutions specified by `base` and `overlay`
     - `base` - name of the file from the base ERC
     - `overlay` - name of the file from the overlay ERC
-    - `filename` - as seen in the examples above, `filename` will be created. If there is a conflict with any basefilename and an overlayfilename, the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
+    - `filename` - as seen in the examples above, `filename` will be created.
+    If there is a conflict with any basefilename and an overlayfilename, the overlayfilename will get an additional "**overlay_**" prepended (see Example 02). *(optional add)*
   - `metadataHandling` - property to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)
   - `substituted` - will be set `true`
 
