@@ -1,7 +1,7 @@
 # Substitute two compendia
 
 Substitution is the combination of an base ERC and an overlay ERC.
-A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added. Additionally the user can choose, if the metadata of the base ERC will be adopted for substitution (`keepBase`) or there will be a new extraction of the metadata for the substituted ERC. This new extraction is divided into two choices. The user can let the new extracted metadata be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**) or just take the extracted metadata (`extract` - **not implemented**).
+A user can choose files from the overlay ERC that will replace files of the base ERC or will be uniquely added. Additionally the user can choose, if the metadata of the base ERC will be adopted for substitution (`keepBase`) or there will be a new extraction of the metadata for the substituted ERC. This new extraction is divided into two choices. The user can let the new extracted metadata be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**) or just save the extracted metadata (`extract` - **not implemented**).
 
 ## Create substitution
 
