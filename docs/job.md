@@ -170,11 +170,12 @@ If there are no jobs, the returned list is empty:
 
 ## View single job
 
-View details for a single job. The file listing format is described in [compendium files](compendium/files.md)
+View details for a single job.
+The file listing format is described in [compendium files](compendium/files.md).
 
-`curl https://…/api/v1/job/$ID?details=all`
+`curl https://…/api/v1/job/$ID?steps=all`
 
-`GET /api/v1/job/:id?details=all`
+`GET /api/v1/job/:id?steps=all`
 
 ```json
 200 OK
