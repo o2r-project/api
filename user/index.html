@@ -255,11 +255,11 @@
 <h4 id="authentication-provider">Authentication provider<a class="headerlink" href="#authentication-provider" title="Permanent link">&para;</a></h4>
 <p>Session authentication is done using the OAuth 2.0 protocol.
 Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
-Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
-They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.</p>
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.</p>
 <h4 id="start-oauth-login">Start OAuth login<a class="headerlink" href="#start-oauth-login" title="Permanent link">&para;</a></h4>
-<p>Navigate the webbrowser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
-<p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, where the o2r platform webinterface resides.</p>
+<p>Navigate the web browser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
+<p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, the start page of the o2r website.</p>
 <p>If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.</p>
 <h4 id="request-authentication-status">Request authentication status<a class="headerlink" href="#request-authentication-status" title="Permanent link">&para;</a></h4>
 <p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>

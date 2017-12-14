@@ -315,9 +315,10 @@ Requires a <code>compendium_id</code>.</p>
 <li><code>fields</code> - Specify which additional attributes results list should contain. Can contain following fields: <code>status</code>, <code>user</code>. Defaults to none.</li>
 </ul>
 <h2 id="view-single-job">View single job<a class="headerlink" href="#view-single-job" title="Permanent link">&para;</a></h2>
-<p>View details for a single job. The file listing format is described in <a href="../compendium/files/">compendium files</a></p>
-<p><code>curl https://…/api/v1/job/$ID?details=all</code></p>
-<p><code>GET /api/v1/job/:id?details=all</code></p>
+<p>View details for a single job.
+The file listing format is described in <a href="../compendium/files/">compendium files</a>.</p>
+<p><code>curl https://…/api/v1/job/$ID?steps=all</code></p>
+<p><code>GET /api/v1/job/:id?steps=all</code></p>
 <pre><code class="json">200 OK
 
 {
