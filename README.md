@@ -5,9 +5,7 @@ Project description: [http://o2r.info](http://o2r.info)
 ## Basics
 
 We're a research project, so _everything in this API and its documentation is subject to change_.
-We try to use "WORK IN PROGRESS" or "TBD" _in headlines_ to signal things that are not working fully yet.
-
-The "working" state should eventually always be in the `master` branch, which is published online at [http://o2r.info/o2r-web-api](http://o2r.info/o2r-web-api), and open pull requests reflect things that are under development.
+The "working" state should always be in the `master` branch, which is published online at [http://o2r.info/o2r-web-api](http://o2r.info/o2r-web-api), and [open pull requests](https://github.com/o2r-project/o2r-web-api/pulls) reflect features under development.
 
 ## Build
 

@@ -190,7 +190,7 @@ The `spatial` key has a `union` bounding box, that wraps all extracted bounding 
 ## Update metadata
 
 The following endpoint can be used to update the `o2r` metadata elements.
-All other metadata sub-properties are only updated by the platform itself, i.e. brokered metadata.
+All other metadata sub-properties are only updated by the service itself, i.e. brokered metadata.
 After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the [download endpoint](download.md).
 
 !!! note "Metadata update rights"

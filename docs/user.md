@@ -108,14 +108,14 @@ curl [...] --cookie "connect.sid=<code string here>" \
 
 Session authentication is done using the OAuth 2.0 protocol.
 Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
-Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r platform for their ORCID account.
-They are then sent back to our authentication service, which verifies the authentification request and enriches the user session with the verified ORCID for this user.
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.
 
 #### Start OAuth login
 
-Navigate the webbrowser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
+Navigate the web browser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
-If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, where the o2r platform webinterface resides.
+If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, the start page of the o2r website.
 
 If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.
 
