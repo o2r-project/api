@@ -182,7 +182,7 @@ Example 02 - in case the overlay file has the same filename as one of the existi
 
 ### Response
 
-The result is be a list of compendia ids that have been substituted:
+The result is a list of compendia ids which were created by a substitution process.
 
 ```json
 200 OK
@@ -218,7 +218,7 @@ If there are no substitutions yet, the returned list is empty.
 
 `GET /api/v1/substitution?base=jfL3w`
 
-Result is a list of compendia ids that have been substituted using the given base:
+Result is a list of substituted compendia based on the given base compendium:
 
 ```json
 200 OK
@@ -237,7 +237,7 @@ Result is a list of compendia ids that have been substituted using the given bas
 
 `GET /api/v1/substitution?overlay=as4Kj`
 
-Result is be a list of compendia ids that have been substituted using the given overlay:
+Result is a list of substituted compendia based on the given overlay compendium:
 
 ```json
 200 OK
@@ -257,7 +257,7 @@ Result is be a list of compendia ids that have been substituted using the given 
 
 `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
 
-Result is be a list of compendia ids that have been substituted using the given base and overlay:
+Result is a list of substituted compendia based on the given base _and_ overlay compendium:
 
 ```json
 200 OK
