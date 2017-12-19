@@ -104,6 +104,8 @@
         
             <li><a class="toctree-l4" href="#file-extension-to-mime-type-mappings">File extension to MIME type mappings</a></li>
         
+            <li><a class="toctree-l4" href="#file-inspection-rdata">File inspection: RData</a></li>
+        
         </ul>
     
 
@@ -236,6 +238,151 @@ If a job has been run and the programme outputs new data, this new data is inclu
 </tr>
 </tbody>
 </table>
+<h2 id="file-inspection-rdata">File inspection: RData<a class="headerlink" href="#file-inspection-rdata" title="Permanent link">&para;</a></h2>
+<p><code>.RData</code> files are a <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/save.html">binary format</a> for usage with R to save any kind of object (data, functions) using an internal serialisation.
+The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml">not suitable</a> for archival or data exchange, but might be included in a compendium out of negligence by or convenience for the author.</p>
+<p>Since the file format is binary and not readable by non-R client applications, the API provides the endpoint <code>/api/v1/inspection</code> to retrieve a JSON representation of the objects in an RData file.</p>
+<p>Values of objects are provided as JSON arrays following the specifications by the R package <a href="https://cran.r-project.org/package=jsonlite"><code>jsonlite</code></a>.</p>
+<h3 id="simple-data-types">Simple data types<a class="headerlink" href="#simple-data-types" title="Permanent link">&para;</a></h3>
+<p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=simple.Rdata</code></p>
+<pre><code class="json">200 OK
+
+{  
+  &quot;aChar&quot;:[  
+    &quot;a&quot;
+  ],
+  &quot;aDouble&quot;:[  
+    2.3
+  ],
+  &quot;anInteger&quot;:[  
+    1
+  ],
+  &quot;aString&quot;:[  
+    &quot;The force is great in o2r.&quot;
+  ]
+}
+</code></pre>
+
+<h3 id="complex-data-types">Complex data types<a class="headerlink" href="#complex-data-types" title="Permanent link">&para;</a></h3>
+<p>Lists are be nested objects, and vectors are JSON arrays (see <a href="https://rdrr.io/cran/jsonlite/man/fromJSON.html"><code>jsonlite</code> docs</a> for details, defaults are used):</p>
+<p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=complex.Rdata</code></p>
+<pre><code class="json">200 OK
+
+{  
+  &quot;characterVector&quot;:[  
+    &quot;one&quot;,
+    &quot;two&quot;,
+    &quot;3&quot;
+  ],
+  &quot;logicalVector&quot;:[  
+    true,
+    true,
+    false
+  ],
+  &quot;numericVector&quot;:[  
+    1,
+    2,
+    -7,
+    0.8
+  ],
+  &quot;orderedList&quot;:{  
+    &quot;name&quot;:[  
+      &quot;Fred&quot;
+    ],
+    &quot;mynumbers&quot;:[  
+      1,
+      2
+    ],
+    &quot;age&quot;:[  
+      5.3
+    ]
+  }
+}
+</code></pre>
+
+<p>Data frames and matrices are mapped to JSON arrays of complex objects (see <a href="https://rdrr.io/cran/jsonlite/man/fromJSON.html"><code>jsonlite</code> docs</a> for details, defaults are used):</p>
+<p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=matrices.Rdata</code></p>
+<pre><code class="json">200 OK
+
+{  
+  &quot;dataFrame&quot;:[  
+    {  
+      &quot;ID&quot;:1,
+      &quot;Passed&quot;:true,
+      &quot;Colour&quot;:&quot;red&quot;
+    },
+    {  
+      &quot;ID&quot;:2,
+      &quot;Passed&quot;:true,
+      &quot;Colour&quot;:&quot;white&quot;
+    },
+    {  
+      &quot;ID&quot;:3,
+      &quot;Passed&quot;:true,
+      &quot;Colour&quot;:&quot;red&quot;
+    },
+    {  
+      &quot;ID&quot;:4,
+      &quot;Passed&quot;:false
+    }
+  ],
+  &quot;namedMatrix&quot;:[  
+    [  
+      1,
+      26
+    ],
+    [  
+      24,
+      68
+    ]
+  ]
+}
+</code></pre>
+
+<h3 id="path-parameters">Path parameters<a class="headerlink" href="#path-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>compendium_id</code> <em>mandatory</em> - the compendium identifier to inspect the file from</li>
+</ul>
+<h3 id="query-parameters">Query parameters<a class="headerlink" href="#query-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>file</code> <em>mandatory</em> - the name of the file to inspect, or a relative path to a file within the compendium</li>
+<li><code>objects</code> <em>optional</em> - the name of objects in the file</li>
+</ul>
+<p>If selected objects are not loadable from the file, an <code>errors</code> property in the response is given for each problematic object:</p>
+<p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=simple.RData&amp;objects=bar,anInteger,foo</code></p>
+<pre><code class="json">200 OK
+
+{  
+  &quot;anInteger&quot;:[  
+    1
+  ],
+  &quot;errors&quot;:[  
+    &quot;Error: Object 'bar' does not exist in the file simple.RData&quot;,
+    &quot;Error: Object 'foo' does not exist in the file simple.RData&quot;
+  ]
+}
+</code></pre>
+
+<h3 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="json">400 Bad Request
+
+{&quot;error&quot;: &quot;Query parameter 'file' missing&quot;}
+</code></pre>
+
+<pre><code class="json">400 Bad Request
+
+{&quot;error&quot;: &quot;file 'not_available.Rdata' does not exist in compendium kOSMO&quot;}
+</code></pre>
+
+<pre><code class="json">400 Bad Request
+
+{&quot;error&quot;: &quot;compendium '12345' does not exist&quot;}
+</code></pre>
+
+<pre><code class="json">500 Internal Server Error
+
+{&quot;error&quot;: &quot;Error loading objects&quot;}
+</code></pre>
               
             </div>
           </div>

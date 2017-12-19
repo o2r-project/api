@@ -328,7 +328,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 <p><code>curl https://.../api/v1/substitution</code></p>
 <p><code>GET /api/v1/substitution</code></p>
 <h3 id="response_2">Response<a class="headerlink" href="#response_2" title="Permanent link">&para;</a></h3>
-<p>The result is be a list of compendia ids that have been substituted:</p>
+<p>The result is a list of compendia ids which were created by a substitution process.</p>
 <pre><code class="json">200 OK
 
 {
@@ -356,7 +356,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 </ul>
 <p><code>curl https://.../api/v1/substitution?base=jfL3w</code></p>
 <p><code>GET /api/v1/substitution?base=jfL3w</code></p>
-<p>Result is a list of compendia ids that have been substituted using the given base:</p>
+<p>Result is a list of substituted compendia based on the given base compendium:</p>
 <pre><code class="json">200 OK
 
 {
@@ -372,7 +372,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 </ul>
 <p><code>curl https://.../api/v1/substitution?overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?overlay=as4Kj</code></p>
-<p>Result is be a list of compendia ids that have been substituted using the given overlay:</p>
+<p>Result is a list of substituted compendia based on the given overlay compendium:</p>
 <pre><code class="json">200 OK
 
 {
@@ -389,7 +389,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 </ul>
 <p><code>curl https://.../api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
-<p>Result is be a list of compendia ids that have been substituted using the given base and overlay:</p>
+<p>Result is a list of substituted compendia based on the given base <em>and</em> overlay compendium:</p>
 <pre><code class="json">200 OK
 
 {
