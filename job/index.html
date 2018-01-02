@@ -111,7 +111,7 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#state-of-a-job">State of a job</a></li>
+            <li><a class="toctree-l3" href="#job-status">Job status</a></li>
         
             <li><a class="toctree-l3" href="#steps-of-a-job">Steps of a job</a></li>
         
@@ -177,16 +177,18 @@
             <div class="section">
               
                 <h1 id="execute-a-compendium">Execute a compendium<a class="headerlink" href="#execute-a-compendium" title="Permanent link">&para;</a></h1>
-<p>Execution jobs are used to run the analysis in a compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.</p>
+<p>Execution jobs are used to run the analysis in a compendium.
+When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution.
+The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.</p>
 <p>All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.</p>
-<p>A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.</p>
-<h2 id="state-of-a-job">State of a job<a class="headerlink" href="#state-of-a-job" title="Permanent link">&para;</a></h2>
+<p>A trivial execution job would be a completely unmodified compendium, to test the executability and thus basic reproducibility of the contained workflow.</p>
+<h2 id="job-status">Job status<a class="headerlink" href="#job-status" title="Permanent link">&para;</a></h2>
 <p>The property <code>job.status</code> shows the <strong>overall status</strong> of a job.</p>
 <p>The overall status can be one of following:</p>
 <ul>
-<li><code>success</code> - if state of all steps is <code>success</code>.</li>
-<li><code>failure</code> - if state of at least one step is <code>failure</code>.</li>
-<li><code>running</code> - if state of at least one step is <code>running</code> and no state is <code>failure</code>.</li>
+<li><code>success</code> - if status of all steps is <code>success</code>.</li>
+<li><code>failure</code> - if status of at least one step is <code>failure</code>.</li>
+<li><code>running</code> - if status of at least one step is <code>running</code> and no status is <code>failure</code>.</li>
 </ul>
 <p>More information about <code>steps</code> can be found in subsection <code>Steps</code> of section <code>View single job</code>.</p>
 <h2 id="steps-of-a-job">Steps of a job<a class="headerlink" href="#steps-of-a-job" title="Permanent link">&para;</a></h2>
@@ -213,7 +215,7 @@ The are executed in order.</p>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
 <h3 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
-<p>All of these steps can be in one of the following status:</p>
+<p>All steps can have one of the following status:</p>
 <ul>
 <li><code>queued</code>: step is not yet started</li>
 <li><code>running</code>: step is currently running</li>
@@ -230,6 +232,11 @@ During long running steps, the <code>text</code> element is updated by appending
 <h2 id="new-job">New job<a class="headerlink" href="#new-job" title="Permanent link">&para;</a></h2>
 <p>Create and run a new execution job with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.
 Requires a <code>compendium_id</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Required user level and authentication</p>
+<p>The user creating a new compendium must have the required <a href="../user/#user-levels">user level</a>.
+Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../user/#client-authentication">user authentication</a>.</p>
+</div>
 <p><code>curl -F compendium_id=$ID https://…/api/v1/job</code></p>
 <p><code>POST /api/v1/job</code></p>
 <pre><code class="json">200 OK

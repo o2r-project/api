@@ -179,13 +179,11 @@
                 <h1 id="upload-via-api">Upload via API<a class="headerlink" href="#upload-via-api" title="Permanent link">&para;</a></h1>
 <p>Upload a research compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.</p>
 <p>The upload is only allowed for logged in users.
-To run the upload from the command line, you must login on the website and inspect your browser's cookies.
-Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
-Provide the content of the cookie when making requests to the API as shown in the request example below.</p>
-<p>Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.</p>
+Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.</p>
 <div class="admonition note">
-<p class="admonition-title">Required user level</p>
-<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p class="admonition-title">Required user level and authentication</p>
+<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.
+Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../../user/#client-authentication">user authentication</a>.</p>
 </div>
 <pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
     -F content_type=compendium https://…/api/v1/compendium \

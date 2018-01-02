@@ -244,8 +244,14 @@
 
 <h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>User authentication is done via authenticated sessions, which are referenced with a cookie called <code>connect.sid</code>. For every endpoint that needs user authentication, a cookie with an authenticated session is required.</p>
+<h3 id="client-authentication">Client authentication<a class="headerlink" href="#client-authentication" title="Permanent link">&para;</a></h3>
+<p>To execute restricted operations of the API, such as <a href="">compendium upload</a> or <a href="">job execution</a>, a client must provide an authentication token via a cookie.</p>
+<p>A client must first login on the website to access a browser cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Provide the content of the cookie when making requests to the API as shown in the request example below.</p>
 <h3 id="access-authentication-information-for-direct-api-access">Access authentication information for direct API access<a class="headerlink" href="#access-authentication-information-for-direct-api-access" title="Permanent link">&para;</a></h3>
-<p>To run commands which require authentication from the command line, a user must login on the website first. Then open you browser cookies and find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>. Use the the contents of the cookie for your requests, for example as shown below when using curl.</p>
+<p>To run commands which require authentication from the command line, a user must login on the website first.
+Then open you browser cookies and find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Use the the contents of the cookie for your requests, for example as shown below when using curl.</p>
 <pre><code class="bash">curl [...] --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
      https://…/api/v1/endpoint
 </code></pre>

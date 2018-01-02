@@ -188,13 +188,11 @@
 </ul>
 <h2 id="common">Common<a class="headerlink" href="#common" title="Permanent link">&para;</a></h2>
 <p>All repositories use the same API endpoint <code>https://…/api/v1/compendium</code>, but with different required/optional parameters.</p>
-<p>The upload is only allowed for logged in users.
-To run the upload from the command line, login on the website and open you browser cookies.
-Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
-Copy the contents of the cookie into the request example below.</p>
+<p>The upload is only allowed for logged in users.</p>
 <div class="admonition note">
-<p class="admonition-title">Required user level</p>
-<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p class="admonition-title">Required user level and authentication</p>
+<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.
+Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../../user/#client-authentication">user authentication</a>.</p>
 </div>
 <p>To run the load from the command line, login on the website and open you browser cookies.
 Find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
