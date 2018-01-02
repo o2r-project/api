@@ -1,20 +1,22 @@
 # Execute a compendium
 
-Execution jobs are used to run the analysis in a compendium. When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution. The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
+Execution jobs are used to run the analysis in a compendium.
+When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution.
+The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 
-A trivial execution job would be a completely unmodified research compendium, to test the executability/reproducibility of the contained data and code.
+A trivial execution job would be a completely unmodified compendium, to test the executability and thus basic reproducibility of the contained workflow.
 
-## State of a job
+## Job status
 
 The property `job.status` shows the **overall status** of a job.
 
 The overall status can be one of following:
 
-- `success` - if state of all steps is `success`.
-- `failure` - if state of at least one step is `failure`.
-- `running` - if state of at least one step is `running` and no state is `failure`.
+- `success` - if status of all steps is `success`.
+- `failure` - if status of at least one step is `failure`.
+- `running` - if status of at least one step is `running` and no status is `failure`.
 
 More information about `steps` can be found in subsection `Steps` of section `View single job`.
 
@@ -44,7 +46,7 @@ The are executed in order.
 
 ### Status
 
-All of these steps can be in one of the following status:
+All steps can have one of the following status:
 
 - `queued`: step is not yet started
 - `running`: step is currently running
@@ -66,6 +68,11 @@ Specific steps may carry more information in additional properties.
 
 Create and run a new execution job with an HTTP `POST` request using `multipart/form-data`.
 Requires a `compendium_id`.
+
+!!! note "Required user level and authentication"
+
+    The user creating a new compendium must have the required [user level](user.md#user-levels).
+    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](user.md#client-authentication).
 
 `curl -F compendium_id=$ID https://…/api/v1/job`
 

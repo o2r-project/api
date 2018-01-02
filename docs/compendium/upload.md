@@ -3,15 +3,12 @@
 Upload a research compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
 
 The upload is only allowed for logged in users.
-To run the upload from the command line, you must login on the website and inspect your browser's cookies.
-Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
-Provide the content of the cookie when making requests to the API as shown in the request example below.
-
 Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
 
-!!! note "Required user level"
+!!! note "Required user level and authentication"
 
     The user creating a new compendium must have the required [user level](../user.md#user-levels).
+    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user.md#client-authentication).
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \

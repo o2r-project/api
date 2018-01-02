@@ -91,9 +91,18 @@ The content of the response depends on the state and level of the user that requ
 
 User authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.
 
+### Client authentication
+
+To execute restricted operations of the API, such as [compendium upload]() or [job execution](), a client must provide an authentication token via a cookie.
+
+A client must first login on the website to access a browser cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Provide the content of the cookie when making requests to the API as shown in the request example below.
+
 ### Access authentication information for direct API access
 
-To run commands which require authentication from the command line, a user must login on the website first. Then open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`. Use the the contents of the cookie for your requests, for example as shown below when using curl.
+To run commands which require authentication from the command line, a user must login on the website first.
+Then open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+Use the the contents of the cookie for your requests, for example as shown below when using curl.
 
 ```bash
 curl [...] --cookie "connect.sid=<code string here>" \

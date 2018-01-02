@@ -13,12 +13,11 @@ Currently, the following repositories are supported:
 All repositories use the same API endpoint `https://…/api/v1/compendium`, but with different required/optional parameters.
 
 The upload is only allowed for logged in users.
-To run the upload from the command line, login on the website and open you browser cookies.
-Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
-Copy the contents of the cookie into the request example below.
 
-!!! note "Required user level"
+!!! note "Required user level and authentication"
+
     The user creating a new compendium must have the required [user level](../user.md#user-levels).
+    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user.md#client-authentication).
 
 To run the load from the command line, login on the website and open you browser cookies.
 Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
