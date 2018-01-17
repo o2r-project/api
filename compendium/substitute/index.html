@@ -310,7 +310,7 @@ Required content of the request are the identifiers of the base and overlay comp
 
 <h3 id="response-additional-metadata">Response additional metadata<a class="headerlink" href="#response-additional-metadata" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>substitution</code> - object, specifying information about the substitution</li>
+<li><code>metadata.substitution</code> - object, specifying information about the substitution<ul>
 <li><code>base</code> - id of the base compendium</li>
 <li><code>overlay</code> - id of the overlay compendium</li>
 <li><code>substitutionFiles</code> - array of file substitutions specified by <code>base</code> and <code>overlay</code><ul>
@@ -321,6 +321,8 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 </ul>
 </li>
 <li><code>metadataHandling</code> - property to specify, if the metadata of the base ERC will be adopted (<code>keepBase</code> = <strong>keep metadata</strong> of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (<code>extractAndMerge</code> = <strong>extract and merge metadata</strong> for new ERC) or that will not be merged (<code>extract</code> = <strong>extract metadata</strong> of new ERC)</li>
+</ul>
+</li>
 <li><code>substituted</code> - will be set <code>true</code></li>
 </ul>
 <h2 id="list-substituted-compendia">List substituted Compendia<a class="headerlink" href="#list-substituted-compendia" title="Permanent link">&para;</a></h2>
