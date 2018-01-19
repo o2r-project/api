@@ -49,6 +49,10 @@ The **response** is `JSON` with the root element is `hits`, which has the same a
 ### Query parameters for simple search
 
 - `q` - search term(s), must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding)
+- `resources` - a comma-separated list of resources to include in the search; supported values are
+  - `compendia`
+  - `jobs`
+  - `all` (default)
 
 ### Example requests
 
@@ -56,6 +60,8 @@ The **response** is `JSON` with the root element is `hits`, which has the same a
 - [http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis](http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis)
 - [http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis](http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis)
 - [http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678](http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678)
+- [http://o2r.uni-muenster.de/api/v1/search?q=geo&resources=compendia](http://o2r.uni-muenster.de/api/v1/search?q=geo&resources=compendia)
+- [http://o2r.uni-muenster.de/api/v1/search?q=failure&resources=jobs](http://o2r.uni-muenster.de/api/v1/search?q=failure&resources=jobs)
 
 ## Complex Search
 
@@ -65,6 +71,9 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
 `curl -X POST -H 'Content-Type: application/json' 'https://.../api/v1/search' -d '$QUERY_DSL'`
 
 The **response** structure is the same as for [simple search](#simple-search).
+
+!!!Note
+    Use the index names `compendia` and `jobs` in a terms query to only retrieve one resource type.
 
 ### Query fields  for complex search
 
@@ -134,6 +143,18 @@ POST /api/v1/search -d '{
 
 In this example a filter has been nested within a [boolean/must match](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) query.
 The filter has been applied to the `metadata.o2r.spatial.geometry` field of the dataset with a `within` relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.
+
+#### Resource search
+
+```json
+{
+    "query": {
+        "terms": {
+            "_index": ["compendia"]
+        }
+    }
+}
+```
 
 #### Response
 
