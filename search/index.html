@@ -210,6 +210,10 @@ For more information on the mapping from the main database to the search databas
 <h3 id="query-parameters-for-simple-search">Query parameters for simple search<a class="headerlink" href="#query-parameters-for-simple-search" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>q</code> - search term(s), must be <a href="https://en.wikipedia.org/wiki/Percent-encoding">URL-encoded</a></li>
+<li><code>resources</code> - a comma-separated list of resources to include in the search; supported values are</li>
+<li><code>compendia</code></li>
+<li><code>jobs</code></li>
+<li><code>all</code> (default)</li>
 </ul>
 <h3 id="example-requests">Example requests<a class="headerlink" href="#example-requests" title="Permanent link">&para;</a></h3>
 <ul>
@@ -217,12 +221,18 @@ For more information on the mapping from the main database to the search databas
 <li><a href="http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis">http://o2r.uni-muenster.de/api/v1/search?q=europe temperature data analysis</a></li>
 <li><a href="http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis">http://o2r.uni-muenster.de/api/v1/search?q=europe%20temperature%20data%20analysis</a></li>
 <li><a href="http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678">http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=geo&amp;resources=compendia">http://o2r.uni-muenster.de/api/v1/search?q=geo&amp;resources=compendia</a></li>
+<li><a href="http://o2r.uni-muenster.de/api/v1/search?q=failure&amp;resources=jobs">http://o2r.uni-muenster.de/api/v1/search?q=failure&amp;resources=jobs</a></li>
 </ul>
 <h2 id="complex-search">Complex Search<a class="headerlink" href="#complex-search" title="Permanent link">&para;</a></h2>
 <p>A complex search is enabled via <code>POST</code> requests with a <code>JSON</code> payload as <code>HTTP POST</code> data (<em>not</em> <code>multipart/form-data</code>) accepting an <code>application/json</code> content type as response.
 Queries can include filters, aggregation and spatio-temporal operations as defined in the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">Elasticsearch Query DSL</a>.</p>
 <p><code>curl -X POST -H 'Content-Type: application/json' 'https://.../api/v1/search' -d '$QUERY_DSL'</code></p>
 <p>The <strong>response</strong> structure is the same as for <a href="#simple-search">simple search</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use the index names <code>compendia</code> and <code>jobs</code> in a terms query to only retrieve one resource type.</p>
+</div>
 <h3 id="query-fields-for-complex-search">Query fields  for complex search<a class="headerlink" href="#query-fields-for-complex-search" title="Permanent link">&para;</a></h3>
 <p>The following fields are especially relevant to build queries.</p>
 <ul>
@@ -284,6 +294,16 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
 
 <p>In this example a filter has been nested within a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html">boolean/must match</a> query.
 The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> field of the dataset with a <code>within</code> relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.</p>
+<h4 id="resource-search">Resource search<a class="headerlink" href="#resource-search" title="Permanent link">&para;</a></h4>
+<pre><code class="json">{
+    &quot;query&quot;: {
+        &quot;terms&quot;: {
+            &quot;_index&quot;: [&quot;compendia&quot;]
+        }
+    }
+}
+</code></pre>
+
 <h4 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h4>
 <pre><code class="json">200 ok
 
