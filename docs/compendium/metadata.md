@@ -2,7 +2,7 @@
 
 ## Basics
 
-Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<metadata_model>.<format>`, sometimes prepended with `metadata_` for clarity, e.g. `metadata_raw.json`, `metadata_o2r.json`, `zenodo.json`, or `datacite.xml`.
+Metadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<PREFIX>_<MODEL>_<VERSION>.<FORMAT>` filled via each metadata mapping file found in the broker tool of the o2r metadata tool suite, the default prefix is `metadata`, e.g. `metadata_o2r_1.json`, `metadata_zenodo_1.json`, or `metadata_datacite_41.xml`. The filename of the extracted raw metadata has no versioning and is constantly found as `metadata_raw.json`.
 
 A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 _This API always returns the database copy of the metadata elements._
