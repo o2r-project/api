@@ -182,7 +182,7 @@
               
                 <h1 id="compendium-metadata">Compendium metadata<a class="headerlink" href="#compendium-metadata" title="Permanent link">&para;</a></h1>
 <h2 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
-<p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;metadata_model&gt;.&lt;format&gt;</code>, sometimes prepended with <code>metadata_</code> for clarity, e.g. <code>metadata_raw.json</code>, <code>metadata_o2r.json</code>, <code>zenodo.json</code>, or <code>datacite.xml</code>.</p>
+<p>Metadata in a compendium is stored in a directory <code>.erc</code>. This directory contains the normative metadata documents using a file naming scheme <code>&lt;PREFIX&gt;_&lt;MODEL&gt;_&lt;VERSION&gt;.&lt;FORMAT&gt;</code> filled via each metadata mapping file found in the broker tool of the o2r metadata tool suite, the default prefix is <code>metadata</code>, e.g. <code>metadata_o2r_1.json</code>, <code>metadata_zenodo_1.json</code>, or <code>metadata_datacite_41.xml</code>. The filename of the extracted raw metadata has no versioning and is constantly found as <code>metadata_raw.json</code>.</p>
 <p>A copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.
 <em>This API always returns the database copy of the metadata elements.</em>
 You can download the respective files to access the normative metadata documents.</p>
