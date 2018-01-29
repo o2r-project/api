@@ -41,6 +41,8 @@ The are executed in order.
   Run the container and return based on status code of program that ran inside the container.
 - **check**
   Run a check on the contents of the container. Validate the results of the executed calculations. The check provides either a list of errors or a reference to displayable content in the property `display.diff`.
+- **image_save**
+  Export the image to a file within the compendium directory (potentially a large file!). This is skipped if the check failed.
 - **cleanup**
   Remove image or job files (depending on server-side settings).
 
@@ -288,6 +290,16 @@ The file listing format is described in [compendium files](compendium/files.md).
       "checkSuccessful":false,
       "end":"2017-11-17T13:23:04.439Z",
       "start":"2017-11-17T13:23:03.479Z"
+    },
+    "image_save": {
+      "status": "success",
+      "text": [
+        "[Saving image tarball file]",
+        "[Saved image tarball to file (size: 875.14 MB)]"
+      ],
+      "start": "2018-01-29T17:38:55.111Z",
+      "file": "image.tar",
+      "end": "2018-01-29T17:39:36.845Z"
     },
     "cleanup":{
       "status":"success",
