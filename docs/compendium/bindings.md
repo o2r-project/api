@@ -111,17 +111,17 @@ The final JSON object might thus be different for each purpose.
 ```json
 422 Unprocessable Entity
 
-{"error":"The selected code is not valid}
+{"error":"The selected code is not valid"}
 ```
 
 ```json
 422 Unprocessable Entity
 
-{"error":"The selected data is not valid}
+{"error":"The selected data is not valid"}
 ```
 
 ```json
 422 Unprocessable Entity
 
-{"error":"The selected text is ambiguous}
+{"error":"The selected text is ambiguous"}
 ```
