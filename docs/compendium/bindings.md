@@ -51,7 +51,7 @@ The final JSON object might thus be different for each purpose.
 ```json
 {
   "id":"compendium_id",
-  "purpose": "showNumResultData",
+  "purpose": "showResultData",
   "mainfile": "main_file.Rmd",
   "result": "We identified Pi approximately as 3.14",  
   "lineOfResult": "19-20",
