@@ -211,6 +211,8 @@ The are executed in order.</p>
   Run the container and return based on status code of program that ran inside the container.</li>
 <li><strong>check</strong>
   Run a check on the contents of the container. Validate the results of the executed calculations. The check provides either a list of errors or a reference to displayable content in the property <code>display.diff</code>.</li>
+<li><strong>image_save</strong>
+  Export the image to a file within the compendium directory (potentially a large file!). This is skipped if the check failed.</li>
 <li><strong>cleanup</strong>
   Remove image or job files (depending on server-side settings).</li>
 </ul>
@@ -429,6 +431,16 @@ The file listing format is described in <a href="../compendium/files/">compendiu
       &quot;checkSuccessful&quot;:false,
       &quot;end&quot;:&quot;2017-11-17T13:23:04.439Z&quot;,
       &quot;start&quot;:&quot;2017-11-17T13:23:03.479Z&quot;
+    },
+    &quot;image_save&quot;: {
+      &quot;status&quot;: &quot;success&quot;,
+      &quot;text&quot;: [
+        &quot;[Saving image tarball file]&quot;,
+        &quot;[Saved image tarball to file (size: 875.14 MB)]&quot;
+      ],
+      &quot;start&quot;: &quot;2018-01-29T17:38:55.111Z&quot;,
+      &quot;file&quot;: &quot;image.tar&quot;,
+      &quot;end&quot;: &quot;2018-01-29T17:39:36.845Z&quot;
     },
     &quot;cleanup&quot;:{
       &quot;status&quot;:&quot;success&quot;,
