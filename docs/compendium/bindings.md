@@ -17,4 +17,52 @@ The sort of interactivity depends on the purpose. Here, we support the following
 10. Select data subsets used to produce a specific numerical result.
 
 ## Create a new binding
-When creating a new Executable Research Compendium (ERC), authors will reach the "Create bindings section". 
+When creating a new Executable Research Compendium (ERC), authors will reach the "Create bindings section". Each purpose has own needs.
+
+`POST /api/v1/binding`
+
+### Request body for a new binding depending on the purpose:
+
+3. Show dataset underlying a specific numerical result.
+```json
+{
+  "id":"compendium_id",
+  "purpose": "showNumResultData",
+  "main_file": "main_file.Rmd",
+  "result_line": "19-20",
+  "numerical_result": 3.14,
+  "dataset_file": ["data.csv"],
+  "dataset_column": ["measured_values"],
+  "dataset_rows": ["1-100"]  
+}
+```
+
+### Request body properties
+
+- `id` - id of the compendium
+- `purpose` - task that an author would like to provide
+- `main_file` - main RMarkdown file used to compute the display file
+- `result_line` - line(s) where the result occurs
+- `dataset_file` - array of datasets used to compute the number
+- `dataset_columns` - array of columns used to compute the number
+- `dataset_rows` - array of row ranges used to compute the number
+
+### Response
+
+```json
+204 OK
+```
+
+### Error responses for bindings creation
+
+```json
+401 Unauthorized
+
+{"error":"not authorized"}
+```
+
+```json
+404 Not Found
+
+{"error":"compendium not found"}
+```
