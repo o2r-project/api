@@ -20,7 +20,7 @@ The sort of interactivity depends on the purpose. Here, we support the following
 
 ## Create a new binding
 
-When creating a new _Executable Research Compendium_ (ERC), authors will reach the "Create bindings section".
+When creating a new compendium, authors will reach the "Create bindings section".
 Each purpose has own needs.
 
 `POST /api/v1/binding`
