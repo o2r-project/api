@@ -1,6 +1,6 @@
 # Bindings
 
-Bindings make static scientific papers more interactive by making the underlying source code and dataset better accessible. Bindings connect the paper, the dataset, and the source code used to compute a specific figure, numerical result, or table with user interface widgets such as slider to manipulate a value shown in the figure.
+Bindings make static scientific papers interactive by making the underlying source code and dataset better accessible. Bindings connect the paper, the dataset, and the source code used to compute a specific figure, numerical result, or table with user interface widgets such as slider to manipulate a value shown in the figure.
 
 ## Purposes
 The sort of interactivity depends on the purpose. Here, we support the following purposes:
@@ -30,10 +30,12 @@ When creating a new Executable Research Compendium (ERC), authors will reach the
   "purpose": "showNumResultData",
   "main_file": "main_file.Rmd",
   "result_line": "19-20",
-  "numerical_result": 3.14,
-  "dataset_file": ["data.csv"],
-  "dataset_column": ["measured_values"],
-  "dataset_rows": ["1-100"]  
+  "numerical_result": "3.14",
+  "dataset": [{
+    "dataset_file": ["data.csv"],
+    "dataset_columns" : ["measured_values"],
+    "dataset_rows": ["1-100"]
+   }]  
 }
 ```
 
@@ -43,9 +45,11 @@ When creating a new Executable Research Compendium (ERC), authors will reach the
 - `purpose` - task that an author would like to provide
 - `main_file` - main RMarkdown file used to compute the display file
 - `result_line` - line(s) where the result occurs
-- `dataset_file` - array of datasets used to compute the number
-- `dataset_columns` - array of columns used to compute the number
-- `dataset_rows` - array of row ranges used to compute the number
+- `numerical result` - the numeric result that should be addressed
+- `dataset` - array of dataset objects used to compute the numeric result  
+  - `dataset_file` - array of datasets used to compute the number
+  - `dataset_columns` - array of columns used to compute the number
+  - `dataset_rows` - array of row ranges used to compute the number
 
 ### Response
 
