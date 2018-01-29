@@ -1,8 +1,8 @@
-#Bindings
+# Bindings
 
 Bindings make static scientific papers more interactive by making the underlying source code and dataset better accessible. Bindings connect the paper, the dataset, and the source code used to compute a specific figure, numerical result, or table with user interface widgets such as slider to manipulate a value shown in the figure.
 
-##Purposes
+## Purposes
 The sort of interactivity depends on the purpose. Here, we support the following purposes:
 
 1. Show the dataset underlying the paper.
@@ -16,5 +16,5 @@ The sort of interactivity depends on the purpose. Here, we support the following
 9. Select data subsets used to produce a figure.
 10. Select data subsets used to produce a specific numerical result.
 
-##Create a new binding
+## Create a new binding
 When creating a new Executable Research Compendium (ERC), authors will reach the "Create bindings section". 
