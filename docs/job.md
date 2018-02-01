@@ -52,9 +52,9 @@ All steps can have one of the following status:
 
 - `queued`: step is not yet started
 - `running`: step is currently running
-- `success`: step is completed successfully
-- `failure`: step is completed unsuccessfully
-- `skipped`: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces
+- `success`: step is completed successfully - positive result
+- `failure`: step is completed unsuccessfully - negative result
+- `skipped`: step does not fit the given input or results of previous steps, e.g. bag validation is not done for non-bag workspaces - neutral result
 
 ### Step metadata
 

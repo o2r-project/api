@@ -296,6 +296,18 @@ Result is a list of substituted compendia based on the given base _and_ overlay 
 {"error":"overlay compendium not found"}
 ```
 
+```json
+400 Not Found
+
+{"error":"base file is undefined"}
+```
+
+```json
+400 Not Found
+
+{"error":"overlay file is undefined"}
+```
+
 ### URL parameters for substituted compendium lists
 
 - `:base` - id of the base compendium that the results should be related to
