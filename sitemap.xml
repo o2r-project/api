@@ -4,7 +4,7 @@
     
     <url>
      <loc>http://o2r.info/o2r-web-api//</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -19,37 +19,37 @@
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/view/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/delete/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/download/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/metadata/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/files/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>http://o2r.info/o2r-web-api//compendium/substitute/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -58,7 +58,7 @@
     
     <url>
      <loc>http://o2r.info/o2r-web-api//job/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -66,7 +66,7 @@
     
     <url>
      <loc>http://o2r.info/o2r-web-api//search/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -74,7 +74,7 @@
     
     <url>
      <loc>http://o2r.info/o2r-web-api//shipment/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -82,7 +82,7 @@
     
     <url>
      <loc>http://o2r.info/o2r-web-api//user/</loc>
-     <lastmod>2018-01-29</lastmod>
+     <lastmod>2018-02-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

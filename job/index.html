@@ -221,9 +221,9 @@ The are executed in order.</p>
 <ul>
 <li><code>queued</code>: step is not yet started</li>
 <li><code>running</code>: step is currently running</li>
-<li><code>success</code>: step is completed successfully</li>
-<li><code>failure</code>: step is completed unsuccessfully</li>
-<li><code>skipped</code>: step does not fit the given input, e.g. bag validation is not done for non-bag workspaces</li>
+<li><code>success</code>: step is completed successfully - positive result</li>
+<li><code>failure</code>: step is completed unsuccessfully - negative result</li>
+<li><code>skipped</code>: step does not fit the given input or results of previous steps, e.g. bag validation is not done for non-bag workspaces - neutral result</li>
 </ul>
 <h3 id="step-metadata">Step metadata<a class="headerlink" href="#step-metadata" title="Permanent link">&para;</a></h3>
 <p>Additional explanations on steps' status will be transmitted in the <code>text</code> property.
