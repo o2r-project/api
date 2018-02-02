@@ -220,7 +220,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 <p>Depending on the public share contents different processes are triggered:</p>
 <ol>
 <li>If a file named <code>bagit.txt</code> is found, the directory is checked for Bagit validity</li>
-<li>If a single zip file is found, the file is extracted, if multiple zip files are found, an error is returned</li>
+<li>If a single zip file is found, the file is extracted, if multiple zip files are found, the filename has to be specified, otherwise an error is returned</li>
 <li>If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading</li>
 <li>Depending on the value of <code>content_type</code> (see below), the public share contents are treated as a complete compendium or as a  workspace</li>
 </ol>
@@ -232,8 +232,10 @@ Although it builds on ownCloud and the implementation might be able to handle an
 <li><code>workspace</code> - formless workspace</li>
 </ul>
 </li>
-<li><code>path</code> - Path to a subdirectory in the public share (optional)<ul>
+<li><code>path</code> - Path to a subdirectory or a zip file in the public share (optional)<ul>
 <li>default is <code>/</code></li>
+<li>the leading <code>/</code> is optional, the loader supports both ways</li>
+<li>when a directory has multiple zip files, the path can be used to specify which file is used, e.g. <code>path=/metatainer.zip</code></li>
 </ul>
 </li>
 </ul>
@@ -263,7 +265,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 
 <h3 id="example-data">Example data<a class="headerlink" href="#example-data" title="Permanent link">&para;</a></h3>
 <p>For testing purposes you can use the following public share, which contains a few ready-to-use compendia:</p>
-<p><a href="https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO"><code>https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO</code></a></p>
+<p><a href="https://uni-muenster.sciebo.de/s/G8vxQ1h50V4HpuA">`https://uni-muenster.sciebo.de/s/G8vxQ1h50V4HpuA</a></p>
 <h2 id="zenodo">Zenodo<a class="headerlink" href="#zenodo" title="Permanent link">&para;</a></h2>
 <h3 id="body-parameters-for-creating-a-compendium-from-a-zenodo-record">Body parameters for creating a compendium from a Zenodo record<a class="headerlink" href="#body-parameters-for-creating-a-compendium-from-a-zenodo-record" title="Permanent link">&para;</a></h3>
 <ul>
