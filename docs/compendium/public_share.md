@@ -51,7 +51,7 @@ Although it builds on ownCloud and the implementation might be able to handle an
 Depending on the public share contents different processes are triggered:
 
 1. If a file named `bagit.txt` is found, the directory is checked for Bagit validity
-2. If a single zip file is found, the file is extracted, if multiple zip files are found, an error is returned
+2. If a single zip file is found, the file is extracted, if multiple zip files are found, the filename has to be specified, otherwise an error is returned
 3. If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading
 4. Depending on the value of `content_type` (see below), the public share contents are treated as a complete compendium or as a  workspace
 
@@ -61,8 +61,10 @@ Depending on the public share contents different processes are triggered:
 - `content_type` - Form of archive. One of the following (required):
     - `compendium` - complete compendium
     - `workspace` - formless workspace
-- `path` - Path to a subdirectory in the public share (optional)
+- `path` - Path to a subdirectory or a zip file in the public share (optional)
     - default is `/`
+    - the leading `/` is optional, the loader supports both ways
+    - when a directory has multiple zip files, the path can be used to specify which file is used, e.g. `path=/metatainer.zip`
 
 ### Examples
 
@@ -98,7 +100,7 @@ curl -F "content_type=compendium" \
 
 For testing purposes you can use the following public share, which contains a few ready-to-use compendia:
 
-[`https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO`](https://uni-muenster.sciebo.de/index.php/s/7EoWgjLSFVV89AO)
+[`https://uni-muenster.sciebo.de/s/G8vxQ1h50V4HpuA](https://uni-muenster.sciebo.de/s/G8vxQ1h50V4HpuA)
 
 ## Zenodo
 
