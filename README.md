@@ -5,9 +5,7 @@ Project description: [http://o2r.info](http://o2r.info)
 ## Basics
 
 We're a research project, so _everything in this API and its documentation is subject to change_.
-We try to use "WORK IN PROGRESS" or "TBD" _in headlines_ to signal things that are not working fully yet.
-
-The "working" state should eventually always be in the `master` branch, which is published online at [http://o2r.info/o2r-web-api](http://o2r.info/o2r-web-api), and open pull requests reflect things that are under development.
+The "working" state should always be in the `master` branch, which is published online at [http://o2r.info/o2r-web-api](http://o2r.info/o2r-web-api), and [open pull requests](https://github.com/o2r-project/o2r-web-api/pulls) reflect features under development.
 
 ## Build
 
@@ -38,9 +36,8 @@ The variable `GH_TOKEN` is used in the deploy script. The token generated on the
 
 This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/o2r-web-api/settings), so that malicious changes to the Travis configuration file will be noticed by the repository maintainer before merging a pull request.
 
-
 ## License
 
-The o2r Web API specification is licensed under Creative Commons CC-BY-4.0 License, see file `LICENSE`.
-
-Copyright (C) 2017 - o2r project.
+The o2r Web API specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file `LICENSE`.
+To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.
+This work is published from: Germany.
