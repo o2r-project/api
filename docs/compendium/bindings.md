@@ -67,7 +67,16 @@ The final JSON object might thus be different for each purpose.
 ```json
 ```
 
-5. ...
+6. Show the source code underlying a figure
+```json
+{
+  "id":"compendium_id",
+  "purpose": "showFigureCode",
+  "mainfile": "main_file.Rmd",
+  "figure": "3",
+  "sourcecodeLines": ["20", "28"] 
+}
+```
 
 ### Request body properties
 
