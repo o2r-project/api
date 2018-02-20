@@ -67,13 +67,26 @@ The final JSON object might thus be different for each purpose.
 ```json
 ```
 
+5. Show the source code underlying a specific result in the text
+```json
+{
+  "id":"compendium_id",
+  "purpose": "showResultCode",
+  "mainfile": "main_file.Rmd",
+  "result": "3.14",
+  "line": 25,
+  "sourcecodeLines": [20, 28] 
+}
+
+```
+
 6. Show the source code underlying a figure
 ```json
 {
   "id":"compendium_id",
   "purpose": "showFigureCode",
   "mainfile": "main_file.Rmd",
-  "figure": "3",
+  "result": "3.14",
   "sourcecodeLines": ["20", "28"] 
 }
 ```
