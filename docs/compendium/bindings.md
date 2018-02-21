@@ -70,12 +70,13 @@ The final JSON object might thus be different for each purpose.
 5. Show the source code underlying a specific result in the text
 ```json
 {
-  "id":"compendium_id",
-  "purpose": "showResultCode",
+  "id": "compendium_id",
   "mainfile": "main_file.Rmd",
+  "task": "inspect",
+  "purpose": "showResultCode",
   "result": "3.14",
-  "line": 25,
-  "sourcecodeLines": [20, 28] 
+  "lineOfResult": 25,
+  "codeLines": [20, 28]
 }
 
 ```
@@ -84,10 +85,11 @@ The final JSON object might thus be different for each purpose.
 ```json
 {
   "id":"compendium_id",
-  "purpose": "showFigureCode",
   "mainfile": "main_file.Rmd",
-  "result": "3.14",
-  "sourcecodeLines": ["20", "28"] 
+  "task": "inspect",
+  "purpose": "showFigureCode",
+  "result": "figure 1",
+  "codeLines": [20, 28]
 }
 ```
 
