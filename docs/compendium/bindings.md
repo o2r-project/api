@@ -43,6 +43,7 @@ The final JSON object might thus be different for each purpose.
 ```json
 {
   "id":"compendium_id",
+  "task": "inpect",
   "purpose": "showPaperData",
   "dataset": ["data.csv"]  
 }
@@ -52,6 +53,7 @@ The final JSON object might thus be different for each purpose.
 ```json
 {
   "id":"compendium_id",
+  "task": "inspect",
   "purpose": "showPaperCode",
   "mainfile": "main.Rmd"
 }
@@ -61,6 +63,7 @@ The final JSON object might thus be different for each purpose.
 ```json
 {
   "id":"compendium_id",
+  "inspect": "inspect",
   "purpose": "showResultData",
   "mainfile": "main_file.Rmd",
   "result": "We identified Pi approximately as 3.14",  
