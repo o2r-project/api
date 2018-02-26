@@ -41,10 +41,20 @@ The final JSON object might thus be different for each purpose.
 ### Request body for a new binding depending on the purpose
 1. Show the dataset underlying the paper
 ```json
+{
+  "id":"compendium_id",
+  "purpose": "showPaperData",
+  "dataset": ["data.csv"]  
+}
 ```
 
 2. Show the source code underlying the paper
 ```json
+{
+  "id":"compendium_id",
+  "purpose": "showPaperCode",
+  "dataset": ["main.Rmd"]  
+}
 ```
 
 3. Show the dataset underlying a specific result.
