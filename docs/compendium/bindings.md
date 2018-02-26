@@ -53,7 +53,7 @@ The final JSON object might thus be different for each purpose.
 {
   "id":"compendium_id",
   "purpose": "showPaperCode",
-  "dataset": ["main.Rmd"]  
+  "mainfile": "main.Rmd"
 }
 ```
 
