@@ -70,7 +70,7 @@ Note: For now, all R files other than the mainfile are implicitly included in th
   "id":"compendium_id",
   "task": "inspect",
   "purpose": "showPaperCode",
-  "mainfile": "main.Rmd"
+  "mainfile": "main.Rmd",
   "dataset": ["data.csv"]
 }
 ```
@@ -155,7 +155,7 @@ Note: For now, all R files other than the mainfile are implicitly included in th
     "max": 100,
     "init": 50,
     "step": 1,
-    "label": Change the threshold by using the slider.
+    "label": "Change the threshold by using the slider."
     }
 }
 ```
@@ -175,7 +175,7 @@ Note: For now, all R files other than the mainfile are implicitly included in th
     "max": 100,
     "init": 50,
     "step": 1,
-    "label": Change the threshold by using the slider.
+    "label": "Change the threshold by using the slider."
     }
 }
 ```
