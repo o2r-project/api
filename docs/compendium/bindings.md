@@ -1,33 +1,36 @@
 # Bindings
 
-Bindings make static scientific papers interactive by providing better access to the underlying source code and dataset.
-Bindings connect the paper, the dataset, and the source code used to compute a specific figure, numerical result, or table with user interface widgets such as slider to manipulate a value shown in the figure. 
+Bindings make static scientific papers interactive. They facilitate access to the source code and dataset underlying a figure. Bindings link the paper, the dataset, and the source code used to compute a specific figure, numerical result, or table with user interface (UI) widgets such as slider to manipulate a value shown in the figure. 
 
 !!! note For now, we only support datasets saved as comma separated values (.csv). This is a technical constraint. The overall concept is also applicable to other data formats.
 
 ## Purposes
 
-The sort of interactivity depends on the purpose. Here, we support the following purposes:
+The type of interactivity depends on the purpose. Here, we support the following purposes:
 
-1. Show the dataset underlying the paper - showPaperData
-2. Show the source code underlying the paper - showPaperCode
-3. Show the dataset underlying a specific result in the text - showResultData
-4. Show the dataset underlying a figure - showFigureData
-5. Show the source code underlying a specific result in the text - showResultCode
-6. Show the source code underlying a figure - showFigureCode
+1. Show dataset underlying the paper - showPaperData
+2. Show source code underlying the paper - showPaperCode
+3. Show dataset and source code underlying the paper - showPaperDataCode
+
+4. Show dataset underlying a specific result in the text - showResultData
+5. Show source code underlying a specific result in the text - showResultCode
+6. Show dataset and source code underlying a specific result in the text - showResultDataCode
+Purpose 4-6 are also applicable to tables.
+
+7. Show dataset underlying a figure - showFigureData
+8. Show source code underlying a figure - showFigureCode
+9. Show dataset and source code underlying a figure 
+
 7. Manipulate a parameter used to compute a specific numerical result in the text - manipulateNumRes
 8. Manipulate a parameter used to compute a figure - manipulateFigure
-9. Select data subsets used to produce a figure - figureDatasubset
-10. Select data subsets used to produce a specific numerical result in the text - numResultDatasubset
 
 ## Prerequisites
 
 Bindings can be created if the following criteria are met:
 
 - the upload of the workspace is finished
-- [metadata](http://o2r.info/o2r-web-api/compendium/metadata/) extraction is done but not necessarily complete
-- the ERC is at least a [candidate](http://o2r.info/o2r-web-api/compendium/candidate/)
-- the ERC is not yet [shipped](http://o2r.info/o2r-web-api/shipment/) to third-party archives such as Zenodo (otherwise files created by the ui bindings cannot be stored in the same ERC)
+- [metadata](http://o2r.info/o2r-web-api/compendium/metadata/) extraction is done. Required metadata are complete.
+- the ERC is not yet [shipped](http://o2r.info/o2r-web-api/shipment/) to third-party archives such as Zenodo (otherwise files created by the bindings cannot be stored in the same ERC)
 
 ## Creating a new binding
 
@@ -39,17 +42,17 @@ The final JSON object might thus be different for each purpose.
 `POST /api/v1/binding`
 
 ### Request body for a new binding depending on the purpose
-1. Show the dataset underlying the paper
+1. Show dataset underlying the paper
 ```json
 {
   "id":"compendium_id",
   "task": "inpect",
   "purpose": "showPaperData",
-  "dataset": ["data.csv"]  
+  "dataset": ["data.csv"]
 }
 ```
 
-2. Show the source code underlying the paper
+2. Show source code underlying the paper
 ```json
 {
   "id":"compendium_id",
@@ -58,12 +61,13 @@ The final JSON object might thus be different for each purpose.
   "mainfile": "main.Rmd"
 }
 ```
+3. 
 
-3. Show the dataset underlying a specific result.
+3. Show the dataset underlying a specific result in the text.
 ```json
 {
   "id":"compendium_id",
-  "inspect": "inspect",
+  "task": "inspect",
   "purpose": "showResultData",
   "mainfile": "main_file.Rmd",
   "result": "We identified Pi approximately as 3.14",  
