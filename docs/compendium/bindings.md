@@ -15,6 +15,7 @@ The type of interactivity depends on the purpose. Here, we support the following
 4. Show dataset underlying a specific result in the text - showResultData
 5. Show source code underlying a specific result in the text - showResultCode
 6. Show dataset and source code underlying a specific result in the text - showResultDataCode
+
 Purpose 4-6 are also applicable to tables.
 
 7. Show dataset underlying a figure - showFigureData
@@ -61,16 +62,28 @@ The final JSON object might thus be different for each purpose.
   "mainfile": "main.Rmd"
 }
 ```
-3. 
+Note: For now, all R files other than the mainfile are implicitly included in the mainfile.
 
-3. Show the dataset underlying a specific result in the text.
+3. Show dataset and source code underlying the paper
+```json
+{
+  "id":"compendium_id",
+  "task": "inspect",
+  "purpose": "showPaperCode",
+  "mainfile": "main.Rmd"
+  "dataset": ["data.csv"]
+}
+```
+
+4. Show dataset underlying a specific result in the text.
 ```json
 {
   "id":"compendium_id",
   "task": "inspect",
   "purpose": "showResultData",
-  "mainfile": "main_file.Rmd",
-  "result": "We identified Pi approximately as 3.14",  
+  "mainfile": "main.Rmd",
+  "resultText": "We identified Pi approximately as 3.14",
+  "result": 3.14,
   "lineOfResult": "19-20",
   "dataset": [{
     "file": ["data.csv"],
@@ -80,35 +93,93 @@ The final JSON object might thus be different for each purpose.
 }
 ```
 
-4. Show the dataset underlying a figure
-```json
-```
-
-5. Show the source code underlying a specific result in the text
+5. Show source code underlying a specific result in the text
 ```json
 {
   "id": "compendium_id",
-  "mainfile": "main_file.Rmd",
+  "mainfile": "main.Rmd",
   "task": "inspect",
   "purpose": "showResultCode",
+  "resultText": "We identified Pi approximately as 3.14",
   "result": "3.14",
   "lineOfResult": 25,
   "codeLines": [20, 28]
 }
-
 ```
+6. Show dataset and source code underlying a specific result in the text
 
-6. Show the source code underlying a figure
+7. Show dataset underlying a figure
 ```json
 {
   "id":"compendium_id",
-  "mainfile": "main_file.Rmd",
+  "task": "inspect",
+  "purpose": "showFigureData",
+  "mainfile": "main.Rmd",
+  "figure": "1",
+  "dataset": [{
+    "file": ["data.csv"],
+    "columns" : ["measured_values"],
+    "rows": ["1-100"]
+   }]  
+}
+```
+8. Show the source code underlying a figure
+```json
+{
+  "id":"compendium_id",
+  "mainfile": "main.Rmd",
   "task": "inspect",
   "purpose": "showFigureCode",
   "result": "figure 1",
   "codeLines": [20, 28]
 }
 ```
+9. Show dataset and source code underlying a figure
+```json
+
+```
+10. Manipulate a parameter used to compute a specific numerical result in the text
+```json
+{
+  "id": "compendium_id",
+  "mainfile": "main.Rmd",
+  "task": "manipulate",
+  "purpose": "manipulateNumRes",
+  "resultText": "We identified Pi approximately as 3.14",
+  "result": "'''{r}pi'''",
+  "lineOfResult": 25,
+  "codeLines": [20, 28],
+  "widget": {
+    "type": "slider",
+    "min": 0,
+    "max": 100,
+    "init": 50,
+    "step": 1,
+    "label": Change the threshold by using the slider.
+    }
+}
+```
+11. Manipulate a parameter used to compute a figure
+```json
+{
+  "id": "compendium_id",
+  "mainfile": "main.Rmd",
+  "task": "manipulate",
+  "purpose": "manipulateFigure",
+  "codeLines": [20, 28],
+  "variable": "threshold <- 10",
+  "figure": "1",
+  "widget": {
+    "type": "slider",
+    "min": 0,
+    "max": 100,
+    "init": 50,
+    "step": 1,
+    "label": Change the threshold by using the slider.
+    }
+}
+```
+
 
 ### Request body properties
 
