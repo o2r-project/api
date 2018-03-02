@@ -100,6 +100,8 @@
         
             <li><a class="toctree-l4" href="#metadata-formats">Metadata formats</a></li>
         
+            <li><a class="toctree-l4" href="#metadata-validation">Metadata validation</a></li>
+        
             <li><a class="toctree-l4" href="#get-all-compendium-metadata">Get all compendium metadata</a></li>
         
             <li><a class="toctree-l4" href="#get-o2r-metadata">Get o2r metadata</a></li>
@@ -200,22 +202,33 @@ You can download the respective files to access the normative metadata documents
 <p>The information in each sub-property are subject to independent workflows and may differ from one another.
 The term <strong>brokering</strong> is used for translation from one metadata format into another.</p>
 </div>
+<h2 id="metadata-validation">Metadata validation<a class="headerlink" href="#metadata-validation" title="Permanent link">&para;</a></h2>
+<p>Only valid metadata can be saved to a compendium.
+The <code>o2r</code> metadata element is validated against a <a href="http://json-schema.org/">JSON Schema</a> using the <code>validate</code> tool of <a href="https://github.com/o2r-project/o2r-meta"><code>o2r-meta</code></a>.
+The schema file is included in the <code>o2r-meta</code> repository: <a href="https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json">https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json</a>.</p>
 <h2 id="get-all-compendium-metadata">Get all compendium metadata<a class="headerlink" href="#get-all-compendium-metadata" title="Permanent link">&para;</a></h2>
 <p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
+<p>Abbreviated example response:</p>
 <pre><code class="json">200 OK
 
 {
-  &quot;id&quot;:&quot;compendium_id&quot;,
+  &quot;id&quot;:&quot;12345&quot;,
   &quot;metadata&quot;: {
     &quot;raw&quot;: {
       &quot;title&quot;: &quot;Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.&quot;,
-      &quot;author&quot;: &quot;John M. Chambers.   &quot;
+      &quot;author&quot;: &quot;John M. Chambers&quot;,
+      …
     },
     &quot;o2r&quot;: {
       &quot;title&quot;: &quot;Programming with Data&quot;,
-      &quot;creator&quot;: &quot;John M. Chambers&quot;,
-      &quot;year&quot;: 1998
+      &quot;creators&quot;: [
+          {
+              &quot;name&quot;: &quot;John M. Chambers&quot;
+          }
+      ],
+      &quot;publication_date&quot;: 1998,
+      …
     },
     &quot;zenodo&quot;: {
       …
@@ -236,9 +249,7 @@ The term <strong>brokering</strong> is used for translation from one metadata fo
   &quot;id&quot;:&quot;compendium_id&quot;,
   &quot;metadata&quot;: {
     &quot;o2r&quot;: {
-      &quot;title&quot;: &quot;Programming with Data&quot;,
-      &quot;creator&quot;: &quot;John M. Chambers&quot;,
-      &quot;year&quot;: 1998
+      …
     }
   }
 }
@@ -393,7 +404,24 @@ After creation the metadata is persisted to both files and database, so updating
 {&quot;error&quot;:&quot;not authorized&quot;}
 </code></pre>
 
-<pre><code class="txt">400 Bad Request
+<pre><code class="json">400 Incomplete metadata (description property missing)
+
+{
+    &quot;error&quot;:&quot;Error updating metadata file, see log for details&quot;,
+    &quot;log&quot;: &quot;[o2rmeta] 20180302.085940 received arguments: {'debug': True, 'tool': 'validate', 'schema': 'schema/json/o2r-meta-schema.json', 'candidate': '/tmp/o2r/compendium/1cAIr/data/.erc/metadata_o2r_1.json'}
+    [o2rmeta] 20180302.085940 launching validator
+    [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json
+    [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'
+
+    Failed validating 'type' in schema['properties']['description']:
+        {'type': 'string'}
+
+        On instance['description']:
+            None&quot;
+}
+</code></pre>
+
+<pre><code class="json">400 Bad Request
 
 &quot;SyntaxError [...]&quot;
 </code></pre>
