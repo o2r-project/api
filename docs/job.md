@@ -1,12 +1,19 @@
 # Execute a compendium
 
 Execution jobs are used to run the analysis in a compendium.
-When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution.
+When a new execution job is started, the contents of the research compendium are cloned to create a trackable execution (see [Job files](#job-files)).
 The status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.
 
 All execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.
 
 A trivial execution job would be a completely unmodified compendium, to test the executability and thus basic reproducibility of the contained workflow.
+
+## Job files
+
+All files except the following are copied to a separate storage for each job:
+
+- existing image tarballs, e.g. `image.tar` to reduce size of copied files and because jobs use images from the local image repository anyway
+- the [_display file_](http://o2r.info/erc-spec/spec/#main-display-file) to make sure the check does not wrongly work on the original display file
 
 ## Job status
 
