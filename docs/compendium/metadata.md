@@ -23,26 +23,40 @@ The sub-properties of the `metadata` and their content are
     The information in each sub-property are subject to independent workflows and may differ from one another.
     The term **brokering** is used for translation from one metadata format into another.
 
+## Metadata validation
+
+Only valid metadata can be saved to a compendium.
+The `o2r` metadata element is validated against a [JSON Schema](http://json-schema.org/) using the `validate` tool of [`o2r-meta`](https://github.com/o2r-project/o2r-meta).
+The schema file is included in the `o2r-meta` repository: [https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json](https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json).
+
 ## Get all compendium metadata
 
 `curl https://…/api/v1/$ID`
 
 `GET /api/v1/compendium/:id`
 
+Abbreviated example response:
+
 ```json
 200 OK
 
 {
-  "id":"compendium_id",
+  "id":"12345",
   "metadata": {
     "raw": {
       "title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.",
-      "author": "John M. Chambers.   "
+      "author": "John M. Chambers",
+      …
     },
     "o2r": {
       "title": "Programming with Data",
-      "creator": "John M. Chambers",
-      "year": 1998
+      "creators": [
+          {
+              "name": "John M. Chambers"
+          }
+      ],
+      "publication_date": 1998,
+      …
     },
     "zenodo": {
       …
@@ -68,9 +82,7 @@ The following endpoint allows to access _only_ the normative o2r-metadata elemen
   "id":"compendium_id",
   "metadata": {
     "o2r": {
-      "title": "Programming with Data",
-      "creator": "John M. Chambers",
-      "year": 1998
+      …
     }
   }
 }
@@ -241,7 +253,25 @@ The response contains an excerpt of a compendium with only the o2r metadata prop
 {"error":"not authorized"}
 ```
 
-```txt
+```json
+400 Incomplete metadata (description property missing)
+
+{
+    "error":"Error updating metadata file, see log for details",
+    "log": "[o2rmeta] 20180302.085940 received arguments: {'debug': True, 'tool': 'validate', 'schema': 'schema/json/o2r-meta-schema.json', 'candidate': '/tmp/o2r/compendium/1cAIr/data/.erc/metadata_o2r_1.json'}
+    [o2rmeta] 20180302.085940 launching validator
+    [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json
+    [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'
+    
+    Failed validating 'type' in schema['properties']['description']:
+        {'type': 'string'}
+        
+        On instance['description']:
+            None"
+}
+```
+
+```json
 400 Bad Request
 
 "SyntaxError [...]"
