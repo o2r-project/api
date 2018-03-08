@@ -1,6 +1,6 @@
 # Upload via API
 
-Upload a research compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
+Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
 
 The upload is only allowed for logged in users.
 Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
@@ -12,8 +12,15 @@ Upon successful extraction of archive and processing of the contents, the `id` f
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \
-    -F content_type=compendium https://…/api/v1/compendium \
-    --cookie "connect.sid=<code string here>" \
+    -F content_type=compendium \
+    --cookie "connect.sid=<cookie string here>" \
+     https://…/api/v1/compendium 
+```
+
+```bash
+curl -F "compendium=@path/to/workspace.zip;type=application/zip" \
+    -F content_type=workspace \
+    --cookie "connect.sid=<cookie string here>" \
      https://…/api/v1/compendium 
 ```
 
@@ -24,7 +31,7 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 ```
 
 !!! Warning "Important"
-    After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.
+    After successful upload the **[candidate process](upload.md#candidate-process)** must be completed for workspaces.
 
 ## Body parameters for compendium upload
 
@@ -58,5 +65,6 @@ curl -F "compendium=@compendium.zip;type=application/zip" \
 
 ```json
 422 Unprocessable Entity
+```
 
 For local testing you can quickly upload some of the example compendia and workspaces from the [erc-examples](https://github.com/o2r-project/erc-examples) project.
