@@ -9,15 +9,22 @@ Bindings make static scientific papers interactive. They facilitate access to th
 The type of interactivity depends on the purpose. Here, we support the following purposes:
 
 Discover
+
 1. Search for paper/result/figure using spatiotemporal properties - discoverResult
+
 Inspect
+
 2. Show dataset and source code underlying the paper - showPaperDataCode
 3. Show dataset and source code underlying a specific result in the text - showNumberDataCode
 4. Show dataset and source code underlying a figure  - showFigureDataCode
+
 Manipulate
+
 5. Manipulate a parameter used to compute a specific numerical result in the text - manipulateNumber
 6. Manipulate a parameter used to compute a figure - manipulateFigure
+
 Substitute
+
 7. Substitute the dataset underlying a specific numerical result in the text - substituteNumberData
 8. Substitute the dataset underlying a figure - substituteFigureData
 
@@ -34,10 +41,13 @@ Bindings can be created if the following criteria are met:
 When creating a new compendium, authors will reach the "Create bindings section".
 The purposes have some own characteristics. 
 
+### Request body for a new binding depending on the purpose
+
+#### Discover
+
+
 `POST /api/v1/binding/discover/discoverResult`
 
-### Request body for a new binding depending on the purpose
-#### Discover
 1. Search for paper/... using spatiotemporal properties
 
 ```json
@@ -45,7 +55,7 @@ The purposes have some own characteristics.
 }
 ```
 
-####Inspect
+#### Inspect
 
 `POST /api/v1/binding/inspect/showPaperCode`
 
@@ -53,8 +63,6 @@ The purposes have some own characteristics.
 ```json
 {
   "id":"compendium_id",
-  "task": "inspect",
-  "purpose": "showPaperCode",
   "mainfile": "main.Rmd",
   "dataset": ["data.csv"]
 }
@@ -85,8 +93,6 @@ Note: For now, datasets are specified as bounding boxes.
 ```json
 {
   "id":"compendium_id",
-  "task": "inspect",
-  "purpose": "showFigureData",
   "mainfile": "main.Rmd",
   "figure": "1",
   "dataset": [{
@@ -97,7 +103,7 @@ Note: For now, datasets are specified as bounding boxes.
 }
 ```
 
-####Manipulate
+#### Manipulate
 
 `POST /api/v1/binding/manipulate/manipulateNumber`
 
@@ -106,8 +112,6 @@ Note: For now, datasets are specified as bounding boxes.
 {
   "id": "compendium_id",
   "mainfile": "main.Rmd",
-  "task": "manipulate",
-  "purpose": "manipulateNumRes",
   "resultText": "We identified Pi approximately as 3.14",
   "result": "'''{r}pi'''",
   "lineOfResult": 25,
@@ -131,8 +135,6 @@ Note: For now, datasets are specified as bounding boxes.
 {
   "id": "compendium_id",
   "mainfile": "main.Rmd",
-  "task": "manipulate",
-  "purpose": "manipulateFigure",
   "codeLines": [20, 28],
   "variable": "threshold <- 10",
   "figure": "1",
@@ -147,7 +149,7 @@ Note: For now, datasets are specified as bounding boxes.
 }
 ```
 
-####Substitute
+#### Substitute
 7. Substitute the dataset underlying a specific numerical result in the text.
 
 `POST /api/v1/binding/substitute/substituteNumberData`
