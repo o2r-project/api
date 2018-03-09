@@ -8,22 +8,18 @@ Bindings make static scientific papers interactive. They facilitate access to th
 
 The type of interactivity depends on the purpose. Here, we support the following purposes:
 
-1. Show dataset underlying the paper - showPaperData
-2. Show source code underlying the paper - showPaperCode
-3. Show dataset and source code underlying the paper - showPaperDataCode
-
-4. Show dataset underlying a specific result in the text - showResultData
-5. Show source code underlying a specific result in the text - showResultCode
-6. Show dataset and source code underlying a specific result in the text - showResultDataCode
-
-Purpose 4-6 are also applicable to tables.
-
-7. Show dataset underlying a figure - showFigureData
-8. Show source code underlying a figure - showFigureCode
-9. Show dataset and source code underlying a figure 
-
-7. Manipulate a parameter used to compute a specific numerical result in the text - manipulateNumRes
-8. Manipulate a parameter used to compute a figure - manipulateFigure
+Discover
+1. Search for paper/result/figure using spatiotemporal properties - discoverResult
+Inspect
+2. Show dataset and source code underlying the paper - showPaperDataCode
+3. Show dataset and source code underlying a specific result in the text - showNumberDataCode
+4. Show dataset and source code underlying a figure  - showFigureDataCode
+Manipulate
+5. Manipulate a parameter used to compute a specific numerical result in the text - manipulateNumber
+6. Manipulate a parameter used to compute a figure - manipulateFigure
+Substitute
+7. Substitute the dataset underlying a specific numerical result in the text - substituteNumberData
+8. Substitute the dataset underlying a figure - substituteFigureData
 
 ## Prerequisites
 
@@ -37,34 +33,23 @@ Bindings can be created if the following criteria are met:
 
 When creating a new compendium, authors will reach the "Create bindings section".
 The purposes have some own characteristics. 
-For exmaple, _showFigureData_ only considers the dataset but not the code (vise versa for _showFigureCode_).
-The final JSON object might thus be different for each purpose.
 
-`POST /api/v1/binding`
+`POST /api/v1/binding/discover/discoverResult`
 
 ### Request body for a new binding depending on the purpose
-1. Show dataset underlying the paper
+#### Discover
+1. Search for paper/... using spatiotemporal properties
+
 ```json
 {
-  "id":"compendium_id",
-  "task": "inpect",
-  "purpose": "showPaperData",
-  "dataset": ["data.csv"]
 }
 ```
 
-2. Show source code underlying the paper
-```json
-{
-  "id":"compendium_id",
-  "task": "inspect",
-  "purpose": "showPaperCode",
-  "mainfile": "main.Rmd"
-}
-```
-Note: For now, all R files other than the mainfile are implicitly included in the mainfile.
+####Inspect
 
-3. Show dataset and source code underlying the paper
+`POST /api/v1/binding/inspect/showPaperCode`
+
+2. Show dataset and source code underlying the paper
 ```json
 {
   "id":"compendium_id",
@@ -75,14 +60,14 @@ Note: For now, all R files other than the mainfile are implicitly included in th
 }
 ```
 
-4. Show dataset underlying a specific result in the text.
+`POST /api/v1/binding/inspect/showNumberDataCode`
+
+3. Show dataset and source code underlying a specific result in the text
 ```json
 {
   "id":"compendium_id",
-  "task": "inspect",
-  "purpose": "showResultData",
   "mainfile": "main.Rmd",
-  "resultText": "We identified Pi approximately as 3.14",
+  "context": "We identified Pi approximately as 3.14",
   "result": 3.14,
   "lineOfResult": "19-20",
   "dataset": [{
@@ -93,22 +78,10 @@ Note: For now, all R files other than the mainfile are implicitly included in th
 }
 ```
 
-5. Show source code underlying a specific result in the text
-```json
-{
-  "id": "compendium_id",
-  "mainfile": "main.Rmd",
-  "task": "inspect",
-  "purpose": "showResultCode",
-  "resultText": "We identified Pi approximately as 3.14",
-  "result": "3.14",
-  "lineOfResult": 25,
-  "codeLines": [20, 28]
-}
-```
-6. Show dataset and source code underlying a specific result in the text
+Note: For now, datasets are specified as bounding boxes.
 
-7. Show dataset underlying a figure
+
+4. Show dataset underlying a figure
 ```json
 {
   "id":"compendium_id",
@@ -123,22 +96,12 @@ Note: For now, all R files other than the mainfile are implicitly included in th
    }]  
 }
 ```
-8. Show the source code underlying a figure
-```json
-{
-  "id":"compendium_id",
-  "mainfile": "main.Rmd",
-  "task": "inspect",
-  "purpose": "showFigureCode",
-  "result": "figure 1",
-  "codeLines": [20, 28]
-}
-```
-9. Show dataset and source code underlying a figure
-```json
 
-```
-10. Manipulate a parameter used to compute a specific numerical result in the text
+####Manipulate
+
+`POST /api/v1/binding/manipulate/manipulateNumber`
+
+5. Manipulate a parameter used to compute a specific numerical result in the text
 ```json
 {
   "id": "compendium_id",
@@ -159,7 +122,11 @@ Note: For now, all R files other than the mainfile are implicitly included in th
     }
 }
 ```
-11. Manipulate a parameter used to compute a figure
+
+
+`POST /api/v1/binding/manipulate/manipulateFigure`
+
+6. Manipulate a parameter used to compute a figure
 ```json
 {
   "id": "compendium_id",
@@ -180,6 +147,25 @@ Note: For now, all R files other than the mainfile are implicitly included in th
 }
 ```
 
+####Substitute
+7. Substitute the dataset underlying a specific numerical result in the text.
+
+`POST /api/v1/binding/substitute/substituteNumberData`
+
+```json
+{
+}
+```
+
+
+8. Substitute the dataset underlying a figure.
+
+`POST /api/v1/binding/substitute/substituteFigureData`
+
+```json
+{
+}
+```
 
 ### Request body properties
 
