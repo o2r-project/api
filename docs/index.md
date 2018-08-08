@@ -1,14 +1,14 @@
 # o2r web API documentation
 
-[![Opening Reproducible Research](logo.png)](http://o2r.info)
+[![Opening Reproducible Research](logo.png)](https://o2r.info)
 
 **Current version of the API**: `v1`
 
 ## About
 
-The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](http://o2r.info/architecture/) and the [web interface](https://github.com/o2r-project/o2r-platform).
+The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](https://o2r.info/architecture/) and the [web interface](https://github.com/o2r-project/o2r-platform).
 
-The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented **[in the ERC spec](http://o2r.info/erc-spec)**.
+The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented **[in the ERC spec](https://o2r.info/erc-spec)**.
 
 ## General notes
 
@@ -18,8 +18,6 @@ Unless specified otherwise, responses are always in JSON format.
 Body parameters in `POST` requests are expected in `multipart/form-data` format.
 Requests to the API should always be made with a secure connection using `HTTPS`.
 Some requests require [authentication](user.md#authentication) with a specific [user level](user.md#user-levels).
-
-We also provide a [simple Postman collection](https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json) ([getpostman.com](https://www.getpostman.com/)), so that you can comfortably explore the API.
 
 ## License
 

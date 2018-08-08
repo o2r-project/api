@@ -13,7 +13,7 @@ A trivial execution job would be a completely unmodified compendium, to test the
 All files except the following are copied to a separate storage for each job:
 
 - existing image tarballs, e.g. `image.tar` to reduce size of copied files and because jobs use images from the local image repository anyway
-- the [_display file_](http://o2r.info/erc-spec/spec/#main-display-file) to make sure the check does not wrongly work on the original display file
+- the [_display file_](https://o2r.info/erc-spec/spec/#main-display-file) to make sure the check does not wrongly work on the original display file
 
 ## Job status
 
@@ -291,7 +291,7 @@ The file listing format is described in [compendium files](compendium/files.md).
         }
       ],
       "display":{
-        "diff":"/api/v1/job/UMmJ7/data/diffHTML.html"
+        "diff":"/api/v1/job/UMmJ7/data/check.html"
       },
       "errors":[ ],
       "checkSuccessful":false,

@@ -95,7 +95,7 @@ Request body for a new substitution:
 
 `GET /api/v1/compendium/:id`
 
-This request is handled as regular GET request of a compendium (see [View single compendium](http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium)).
+This request is handled as regular GET request of a compendium (see [View single compendium](/api/compendium/view/#view-single-compendium)).
 
 ### Response
 
