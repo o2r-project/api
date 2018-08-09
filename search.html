@@ -13,12 +13,13 @@
 
   <link rel="stylesheet" href="./css/theme.css" type="text/css" />
   <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="./css/highlight.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
   <link href="./o2r.css" rel="stylesheet">
   
-  <script src="./js/jquery-2.1.1.min.js"></script>
-  <script src="./js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  <script src="./js/jquery-2.1.1.min.js" defer></script>
+  <script src="./js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
 
@@ -29,10 +30,10 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href="." class="icon icon-home"> o2r web API</a>
+        <a href="./." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -43,7 +44,7 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href=".">Home</a>
+    <span class="caption-text">Home</span>
 	    </li>
           
             <li class="toctree-l1">
@@ -56,63 +57,63 @@
     <ul class="subnav">
                 <li class="toctree-l3">
                     
-    <a class="" href="compendium/upload/">API upload</a>
+    <a class="" href="./compendium/upload/">API upload</a>
                 </li>
                 <li class="toctree-l3">
                     
-    <a class="" href="compendium/public_share/">Public share submission</a>
+    <a class="" href="./compendium/public_share/">Public share submission</a>
                 </li>
                 <li class="toctree-l3">
                     
-    <a class="" href="compendium/candidate/">Candidates</a>
+    <a class="" href="./compendium/candidate/">Candidates</a>
                 </li>
     </ul>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/view/">View</a>
+    <a class="" href="./compendium/view/">View</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/delete/">Delete</a>
+    <a class="" href="./compendium/delete/">Delete</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/download/">Download</a>
+    <a class="" href="./compendium/download/">Download</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/metadata/">Metadata</a>
+    <a class="" href="./compendium/metadata/">Metadata</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/files/">Files in a compendium</a>
+    <a class="" href="./compendium/files/">Files in a compendium</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="compendium/substitute/">Substitution</a>
+    <a class="" href="./compendium/substitute/">Substitution</a>
                 </li>
     </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="job/">Job</a>
+    <a class="" href="./job/">Job</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="search/">Search</a>
+    <a class="" href="./search/">Search</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="shipment/">Shipment</a>
+    <a class="" href="./shipment/">Shipment</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="user/">User</a>
+    <a class="" href="./user/">User</a>
 	    </li>
           
         </ul>
@@ -125,7 +126,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href=".">o2r web API</a>
+        <a href="./.">o2r web API</a>
       </nav>
 
       
@@ -133,7 +134,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".">Docs</a> &raquo;</li>
+    <li><a href="./.">Docs</a> &raquo;</li>
     
     
     <li class="wy-breadcrumbs-aside">
@@ -150,7 +151,7 @@
 
   <form id="content_search" action="search.html">
     <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-    <input name="q" id="mkdocs-search-query" type="text" class="search_input search-query ui-autocomplete-input" placeholder="Search the Docs" autocomplete="off" autofocus>
+    <input name="q" id="mkdocs-search-query" type="text" class="search_input search-query ui-autocomplete-input" placeholder="Search the Docs" autocomplete="off" autofocus title="Type search term here">
   </form>
 
   <div id="mkdocs-search-results" class="search-results">
@@ -188,9 +189,8 @@
     </span>
 </div>
     <script>var base_url = '.';</script>
-    <script src="./js/theme.js"></script>
-      <script src="./search/require.js"></script>
-      <script src="./search/search.js"></script>
+    <script src="./js/theme.js" defer></script>
+      <script src="./search/main.js" defer></script>
 
 </body>
 </html>

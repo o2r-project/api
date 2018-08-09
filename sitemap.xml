@@ -1,90 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    
     <url>
-     <loc>http://o2r.info/o2r-web-api//</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api/</loc>
-     <lastmod></lastmod>
+     <loc>https://o2r.info/api/compendium/upload/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/view/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/public_share/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/delete/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/candidate/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/download/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/view/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/metadata/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/delete/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/files/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/download/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>http://o2r.info/o2r-web-api//compendium/substitute/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/metadata/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
-    
-
-    
     <url>
-     <loc>http://o2r.info/o2r-web-api//job/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/files/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>http://o2r.info/o2r-web-api//search/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/compendium/substitute/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>http://o2r.info/o2r-web-api//shipment/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/job/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>http://o2r.info/o2r-web-api//user/</loc>
-     <lastmod>2018-03-08</lastmod>
+     <loc>https://o2r.info/api/search/</loc>
+     <lastmod>2018-08-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
+    <url>
+     <loc>https://o2r.info/api/shipment/</loc>
+     <lastmod>2018-08-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://o2r.info/api/user/</loc>
+     <lastmod>2018-08-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
 </urlset>

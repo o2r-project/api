@@ -7,25 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="None">
   
-  <link rel="shortcut icon" href="./img/favicon.ico">
+  <link rel="shortcut icon" href="img/favicon.ico">
   <title>Home - o2r web API</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="./css/highlight.css">
-  <link href="./o2r.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="o2r.css" rel="stylesheet">
   
   <script>
     // Current page data
     var mkdocs_page_name = "Home";
     var mkdocs_page_input_path = "index.md";
-    var mkdocs_page_url = "/";
+    var mkdocs_page_url = "/api/";
   </script>
   
-  <script src="./js/jquery-2.1.1.min.js"></script>
-  <script src="./js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
 
@@ -39,7 +40,7 @@
         <a href="." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -50,7 +51,7 @@
           
             <li class="toctree-l1 current">
 		
-    <a class="current" href=".">Home</a>
+    <span class="caption-text">Home</span>
     <ul class="subnav">
             
     <li class="toctree-l2"><a href="#o2r-web-api-documentation">o2r web API documentation</a></li>
@@ -171,18 +172,17 @@
             <div class="section">
               
                 <h1 id="o2r-web-api-documentation">o2r web API documentation<a class="headerlink" href="#o2r-web-api-documentation" title="Permanent link">&para;</a></h1>
-<p><a href="http://o2r.info"><img alt="Opening Reproducible Research" src="./logo.png" /></a></p>
+<p><a href="https://o2r.info"><img alt="Opening Reproducible Research" src="logo.png" /></a></p>
 <p><strong>Current version of the API</strong>: <code>v1</code></p>
 <h2 id="about">About<a class="headerlink" href="#about" title="Permanent link">&para;</a></h2>
-<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="http://o2r.info/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.</p>
-<p>The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented <strong><a href="http://o2r.info/erc-spec">in the ERC spec</a></strong>.</p>
+<p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="https://o2r.info/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.</p>
+<p>The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented <strong><a href="https://o2r.info/erc-spec">in the ERC spec</a></strong>.</p>
 <h2 id="general-notes">General notes<a class="headerlink" href="#general-notes" title="Permanent link">&para;</a></h2>
 <p>The API is implemented as a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>ful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
 <p>Unless specified otherwise, responses are always in JSON format.
 Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.
 Requests to the API should always be made with a secure connection using <code>HTTPS</code>.
 Some requests require <a href="user/#authentication">authentication</a> with a specific <a href="user/#user-levels">user level</a>.</p>
-<p>We also provide a <a href="https://raw.githubusercontent.com/o2r-project/o2r-web-api/master/muncher.postman_collection.json">simple Postman collection</a> (<a href="https://www.getpostman.com/">getpostman.com</a>), so that you can comfortably explore the API.</p>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
 <p><img alt="CC-0 Button" src="https://licensebuttons.net/p/zero/1.0/88x31.png" /></p>
 <p>The o2r Executable Research Compendium specification is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 1.0 Universal License</a>, see file <code>LICENSE</code>.
@@ -228,14 +228,13 @@ This work is published from: Germany.</p>
     </span>
 </div>
     <script>var base_url = '.';</script>
-    <script src="./js/theme.js"></script>
-      <script src="./search/require.js"></script>
-      <script src="./search/search.js"></script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
 
 </body>
 </html>
 
 <!--
-MkDocs version : 0.17.3
-Build Date UTC : 2018-03-08 14:13:57
+MkDocs version : 1.0
+Build Date UTC : 2018-08-09 08:06:51
 -->

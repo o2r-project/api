@@ -13,19 +13,20 @@
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="../../css/highlight.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
   <link href="../../o2r.css" rel="stylesheet">
   
   <script>
     // Current page data
     var mkdocs_page_name = "Substitution";
     var mkdocs_page_input_path = "compendium/substitute.md";
-    var mkdocs_page_url = "/compendium/substitute/";
+    var mkdocs_page_url = "/api/compendium/substitute/";
   </script>
   
-  <script src="../../js/jquery-2.1.1.min.js"></script>
-  <script src="../../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
 
@@ -39,7 +40,7 @@
         <a href="../.." class="icon icon-home"> o2r web API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -50,7 +51,7 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../..">Home</a>
+    <span class="caption-text">Home</span>
 	    </li>
           
             <li class="toctree-l1">
@@ -251,7 +252,7 @@ Required content of the request are the identifiers of the base and overlay comp
 <h3 id="request_1">Request<a class="headerlink" href="#request_1" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/compendium/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
-<p>This request is handled as regular GET request of a compendium (see <a href="http://o2r.info/o2r-web-api/compendium/view/#view-single-compendium">View single compendium</a>).</p>
+<p>This request is handled as regular GET request of a compendium (see <a href="/api/compendium/view/#view-single-compendium">View single compendium</a>).</p>
 <h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
 <p>A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.</p>
 <p>Example 01 - in case there are no conflicts between filenames of any base file and overlay file :</p>
@@ -482,9 +483,8 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
     </span>
 </div>
     <script>var base_url = '../..';</script>
-    <script src="../../js/theme.js"></script>
-      <script src="../../search/require.js"></script>
-      <script src="../../search/search.js"></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
 
 </body>
 </html>
