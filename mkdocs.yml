@@ -22,4 +22,5 @@ site_url: https://o2r.info/api/
 extra_css: [o2r.css]
 markdown_extensions:
   - markdown.extensions.admonition
-  - toc(permalink=true)
+  - toc:
+      permalink: true
