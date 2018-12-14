@@ -5,6 +5,10 @@ build:
 	mkdocs build --clean
 
 pdf: build
+	wkhtmltopdf --version;
+	# fix protocol relative URLs, see https://github.com/wkhtmltopdf/wkhtmltopdf/issues/2713
+	find site/ -type f -name '*.html' | xargs sed -i 's|href="//|href="https://|g'
+	find site/ -type f -name '*.html' | xargs sed -i 's|src="//|src="https://|g'
 	wkhtmltopdf --margin-top 20mm --no-background --javascript-delay 5000 \
 	file://$(shell pwd)/site/index.html \
 	file://$(shell pwd)/site/compendium/view/index.html \
