@@ -1,5 +1,8 @@
 site_name: o2r web API
-pages:
+site_author: "Daniel Nüst, Marc Schutzeichel, Markus Konkol"
+site_description: "Executable Research Compendium technical specification, user guides, developer guides, and support."
+copyright: "Licensed under Creative Commons CC0 1.0 Universal License."
+nav:
   - Home: index.md
   - Compendium:
     - Create new compendium:
@@ -16,9 +19,14 @@ pages:
   - Search: search.md
   - Shipment: shipment.md
   - User: user.md
-theme: readthedocs # flatly, cinder
-site_dir: site
+theme:
+    name: readthedocs
+    custom_dir: custom_theme
+repo_url: https://github.com/o2r-project/api
+repo_name: GitHub
+edit_uri: tree/master/docs/
 site_url: https://o2r.info/api/
+site_dir: site
 extra_css: [o2r.css]
 markdown_extensions:
   - markdown.extensions.admonition

@@ -10,6 +10,14 @@ The o2r web API acts as the interface between the [o2r](https://o2r.info) [micro
 
 The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented **[in the ERC spec](https://o2r.info/erc-spec)**.
 
+## Citation
+
+To cite this specification please use
+
+> _Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:[10.5281/zenodo.2203844](http://doi.org/10.5281/zenodo.2203844)_
+
+For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit [https://o2r.info/results/](https://o2r.info/results/).
+
 ## General notes
 
 The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is `/api/v1`.
