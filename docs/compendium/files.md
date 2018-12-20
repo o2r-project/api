@@ -63,6 +63,7 @@ This list contains the custom mapping of file extensions to MIME types used in t
 | Extension        | MIME type          |
 |------------------|--------------------|
 | `.R`, `.r`       | `script/x-R`       |
+|  `.RData`, `.Rdata`, `.rdata`, `.rda`   |  `application/x-r-data`  |
 
 ## File inspection: RData
 
