@@ -174,11 +174,12 @@ The following is a list of actions and the corresponding required _minimum_ user
     - Create substitutions
     - Delete own candidates
 - `500` _Editors_
-    - Edit user levels
-    - Edit metadata of other user's compendia
-    - View other user's candidates
-- `1000` _Admins_
+    - Edit user levels up to own level
+    - Edit compendium metadata
     - Delete candidates
+- `1000` _Admins_
+    - Edit user levels up to own level
+    - Delete compendia and candidates
     - View status pages of microservices
 
 ## Edit user

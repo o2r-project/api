@@ -3,10 +3,10 @@
 To delete a compendium **candidate**, an HTTP `DELETE` request can be send to the compendium endpoint.
 
 !!! Important
-    Once a compendium is not a candidate anymore, it **cannot** be deleted via the API.
+    Once a compendium is not a candidate anymore, it can only be deleted by admins with the required [user level](../user.md#user-levels).
+    The compendium contents should be moved to a specific location to the server as a backup.
 
-!!! note "Required user level"
-
+!!! note "Required user level for candidate deletion"
     The user deleting a candidate must be the author or have the required [user level](../user.md#user-levels).
 
 ## Request
