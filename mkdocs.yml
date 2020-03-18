@@ -15,6 +15,7 @@ nav:
     - Metadata: compendium/metadata.md
     - Files in a compendium: compendium/files.md
     - Substitution: compendium/substitute.md
+    - Public links: compendium/link.md
   - Job: job.md
   - Search: search.md
   - Shipment: shipment.md

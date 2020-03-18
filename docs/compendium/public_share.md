@@ -79,7 +79,7 @@ curl -F "content_type=compendium" \
 ### Error responses for creating compendium from public share
 
 ```json
-401 Unauthorized
+403 Forbidden
 
 {"error":"unauthorized: user level does not allow compendium creation"}
 ```
@@ -158,7 +158,13 @@ If the Zenodo record id is supplied through the `doi` or `zenodo_record_id` para
 ```json
 401 Unauthorized
 
-{"error":"unauthorized: user level does not allow compendium creation"}
+{"error":"user is not authenticated"}
+```
+
+```json
+403 Forbidden
+
+{"error":"user level does not allow compendium creation"}
 ```
 
 ```json
