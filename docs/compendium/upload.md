@@ -58,7 +58,7 @@ curl -F "compendium=@path/to/workspace.zip;type=application/zip" \
 ```
 
 ```json
-401 Unauthorized
+403 Forbidden
 
 {"error":"user level does not allow compendium creation"}
 ```

@@ -177,6 +177,7 @@ The following is a list of actions and the corresponding required _minimum_ user
     - Edit user levels up to own level
     - Edit compendium metadata
     - Delete candidates
+    - Manage [public links](compendium/link.md) for candidates
 - `1000` _Admins_
     - Edit user levels up to own level
     - Delete compendia and candidates
@@ -224,7 +225,7 @@ curl --request PATCH --cookie "connect.sid=<session cookie here>" \
 ```
 
 ```json
-401 Unauthorized
+403 Forbidden
 
 {
   "error": "user level does not allow edit"
