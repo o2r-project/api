@@ -1,73 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://o2r.info/api/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/upload/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/public_share/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/candidate/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/view/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/delete/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/download/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/metadata/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/files/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/compendium/substitute/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
+     <loc>https://o2r.info/api/compendium/link/</loc>
+     <lastmod>2020-03-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://o2r.info/api/job/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/search/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/shipment/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
-    </url>
-    <url>
+    </url><url>
      <loc>https://o2r.info/api/user/</loc>
-     <lastmod>2018-12-20</lastmod>
+     <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

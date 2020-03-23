@@ -7,14 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
+  <link rel="canonical" href="https://o2r.info/api/job/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>Job - o2r web API</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-  <link href="../o2r.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../o2r.css" rel="stylesheet" />
   
   <script>
     // Current page data
@@ -25,7 +26,7 @@
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -36,6 +37,7 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> o2r web API</a>
         <div role="search">
@@ -46,110 +48,93 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="..">Home</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Compendium</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <span class="caption-text">Create new compendium</span>
-    <ul class="subnav">
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/upload/">API upload</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Compendium</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/upload/">API upload</a>
                 </li>
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/public_share/">Public share submission</a>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
                 </li>
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/candidate/">Candidates</a>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
                 </li>
     </ul>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/view/">View</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/delete/">Delete</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/download/">Download</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/metadata/">Metadata</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/files/">Files in a compendium</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/substitute/">Substitution</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1 current">
-		
-    <a class="current" href="./">Job</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#execute-a-compendium">Execute a compendium</a></li>
-    
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Metadata</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/files/">Files in a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/substitute/">Substitution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/link/">Public links</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Job</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#job-files">Job files</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#job-status">Job status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#steps-of-a-job">Steps of a job</a>
         <ul>
-        
-            <li><a class="toctree-l3" href="#job-files">Job files</a></li>
-        
-            <li><a class="toctree-l3" href="#job-status">Job status</a></li>
-        
-            <li><a class="toctree-l3" href="#steps-of-a-job">Steps of a job</a></li>
-        
-            <li><a class="toctree-l3" href="#new-job">New job</a></li>
-        
-            <li><a class="toctree-l3" href="#list-jobs">List jobs</a></li>
-        
-            <li><a class="toctree-l3" href="#view-single-job">View single job</a></li>
-        
-            <li><a class="toctree-l3" href="#job-status-updates">Job status updates</a></li>
-        
+    <li class="toctree-l3"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-metadata">Step metadata</a>
+    </li>
         </ul>
-    
-
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#new-job">New job</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#body-parameters-for-new-jobs">Body parameters for new jobs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-new-jobs">Error responses for new jobs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#list-jobs">List jobs</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#get-query-parameters-for-listing-jobs">GET query parameters for listing jobs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-single-job">View single job</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#url-parameters-for-single-job-view">URL parameters for single job view</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-single-job-view">Error responses for single job view</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#job-status-updates">Job status updates</a>
+    </li>
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../search/">Search</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../shipment/">Shipment</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../user/">User</a>
-	    </li>
-          
-        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../search/">Search</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipment</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/">User</a>
+                    </li>
+                </ul>
       </div>
-      &nbsp;
+    </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -177,6 +162,7 @@
       
     </li>
   </ul>
+  
   <hr/>
 </div>
           <div role="main">
@@ -502,7 +488,7 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
         <a href="../search/" class="btn btn-neutral float-right" title="Search">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../compendium/substitute/" class="btn btn-neutral" title="Substitution"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium/link/" class="btn btn-neutral" title="Public links"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -516,7 +502,7 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
     
   </div>
 
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
       
         </div>
@@ -526,13 +512,13 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
 
   </div>
 
-  <div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
           <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../compendium/substitute/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../compendium/link/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../search/" style="color: #fcfcfc">Next &raquo;</a></span>
@@ -542,6 +528,11 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 
 </body>
 </html>

@@ -7,14 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
+  <link rel="canonical" href="https://o2r.info/api/user/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>User - o2r web API</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-  <link href="../o2r.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../o2r.css" rel="stylesheet" />
   
   <script>
     // Current page data
@@ -25,7 +26,7 @@
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -36,6 +37,7 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> o2r web API</a>
         <div role="search">
@@ -46,106 +48,101 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="..">Home</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Compendium</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <span class="caption-text">Create new compendium</span>
-    <ul class="subnav">
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/upload/">API upload</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Compendium</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/upload/">API upload</a>
                 </li>
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/public_share/">Public share submission</a>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
                 </li>
-                <li class="toctree-l3">
-                    
-    <a class="" href="../compendium/candidate/">Candidates</a>
+                <li class="toctree-l2"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
                 </li>
     </ul>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/view/">View</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/delete/">Delete</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/download/">Download</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/metadata/">Metadata</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/files/">Files in a compendium</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../compendium/substitute/">Substitution</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../job/">Job</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../search/">Search</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../shipment/">Shipment</a>
-	    </li>
-          
-            <li class="toctree-l1 current">
-		
-    <a class="current" href="./">User</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#user">User</a></li>
-    
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Metadata</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/files/">Files in a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/substitute/">Substitution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/link/">Public links</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../job/">Job</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../search/">Search</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipment</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">User</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#list-users">List users</a>
         <ul>
-        
-            <li><a class="toctree-l3" href="#list-users">List users</a></li>
-        
-            <li><a class="toctree-l3" href="#view-single-user">View single user</a></li>
-        
-            <li><a class="toctree-l3" href="#authentication">Authentication</a></li>
-        
-            <li><a class="toctree-l3" href="#user-levels">User levels</a></li>
-        
-            <li><a class="toctree-l3" href="#edit-user">Edit user</a></li>
-        
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-user-list">Error responses for user list</a>
+    </li>
         </ul>
-    
-
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-single-user">View single user</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#url-parameters-for-single-user-view">URL parameters for single user view</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-single-user-view">Error responses for single user view</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#client-authentication">Client authentication</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#access-authentication-information-for-direct-api-access">Access authentication information for direct API access</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#authentication-within-microservices">Authentication within microservices</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#authentication-provider">Authentication provider</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#start-oauth-login">Start OAuth login</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#request-authentication-status">Request authentication status</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#error-response-for-requests-requiring-authentication">Error response for requests requiring authentication</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-levels">User levels</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#edit-user">Edit user</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#change-user-level-request">Change user level request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-user-level-change">Error responses for user level change</a>
+    </li>
+        </ul>
+    </li>
     </ul>
-	    </li>
-          
-        </ul>
+                    </li>
+                </ul>
       </div>
-      &nbsp;
+    </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -173,6 +170,7 @@
       
     </li>
   </ul>
+  
   <hr/>
 </div>
           <div role="main">
@@ -311,13 +309,15 @@ Only admin users and the user herself can read the level of a user.</p>
 </ul>
 </li>
 <li><code>500</code> <em>Editors</em><ul>
-<li>Edit user levels</li>
-<li>Edit metadata of other user's compendia</li>
-<li>View other user's candidates</li>
+<li>Edit user levels up to own level</li>
+<li>Edit compendium metadata</li>
+<li>Delete candidates</li>
+<li>Manage <a href="../compendium/link/">public links</a> for candidates</li>
 </ul>
 </li>
 <li><code>1000</code> <em>Admins</em><ul>
-<li>Delete candidates</li>
+<li>Edit user levels up to own level</li>
+<li>Delete compendia and candidates</li>
 <li>View status pages of microservices</li>
 </ul>
 </li>
@@ -355,7 +355,7 @@ The response is the full user document with the updated value.</p>
 }
 </code></pre>
 
-<pre><code class="json">401 Unauthorized
+<pre><code class="json">403 Forbidden
 
 {
   &quot;error&quot;: &quot;user level does not allow edit&quot;
@@ -390,7 +390,7 @@ The response is the full user document with the updated value.</p>
     
   </div>
 
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
       
         </div>
@@ -400,7 +400,7 @@ The response is the full user document with the updated value.</p>
 
   </div>
 
-  <div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
           <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
@@ -414,6 +414,11 @@ The response is the full user document with the updated value.</p>
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 
 </body>
 </html>

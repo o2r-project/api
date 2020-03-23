@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
-  <link rel="canonical" href="https://o2r.info/api/compendium/delete/">
+  <link rel="canonical" href="https://o2r.info/api/compendium/link/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Delete - o2r web API</title>
+  <title>Public links - o2r web API</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Delete";
-    var mkdocs_page_input_path = "compendium/delete.md";
-    var mkdocs_page_url = "/api/compendium/delete/";
+    var mkdocs_page_name = "Public links";
+    var mkdocs_page_input_path = "compendium/link.md";
+    var mkdocs_page_url = "/api/compendium/link/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -66,15 +66,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../view/">View</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Delete</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#request">Request</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#response">Response</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#error-responses-for-compendium-delete">Error responses for compendium delete</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../download/">Download</a>
                     </li>
@@ -84,7 +76,35 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../substitute/">Substitution</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../link/">Public links</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Public links</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#create-link">Create link</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#list-links">List links</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_1">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#reponse">Reponse</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#delete-link">Delete link</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_2">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response_1">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#error-responses-for-public-link-management">Error responses for public link management</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
                 <ul>
@@ -128,10 +148,10 @@
         
       
     
-    <li>Delete</li>
+    <li>Public links</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/delete.md"
+        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/link.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -142,29 +162,84 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="delete-compendium">Delete compendium<a class="headerlink" href="#delete-compendium" title="Permanent link">&para;</a></h1>
-<p>To delete a compendium <strong>candidate</strong>, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.</p>
+                <h1 id="public-links">Public links<a class="headerlink" href="#public-links" title="Permanent link">&para;</a></h1>
+<p>For inspection by others, it is possible to create a <strong>read-only public link to a compendium candidate</strong>.
+This link can, e.g., be used in peer review.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href="../../user/#user-levels">user level</a>.
-The compendium contents should be moved to a specific location to the server as a backup.</p>
+<p>Every person with the link can view the compendium and start jobs for it.
+The jobs are <em>not</em> access controlled beyond the random identifier.
+Jobs for private links are <em>not listed</em> in the generic job list, but they can be accessed when <a href="../view/#list-related-execution-jobs">retrieving jobs for a compendium</a> using the public link for the candidate compendium.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Required user level for candidate deletion</p>
-<p>The user deleting a candidate must be the author or have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p class="admonition-title">Required user level for link creation</p>
+<p>The user managing public links must have the required <a href="../../user/#user-levels">user level</a> - authors cannot do this by themselves so no private data is shared by mistake.</p>
 </div>
-<h2 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h2>
-<p>The following request deletes the compendium with the identifier <code>12345</code>, including metadata and files.</p>
-<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345 \
+<h2 id="create-link">Create link<a class="headerlink" href="#create-link" title="Permanent link">&para;</a></h2>
+<h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
+<p>The following request creates a link for the <em>candidate</em> compendium with the identifier <code>12345</code>.</p>
+<pre><code class="bash">curl -X PUT https://…/api/v1/compendium/12345/link \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
 
-<h2 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
-<p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
-<pre><code class="bash">204 OK
+<h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
+<p>The response has an HTTP status of <code>200</code> if the public link was created.
+The response body provides the public link <code>id</code>, which can be used for subsequent requests to:</p>
+<ul>
+<li>view the candidate compendium</li>
+<li>download candidate compendium files</li>
+<li>start jobs for the candidate compendium</li>
+</ul>
+<p>Only <strong>1 public link</strong> is created per candidate compendium.
+<em>Subsequent requests will return the same link.</em></p>
+<pre><code class="json">200 OK
+
+{
+    &quot;id&quot;:&quot;lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr&quot;,
+    &quot;compendium&quot;:&quot;xkjzY&quot;,
+    &quot;user&quot;:&quot;0000-0002-1701-2564&quot;
+}
 </code></pre>
 
-<h2 id="error-responses-for-compendium-delete">Error responses for compendium delete<a class="headerlink" href="#error-responses-for-compendium-delete" title="Permanent link">&para;</a></h2>
+<h2 id="list-links">List links<a class="headerlink" href="#list-links" title="Permanent link">&para;</a></h2>
+<h3 id="request_1">Request<a class="headerlink" href="#request_1" title="Permanent link">&para;</a></h3>
+<pre><code class="bash">curl -X GET http://localhost/api/v1/link
+    --cookie &quot;connect.sid=s%3AVU61x4E&lt;rest of cookie&gt;&quot;
+</code></pre>
+
+<h3 id="reponse">Reponse<a class="headerlink" href="#reponse" title="Permanent link">&para;</a></h3>
+<pre><code class="json">HTTP 200
+
+{
+  &quot;results&quot;: [
+    {
+      &quot;id&quot;: &quot;b56Cy5EG7oiCBPCZMjXIPXoSyPVxiGVA&quot;,
+      &quot;compendium&quot;: &quot;eENFZ&quot;,
+      &quot;user&quot;: &quot;0000-0002-1701-2564&quot;
+    },
+    {
+      &quot;id&quot;: &quot;p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt&quot;,
+      &quot;compendium&quot;: &quot;xkjzY&quot;,
+      &quot;user&quot;: &quot;0000-0002-1701-2564&quot;
+    }
+  ]
+}
+</code></pre>
+
+<h2 id="delete-link">Delete link<a class="headerlink" href="#delete-link" title="Permanent link">&para;</a></h2>
+<h3 id="request_2">Request<a class="headerlink" href="#request_2" title="Permanent link">&para;</a></h3>
+<p>The following request deletes a link for the compendium with the identifier <code>12345</code>.</p>
+<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345/link \
+    --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
+</code></pre>
+
+<h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
+<p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
+<pre><code class="bash">204 No Content
+</code></pre>
+
+<h2 id="error-responses-for-public-link-management">Error responses for public link management<a class="headerlink" href="#error-responses-for-public-link-management" title="Permanent link">&para;</a></h2>
+<p>The following errors can occur on all management operations (create, list, delete).</p>
 <pre><code class="json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}
@@ -186,10 +261,10 @@ The compendium contents should be moved to a specific location to the server as 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../download/" class="btn btn-neutral float-right" title="Download">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../view/" class="btn btn-neutral" title="View"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../substitute/" class="btn btn-neutral" title="Substitution"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -219,10 +294,10 @@ The compendium contents should be moved to a specific location to the server as 
           <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../view/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../substitute/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../download/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../job/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
