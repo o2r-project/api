@@ -110,7 +110,7 @@ The following are **optional parameters**:
 - `shipment_id` (`string`): a user-defined identifier for the shipment (see `id` in response)
 
 !!! note "Required user level"
-    The user sending the request to create a shipment must have the required [user level](user.md#user-levels).
+    The user sending the request to create a shipment must have the required [user level](user/levels.md).
 
 ### Creation response
 

@@ -3,28 +3,33 @@ site_author: "Daniel Nüst, Marc Schutzeichel, Markus Konkol"
 site_description: "Executable Research Compendium technical specification, user guides, developer guides, and support."
 copyright: "Licensed under Creative Commons CC0 1.0 Universal License."
 nav:
-  - Home: index.md
-  - Compendium:
-    - Create new compendium:
-      - API upload: compendium/upload.md
-      - Public share submission: compendium/public_share.md
-      - Candidates: compendium/candidate.md
-    - View: compendium/view.md
-    - Delete: compendium/delete.md
-    - Download: compendium/download.md
-    - Metadata: compendium/metadata.md
-    - Files in a compendium: compendium/files.md
-    - Substitution: compendium/substitute.md
-    - Public links: compendium/link.md
-  - Job: job.md
-  - Search: search.md
-  - Shipment: shipment.md
-  - User: user.md
+  - Home: 'index.md'
+  - Compendium management:
+    - Overview of the compendiuam life-cycle: 'compendium/overview.md'
+    - API upload: 'compendium/upload.md'
+    - Public share submission: 'compendium/public_share.md'
+    - Candidates: 'compendium/candidate.md'
+    - View a compendium: 'compendium/view.md'
+    - Delete a compendium: 'compendium/delete.md'
+    - Download a compenium: 'compendium/download.md'
+    - Compendium metadata: 'compendium/metadata.md'
+    - Files in a compendium: 'compendium/files.md'
+    - Compendium execution: 'job.md'
+    - Shipments: 'shipment.md'
+  - Extras:
+    - Substitution: 'compendium/substitute.md'
+    - Public links: 'compendium/link.md'
+  - Search:
+    - Finding compendia and jobs: 'search.md'
+  - Users:
+    - User management: 'user/user.md'
+    - User levels: 'user/levels.md'
+    - Authentication (for developers): 'user/auth.md'
 theme:
-    name: readthedocs
-    custom_dir: custom_theme
+  name: readthedocs
+  custom_dir: custom_theme
 repo_url: https://github.com/o2r-project/api
-repo_name: GitHub
+repo_name: github.com/o2r-project/api
 edit_uri: tree/master/docs/
 site_url: https://o2r.info/api/
 site_dir: site

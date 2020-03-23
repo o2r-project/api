@@ -1,8 +1,8 @@
 language: python
-python:
-  - "3.5"
 script: true
-install: "pip install mkdocs"
+install:
+  - pip install mkdocs
+  - mkdocs --version
 after_success:
   - if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./.deploy.sh ; fi
 env:

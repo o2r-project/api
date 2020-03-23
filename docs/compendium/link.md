@@ -9,7 +9,7 @@ This link can, e.g., be used in peer review.
     Jobs for private links are _not listed_ in the generic job list, but they can be accessed when [retrieving jobs for a compendium](view.md#list-related-execution-jobs) using the public link for the candidate compendium.
 
 !!! note "Required user level for link creation"
-    The user managing public links must have the required [user level](../user.md#user-levels) - authors cannot do this by themselves so no private data is shared by mistake.
+    The user managing public links must have the required [user level](../user/levels.md) - authors cannot do this by themselves so no private data is shared by mistake.
 
 ## Create link
 
@@ -39,7 +39,7 @@ _Subsequent requests will return the same link._
 
 {
     "id":"lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr",
-    "compendium":"xkjzY",
+    "compendium_id":"xkjzY",
     "user":"0000-0002-1701-2564"
 }
 ```
@@ -62,12 +62,12 @@ HTTP 200
   "results": [
     {
       "id": "b56Cy5EG7oiCBPCZMjXIPXoSyPVxiGVA",
-      "compendium": "eENFZ",
+      "compendium_id": "eENFZ",
       "user": "0000-0002-1701-2564"
     },
     {
       "id": "p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt",
-      "compendium": "xkjzY",
+      "compendium_id": "xkjzY",
       "user": "0000-0002-1701-2564"
     }
   ]

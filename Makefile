@@ -3,6 +3,7 @@ serve:
 
 build:
 	mkdocs build --clean
+	echo "$(shell pwd)/site/index.html"
 
 pdf: build
 	wkhtmltopdf --version;

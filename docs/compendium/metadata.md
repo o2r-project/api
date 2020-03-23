@@ -207,7 +207,7 @@ After creation the metadata is persisted to both files and database, so updating
 
 !!! note "Metadata update rights"
 
-    Only authors of a compendium or users with the required [user level](../user.md#user-levels) can update a compendium's metadata.
+    Only authors of a compendium or users with the required [user level](../user/levels.md) can update a compendium's metadata.
 
 ### Metadata update request
 
