@@ -7,8 +7,8 @@ Upon successful extraction of archive and processing of the contents, the `id` f
 
 !!! note "Required user level and authentication"
 
-    The user creating a new compendium must have the required [user level](../user.md#user-levels).
-    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user.md#client-authentication).
+    The user creating a new compendium must have the required [user level](../user/levels.md).
+    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user/auth.md).
 
 ```bash
 curl -F "compendium=@compendium.zip;type=application/zip" \

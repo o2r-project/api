@@ -49,7 +49,7 @@ Request body for a new substitution:
 
 !!! note "Required user level"
 
-    The user creating a new substitution must have the required [user level](../user.md#user-levels).
+    The user creating a new substitution must have the required [user level](../user/levels.md).
 
 ### Response
 

@@ -16,8 +16,8 @@ The upload is only allowed for logged in users.
 
 !!! note "Required user level and authentication"
 
-    The user creating a new compendium must have the required [user level](../user.md#user-levels).
-    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user.md#client-authentication).
+    The user creating a new compendium must have the required [user level](../user/levels.md).
+    Requests must be authenticated with a cookie `connect.sid`, see [user authentication](../user/auth.md).
 
 To run the load from the command line, login on the website and open you browser cookies.
 Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.

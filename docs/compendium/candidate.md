@@ -2,6 +2,7 @@
 
 After uploading a compendium is _not_ instantly publicly available.
 It is merely a **candidate**, because metadata still must be completed for the compendium to be valid.
+Users with sufficient rights can create [public links](link.md) for a candidate compendium.
 
 The following process models this intermediate state of a compendium.
 
@@ -26,7 +27,7 @@ It is set to `true` after creating a new compendium by [upload](upload.md) or [p
 }
 ```
 
-Only the creating user and users with [required level](../user.md#user-levels) can view a candidate and see the `candidate` property while it is `true`.
+Only the creating user and users with [required level](../user/levels.md) can view a candidate and see the `candidate` property while it is `true`.
 
 When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list is extended by available candidates.
 The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.
