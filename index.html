@@ -62,47 +62,50 @@
     </ul>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="compendium/upload/">API upload</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="compendium/public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="compendium/candidate/">Candidates</a>
-                </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="compendium/view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="compendium/delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="compendium/download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="compendium/metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="compendium/metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="compendium/files/">Files in a compendium</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="compendium/substitute/">Substitution</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="compendium/link/">Public links</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="job/">Job</a>
+                    <li class="toctree-l1"><a class="reference internal" href="search/">Finding compendia and jobs</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="search/">Search</a>
+                    <li class="toctree-l1"><a class="reference internal" href="user/user/">User management</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="user/levels/">User levels</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -129,8 +132,7 @@
     <li>Home</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/index.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/index.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -146,21 +148,25 @@
 <h2 id="about">About<a class="headerlink" href="#about" title="Permanent link">&para;</a></h2>
 <p>The o2r web API acts as the interface between the <a href="https://o2r.info">o2r</a> <a href="https://o2r.info/architecture/">microservices</a> and the <a href="https://github.com/o2r-project/o2r-platform">web interface</a>.</p>
 <p>The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented <strong><a href="https://o2r.info/erc-spec">in the ERC spec</a></strong>.</p>
+<p><strong>A good starting point for understanding the different parts of the API is the <a href="compendium/overview/">compendium life-cycle</a>.</strong></p>
+<hr />
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h2>
 <p>To cite this specification please use</p>
 <blockquote>
 <p><em>Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:<a href="http://doi.org/10.5281/zenodo.2203844">10.5281/zenodo.2203844</a></em></p>
 </blockquote>
 <p>For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit <a href="https://o2r.info/results/">https://o2r.info/results/</a>.</p>
+<hr />
 <h2 id="general-notes">General notes<a class="headerlink" href="#general-notes" title="Permanent link">&para;</a></h2>
 <p>The API is implemented as a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>ful API. The entrypoint for the current version is <code>/api/v1</code>.</p>
 <p>Unless specified otherwise, responses are always in JSON format.
 Body parameters in <code>POST</code> requests are expected in <code>multipart/form-data</code> format.
 Requests to the API should always be made with a secure connection using <code>HTTPS</code>.
-Some requests require <a href="user/#authentication">authentication</a> with a specific <a href="user/#user-levels">user level</a>.</p>
+Some requests require <a href="user/auth/">authentication</a> with a specific <a href="user/levels/">user level</a>.</p>
+<hr />
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
 <p><img alt="CC-0 Button" src="https://licensebuttons.net/p/zero/1.0/88x31.png" /></p>
-<p>The o2r Executable Research Compendium specification is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 1.0 Universal License</a>, see file <code>LICENSE</code>.
+<p>The o2r Executable Research Compendium specification is licensed under <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 1.0 Universal License</a>, see file <a href="https://github.com/o2r-project/api/tree/master/LICENSE"><code>LICENSE</code></a>.
 To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work.
 This work is published from: Germany.</p>
               
@@ -170,7 +176,7 @@ This work is published from: Germany.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="compendium/upload/" class="btn btn-neutral float-right" title="API upload">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="compendium/overview/" class="btn btn-neutral float-right" title="Overview of the compendiuam life-cycle">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -198,11 +204,9 @@ This work is published from: Germany.</p>
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-      
-        <span style="margin-left: 15px"><a href="compendium/upload/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="compendium/overview/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -220,5 +224,5 @@ This work is published from: Germany.</p>
 
 <!--
 MkDocs version : 1.1
-Build Date UTC : 2020-03-23 14:07:34
+Build Date UTC : 2020-03-23 16:19:25
 -->

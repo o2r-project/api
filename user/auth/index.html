@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
+  <link rel="canonical" href="https://o2r.info/api/user/auth/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Authentication (for developers) - o2r web API</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../o2r.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Authentication (for developers)";
+    var mkdocs_page_input_path = "user/auth.md";
+    var mkdocs_page_url = "/api/user/auth/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> o2r web API</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/overview/">Overview of the compendiuam life-cycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/upload/">API upload</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/public_share/">Public share submission</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/candidate/">Candidates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/metadata/">Compendium metadata</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/files/">Files in a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/substitute/">Substitution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/link/">Public links</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Finding compendia and jobs</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../user/">User management</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../levels/">User levels</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Authentication (for developers)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#client-authentication">Client authentication</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#access-authentication-information-for-direct-api-access">Access authentication information for direct API access</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#authentication-within-microservices">Authentication within microservices</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#authentication-provider">Authentication provider</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#start-oauth-login">Start OAuth login</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#request-authentication-status">Request authentication status</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-response-for-requests-requiring-authentication">Error response for requests requiring authentication</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">o2r web API</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Users &raquo;</li>
+        
+      
+    
+    <li>Authentication (for developers)</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/o2r-project/api/tree/master/docs/user/auth.md"> Edit on github.com/o2r-project/api</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h1>
+<p>User authentication is done via authenticated sessions, which are referenced with a cookie called <code>connect.sid</code>. For every endpoint that needs user authentication, a cookie with an authenticated session is required.</p>
+<h2 id="client-authentication">Client authentication<a class="headerlink" href="#client-authentication" title="Permanent link">&para;</a></h2>
+<p>To execute restricted operations of the API, such as <a href="">compendium upload</a> or <a href="">job execution</a>, a client must provide an authentication token via a cookie.</p>
+<p>A client must first login on the website to access a browser cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Provide the content of the cookie when making requests to the API as shown in the request example below.</p>
+<h2 id="access-authentication-information-for-direct-api-access">Access authentication information for direct API access<a class="headerlink" href="#access-authentication-information-for-direct-api-access" title="Permanent link">&para;</a></h2>
+<p>To run commands which require authentication from the command line, a user must login on the website first.
+Then open you browser cookies and find a cookie issued by <code>o2r.uni-muenster.de</code> with the name <code>connect.sid</code>.
+Use the the contents of the cookie for your requests, for example as shown below when using curl.</p>
+<pre><code class="bash">curl [...] --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
+     https://…/api/v1/endpoint
+</code></pre>
+
+<h2 id="authentication-within-microservices">Authentication within microservices<a class="headerlink" href="#authentication-within-microservices" title="Permanent link">&para;</a></h2>
+<p><strong>Attention:</strong> The authentication process <em>requires</em> a secured connection, i.e. <code>HTTPS</code>.</p>
+<h3 id="authentication-provider">Authentication provider<a class="headerlink" href="#authentication-provider" title="Permanent link">&para;</a></h3>
+<p>Session authentication is done using the OAuth 2.0 protocol.
+Currently <a href="https://www.orcid.org">ORCID</a> is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
+Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
+They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.</p>
+<h3 id="start-oauth-login">Start OAuth login<a class="headerlink" href="#start-oauth-login" title="Permanent link">&para;</a></h3>
+<p>Navigate the web browser (e.g. via a HTML <code>&lt;a&gt;</code> link) to <code>/api/v1/auth/login</code>, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the <code>/api/v1/auth/login</code> endpoint with a unique <code>code</code> param that is used to verify the request.</p>
+<p>If the verification was successful, the endpoint returns a session cookie named <code>connect.sid</code>, which is tied to a authenticated session. The server answers with a <code>301 redirect</code>, which redirects the user back to <code>/</code>, the start page of the o2r website.</p>
+<p>If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.</p>
+<h3 id="request-authentication-status">Request authentication status<a class="headerlink" href="#request-authentication-status" title="Permanent link">&para;</a></h3>
+<p>As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a <code>GET</code> request to the <code>/api/v1/auth/whoami</code> endpoint, including your session cookie.</p>
+<p><code>curl https://…/api/v1/auth/whoami --cookie "connect.sid=…</code></p>
+<p><code>GET /api/v1/auth/whoami</code></p>
+<pre><code class="json">200 OK
+
+{
+  &quot;orcid&quot;: &quot;0000-0002-1825-0097&quot;,
+  &quot;name&quot;: &quot;o2r&quot;
+}
+</code></pre>
+
+<h3 id="error-response-for-requests-requiring-authentication">Error response for requests requiring authentication<a class="headerlink" href="#error-response-for-requests-requiring-authentication" title="Permanent link">&para;</a></h3>
+<p>When no session cookie was included, or the included session cookie does not belong to a authenticated session, the service responds with a <code>401 Unauthorized</code> message.</p>
+<pre><code class="json">401 Unauthorized
+
+{
+  &quot;error&quot;: &quot;not authenticated&quot;
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../levels/" class="btn btn-neutral" title="User levels"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Licensed under Creative Commons CC0 1.0 Universal License.</p>
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../levels/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

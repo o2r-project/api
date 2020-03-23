@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
-  <link rel="canonical" href="https://o2r.info/api/compendium/delete/">
+  <link rel="canonical" href="https://o2r.info/api/user/levels/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Delete a compendium - o2r web API</title>
+  <title>User levels - o2r web API</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Delete a compendium";
-    var mkdocs_page_input_path = "compendium/delete.md";
-    var mkdocs_page_url = "/api/compendium/delete/";
+    var mkdocs_page_name = "User levels";
+    var mkdocs_page_input_path = "user/levels.md";
+    var mkdocs_page_url = "/api/user/levels/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -53,32 +53,24 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Compendium management</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview of the compendiuam life-cycle</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../upload/">API upload</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../public_share/">Public share submission</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../candidate/">Candidates</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../view/">View a compendium</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/view/">View a compendium</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Delete a compendium</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#request">Request</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#response">Response</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#error-responses-for-compendium-delete">Error responses for compendium delete</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/delete/">Delete a compendium</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download a compenium</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/download/">Download a compenium</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Compendium metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/metadata/">Compendium metadata</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../files/">Files in a compendium</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/files/">Files in a compendium</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../job/">Compendium execution</a>
                     </li>
@@ -87,9 +79,9 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Extras</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../substitute/">Substitution</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/substitute/">Substitution</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../link/">Public links</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compendium/link/">Public links</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Search</span></p>
@@ -98,12 +90,14 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Users</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/user/">User management</a>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../user/">User management</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/levels/">User levels</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">User levels</a>
+    <ul class="current">
+    </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/auth/">Authentication (for developers)</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -127,14 +121,14 @@
     
       
         
-          <li>Compendium management &raquo;</li>
+          <li>Users &raquo;</li>
         
       
     
-    <li>Delete a compendium</li>
+    <li>User levels</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/delete.md"> Edit on github.com/o2r-project/api</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/user/levels.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -144,43 +138,38 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="delete-compendium">Delete compendium<a class="headerlink" href="#delete-compendium" title="Permanent link">&para;</a></h1>
-<p>To delete a compendium <strong>candidate</strong>, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href="../../user/levels/">user level</a>.
-The compendium contents should be moved to a specific location to the server as a backup.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Required user level for candidate deletion</p>
-<p>The user deleting a candidate must be the author or have the required <a href="../../user/levels/">user level</a>.</p>
-</div>
-<h2 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h2>
-<p>The following request deletes the compendium with the identifier <code>12345</code>, including metadata and files.</p>
-<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345 \
-    --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
-</code></pre>
-
-<h2 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
-<p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
-<pre><code class="bash">204 OK
-</code></pre>
-
-<h2 id="error-responses-for-compendium-delete">Error responses for compendium delete<a class="headerlink" href="#error-responses-for-compendium-delete" title="Permanent link">&para;</a></h2>
-<pre><code class="json">401 Unauthorized
-
-{&quot;error&quot;:&quot;not authorized&quot;}
-</code></pre>
-
-<pre><code class="json">403 Forbidden
-
-{&quot;error&quot;:&quot;user level not sufficient to delete compendium&quot;}
-</code></pre>
-
-<pre><code class="json">404 Not Found
-
-{&quot;error&quot;:&quot;compendium not found&quot;}
-</code></pre>
+                <h1 id="user-levels">User levels<a class="headerlink" href="#user-levels" title="Permanent link">&para;</a></h1>
+<p>Users are authenticated via OAuth and the actions on the website are limited by the <code>level</code> associated with an account.
+On registration, each account is assigned a level <code>0</code>.
+Only admin users and the user herself can read the level of a user.</p>
+<p>The following is a list of actions and the corresponding required <em>minimum</em> user level.</p>
+<ul>
+<li><code>0</code> <em>Users</em> (everybody)<ul>
+<li>Create new jobs</li>
+<li>View compendia, jobs, user details</li>
+</ul>
+</li>
+<li><code>100</code> <em>Known users</em><ul>
+<li>Create new compendium</li>
+<li>Create shipments</li>
+<li>Create substitutions</li>
+<li>Delete own candidates</li>
+</ul>
+</li>
+<li><code>500</code> <em>Editors</em><ul>
+<li>Edit user levels up to own level</li>
+<li>Edit compendium metadata</li>
+<li>Delete candidates</li>
+<li>Manage <a href="../../compendium/link/">public links</a> for candidates</li>
+</ul>
+</li>
+<li><code>1000</code> <em>Admins</em><ul>
+<li>Edit user levels up to own level</li>
+<li>Delete compendia and candidates</li>
+<li>View status pages of microservices</li>
+</ul>
+</li>
+</ul>
               
             </div>
           </div>
@@ -188,10 +177,10 @@ The compendium contents should be moved to a specific location to the server as 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../download/" class="btn btn-neutral float-right" title="Download a compenium">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../auth/" class="btn btn-neutral float-right" title="Authentication (for developers)">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../view/" class="btn btn-neutral" title="View a compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../user/" class="btn btn-neutral" title="User management"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -219,10 +208,10 @@ The compendium contents should be moved to a specific location to the server as 
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../view/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../user/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../download/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../auth/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

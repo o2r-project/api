@@ -9,7 +9,7 @@
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
   <link rel="canonical" href="https://o2r.info/api/search/">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Search - o2r web API</title>
+  <title>Finding compendia and jobs - o2r web API</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -19,7 +19,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Search";
+    var mkdocs_page_name = "Finding compendia and jobs";
     var mkdocs_page_input_path = "search.md";
     var mkdocs_page_url = "/api/search/";
   </script>
@@ -52,39 +52,41 @@
                     <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/upload/">API upload</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
-                </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compendium/files/">Files in a compendium</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../compendium/substitute/">Substitution</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compendium/link/">Public links</a>
                     </li>
                 </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../job/">Job</a>
-                    </li>
-                </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Search</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Finding compendia and jobs</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#simple-search">Simple search</a>
         <ul>
@@ -115,12 +117,13 @@
     </ul>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/user/">User management</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/levels/">User levels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -143,12 +146,15 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Search &raquo;</li>
+        
+      
     
-    <li>Search</li>
+    <li>Finding compendia and jobs</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/search.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/search.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -321,10 +327,10 @@ The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> fi
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../shipment/" class="btn btn-neutral float-right" title="Shipment">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../user/user/" class="btn btn-neutral float-right" title="User management">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../job/" class="btn btn-neutral" title="Job"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium/link/" class="btn btn-neutral" title="Public links"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -351,13 +357,11 @@ The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> fi
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+        <span><a href="../compendium/link/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span><a href="../job/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../shipment/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../user/user/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

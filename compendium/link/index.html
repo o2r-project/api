@@ -52,28 +52,33 @@
                     <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../upload/">API upload</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../candidate/">Candidates</a>
-                </li>
-    </ul>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../files/">Files in a compendium</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="../substitute/">Substitution</a>
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Public links</a>
@@ -107,20 +112,18 @@
     </ul>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Job</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Finding compendia and jobs</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Search</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/user/">User management</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/levels/">User levels</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -144,15 +147,14 @@
     
       
         
-          <li>Compendium &raquo;</li>
+          <li>Extras &raquo;</li>
         
       
     
     <li>Public links</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/link.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/link.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -173,7 +175,7 @@ Jobs for private links are <em>not listed</em> in the generic job list, but they
 </div>
 <div class="admonition note">
 <p class="admonition-title">Required user level for link creation</p>
-<p>The user managing public links must have the required <a href="../../user/#user-levels">user level</a> - authors cannot do this by themselves so no private data is shared by mistake.</p>
+<p>The user managing public links must have the required <a href="../../user/levels/">user level</a> - authors cannot do this by themselves so no private data is shared by mistake.</p>
 </div>
 <h2 id="create-link">Create link<a class="headerlink" href="#create-link" title="Permanent link">&para;</a></h2>
 <h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
@@ -196,7 +198,7 @@ The response body provides the public link <code>id</code>, which can be used fo
 
 {
     &quot;id&quot;:&quot;lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr&quot;,
-    &quot;compendium&quot;:&quot;xkjzY&quot;,
+    &quot;compendium_id&quot;:&quot;xkjzY&quot;,
     &quot;user&quot;:&quot;0000-0002-1701-2564&quot;
 }
 </code></pre>
@@ -214,12 +216,12 @@ The response body provides the public link <code>id</code>, which can be used fo
   &quot;results&quot;: [
     {
       &quot;id&quot;: &quot;b56Cy5EG7oiCBPCZMjXIPXoSyPVxiGVA&quot;,
-      &quot;compendium&quot;: &quot;eENFZ&quot;,
+      &quot;compendium_id&quot;: &quot;eENFZ&quot;,
       &quot;user&quot;: &quot;0000-0002-1701-2564&quot;
     },
     {
       &quot;id&quot;: &quot;p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt&quot;,
-      &quot;compendium&quot;: &quot;xkjzY&quot;,
+      &quot;compendium_id&quot;: &quot;xkjzY&quot;,
       &quot;user&quot;: &quot;0000-0002-1701-2564&quot;
     }
   ]
@@ -261,7 +263,7 @@ The response body provides the public link <code>id</code>, which can be used fo
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../job/" class="btn btn-neutral float-right" title="Job">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../search/" class="btn btn-neutral float-right" title="Finding compendia and jobs">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../substitute/" class="btn btn-neutral" title="Substitution"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -291,13 +293,11 @@ The response body provides the public link <code>id</code>, which can be used fo
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
-      
       
         <span><a href="../substitute/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../job/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../search/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

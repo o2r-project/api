@@ -52,53 +52,56 @@
                     <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Create new compendium</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview of the compendiuam life-cycle</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">API upload</a>
     <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" href="./">API upload</a>
-    <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a>
+    <li class="toctree-l2"><a class="reference internal" href="#body-parameters-for-compendium-upload">Body parameters for compendium upload</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a>
+    <li class="toctree-l2"><a class="reference internal" href="#error-responses-for-compendium-upload">Error responses for compendium upload</a>
     </li>
     </ul>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../candidate/">Candidates</a>
-                </li>
-    </ul>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../view/">View a compendium</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../files/">Files in a compendium</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../substitute/">Substitution</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../link/">Public links</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Job</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Finding compendia and jobs</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Search</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/user/">User management</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/levels/">User levels</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -122,19 +125,14 @@
     
       
         
-          <li>Create new compendium &raquo;</li>
-        
-      
-        
-          <li>Compendium &raquo;</li>
+          <li>Compendium management &raquo;</li>
         
       
     
     <li>API upload</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/upload.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/upload.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -150,8 +148,8 @@
 Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.</p>
 <div class="admonition note">
 <p class="admonition-title">Required user level and authentication</p>
-<p>The user creating a new compendium must have the required <a href="../../user/#user-levels">user level</a>.
-Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../../user/#client-authentication">user authentication</a>.</p>
+<p>The user creating a new compendium must have the required <a href="../../user/levels/">user level</a>.
+Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../../user/auth/">user authentication</a>.</p>
 </div>
 <pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
     -F content_type=compendium \
@@ -217,7 +215,7 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
         <a href="../public_share/" class="btn btn-neutral float-right" title="Public share submission">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../overview/" class="btn btn-neutral" title="Overview of the compendiuam life-cycle"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -244,10 +242,8 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
-      
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../overview/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../public_share/" style="color: #fcfcfc">Next &raquo;</a></span>

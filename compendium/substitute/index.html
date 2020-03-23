@@ -52,28 +52,33 @@
                     <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../upload/">API upload</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../candidate/">Candidates</a>
-                </li>
-    </ul>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../files/">Files in a compendium</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Compendium execution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipments</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
+                <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Substitution</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#create-substitution">Create substitution</a>
@@ -117,20 +122,18 @@
                     <li class="toctree-l1"><a class="reference internal" href="../link/">Public links</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../job/">Job</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Finding compendia and jobs</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../search/">Search</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/user/">User management</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/levels/">User levels</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -154,15 +157,14 @@
     
       
         
-          <li>Compendium &raquo;</li>
+          <li>Extras &raquo;</li>
         
       
     
     <li>Substitution</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/substitute.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/compendium/substitute.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -214,7 +216,7 @@ Required content of the request are the identifiers of the base and overlay comp
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Required user level</p>
-<p>The user creating a new substitution must have the required <a href="../../user/#user-levels">user level</a>.</p>
+<p>The user creating a new substitution must have the required <a href="../../user/levels/">user level</a>.</p>
 </div>
 <h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
 <pre><code class="json">201 CREATED
@@ -446,7 +448,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
         <a href="../link/" class="btn btn-neutral float-right" title="Public links">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../files/" class="btn btn-neutral" title="Files in a compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../shipment/" class="btn btn-neutral" title="Shipments"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -473,10 +475,8 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
-      
-        <span><a href="../files/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../shipment/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../link/" style="color: #fcfcfc">Next &raquo;</a></span>

@@ -9,7 +9,7 @@
   <meta name="author" content="Daniel Nüst, Marc Schutzeichel, Markus Konkol">
   <link rel="canonical" href="https://o2r.info/api/job/">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Job - o2r web API</title>
+  <title>Compendium execution - o2r web API</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -19,7 +19,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Job";
+    var mkdocs_page_name = "Compendium execution";
     var mkdocs_page_input_path = "job.md";
     var mkdocs_page_url = "/api/job/";
   </script>
@@ -52,35 +52,27 @@
                     <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                     </li>
                 </ul>
-                <p class="caption"><span class="caption-text">Compendium</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="#">Create new compendium</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/upload/">API upload</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
-                </li>
-    </ul>
+                <p class="caption"><span class="caption-text">Compendium management</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/overview/">Overview of the compendiuam life-cycle</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/upload/">API upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/public_share/">Public share submission</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/candidate/">Candidates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Metadata</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/view/">View a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/delete/">Delete a compendium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/download/">Download a compenium</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/metadata/">Compendium metadata</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compendium/files/">Files in a compendium</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/substitute/">Substitution</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../compendium/link/">Public links</a>
-                    </li>
-                </ul>
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Job</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Compendium execution</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#job-files">Job files</a>
     </li>
@@ -120,17 +112,28 @@
     </li>
     </ul>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../search/">Search</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipments</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Extras</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../shipment/">Shipment</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/substitute/">Substitution</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compendium/link/">Public links</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Search</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../user/">User</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../search/">Finding compendia and jobs</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Users</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/user/">User management</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/levels/">User levels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../user/auth/">Authentication (for developers)</a>
                     </li>
                 </ul>
       </div>
@@ -153,12 +156,15 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Compendium management &raquo;</li>
+        
+      
     
-    <li>Job</li>
+    <li>Compendium execution</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/o2r-project/api/tree/master/docs/job.md"
-          class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/o2r-project/api/tree/master/docs/job.md"> Edit on github.com/o2r-project/api</a>
       
     </li>
   </ul>
@@ -234,8 +240,8 @@ During long running steps, the <code>text</code> element is updated by appending
 Requires a <code>compendium_id</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Required user level and authentication</p>
-<p>The user creating a new compendium must have the required <a href="../user/#user-levels">user level</a>.
-Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../user/#client-authentication">user authentication</a>.</p>
+<p>The user creating a new compendium must have the required <a href="../user/levels/">user level</a>.
+Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../user/auth/">user authentication</a>.</p>
 </div>
 <p><code>curl -F compendium_id=$ID https://…/api/v1/job</code></p>
 <p><code>POST /api/v1/job</code></p>
@@ -485,10 +491,10 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../search/" class="btn btn-neutral float-right" title="Search">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../shipment/" class="btn btn-neutral float-right" title="Shipments">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../compendium/link/" class="btn btn-neutral" title="Public links"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../compendium/files/" class="btn btn-neutral" title="Files in a compendium"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -515,13 +521,11 @@ var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/o2r-project/api/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+        <span><a href="../compendium/files/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span><a href="../compendium/link/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../search/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../shipment/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

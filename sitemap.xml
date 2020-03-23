@@ -4,6 +4,10 @@
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://o2r.info/api/compendium/overview/</loc>
+     <lastmod>2020-03-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://o2r.info/api/compendium/upload/</loc>
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
@@ -36,6 +40,14 @@
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://o2r.info/api/job/</loc>
+     <lastmod>2020-03-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://o2r.info/api/shipment/</loc>
+     <lastmod>2020-03-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://o2r.info/api/compendium/substitute/</loc>
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
@@ -44,19 +56,19 @@
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://o2r.info/api/job/</loc>
-     <lastmod>2020-03-23</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://o2r.info/api/search/</loc>
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://o2r.info/api/shipment/</loc>
+     <loc>https://o2r.info/api/user/user/</loc>
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://o2r.info/api/user/</loc>
+     <loc>https://o2r.info/api/user/levels/</loc>
+     <lastmod>2020-03-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://o2r.info/api/user/auth/</loc>
      <lastmod>2020-03-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
