@@ -20,6 +20,7 @@ pdf: build
 	file://$(shell pwd)/site/compendium/download/index.html \
 	file://$(shell pwd)/site/compendium/metadata/index.html \
 	file://$(shell pwd)/site/compendium/substitute/index.html \
+	file://$(shell pwd)/site/compendium/link/index.html \
 	file://$(shell pwd)/site/job/index.html \
 	file://$(shell pwd)/site/search/index.html \
 	file://$(shell pwd)/site/shipment/index.html \
