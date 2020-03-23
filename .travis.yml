@@ -7,9 +7,8 @@ after_success:
   - if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./.deploy.sh ; fi
 env:
   global:
-    - SITE_URL: https://o2r-project.github.io/api
+    - SITE_URL: https://o2r.info/api
     - GH_USER_NAME: "Opening Reproducible Research"
     - GH_USER_EMAIL: openingrr@uni-muenster.de
     - GH_REF: github.com/o2r-project/api
-    - secure: "IpTJ0gn6R2ZHU6AIw0v3ru24ahKF8KcV9BRq9Nwv5O7bLcZyyBAH/ihSMeSX3d4Qw1LCCCqyNGxH/3a8RzoTWUQyxUT44P96P9mCTFjE1LV2JYpdgdT5RTbQrup1kqnaxw93tPOxMnE8rpedgyUFwiTlI8scEzfQFJ/RP5FUHw+HAkedHR6eC10HYnal+WXw2/W3n/EMb4Se1frmHjeBQT+r+9asX/5oLibLrict1euVxmiy9T5LfFA0hjCqBf9/YNyOBKEIjMh1Fw2mLX9ebwFMR4b3qQyACSMmtpEfTQlRqUeRdUfrHjDKMEDHuL39TjVdoET6pz7rjpSTuofP4Fi8cHvFOIEy+2qDgGufpEaBHxNig9qe2VL6hbd1aXW+/oBFOSjmPTBei+T4hWyQffqGqiNf2AF/hLUTJY69FSZWhQRu+NQCUKOKm5/heBbxmAAn60k1F2OT0og0doTsvcQCCUMm3XVp5hYinEMXbnpkW8/By9hJ2N9ZJYuW8K55bd3W6Blwm6+LSUzrePCLqtekhJ+Rt8nI4q8aCkMsqUx80xOd4kgCJ3yK+wWk2u/JuFMHGFqTaqsZ4qKvqPc+WnDhw8IjZhUJB/Glk6ZLvrtHPwwU/P59y2h0Mruso5TSmUZoJ1tDr/niZN7CtaLddXBAe/nQiMNunuAEvL4amek="
-
+    - secure: "WFw7tpMjdeMR3KE9eULaVifKCeiDN0oa6x6i6jhVM7DlEtiom6ZcE4SuUroHLZvzVktX2/HgTOiWlAgwyKtY7Ma+Aoy/hkrjPs+6n+n3DcxRt3bkpELvy7uM837Pqz0wd+WPjtKCk44jlWdDX8E6cMCHlaZFA3vD15vdDeXspe8myvYO1ubciDeu5gt6PG5MR2pbwCyHw10Pa36EjZbem2vC275yLUbJcB7umTSKtRQANKqb+52KmRgqFn1NF+gG1bWNPhX+T5bu4SW7jJOr1hKYxP6jkzjNXNOxOjTr9ha7jeE8Vd0wSdBlx1Sw94oUM1IOi6PnoPNNrIkEfHG/7g2k7kgFJWx8jPSvWwURA9x8jU3WhGbmaczUsI4UqCXJcV4Q9hMLd/VbRL200IjAXUXEA/c/o8HyAtkbhXMPsHSy+9HI3PrvvnTkI3S+6ggUFDCiAi8eQKw5QPIse0LgBxOo+NnH1r6KEV56eE40u2iGf4Jqx7HXu9xZWK/RjYwvVGnL1nYw5qV+nfzvW6GwzuVNb4DiHl9FQSxblCD/IDmyZ8Afe5RlzeZWDuFlSzFRvggAoMkOLhBfu9sRLA5J2bBTjpVYz6FM+sJfYd5u+xkGI7fs62dQqjM+eSZDIZmdATrf/q+cf0aYdpI93S7rnqPFYdX28EucuhHfNAyZLx8="
