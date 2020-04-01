@@ -1,4 +1,10 @@
-# Search
+# Search 🚧 UNDER DEVELOPMENT 🚧
+
+------
+
+🚧 These endpoints are _not_ available on the public demo server. 🚧
+
+------
 
 The search uses a document database to provide high speed and powerful search capabilities for compendia, including spatial and temporal properties.
 

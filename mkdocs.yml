@@ -19,8 +19,8 @@ nav:
   - Extras:
     - Substitution: 'compendium/substitute.md'
     - Public links: 'compendium/link.md'
-  - Search:
-    - Finding compendia and jobs: 'search.md'
+  #- Search:
+  #  - Finding compendia and jobs: 'search.md'
   - Users:
     - User management: 'user/user.md'
     - User levels: 'user/levels.md'
