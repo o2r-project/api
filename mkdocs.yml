@@ -5,7 +5,7 @@ copyright: "Licensed under Creative Commons CC0 1.0 Universal License."
 nav:
   - Home: 'index.md'
   - Compendium management:
-    - Overview of the compendiuam life-cycle: 'compendium/overview.md'
+    - Overview of the compendium life-cycle: 'compendium/overview.md'
     - API upload: 'compendium/upload.md'
     - Public share submission: 'compendium/public_share.md'
     - Candidates: 'compendium/candidate.md'
