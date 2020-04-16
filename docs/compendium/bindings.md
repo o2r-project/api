@@ -3,6 +3,8 @@
 A binding is an optional component of an Executable Research Compendium.
 It can be used to make static figures interactive, for example, to show how different parameter settings affect the result shown in the figure.
 A bindings stores information on the code lines needed to generate the corresponding figure, the parameter that should be made interactive, the data subset required for the figure, and the user interface (UI) widget (e.g. a slider or radio buttons).
+The resulting JSON object including the binding is stored in the metadata tag `interaction`.
+For this reason, the compendium must be at least a `candidate` where the metadata extraction is completed. 
 
 ## Create a binding
 
@@ -22,8 +24,7 @@ Request body for a new binding:
     "codelines": [{
       "start": 101,
       "end": 503
-      }
-    ],
+      }],
     "parameter": [{
       "text": "duration <- 24",
       "name": "duration",
@@ -72,3 +73,80 @@ Request body for a new binding:
   "data": binding
 }
 ```
+
+## Extract R code
+
+`POST /api/v1/bindings/extractR`
+
+Request body for extracting those code lines needed to generate a specific result:
+
+```json
+{
+  "id": "rDdFN",
+  "file": "main.Rmd",
+  "plot": "plotFigure1()"
+}
+```
+
+### Request body properties
+
+- `id` - ID of the compendium for which the bindings should be created
+- `file` - main file of the research compendium containing the R code
+- `plot` - function that outputs the result used as starting point for the backtracking algorithm
+
+### Response
+
+```json
+200 Ok
+
+{
+  "callback": "ok",
+  "codelines": [{
+    "start": 101,
+    "end": 503
+    }],
+}
+```
+
+## Proxy for binding
+
+`GET /api/v1/compendium/:compendium/binding/:binding`
+
+...
+
+## Run binding
+
+`POST /api/v1/compendium/:compendium/binding/:binding`
+
+...
+
+## Search for a binding
+
+`POST /api/v1/bindings/searchBinding`
+
+Request body for finding bindings that include a certain code snippet:
+
+```json
+{
+  "term": "processData(input)",
+  "metadata": {o2r.metadata}
+}
+```
+
+### Request body properties
+
+- `term` - search for bindings including the this code snippet
+- `metadata` - whole metadata object of the corresponding compendium
+
+### Response
+
+```json
+200 Ok
+
+{
+  "callback": "ok",
+  "data": ["result"] 
+}
+```
+
+- `data` - array of results for which bindings exist that include the corresponding code snippet 
