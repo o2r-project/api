@@ -7,7 +7,7 @@ o2r-web-api\.pdf
 .Rapp.history
 
 # Session Data files
-.RData
+*.RData
 
 # User-specific files
 .Ruserdata
@@ -49,4 +49,5 @@ vignettes/*.pdf
 
 *.html
 
-
+# jmeter log
+*.log
