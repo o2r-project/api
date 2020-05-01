@@ -1,0 +1,103 @@
+---
+title: "LoadTest"
+author: "Sebastian Garzon"
+output: html_document
+---
+
+This documet contais some script to test the o2r API endpoint using the `loadtest` [library](https://github.com/tmobile/loadtest).
+
+## Required libraries
+```{r libs}
+library("loadtest")
+library("ggplot2")
+```
+
+## Other requirements
+
+In order to use the `loadtest` library it is required to install Java and Jmeter. Other requirements are described on the [installation document](https://github.com/tmobile/loadtest#installation) of this library.
+
+## Preparation
+
+This documet contais some script to test the o2r API.
+
+**Note:** This document is best run chunk by chunk, and not as a whole, using RStudio.
+`loadtest` library requires the path to the jmeter bin folder to work. You can add a file `.Renviron` on your local machine next to this file, and it define the path in the environment variable "LOADTEST_JMETER_PATH". For more information about this local variable refer to this [guide](https://github.com/tmobile/loadtest#installing-jmeter).
+
+```{r  cache=TRUE,message=FALSE}
+
+#Building DataSets
+
+#Configuration required to use 'loadtest' library, this system variable is stored in a .Renviron file. LOADTEST_JMETER_PATH="[path to jmeter bin folder]"
+Sys.getenv("LOADTEST_JMETER_PATH")
+
+```
+# Test 
+
+## LoadTest o2r API entry point
+
+The purpose of this test is to evaluate the performance of the o2r API entry point during a period of time of approximately 3 minutes receiving requests from different users (Threads).  
+
+```{r dataProcess, cache=TRUE,message=FALSE}
+
+#List with number of Threads for the test
+test_threads<-c(1,2,3,4,5,6,7,8)
+
+#List with the number of loops for each test scenario (per Thread). These numbers are an estimation for a 3 minute test for every configuration scenario. Less Threads require more individual loops per thread in order to extend the test to 3 minutes.
+
+number_loops<-c(28500,27000,25000,23000,20000,17500,15000,14000)
+
+# Run multiple tests
+
+test_variables  <- paste("Test_threads_",test_threads,sep="")
+test_functions<-paste0('loadtest(url = "https://o2r.uni-muenster.de/api/v1", method = "GET", threads =',test_threads,', loops=',number_loops,')')
+eq<-paste(paste(test_variables,test_functions,sep="<-"),collapse = ";")
+eval(parse(text=eq))
+
+#Save image of the current R environment
+
+save.image(file='datasets.RData')
+```
+
+## Including Plots
+
+## Time to complete request over duration of test
+
+The elapsed time of each request of the course of the test.
+
+```{r}
+
+ListTest<-ls()
+ListTest<-ListTest[substring(ListTest,1,5)=="Test_"]
+
+plot_elapsed_times_o2r<-function(i){
+
+   plot_test<-eval(as.name(i))
+   plot<-plot_elapsed_times(plot_test)+scale_color_manual(values=c("#606060", "#004288"), drop=FALSE)+labs(title=paste0("Time to complete request (milliseconds) for ", max(plot_test$threads)," thread(s)"))
+   return(print(plot))
+}
+
+for (f in ListTest){
+  plot_elapsed_times_o2r(f)
+ }
+
+```
+
+## Distribution of time to complete responses
+
+A histogram of the elapsed times
+
+```{r}
+ListTest<-ls()
+ListTest<-ListTest[substring(ListTest,1,5)=="Test_"]
+
+plot_elapsed_times_histogram_o2r<-function(i){
+   plot_test<-eval(as.name(i))
+   plot<-plot_elapsed_times_histogram(plot_test)+scale_fill_manual(values=c("#606060", "#004288"), drop=FALSE)+
+    labs(title=paste0("Time to complete response (milliseconds) for ", max(plot_test$threads)," thread(s)"))
+}
+
+for (f in ListTest){
+  plot_elapsed_times_histogram_o2r(f)
+ }
+
+```
