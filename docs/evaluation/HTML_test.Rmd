@@ -9,7 +9,6 @@ This documet contais some script that opens an ERC (see https://o2r.uni-muenster
 ## Required libraries
 
 ```{r libraries}
-
 library(RSelenium)
 library(parallel)
 library(binman)
