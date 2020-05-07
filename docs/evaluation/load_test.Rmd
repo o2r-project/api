@@ -14,13 +14,13 @@ The number of sessions for the examination scenario is aligned with a typical nu
 
 Finally, a third scenario evaluates the parallel execution of the first two scenarios. This would be the case for a reproducibility service operated by a publisher who continuously runs special issues, **having both readers** and open calls for submissions.
 
-# Load testing basics
+## Load testing basics
 
 TODO: what is load testing? (how is not ) add some links/literature here
 
-# Creation scenario
+## Creation scenario
 
-## Overview
+### Overview
 
 From the Author perspective the test simulates three main steps:
 
@@ -32,7 +32,7 @@ Every creation session has two main variables: the source and the type of upload
 
 TODO: how often do we run each combinations to get trustworthy data?
 
-## Upload type and origin
+### Upload type and origin
 
 The test differentiates between the **two types of uploads**, which can either be a workspace or a complete ERC. A workspace is an archive (.zip Format) of all files needed for a scientific workflow, i.e. the main file in R Markdown format, e.g., main.Rmd, the file for reading, e.g., display.html, and all additionally required data and software files (see ERC specification for details). The finished ERC in addition contains the ERC configuration file (erc.yml) and the files for the computing environment (the manifest in a Dockerfile, the image in image.tar).
 
@@ -49,26 +49,31 @@ The test includes 3 types of **upload origins**:
 It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the DOI-based identification is used.
 
 
-## Metadata editing
+### Metadata editing
 
 As described on the compendium life cycle, the ‘candidate process’ should be applied to the compendium or workspaces in order to be publicly available. This process should include a modifiable time that the user would take interacting with the platform. Each user just saves the metadata once. After metadata editing the ERC is published.
 
 TODO: document task (https://github.com/o2r-project/api/issues) for later: have authors save metadata several times before publishing
 
-## Execution and interaction 
+### Execution and interaction 
 
 After the publication of the compendiums the authors will most likely also execute the ERCs and test the interaction with bindings, if the latter exist. Therefore at least one execution job is started after each upload, see  http://o2r.info/api/job/#execute-a-compendium.
 
-# Examination scenario
+## Examination scenario
 
-## Overview
+### Overview
 
 The reading sessions consist on the simulation of 20 readers accessing and interacting with existing Compendiums (i.e. successfully created Compendia). The reading session will access to a compendium and execute a job (see ##Job). For the test it is required to have at least 10 compendia. The time of start of the execution of each individual examination session should be adjustable. 
 
 TODO: distinguish between UI performance and API performance, the latter is the main thing, the former can be a little standalone "sub-scenario"
 
+## Implementation
 
-## Required libraries
+### Overview
+
+The test plan will be scripted using R and is controlled via an R Markdown notebook (this file). The test notebook is part of the API documentation and is published at https://o2r.info/api/evaluation.
+
+### Required libraries
 
 ```{r}
 library(RSelenium)
@@ -79,9 +84,9 @@ library(rjson)
 library(stringr)
 ```
 
-# Service Authentication
+### Service Authentication
 
-## Remote service
+#### Remote service
 
 In case of a remote service [o2r.uni-muenster.de](http://o2r.uni-muenster.de) this chunck access to the demo webpage and find the cookie `connec.sid` after a succesfull login. It is required a  `.Renviron` file on your local machine next to this file defining USERNAME and PASSWORD variables corresponding to the login information of [orcid](orcidorcid.org) **personal account**.
 
@@ -129,7 +134,7 @@ getCookieRemote<-function(){
 }
 ```
 
-## Local service 
+#### Local service 
 
 The following code chunk retrieves the cookie `connec.sid`from the local reference implementation, which is exposed via [o2r-guestlister]().This is a "security hole" which of course does not work when uploading workspaces to a remote reference implementation deployment. It is required a  `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r ip address of your Docker environment. To find the ip you have to use the `$docker-machine ip` command.
 

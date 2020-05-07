@@ -30,15 +30,14 @@ operated by a publisher who continuously runs special issues, **having
 both readers** and open calls for submissions.
 
 Load testing basics
-===================
+-------------------
 
 TODO: what is load testing? (how is not ) add some links/literature here
 
 Creation scenario
-=================
+-----------------
 
-Overview
---------
+### Overview
 
 From the Author perspective the test simulates three main steps:
 
@@ -55,8 +54,7 @@ sessions to cover all the possible cases.
 
 TODO: how often do we run each combinations to get trustworthy data?
 
-Upload type and origin
-----------------------
+### Upload type and origin
 
 The test differentiates between the **two types of uploads**, which can
 either be a workspace or a complete ERC. A workspace is an archive (.zip
@@ -89,8 +87,7 @@ It is of interest if any of these sources perform better or worse than
 others. For the Zenodo option, only the DOI-based identification is
 used.
 
-Metadata editing
-----------------
+### Metadata editing
 
 As described on the compendium life cycle, the ‘candidate process’
 should be applied to the compendium or workspaces in order to be
@@ -102,8 +99,7 @@ TODO: document task
 (<a href="https://github.com/o2r-project/api/issues" class="uri">https://github.com/o2r-project/api/issues</a>)
 for later: have authors save metadata several times before publishing
 
-Execution and interaction
--------------------------
+### Execution and interaction
 
 After the publication of the compendiums the authors will most likely
 also execute the ERCs and test the interaction with bindings, if the
@@ -112,10 +108,9 @@ upload, see
 <a href="http://o2r.info/api/job/#execute-a-compendium" class="uri">http://o2r.info/api/job/#execute-a-compendium</a>.
 
 Examination scenario
-====================
+--------------------
 
-Overview
---------
+### Overview
 
 The reading sessions consist on the simulation of 20 readers accessing
 and interacting with existing Compendiums (i.e. successfully created
@@ -127,8 +122,17 @@ examination session should be adjustable.
 TODO: distinguish between UI performance and API performance, the latter
 is the main thing, the former can be a little standalone “sub-scenario”
 
-Required libraries
-------------------
+Implementation
+--------------
+
+### Overview
+
+The test plan will be scripted using R and is controlled via an R
+Markdown notebook (this file). The test notebook is part of the API
+documentation and is published at
+<a href="https://o2r.info/api/evaluation" class="uri">https://o2r.info/api/evaluation</a>.
+
+### Required libraries
 
     library(RSelenium)
     library(binman)
@@ -145,11 +149,9 @@ Required libraries
     library(rjson)
     library(stringr)
 
-Service Authentication
-======================
+### Service Authentication
 
-Remote service
---------------
+#### Remote service
 
 In case of a remote service
 [o2r.uni-muenster.de](http://o2r.uni-muenster.de) this chunck access to
@@ -199,8 +201,7 @@ login information of [orcid](orcidorcid.org) **personal account**.
       rm(r)
     }
 
-Local service
--------------
+#### Local service
 
 The following code chunk retrieves the cookie `connec.sid`from the local
 reference implementation, which is exposed via [o2r-guestlister]().This
