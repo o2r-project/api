@@ -1,14 +1,14 @@
 o2r Reproducibility Service Load Testing
 ========================================
 
-In order to evaluate the performance of the o2r reproducibility service
+In order to evaluate the performance of the o2r reproducibility service,
 we conduct a suite of load tests for expected usage scenarios: an **ERC
 creation scenario**, an **ERC examination scenario**, and a **combined
 scenario**. The data collected during these load tests allows operators
-of the reproducibility service to estimate required infrastructure and
-helps developers to improve the performance. Each section of the
+of the reproducibility service to estimate the required infrastructure
+and helps developers to improve the performance. Each section of the
 document contains the functions required to test the o2r service both in
-a `local` implementation and in the `remote`
+`local` implementation and in the `remote`
 [o2r.uni-muenster.de](o2r.uni-muenster.de) implementation.
 
 The ERC creation scenario assumes that a number of authors across all
@@ -32,14 +32,14 @@ both readers** and open calls for submissions.
 Load testing basics
 -------------------
 
-TODO: what is load testing? (how is not ) add some links/literature here
+TODO: what is load testing? (how is not) add some links/literature here
 
 Creation scenario
 -----------------
 
 ### Overview
 
-From the Author perspective the test simulates three main steps:
+From the Author perspective the test simulates four main steps:
 
 1.  Service authentication
 
@@ -78,7 +78,7 @@ performance, e.g., because the file sizes of ERC are much bigger because
 of the image tarball, while the processing is reduced since the manifest
 and image must not be created during submission.
 
-The test includes 3 types of **upload origins**:
+The test includes three types of **upload origins**:
 
 1.  [Direct file upload](http://o2r.info/api/compendium/upload/)
 2.  [Public Share from
@@ -143,9 +143,9 @@ documentation and is published at
 
 The test includes a series of functions to conduct the usage scenarios
 including the required processes divided in 4 groups (0) User
-Authentication, (1) Upload, (2) Metadata editing (i.e. [Candidate
-process](http://o2r.info/api/compendium/candidate/)) and (3) Compendium
-execution.
+Authentication, (1) ERC / Workspace Upload, (2) Metadata editing (i.e.
+[Candidate process](http://o2r.info/api/compendium/candidate/)) and (3)
+Compendium execution.
 
 ### Required libraries
 
@@ -252,4 +252,60 @@ environment inplementation. To find the ip (Usually but not always
       # Closing Selenium session
       remDr$close()
       rm(r)
+    }
+
+### ERC / Workspace Upload
+
+The test differentiates between two types of uploads (either workspace
+or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The
+following 3 functions (one for each origin) upload the workspaces and
+the complete ERC for either a `localtest` or a `remotetest`. The
+function *requires a previous Service authentication* to define
+`ENDPOINT` and `COOKIE`.
+
+#### [Direct Upload](http://o2r.info/api/compendium/upload/)
+
+Upload a research workspace or full compendium as a compressed `.zip`
+
+    # DirectApi upload
+    # compendium -> The archive file
+    # content_type -> Form of the archive ('compendium' or 'workspace')
+
+    DirectApi<-function(compendium,content_type){
+      file<-upload_file(compendium)
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      response<-POST(url=paste0(endpoint,"compendium"),
+                     body=list(
+                       compendium=file,
+                       content_type=content_type),
+                     accept_json(),
+                     set_cookies(connect.sid=cookie),
+                     enconde="multipart"
+      )
+      return(response)
+    }  
+
+#### [Public Share - Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
+
+    # PublicShare Sciebo
+    # share_url -> The Sciebo link to the public share
+    # content_type -> Form of archive ('compendium' or 'workspace')
+    # path -> Path to a subdirectory or a zip file in the public share
+
+    PublicShare_Sciebo<-function(share_url,path,content_type){
+
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      
+      response<-POST(url=paste0(endpoint,"compendium"),
+                     body=list(
+                       share_url=share_url,
+                       content_type=content_type,
+                       path=path),
+                     accept_json(),
+                     set_cookies(connect.sid=cookie),
+                     enconde="multipart"
+      )
+      return(response)
     }
