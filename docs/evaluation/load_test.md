@@ -122,8 +122,7 @@ a job (see \#\#Job). For the test it is required to have at least 10
 compendia. The time of start of the execution of each individual
 examination session should be adjustable.
 
-From the reader perspective the test simulates two main steps (See
-Author Overview numeration):
+From the reader perspective the test simulates two main steps:
 
 1.  Service authentication
 
@@ -142,9 +141,9 @@ documentation and is published at
 ### Summary of functions
 
 The test includes a series of functions to conduct the usage scenarios
-including the required processes divided in 4 groups (0) User
-Authentication, (1) ERC / Workspace Upload, (2) Metadata editing (i.e.
-[Candidate process](http://o2r.info/api/compendium/candidate/)) and (3)
+including the required processes divided in 4 groups (1) Service
+Authentication, (2) ERC / Workspace Upload, (3) Metadata editing (i.e.
+[Candidate process](http://o2r.info/api/compendium/candidate/)) and (4)
 Compendium execution.
 
 ### Required libraries
@@ -155,7 +154,7 @@ Compendium execution.
     library(rjson)
     library(stringr)
 
-### Service Authentication
+### 1. Service Authentication
 
 #### Remote service
 
@@ -254,7 +253,7 @@ environment inplementation. To find the ip (Usually but not always
       rm(r)
     }
 
-### ERC / Workspace Upload
+### 2. ERC / Workspace Upload
 
 The test differentiates between two types of uploads (either workspace
 or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The
@@ -265,7 +264,7 @@ function *requires a previous Service authentication* to define
 
 #### [Direct Upload](http://o2r.info/api/compendium/upload/)
 
-Upload a research workspace or full compendium as a compressed `.zip`
+Upload a research workspace or full compendium as a compressed `.zip`.
 
     # DirectApi upload
     # compendium -> The archive file
@@ -287,6 +286,9 @@ Upload a research workspace or full compendium as a compressed `.zip`
     }  
 
 #### [Public Share - Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
+
+Upload a research workspace or full compendium as a compressed `.zip`
+from a public share on [Sciebo](https://sciebo.de/).
 
     # PublicShare Sciebo
     # share_url -> The Sciebo link to the public share
@@ -312,6 +314,10 @@ Upload a research workspace or full compendium as a compressed `.zip`
 
 #### [Public Share - Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
 
+Upload a research workspace or full compendium as a compressed `.zip`
+from a public share on [Zenodo](https://zenodo.org/) using the
+`Zenodo Record ID`.
+
     # PublicShare Zenodo
     # zenodo_record_id -> The Sciebo link to the public share
     # content_type -> Form of archive ('compendium' or 'workspace')
@@ -330,4 +336,46 @@ Upload a research workspace or full compendium as a compressed `.zip`
                      enconde="multipart"
       )
       return(response)
+    }
+
+### 3. Metadata editing / Publish compendium [(Candidate Process)](http://o2r.info/api/compendium/candidate/#candidate-process)
+
+After uploading a compendium a [succesful metadata
+update](http://o2r.info/api/compendium/metadata/#update-metadata) is
+required to make it publicly available. The following code reproduce the
+metadata extracting and metadata update required to publish the
+compendium.
+
+    # publish_compendium
+    # id -> compendium id
+
+    publish_compendium <- function(id){
+      
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      
+      url_metadata<-paste0(endpoint,"compendium/",id,"/metadata")
+      print(url_metadata)
+      print("Extracting metadata...")
+     
+      # Extract metadata
+      response <- GET(url=url_metadata,
+                      accept_json(),
+                      set_cookies(connect.sid = cookie))
+      print("Printing metadata")
+      print(response)
+      
+      metadata <-  content(response, as = "text")
+      metadata <- str_sub(string = metadata,start = str_locate(string = metadata, pattern = "\\{\"o2r\"")[[1]],end = str_length(metadata) - 1)
+      
+      print("printing... metadata")
+      printing(metadata)
+      
+      # Update metadata "Candidate process"
+      response_update <- PUT(url=url_metadata,
+                             body = metadata,
+                             content_type_json(),
+                             accept_json(),
+                             set_cookies(connect.sid = cookie))
+      return(response_update)
     }

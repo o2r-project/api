@@ -24,13 +24,13 @@ TODO: what is load testing? (how is not) add some links/literature here
 
 From the Author perspective the test simulates four main steps:
 
-0. Service authentication
+1. Service authentication
 
-1. Upload of either a workspace or an ERC via either direct file upload or from one of two supported public shares
+2. Upload of either a workspace or an ERC via either direct file upload or from one of two supported public shares
 
-2. Metadata editing
+3. Metadata editing
 
-3. Compendium execution and bindings testing
+4. Compendium execution and bindings testing
 
 Every creation session has two main variables: the source and the type of upload. Six combinations of upload type and origin origin are possible in the first step. As the objective is to simulate three parallel cases, the creation scenario will have subsequent creation sessions to cover all the possible cases.
 
@@ -68,11 +68,11 @@ After the publication of the compendiums the authors will most likely also execu
 
 The reading sessions consist on the simulation of 20 readers accessing and interacting with existing Compendiums (i.e. successfully created Compendia). The reading session will access to a compendium and execute a job (see ##Job). For the test it is required to have at least 10 compendia. The time of start of the execution of each individual examination session should be adjustable. 
 
-From the reader perspective the test simulates two main steps (See Author Overview numeration):
+From the reader perspective the test simulates two main steps:
 
-0. Service authentication
+1. Service authentication
 
-3. Compendium execution and bindings testing
+2. Compendium execution and bindings testing
 
 ## Implementation
 
@@ -82,7 +82,7 @@ The test plan will be scripted using R and is controlled via an R Markdown noteb
 
 ### Summary of functions
 
-The test includes a series of functions to conduct the usage scenarios including the required processes divided in 4 groups (0) User Authentication, (1) ERC / Workspace Upload, (2) Metadata editing (i.e. [Candidate process](http://o2r.info/api/compendium/candidate/)) and (3) Compendium execution.
+The test includes a series of functions to conduct the usage scenarios including the required processes divided in 4 groups (1) Service Authentication, (2) ERC / Workspace Upload, (3) Metadata editing (i.e. [Candidate process](http://o2r.info/api/compendium/candidate/)) and (4) Compendium execution.
 
 ### Required libraries
 
@@ -94,7 +94,7 @@ library(rjson)
 library(stringr)
 ```
 
-### Service Authentication
+### 1. Service Authentication
 
 #### Remote service
 
@@ -187,13 +187,13 @@ getCookieLocal<-function(){
 }
 ```
 
-### ERC / Workspace Upload
+### 2. ERC / Workspace Upload
 
 The test differentiates between two types of uploads (either workspace or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The following 3 functions (one for each origin) upload the workspaces and the complete ERC for either a `localtest` or a `remotetest`. The function *requires a previous Service authentication* to define `ENDPOINT` and `COOKIE`.
 
 #### [Direct Upload](http://o2r.info/api/compendium/upload/)
 
-Upload a research workspace or full compendium as a compressed `.zip`
+Upload a research workspace or full compendium as a compressed `.zip`.
 
 ```{r DirectApi}
 
@@ -219,6 +219,7 @@ DirectApi<-function(compendium,content_type){
 
 #### [Public Share - Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
+Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Sciebo](https://sciebo.de/).
 
 ```{r PublicShare_Sciebo}
 
@@ -247,6 +248,8 @@ PublicShare_Sciebo<-function(share_url,path,content_type){
 
 #### [Public Share - Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
 
+Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Zenodo](https://zenodo.org/) using the `Zenodo Record ID`.
+
 ```{r PublicShare_Zenodo}
 
 # PublicShare Zenodo
@@ -270,4 +273,43 @@ PublicShare_Zenodo<-function(zenodo_record_id,content_type){
 }
 ```
 
+### 3. Metadata editing / Publish compendium [(Candidate Process)](http://o2r.info/api/compendium/candidate/#candidate-process)
 
+After uploading a compendium a [succesful metadata update](http://o2r.info/api/compendium/metadata/#update-metadata) is required to make it publicly available. The following code reproduce the metadata extracting and metadata update required to publish the compendium.
+
+```{r publish_compendium}
+
+# publish_compendium
+# id -> compendium id
+
+publish_compendium <- function(id){
+  
+  endpoint<-Sys.getenv("ENDPOINT")
+  cookie<-Sys.getenv("COOKIE")
+  
+  url_metadata<-paste0(endpoint,"compendium/",id,"/metadata")
+  print(url_metadata)
+  print("Extracting metadata...")
+ 
+  # Extract metadata
+  response <- GET(url=url_metadata,
+                  accept_json(),
+                  set_cookies(connect.sid = cookie))
+  print("Printing metadata")
+  print(response)
+  
+  metadata <-  content(response, as = "text")
+  metadata <- str_sub(string = metadata,start = str_locate(string = metadata, pattern = "\\{\"o2r\"")[[1]],end = str_length(metadata) - 1)
+  
+  print("printing... metadata")
+  printing(metadata)
+  
+  # Update metadata "Candidate process"
+  response_update <- PUT(url=url_metadata,
+                         body = metadata,
+                         content_type_json(),
+                         accept_json(),
+                         set_cookies(connect.sid = cookie))
+  return(response_update)
+}
+```
