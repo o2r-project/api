@@ -253,6 +253,23 @@ environment inplementation. To find the ip (Usually but not always
       rm(r)
     }
 
+#### Who am I ?
+
+Function to verify authentication status.
+
+    whoami<-function(){
+      cookie<-Sys.getenv("COOKIE")
+      endpoint<-Sys.getenv("ENDPOINT")
+      print(cookie)
+      print(paste0("Visiting...",endpoint,"auth/whoami"))
+      response<-GET(url=paste0(endpoint,"auth/whoami"),
+                   accept_json(),
+                   set_cookies(connect.sid=cookie),
+                   enconde="multipart"
+    )
+      return(response)
+    }
+
 ### 2. ERC / Workspace Upload
 
 The test differentiates between two types of uploads (either workspace
@@ -389,9 +406,27 @@ Run the analysis (Execution job) in a published compendium.
 
     executeCompendium<-function(id){
       
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      
       response <- POST(url = paste0(endpoint, "job"),
                        body = list(compendium_id = id[[1]]),
                        accept_json(),
                        set_cookies(connect.sid = cookie))
       return(response)
+      
     }
+
+Reader session
+--------------
+
+    #getCookieRemote()
+
+    readerSession<-function(id){
+      whoami()
+      print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
+      job<-executeCompendium(id)
+      return(job)
+    }
+
+**ERC examination scenario**

@@ -187,6 +187,27 @@ getCookieLocal<-function(){
 }
 ```
 
+
+#### Who am I ?
+
+Function to verify authentication status. 
+
+```{r whoami}
+
+whoami<-function(){
+  cookie<-Sys.getenv("COOKIE")
+  endpoint<-Sys.getenv("ENDPOINT")
+  print(cookie)
+  print(paste0("Visiting...",endpoint,"auth/whoami"))
+  response<-GET(url=paste0(endpoint,"auth/whoami"),
+               accept_json(),
+               set_cookies(connect.sid=cookie),
+               enconde="multipart"
+)
+  return(response)
+}
+```
+
 ### 2. ERC / Workspace Upload
 
 The test differentiates between two types of uploads (either workspace or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The following 3 functions (one for each origin) upload the workspaces and the complete ERC for either a `localtest` or a `remotetest`. The function *requires a previous Service authentication* to define `ENDPOINT` and `COOKIE`.
@@ -320,17 +341,40 @@ publish_compendium <- function(id){
 Run the analysis (Execution job) in a published compendium. 
 
 ```{r executeCompendium}
-
 # executeCompendium
 # id -> compendium id
 
 executeCompendium<-function(id){
+  
+  endpoint<-Sys.getenv("ENDPOINT")
+  cookie<-Sys.getenv("COOKIE")
   
   response <- POST(url = paste0(endpoint, "job"),
                    body = list(compendium_id = id[[1]]),
                    accept_json(),
                    set_cookies(connect.sid = cookie))
   return(response)
+  
+}
+```
+
+
+## Reader session
+
+
+```{r reader session}
+
+#getCookieRemote()
+
+readerSession<-function(id){
+  whoami()
+  print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
+  job<-executeCompendium(id)
+  return(job)
 }
 
+
 ```
+
+
+**ERC examination scenario**
