@@ -87,7 +87,7 @@ The test includes three types of **upload origins**:
     Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
 It is of interest if any of these sources perform better or worse than
-others. For the Zenodo option, only the DOI-based identification is
+others. For the Zenodo option, only the Record ID identification is
 used.
 
 ### Metadata editing
@@ -303,6 +303,28 @@ Upload a research workspace or full compendium as a compressed `.zip`
                        share_url=share_url,
                        content_type=content_type,
                        path=path),
+                     accept_json(),
+                     set_cookies(connect.sid=cookie),
+                     enconde="multipart"
+      )
+      return(response)
+    }
+
+#### [Public Share - Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
+
+    # PublicShare Zenodo
+    # zenodo_record_id -> The Sciebo link to the public share
+    # content_type -> Form of archive ('compendium' or 'workspace')
+
+    PublicShare_Zenodo<-function(zenodo_record_id,content_type){
+
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      
+      response<-POST(url=paste0(endpoint,"compendium"),
+                     body=list(
+                       content_type=content_type,
+                       zenodo_record_id=zenodo_record_id),
                      accept_json(),
                      set_cookies(connect.sid=cookie),
                      enconde="multipart"

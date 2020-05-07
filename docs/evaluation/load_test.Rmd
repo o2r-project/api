@@ -50,7 +50,7 @@ The test includes three types of **upload origins**:
 2. [Public Share from Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
 3. [Public Share from Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
-It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the DOI-based identification is used.
+It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the Record ID identification is used.
 
 ### Metadata editing
 
@@ -195,7 +195,7 @@ The test differentiates between two types of uploads (either workspace or a comp
 
 Upload a research workspace or full compendium as a compressed `.zip`
 
-```{r DirectApiupload}
+```{r DirectApi}
 
 # DirectApi upload
 # compendium -> The archive file
@@ -244,3 +244,30 @@ PublicShare_Sciebo<-function(share_url,path,content_type){
   return(response)
 }
 ```
+
+#### [Public Share - Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
+
+```{r PublicShare_Zenodo}
+
+# PublicShare Zenodo
+# zenodo_record_id -> The Sciebo link to the public share
+# content_type -> Form of archive ('compendium' or 'workspace')
+
+PublicShare_Zenodo<-function(zenodo_record_id,content_type){
+
+  endpoint<-Sys.getenv("ENDPOINT")
+  cookie<-Sys.getenv("COOKIE")
+  
+  response<-POST(url=paste0(endpoint,"compendium"),
+                 body=list(
+                   content_type=content_type,
+                   zenodo_record_id=zenodo_record_id),
+                 accept_json(),
+                 set_cookies(connect.sid=cookie),
+                 enconde="multipart"
+  )
+  return(response)
+}
+```
+
+
