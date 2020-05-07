@@ -86,7 +86,7 @@ The test includes a series of functions to conduct the usage scenarios including
 
 ### Required libraries
 
-```{r}
+```{r libraries}
 library(RSelenium)
 library(binman)
 library(httr)
@@ -312,4 +312,25 @@ publish_compendium <- function(id){
                          set_cookies(connect.sid = cookie))
   return(response_update)
 }
+```
+
+
+### 4. [Compendium execution](http://o2r.info/api/job/)
+
+Run the analysis (Execution job) in a published compendium. 
+
+```{r executeCompendium}
+
+# executeCompendium
+# id -> compendium id
+
+executeCompendium<-function(id){
+  
+  response <- POST(url = paste0(endpoint, "job"),
+                   body = list(compendium_id = id[[1]]),
+                   accept_json(),
+                   set_cookies(connect.sid = cookie))
+  return(response)
+}
+
 ```

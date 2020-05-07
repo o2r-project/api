@@ -379,3 +379,19 @@ compendium.
                              set_cookies(connect.sid = cookie))
       return(response_update)
     }
+
+### 4. [Compendium execution](http://o2r.info/api/job/)
+
+Run the analysis (Execution job) in a published compendium.
+
+    # executeCompendium
+    # id -> compendium id
+
+    executeCompendium<-function(id){
+      
+      response <- POST(url = paste0(endpoint, "job"),
+                       body = list(compendium_id = id[[1]]),
+                       accept_json(),
+                       set_cookies(connect.sid = cookie))
+      return(response)
+    }
