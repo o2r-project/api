@@ -153,6 +153,7 @@ Compendium execution.
     library(httr)
     library(rjson)
     library(stringr)
+    library(parallel)
 
 ### 1. Service Authentication
 
@@ -399,6 +400,8 @@ compendium.
 
 ### 4. [Compendium execution](http://o2r.info/api/job/)
 
+#### Execution job
+
 Run the analysis (Execution job) in a published compendium.
 
     # executeCompendium
@@ -417,16 +420,42 @@ Run the analysis (Execution job) in a published compendium.
       
     }
 
+#### Job Status
+
+Checks the status of a job
+
+    job_status <- function(job_id) {
+      endpoint<-Sys.getenv("ENDPOINT")
+      cookie<-Sys.getenv("COOKIE")
+      response <- GET(url = paste0(endpoint, "job/", job_id),
+                      accept_json(),
+                      # authenticate even if not needed to not destroy cookie caching
+                      set_cookies(connect.sid = cookie))
+      return(response)
+    }
+
 Reader session
 --------------
-
-    #getCookieRemote()
 
     readerSession<-function(id){
       whoami()
       print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-      job<-executeCompendium(id)
-      return(job)
+      jobExecuting<-executeCompendium(toString(id))
+      response<-jobExecuting$status
+      jobId<-content(jobExecuting)
+      if (response==200){
+        print(paste0("Looks like it is already executing the job: ",jobId))
+      }
+      return(jobId)
     }
 
-**ERC examination scenario**
+LoadTest
+========
+
+    #Test for reading sessions
+    #getCookieRemote()
+    ids<-c("fzWfD","VibVm","IF3Jn","e3XY9")
+    df<-data.frame(IDs,ids)
+    results<-mclapply(dfs$IDs,readerSession)
+
+**TO DO:** Information to extract from the reader session.
