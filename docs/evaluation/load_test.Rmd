@@ -24,9 +24,13 @@ TODO: what is load testing? (how is not ) add some links/literature here
 
 From the Author perspective the test simulates three main steps:
 
-1. upload of either a workspace or an ERC via either direct file upload or from one of two supported public shares
-2. metadata editing
-3. compendium execution and bindings testing
+0. Service authentication
+
+1. Upload of either a workspace or an ERC via either direct file upload or from one of two supported public shares
+
+2. Metadata editing
+
+3. Compendium execution and bindings testing
 
 Every creation session has two main variables: the source and the type of upload. Six combinations of upload type and origin origin are possible in the first step. As the objective is to simulate three parallel cases, the creation scenario will have subsequent creation sessions to cover all the possible cases.
 
@@ -42,12 +46,11 @@ It is of interest if one of the formats significantly impact performance, e.g., 
 
 The test includes 3 types of **upload origins**:
 
-1. Direct file upload, see http://o2r.info/api/compendium/upload/
-2. Public Share from Zenodo, see http://o2r.info/api/compendium/public_share/#zenodo
-3. Public Share from Sciebo, http://o2r.info/api/compendium/public_share/#sciebo
+1. [Direct file upload](http://o2r.info/api/compendium/upload/)
+2. [Public Share from Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
+3. [Public Share from Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
 It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the DOI-based identification is used.
-
 
 ### Metadata editing
 
@@ -65,7 +68,11 @@ After the publication of the compendiums the authors will most likely also execu
 
 The reading sessions consist on the simulation of 20 readers accessing and interacting with existing Compendiums (i.e. successfully created Compendia). The reading session will access to a compendium and execute a job (see ##Job). For the test it is required to have at least 10 compendia. The time of start of the execution of each individual examination session should be adjustable. 
 
-TODO: distinguish between UI performance and API performance, the latter is the main thing, the former can be a little standalone "sub-scenario"
+From the reader perspective the test simulates two main steps (See Author Overview numeration):
+
+0. Service authentication
+
+3. Compendium execution and bindings testing
 
 ## Implementation
 
@@ -73,12 +80,15 @@ TODO: distinguish between UI performance and API performance, the latter is the 
 
 The test plan will be scripted using R and is controlled via an R Markdown notebook (this file). The test notebook is part of the API documentation and is published at https://o2r.info/api/evaluation.
 
+### Summary of functions
+
+The test includes a series of functions to conduct the usage scenarios including the required processes divided in 4 groups (0) User Authentication, (1) Upload, (2) Metadata editing (i.e. [Candidate process](http://o2r.info/api/compendium/candidate/)) and (3) Compendium execution.
+
 ### Required libraries
 
 ```{r}
 library(RSelenium)
 library(binman)
-library(loadtest)
 library(httr)
 library(rjson)
 library(stringr)
@@ -88,7 +98,7 @@ library(stringr)
 
 #### Remote service
 
-In case of a remote service [o2r.uni-muenster.de](http://o2r.uni-muenster.de) this chunck access to the demo webpage and find the cookie `connec.sid` after a succesfull login. It is required a  `.Renviron` file on your local machine next to this file defining USERNAME and PASSWORD variables corresponding to the login information of [orcid](orcidorcid.org) **personal account**.
+In case of a remote service [o2r.uni-muenster.de](http://o2r.uni-muenster.de) this chunck access to the demo webpage and find the cookie `connec.sid` after a succesfull login. It is required a `.Renviron` file on your local machine next to this file defining USERNAME and PASSWORD variables corresponding to the login information of [orcid](orcidorcid.org) **personal account**.
 
 ```{r getCookieRemote}
 
@@ -136,41 +146,44 @@ getCookieRemote<-function(){
 
 #### Local service 
 
-The following code chunk retrieves the cookie `connec.sid`from the local reference implementation, which is exposed via [o2r-guestlister]().This is a "security hole" which of course does not work when uploading workspaces to a remote reference implementation deployment. It is required a  `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r ip address of your Docker environment. To find the ip you have to use the `$docker-machine ip` command.
+The following code chunk retrieves the cookie `connec.sid`from the local reference implementation, which is exposed via [o2r-guestlister](). This is a "security hole" which of course does not work when uploading workspaces to a remote reference implementation deployment. It is required a  `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r ip address of your Docker environment inplementation. To find the ip (Usually but not always `localhost`) you have to use the `$docker-machine ip` command.
 
 ```{r getCookieLocal}
 
 getCookieLocal<-function(){
   
-  #LocalTest
+  # LocalTest
   o2rlocal<-Sys.getenv("IP")
+  
+  # Starting Selenium session
   available.versions<-list_versions("chromedriver")
   r<-rsDriver(port=1234L,chromever=available.versions[[1]][1])
   remDr<-r[["client"]]  
   
-  #### with localhost working
-  
-  #o2r webpage
+  # Navigating to o2r local implementation page
   
   remDr$navigate(o2rlocal)
   
+  # Click on Login
   webElem<-remDr$findElement(using = "xpath","//a[@href='api/v1/auth/login']")
   webElem$clickElement()
   Sys.sleep(1)
   
   # o2r Admin/ Editor / User
   
+  # Click on 'Admin'
   webElem$findElement(using="xpath","/html/body/div/div[2]/form[3]/button")
   webElem$clickElement()
   
-  # Get cookie
+  # Get cookie and decoding
   cookie<-URLdecode(webElem$getAllCookies()[[1]]$value)
   Sys.sleep(1)
   Sys.setenv(COOKIE=cookie)
   Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
   
-  #Close
+  # Closing Selenium session
   remDr$close()
   rm(r)
 }
 ```
+

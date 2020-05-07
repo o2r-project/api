@@ -41,10 +41,14 @@ Creation scenario
 
 From the Author perspective the test simulates three main steps:
 
-1.  upload of either a workspace or an ERC via either direct file upload
+1.  Service authentication
+
+2.  Upload of either a workspace or an ERC via either direct file upload
     or from one of two supported public shares
-2.  metadata editing
-3.  compendium execution and bindings testing
+
+3.  Metadata editing
+
+4.  Compendium execution and bindings testing
 
 Every creation session has two main variables: the source and the type
 of upload. Six combinations of upload type and origin origin are
@@ -76,12 +80,11 @@ and image must not be created during submission.
 
 The test includes 3 types of **upload origins**:
 
-1.  Direct file upload, see
-    <a href="http://o2r.info/api/compendium/upload/" class="uri">http://o2r.info/api/compendium/upload/</a>
-2.  Public Share from Zenodo, see
-    <a href="http://o2r.info/api/compendium/public_share/#zenodo" class="uri">http://o2r.info/api/compendium/public_share/#zenodo</a>
-3.  Public Share from Sciebo,
-    <a href="http://o2r.info/api/compendium/public_share/#sciebo" class="uri">http://o2r.info/api/compendium/public_share/#sciebo</a>
+1.  [Direct file upload](http://o2r.info/api/compendium/upload/)
+2.  [Public Share from
+    Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
+3.  [Public Share from
+    Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
 It is of interest if any of these sources perform better or worse than
 others. For the Zenodo option, only the DOI-based identification is
@@ -119,8 +122,12 @@ a job (see \#\#Job). For the test it is required to have at least 10
 compendia. The time of start of the execution of each individual
 examination session should be adjustable.
 
-TODO: distinguish between UI performance and API performance, the latter
-is the main thing, the former can be a little standalone “sub-scenario”
+From the reader perspective the test simulates two main steps (See
+Author Overview numeration):
+
+1.  Service authentication
+
+2.  Compendium execution and bindings testing
 
 Implementation
 --------------
@@ -132,19 +139,18 @@ Markdown notebook (this file). The test notebook is part of the API
 documentation and is published at
 <a href="https://o2r.info/api/evaluation" class="uri">https://o2r.info/api/evaluation</a>.
 
+### Summary of functions
+
+The test includes a series of functions to conduct the usage scenarios
+including the required processes divided in 4 groups (0) User
+Authentication, (1) Upload, (2) Metadata editing (i.e. [Candidate
+process](http://o2r.info/api/compendium/candidate/)) and (3) Compendium
+execution.
+
 ### Required libraries
 
     library(RSelenium)
     library(binman)
-    library(loadtest)
-
-    ##  __         ______     ______     _____     ______   ______     ______     ______
-    ## /\ \       /\  __ \   /\  __ \   /\  __-.  /\__  _\ /\  ___\   /\  ___\   /\__  _\
-    ## \ \ \____  \ \ \/\ \  \ \  __ \  \ \ \/\ \ \/_/\ \/ \ \  __\   \ \___  \  \/_/\ \/
-    ##  \ \_____\  \ \_____\  \ \_\ \_\  \ \____-    \ \_\  \ \_____\  \/\_____\    \ \_\
-    ##   \/_____/   \/_____/   \/_/\/_/   \/____/     \/_/   \/_____/   \/_____/     \/_/
-    ##                   :: loadtest - an R load testing framework ::
-
     library(httr)
     library(rjson)
     library(stringr)
@@ -204,44 +210,46 @@ login information of [orcid](orcidorcid.org) **personal account**.
 #### Local service
 
 The following code chunk retrieves the cookie `connec.sid`from the local
-reference implementation, which is exposed via [o2r-guestlister]().This
+reference implementation, which is exposed via [o2r-guestlister](). This
 is a “security hole” which of course does not work when uploading
 workspaces to a remote reference implementation deployment. It is
 required a `.Renviron` file on your local machine next to this file
 defining `IP` corresponding to the o2r ip address of your Docker
-environment. To find the ip you have to use the `$docker-machine ip`
-command.
+environment inplementation. To find the ip (Usually but not always
+`localhost`) you have to use the `$docker-machine ip` command.
 
     getCookieLocal<-function(){
       
-      #LocalTest
+      # LocalTest
       o2rlocal<-Sys.getenv("IP")
+      
+      # Starting Selenium session
       available.versions<-list_versions("chromedriver")
       r<-rsDriver(port=1234L,chromever=available.versions[[1]][1])
       remDr<-r[["client"]]  
       
-      #### with localhost working
-      
-      #o2r webpage
+      # Navigating to o2r local implementation page
       
       remDr$navigate(o2rlocal)
       
+      # Click on Login
       webElem<-remDr$findElement(using = "xpath","//a[@href='api/v1/auth/login']")
       webElem$clickElement()
       Sys.sleep(1)
       
       # o2r Admin/ Editor / User
       
+      # Click on 'Admin'
       webElem$findElement(using="xpath","/html/body/div/div[2]/form[3]/button")
       webElem$clickElement()
       
-      # Get cookie
+      # Get cookie and decoding
       cookie<-URLdecode(webElem$getAllCookies()[[1]]$value)
       Sys.sleep(1)
       Sys.setenv(COOKIE=cookie)
       Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
       
-      #Close
+      # Closing Selenium session
       remDr$close()
       rm(r)
     }
