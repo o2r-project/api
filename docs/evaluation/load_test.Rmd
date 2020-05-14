@@ -198,8 +198,6 @@ Function to verify authentication status.
 whoami<-function(){
   cookie<-Sys.getenv("COOKIE")
   endpoint<-Sys.getenv("ENDPOINT")
-  print(cookie)
-  print(paste0("Visiting...",endpoint,"auth/whoami"))
   response<-GET(url=paste0(endpoint,"auth/whoami"),
                accept_json(),
                set_cookies(connect.sid=cookie),
@@ -275,7 +273,7 @@ Upload a research workspace or full compendium as a compressed `.zip` from a pub
 ```{r PublicShare_Zenodo}
 
 # PublicShare Zenodo
-# zenodo_record_id -> The Sciebo link to the public share
+# zenodo_record_id -> The Zenodo record id
 # content_type -> Form of archive ('compendium' or 'workspace')
 
 PublicShare_Zenodo<-function(zenodo_record_id,content_type){
@@ -324,7 +322,7 @@ publish_compendium <- function(id){
   metadata <- str_sub(string = metadata,start = str_locate(string = metadata, pattern = "\\{\"o2r\"")[[1]],end = str_length(metadata) - 1)
   
   print("printing... metadata")
-  printing(metadata)
+  print(metadata)
   
   # Update metadata "Candidate process"
   response_update <- PUT(url=url_metadata,
@@ -377,34 +375,134 @@ job_status <- function(job_id) {
 }
 ```
 
-## Reader session
+## ERC examination scenario 
 
 
-```{r reader session}
+```{r Examiniation session}
 
-readerSession<-function(id){
+ExaminiationSession<-function(id,
+                              start_Pause,
+                              login_Time,
+                              execution_Pause){
+  
+  ### STARTING PAUSE
+  print(paste0("I'm going to take ", start_Pause," seconds before starting to check this Compendium"))
+  Sys.sleep(start_Pause)
+  
+  ### LOGIN time simulation
+  print(paste0("Ok, I'm going to login ! This usually takes ", login_Time," seconds"))
+  Sys.sleep(login_Time)
+  print("Looks like I'm already in !")
   whoami()
+  
+  ### Running the analysis
+  print(paste0("Let me check the paper ", execution_Pause," seconds before running the analysis !"))
+  Sys.sleep(execution_Pause)
   print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
   jobExecuting<-executeCompendium(toString(id))
+  
   response<-jobExecuting$status
   jobId<-content(jobExecuting)
+
   if (response==200){
     print(paste0("Looks like it is already executing the job: ",jobId))
   }
-  return(jobId)
+
+  result<-list(x=jobExecuting)
+  return(result)
 }
 
 ```
+
+## ERC creation session
+
+```{r CreationSession}
+
+CreationSession<-function(upload_origin,
+                          content_type,
+                          source_1,
+                          source_2,
+                          start_Pause,
+                          login_time,
+                          uploading_Pause,
+                          metaedit_Pause,
+                          execution_Pause){
+  
+  ### STARTING PAUSE
+  
+  print(paste0("I'm going to take ", start_Pause," seconds before starting to upload this Compendium"))
+  Sys.sleep(start_Pause)
+  
+  ### LOGIN Simulation
+  
+  print(paste0("Ok, I'm going to login ! This usually takes ", login_time," seconds"))
+  Sys.sleep(login_time)
+  print("Looks like I'm already in !")
+  whoami()
+  
+  ### Uploading 
+  print("OK, time to upload an Compendium !")
+  print(paste0("Let me check the files " , uploading_Pause, " seconds before uploading !"))
+  
+  if(upload_origin=="Direct"){
+    upload<-DirectApi(compendium = source_1,content_type = toString(content_type))
+    print("Uploading from my computer !")
+  } else if (upload_origin=="Sciebo"){
+    upload<-PublicShare_Sciebo(share_url = source_1,path=source_2,content_type=toString(content_type))
+    print("Uploading from Sciebo !")
+  } else if (upload_origin=="Zenodo"){
+    upload<-PublicShare_Zenodo(zenodo_record_id = source_1,content_type = toString(content_type))
+    print("Uploading from Zenodo !")
+  } else {
+    return(NULL)
+  }
+  
+  ### Candidate process
+  print(paste0("Now I have to check the metadata before publishing, this would probably take me ", metaedit_Pause ," seconds" ))
+  
+  id<-toString(content(upload))
+  publish<-publish_compendium(id)
+  
+  print(paste0("My compendium ", id, "is already public !"))
+  
+  ### Execution process
+  
+  Sys.sleep(execution_Pause)
+  print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
+  jobExecuting<-executeCompendium(toString(id))
+  
+  response<-jobExecuting$status
+  
+  jobId<-content(jobExecuting)
+
+  if (response==200){
+    print(paste0("Looks like it is already executing the job: ",jobId))
+  }
+
+  result<-list(x=upload,y=publish,z=jobExecuting)
+  return(result)
+}
+
+```
+
+
 
 # LoadTest
 
 ```{r test, eval=FALSE}
 
-#Test for reading sessions
+#Test for Examination sessions
+
 #getCookieRemote()
-ids<-c("fzWfD","VibVm","IF3Jn","e3XY9")
-df<-data.frame(IDs,ids)
-results<-mclapply(dfs$IDs,readerSession)
+#Examination<-data.frame(read.csv("ExaminationScenario.txt", header = TRUE, sep = ","))
+#resultsExamination<-mcmapply(readerSession,Examination$Compendium_ID,Examination$Start_Pause,Examination$Login_time,Examination$Execution_Pause,mc.silent = FALSE)
+
+#Test for Creation Sessions
+
+Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
+
+resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
+
 ```
 
 **TO DO:** Information to extract from the reader session. 
