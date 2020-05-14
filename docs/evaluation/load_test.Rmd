@@ -218,6 +218,7 @@ Upload a research workspace or full compendium as a compressed `.zip`.
 ```{r DirectApi}
 
 # DirectApi upload
+### Parameters
 # compendium -> The archive file
 # content_type -> Form of the archive ('compendium' or 'workspace')
 
@@ -242,7 +243,7 @@ DirectApi<-function(compendium,content_type){
 Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Sciebo](https://sciebo.de/).
 
 ```{r PublicShare_Sciebo}
-
+### Parameters
 # PublicShare Sciebo
 # share_url -> The Sciebo link to the public share
 # content_type -> Form of archive ('compendium' or 'workspace')
@@ -271,8 +272,8 @@ PublicShare_Sciebo<-function(share_url,path,content_type){
 Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Zenodo](https://zenodo.org/) using the `Zenodo Record ID`.
 
 ```{r PublicShare_Zenodo}
-
 # PublicShare Zenodo
+### Parameters
 # zenodo_record_id -> The Zenodo record id
 # content_type -> Form of archive ('compendium' or 'workspace')
 
@@ -300,6 +301,7 @@ After uploading a compendium a [succesful metadata update](http://o2r.info/api/c
 ```{r publish_compendium}
 
 # publish_compendium
+### Parameters
 # id -> compendium id
 
 publish_compendium <- function(id){
@@ -343,6 +345,7 @@ Run the analysis (Execution job) in a published compendium.
 
 ```{r executeCompendium}
 # executeCompendium
+### Parameters
 # id -> compendium id
 
 executeCompendium<-function(id){
@@ -364,6 +367,9 @@ executeCompendium<-function(id){
 Checks the status of a job
 
 ```{r job_status}
+# job_id -> Job id
+### Parameters
+
 job_status <- function(job_id) {
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
@@ -375,15 +381,23 @@ job_status <- function(job_id) {
 }
 ```
 
-## ERC examination scenario 
+## ERC examination session
 
+For the examination session it is required an already published compendium  `id`. Aditionally the examination session can be configured adding `start_Pause` representing a time before starting the session, `login_time` representing the time the user usually spends login into the service and `execution_Pause` corresponding to the time the user takes before executing a job.
 
-```{r Examiniation session}
+```{r Examination session}
 
-ExaminiationSession<-function(id,
-                              start_Pause,
-                              login_Time,
-                              execution_Pause){
+# executeCompendium
+### Parameters
+# id -> compendium id
+# start_Pause -> Time before starting the session (in seconds)
+# login_Time -> Login-in time (in seconds)
+# execution_Pause -> Time before executing a job (in seconds)
+
+ExaminationSession<-function(id,
+                              start_Pause=0,
+                              login_Time=0,
+                              execution_Pause=0){
   
   ### STARTING PAUSE
   print(paste0("I'm going to take ", start_Pause," seconds before starting to check this Compendium"))
@@ -407,7 +421,7 @@ ExaminiationSession<-function(id,
   if (response==200){
     print(paste0("Looks like it is already executing the job: ",jobId))
   }
-
+  
   result<-list(x=jobExecuting)
   return(result)
 }
@@ -416,17 +430,32 @@ ExaminiationSession<-function(id,
 
 ## ERC creation session
 
+For the examination session it is required a series of configurations. Firstly, `upload_origin` correspond to the ERC / Workspace Upload origin (Direct, Zenodo or Sciebo),`upload_origin` corresponds to the form of archive ('compendium' or 'workspace'), `source_1` and `source_2` provide the source information required to upload the workspaces depending the origin. Other configurations representing interaction with the platform can be modified: `start_Pause` representing a time before starting the session, `login_time` representing the time the user usually spends login into the service,`uploading_Pause` representing the time before uploading the files to the service, `metaedit_Pause` representing the time required to check the metadata before publishing and
+`execution_Pause` corresponding to the time the user takes before executing a job.
+
+
 ```{r CreationSession}
+# CreationSession
+### Parameters
+# upload_origin -> Type of upload ("Direct","Zenodo","Sciebo")
+# content_type -> Form of archive ('compendium' or 'workspace')
+# source_1 -> For "Direct" upload path to zip file, for "Zenodo" zenodo_record_id OR for "Sciebo" The Sciebo link to the public share.
+# source_2 -> ONLY for Sciebo upload path to a subdirectory or a zip file in the public share otherwise empty.
+# start_Pause -> Time before starting the session (in seconds)
+# login_Time -> Login-in time (in seconds)
+# uploading_Pause -> Time before uploading the files (in seconds)
+# metaedit_Pause -> Time required to check the metadata before publishing (in seconds)
+# execution_Pause -> Time before executing a job (in seconds)
 
 CreationSession<-function(upload_origin,
                           content_type,
                           source_1,
                           source_2,
-                          start_Pause,
-                          login_time,
-                          uploading_Pause,
-                          metaedit_Pause,
-                          execution_Pause){
+                          start_Pause=0,
+                          login_time=0,
+                          uploading_Pause=0,
+                          metaedit_Pause=0,
+                          execution_Pause=0){
   
   ### STARTING PAUSE
   
@@ -484,8 +513,7 @@ CreationSession<-function(upload_origin,
 }
 
 ```
-
-
+**TO DO: ** Job execution (Check status !)
 
 # LoadTest
 
@@ -499,9 +527,9 @@ CreationSession<-function(upload_origin,
 
 #Test for Creation Sessions
 
-Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
+#Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
 
-resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
+#resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
 
 ```
 
