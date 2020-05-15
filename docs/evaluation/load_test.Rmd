@@ -223,7 +223,7 @@ Upload a research workspace or full compendium as a compressed `.zip`.
 # content_type -> Form of the archive ('compendium' or 'workspace')
 
 DirectApi<-function(compendium,content_type){
-  file<-upload_file(compendium)
+  file<-upload_file(toString(compendium))
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
   response<-POST(url=paste0(endpoint,"compendium"),
@@ -477,7 +477,7 @@ CreationSession<-function(upload_origin,
     upload<-DirectApi(compendium = source_1,content_type = toString(content_type))
     print("Uploading from my computer !")
   } else if (upload_origin=="Sciebo"){
-    upload<-PublicShare_Sciebo(share_url = source_1,path=source_2,content_type=toString(content_type))
+    upload<-PublicShare_Sciebo(share_url = toString(source_1),path=toString(source_2),content_type=toString(content_type))
     print("Uploading from Sciebo !")
   } else if (upload_origin=="Zenodo"){
     upload<-PublicShare_Zenodo(zenodo_record_id = source_1,content_type = toString(content_type))
@@ -492,7 +492,7 @@ CreationSession<-function(upload_origin,
   id<-toString(content(upload))
   publish<-publish_compendium(id)
   
-  print(paste0("My compendium ", id, "is already public !"))
+  print(paste0("My compendium ", id, " is already public !"))
   
   ### Execution process
   
@@ -527,11 +527,22 @@ CreationSession<-function(upload_origin,
 
 #Test for Creation Sessions
 
-#Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
+Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
 
-#resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
+resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
 
 ```
 
 **TO DO:** Information to extract from the reader session. 
+
+```{r}
+
+
+
+
+
+```
+
+
+
 
