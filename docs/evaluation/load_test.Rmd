@@ -46,7 +46,7 @@ It is of interest if one of the formats significantly impact performance, e.g., 
 
 The test includes three types of **upload origins**:
 
-1. [Direct file upload](http://o2r.info/api/compendium/upload/)
+1. [Local file upload](http://o2r.info/api/compendium/upload/)
 2. [Public Share from Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
 3. [Public Share from Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
 
@@ -105,32 +105,32 @@ In case of a remote service [o2r.uni-muenster.de](http://o2r.uni-muenster.de) th
 
 #Function to assign in the local environment the Cookie 'connec.sid' and the endpoint corresponding to the type of test (local or remote)
 
-getCookieRemote<-function(){
+get_cookie_remote<-function(){
   
   #Remote Test
-  o2rRemote<-"https://o2r.uni-muenster.de/#/"
+  o2r_remote<-"https://o2r.uni-muenster.de/#/"
   
   # Read startup file  / login information
   readRenviron(".Renviron")
 
   available.versions<-list_versions("chromedriver")
   r<-rsDriver(chromever=available.versions[[1]][1])
-  remDr<-r[["client"]]  
+  rem_dr<-r[["client"]]  
   
   # o2r webpage
-  remDr$navigate(o2rRemote)
-  webElem<-remDr$findElement(using = "xpath", "//a[@href='api/v1/auth/login']")
-  webElem$clickElement()
+  rem_dr$navigate(o2r_remote)
+  web_elem<-rem_dr$findElement(using = "xpath", "//a[@href='api/v1/auth/login']")
+  web_elem$clickElement()
   Sys.sleep(1)
   # orcid.org login webpage - Personal login
   
-  webElemUsername<-remDr$findElement(using="id",value='userId')
+  web_elem_username<-rem_dr$findElement(using="id",value='userId')
   Sys.sleep(1)
-  webElemPass<-remDr$findElement(using="id",value='password')
+  web_elem_pass<-rem_dr$findElement(using="id",value='password')
   Sys.sleep(1)
-  webElemUsername$sendKeysToElement(list(Sys.getenv("USERNAME")))
+  web_elem_username$sendKeysToElement(list(Sys.getenv("USERNAME")))
   Sys.sleep(1)
-  webElemPass$sendKeysToElement(list(Sys.getenv("PASSWORD"),key="enter"))
+  web_elem_pass$sendKeysToElement(list(Sys.getenv("PASSWORD"),key="enter"))
   Sys.sleep(1)
   
   # Get cookie
@@ -140,7 +140,7 @@ getCookieRemote<-function(){
   Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
   print(cookie)
   #Close
-  remDr$close()
+  rem_dr$close()
   rm(r)
 }
 ```
@@ -151,30 +151,30 @@ The following code chunk retrieves the cookie `connec.sid`from the local referen
 
 ```{r getCookieLocal}
 
-getCookieLocal<-function(){
+get_cookie_local<-function(){
   
   # LocalTest
-  o2rlocal<-Sys.getenv("IP")
+  o2r_local<-Sys.getenv("IP")
   
   # Starting Selenium session
   available.versions<-list_versions("chromedriver")
   r<-rsDriver(port=1234L,chromever=available.versions[[1]][1])
-  remDr<-r[["client"]]  
+  rem_dr<-r[["client"]]  
   
   # Navigating to o2r local implementation page
   
-  remDr$navigate(o2rlocal)
+  rem_dr$navigate(o2r_local)
   
   # Click on Login
-  webElem<-remDr$findElement(using = "xpath","//a[@href='api/v1/auth/login']")
-  webElem$clickElement()
+  web_elem<-rem_dr$findElement(using = "xpath","//a[@href='api/v1/auth/login']")
+  web_elem$clickElement()
   Sys.sleep(1)
   
   # o2r Admin/ Editor / User
   
   # Click on 'Admin'
-  webElem$findElement(using="xpath","/html/body/div/div[2]/form[3]/button")
-  webElem$clickElement()
+  web_elem$findElement(using="xpath","/html/body/div/div[2]/form[3]/button")
+  web_elem$clickElement()
   
   # Get cookie and decoding
   cookie<-URLdecode(webElem$getAllCookies()[[1]]$value)
@@ -183,7 +183,7 @@ getCookieLocal<-function(){
   Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
   
   # Closing Selenium session
-  remDr$close()
+  rem_dr$close()
   rm(r)
 }
 ```
@@ -211,18 +211,18 @@ whoami<-function(){
 
 The test differentiates between two types of uploads (either workspace or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The following 3 functions (one for each origin) upload the workspaces and the complete ERC for either a `localtest` or a `remotetest`. The function *requires a previous Service authentication* to define `ENDPOINT` and `COOKIE`.
 
-#### [Direct Upload](http://o2r.info/api/compendium/upload/)
+#### [Local upload](http://o2r.info/api/compendium/upload/)
 
 Upload a research workspace or full compendium as a compressed `.zip`.
 
-```{r DirectApi}
+```{r local_upload}
 
-# DirectApi upload
+# local_upload 
 ### Parameters
 # compendium -> The archive file
 # content_type -> Form of the archive ('compendium' or 'workspace')
 
-DirectApi<-function(compendium,content_type){
+local_upload<-function(compendium,content_type){
   file<-upload_file(toString(compendium))
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
@@ -242,14 +242,14 @@ DirectApi<-function(compendium,content_type){
 
 Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Sciebo](https://sciebo.de/).
 
-```{r PublicShare_Sciebo}
+```{r public_share_sciebo}
 ### Parameters
-# PublicShare Sciebo
+# public_share_sciebo
 # share_url -> The Sciebo link to the public share
 # content_type -> Form of archive ('compendium' or 'workspace')
 # path -> Path to a subdirectory or a zip file in the public share
 
-PublicShare_Sciebo<-function(share_url,path,content_type){
+public_share_sciebo<-function(share_url,path,content_type){
 
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
@@ -271,13 +271,13 @@ PublicShare_Sciebo<-function(share_url,path,content_type){
 
 Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Zenodo](https://zenodo.org/) using the `Zenodo Record ID`.
 
-```{r PublicShare_Zenodo}
-# PublicShare Zenodo
+```{r public_share_zenodo}
+# public_share_zenodo
 ### Parameters
 # zenodo_record_id -> The Zenodo record id
 # content_type -> Form of archive ('compendium' or 'workspace')
 
-PublicShare_Zenodo<-function(zenodo_record_id,content_type){
+public_share_zenodo<-function(zenodo_record_id,content_type){
 
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
@@ -343,12 +343,12 @@ publish_compendium <- function(id){
 
 Run the analysis (Execution job) in a published compendium. 
 
-```{r executeCompendium}
-# executeCompendium
+```{r execute_compendium}
+# execute_compendium
 ### Parameters
 # id -> compendium id
 
-executeCompendium<-function(id){
+execute_compendium<-function(id){
   
   endpoint<-Sys.getenv("ENDPOINT")
   cookie<-Sys.getenv("COOKIE")
@@ -367,8 +367,9 @@ executeCompendium<-function(id){
 Checks the status of a job
 
 ```{r job_status}
-# job_id -> Job id
+# job_status
 ### Parameters
+# job_id -> Job id
 
 job_status <- function(job_id) {
   endpoint<-Sys.getenv("ENDPOINT")
@@ -385,44 +386,44 @@ job_status <- function(job_id) {
 
 For the examination session it is required an already published compendium  `id`. Aditionally the examination session can be configured adding `start_Pause` representing a time before starting the session, `login_time` representing the time the user usually spends login into the service and `execution_Pause` corresponding to the time the user takes before executing a job.
 
-```{r Examination session}
+```{r examination_session}
 
-# executeCompendium
+# examination_session
 ### Parameters
 # id -> compendium id
-# start_Pause -> Time before starting the session (in seconds)
-# login_Time -> Login-in time (in seconds)
+# start_pause -> Time before starting the session (in seconds)
+# login_time -> Login-in time (in seconds)
 # execution_Pause -> Time before executing a job (in seconds)
 
-ExaminationSession<-function(id,
-                              start_Pause=0,
-                              login_Time=0,
-                              execution_Pause=0){
+examination_session<-function(id,
+                              start_pause=0,
+                              login_time=0,
+                              execution_pause=0){
   
   ### STARTING PAUSE
-  print(paste0("I'm going to take ", start_Pause," seconds before starting to check this Compendium"))
-  Sys.sleep(start_Pause)
+  print(paste0("I'm going to take ", start_pause," seconds before starting to check this Compendium"))
+  Sys.sleep(start_pause)
   
   ### LOGIN time simulation
-  print(paste0("Ok, I'm going to login ! This usually takes ", login_Time," seconds"))
-  Sys.sleep(login_Time)
+  print(paste0("Ok, I'm going to login ! This usually takes ", login_time," seconds"))
+  Sys.sleep(login_time)
   print("Looks like I'm already in !")
   whoami()
   
   ### Running the analysis
-  print(paste0("Let me check the paper ", execution_Pause," seconds before running the analysis !"))
-  Sys.sleep(execution_Pause)
+  print(paste0("Let me check the paper ", execution_pause," seconds before running the analysis !"))
+  Sys.sleep(execution_pause)
   print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-  jobExecuting<-executeCompendium(toString(id))
+  job_executing<-execute_compendium(toString(id))
   
-  response<-jobExecuting$status
-  jobId<-content(jobExecuting)
+  response<-job_executing$status
+  job_id<-content(job_executing)
 
   if (response==200){
-    print(paste0("Looks like it is already executing the job: ",jobId))
+    print(paste0("Looks like it is already executing the job: ",job_id))
   }
   
-  result<-list(x=jobExecuting)
+  result<-list(x=job_executing)
   return(result)
 }
 
@@ -430,37 +431,37 @@ ExaminationSession<-function(id,
 
 ## ERC creation session
 
-For the examination session it is required a series of configurations. Firstly, `upload_origin` correspond to the ERC / Workspace Upload origin (Direct, Zenodo or Sciebo),`upload_origin` corresponds to the form of archive ('compendium' or 'workspace'), `source_1` and `source_2` provide the source information required to upload the workspaces depending the origin. Other configurations representing interaction with the platform can be modified: `start_Pause` representing a time before starting the session, `login_time` representing the time the user usually spends login into the service,`uploading_Pause` representing the time before uploading the files to the service, `metaedit_Pause` representing the time required to check the metadata before publishing and
+For the examination session it is required a series of configurations. Firstly, `upload_origin` correspond to the ERC / Workspace Upload origin (Direct, Zenodo or Sciebo),`upload_origin` corresponds to the form of archive ('compendium' or 'workspace'), `source` and `source_path` provide the source information required to upload the workspaces depending the origin. Other configurations representing interaction with the platform can be modified: `start_pause` representing a time before starting the session, `login_time` representing the time the user usually spends login into the service,`uploading_pause` representing the time before uploading the files to the service, `metaedit_Pause` representing the time required to check the metadata before publishing and
 `execution_Pause` corresponding to the time the user takes before executing a job.
 
 
 ```{r CreationSession}
 # CreationSession
 ### Parameters
-# upload_origin -> Type of upload ("Direct","Zenodo","Sciebo")
+# upload_origin -> Type of upload ("Local","Zenodo","Sciebo")
 # content_type -> Form of archive ('compendium' or 'workspace')
-# source_1 -> For "Direct" upload path to zip file, for "Zenodo" zenodo_record_id OR for "Sciebo" The Sciebo link to the public share.
-# source_2 -> ONLY for Sciebo upload path to a subdirectory or a zip file in the public share otherwise empty.
-# start_Pause -> Time before starting the session (in seconds)
+# source -> For "Direct" upload path to zip file, for "Zenodo" zenodo_record_id OR for "Sciebo" The Sciebo link to the public share.
+# source_path -> ONLY for Sciebo upload path to a subdirectory or a zip file in the public share otherwise empty.
+# start_pause -> Time before starting the session (in seconds)
 # login_Time -> Login-in time (in seconds)
 # uploading_Pause -> Time before uploading the files (in seconds)
 # metaedit_Pause -> Time required to check the metadata before publishing (in seconds)
 # execution_Pause -> Time before executing a job (in seconds)
 
-CreationSession<-function(upload_origin,
+creation_session<-function(upload_origin,
                           content_type,
-                          source_1,
-                          source_2,
-                          start_Pause=0,
+                          source,
+                          source_path,
+                          start_pause=0,
                           login_time=0,
-                          uploading_Pause=0,
-                          metaedit_Pause=0,
-                          execution_Pause=0){
+                          uploading_pause=0,
+                          metaedit_pause=0,
+                          execution_pause=0){
   
   ### STARTING PAUSE
   
-  print(paste0("I'm going to take ", start_Pause," seconds before starting to upload this Compendium"))
-  Sys.sleep(start_Pause)
+  print(paste0("I'm going to take ", start_pause," seconds before starting to upload this Compendium"))
+  Sys.sleep(start_pause)
   
   ### LOGIN Simulation
   
@@ -471,23 +472,23 @@ CreationSession<-function(upload_origin,
   
   ### Uploading 
   print("OK, time to upload an Compendium !")
-  print(paste0("Let me check the files " , uploading_Pause, " seconds before uploading !"))
+  print(paste0("Let me check the files " , uploading_pause, " seconds before uploading !"))
   
-  if(upload_origin=="Direct"){
-    upload<-DirectApi(compendium = source_1,content_type = toString(content_type))
+  if(upload_origin=="Local"){
+    upload<-local_upload(compendium = source,content_type = toString(content_type))
     print("Uploading from my computer !")
   } else if (upload_origin=="Sciebo"){
-    upload<-PublicShare_Sciebo(share_url = toString(source_1),path=toString(source_2),content_type=toString(content_type))
+    upload<-public_share_sciebo(share_url = toString(source),path=toString(source_path),content_type=toString(content_type))
     print("Uploading from Sciebo !")
   } else if (upload_origin=="Zenodo"){
-    upload<-PublicShare_Zenodo(zenodo_record_id = source_1,content_type = toString(content_type))
+    upload<-public_share_zenodo(zenodo_record_id = source,content_type = toString(content_type))
     print("Uploading from Zenodo !")
   } else {
     return(NULL)
   }
   
   ### Candidate process
-  print(paste0("Now I have to check the metadata before publishing, this would probably take me ", metaedit_Pause ," seconds" ))
+  print(paste0("Now I have to check the metadata before publishing, this would probably take me ", metaedit_pause ," seconds" ))
   
   id<-toString(content(upload))
   publish<-publish_compendium(id)
@@ -496,19 +497,19 @@ CreationSession<-function(upload_origin,
   
   ### Execution process
   
-  Sys.sleep(execution_Pause)
+  Sys.sleep(execution_pause)
   print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-  jobExecuting<-executeCompendium(toString(id))
+  job_executing<-execute_compendium(toString(id))
   
-  response<-jobExecuting$status
+  response<-job_executing$status
   
-  jobId<-content(jobExecuting)
+  job_id<-content(job_executing)
 
   if (response==200){
-    print(paste0("Looks like it is already executing the job: ",jobId))
+    print(paste0("Looks like it is already executing the job: ",job_id))
   }
 
-  result<-list(x=upload,y=publish,z=jobExecuting)
+  result<-list(x=upload,y=publish,z=job_executing)
   return(result)
 }
 
@@ -522,26 +523,18 @@ CreationSession<-function(upload_origin,
 #Test for Examination sessions
 
 #getCookieRemote()
+
 #Examination<-data.frame(read.csv("ExaminationScenario.txt", header = TRUE, sep = ","))
 #resultsExamination<-mcmapply(readerSession,Examination$Compendium_ID,Examination$Start_Pause,Examination$Login_time,Examination$Execution_Pause,mc.silent = FALSE)
 
 #Test for Creation Sessions
 
-Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
+#Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
 
-resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
-
-```
-
-**TO DO:** Information to extract from the reader session. 
-
-```{r}
-
-
-
-
+#resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
 
 ```
+
 
 
 
