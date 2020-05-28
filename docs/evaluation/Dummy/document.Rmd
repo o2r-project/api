@@ -1,0 +1,20 @@
+---
+title: "The sleeping ERC"
+author:
+  - affiliation: University of Counting Sheep
+    email: ted.tester@awebsite8372930.org
+    name: Sleepyhead
+licenses:
+  code: Apache License 2.0
+  data: ODC-BY-1.0
+  text: CC-BY-4.0
+abstract: "1, 2, 3, four, ..."
+---
+# About
+This is a test ERC that takes some time.
+# Test
+Plot random dates in a 52-week period:
+```{r}
+random.dates <- as.Date("2016/1/1") + 7 * 52 * sort(stats::runif(100))
+plot(random.dates, 1:100)
+```

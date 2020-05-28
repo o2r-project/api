@@ -154,6 +154,7 @@ Compendium execution.
     library(rjson)
     library(stringr)
     library(parallel)
+    library(tidyr)
 
 ### 1. Service Authentication
 
@@ -197,7 +198,7 @@ login information of [orcid](orcidorcid.org) **personal account**.
       Sys.sleep(1)
       
       # Get cookie
-      cookie<-URLdecode(remDr$getAllCookies()[[1]]$value)
+      cookie<-URLdecode(rem_dr$getAllCookies()[[1]]$value)
       Sys.sleep(1)
       Sys.setenv(COOKIE=cookie)
       Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
@@ -382,6 +383,7 @@ compendium.
       response <- GET(url=url_metadata,
                       accept_json(),
                       set_cookies(connect.sid = cookie))
+      
       print("Printing metadata")
       print(response)
       
@@ -446,30 +448,30 @@ ERC examination session
 
 For the examination session it is required an already published
 compendium `id`. Aditionally the examination session can be configured
-adding `start_Pause` representing a time before starting the session,
-`login_time` representing the time the user usually spends login into
-the service and `execution_Pause` corresponding to the time the user
+adding `start_pause` representing a time before starting the session,
+`login_pause` representing the time the user usually spends login into
+the service and `execution_pause` corresponding to the time the user
 takes before executing a job.
 
     # examination_session
     ### Parameters
     # id -> compendium id
     # start_pause -> Time before starting the session (in seconds)
-    # login_time -> Login-in time (in seconds)
-    # execution_Pause -> Time before executing a job (in seconds)
+    # login_pause -> Login-in time (in seconds)
+    # execution_pause -> Time before executing a job (in seconds)
 
     examination_session<-function(id,
                                   start_pause=0,
-                                  login_time=0,
+                                  login_pause=0,
                                   execution_pause=0){
       
-      ### STARTING PAUSE
+      ### Starting pause
       print(paste0("I'm going to take ", start_pause," seconds before starting to check this Compendium"))
       Sys.sleep(start_pause)
       
-      ### LOGIN time simulation
-      print(paste0("Ok, I'm going to login ! This usually takes ", login_time," seconds"))
-      Sys.sleep(login_time)
+      ### Login pause simulation
+      print(paste0("Ok, I'm going to login ! This usually takes ", login_pause," seconds"))
+      Sys.sleep(login_pause)
       print("Looks like I'm already in !")
       whoami()
       
@@ -495,37 +497,37 @@ ERC creation session
 
 For the examination session it is required a series of configurations.
 Firstly, `upload_origin` correspond to the ERC / Workspace Upload origin
-(Direct, Zenodo or Sciebo),`upload_origin` corresponds to the form of
+(Local, Zenodo or Sciebo),`upload_origin` corresponds to the form of
 archive (‘compendium’ or ‘workspace’), `source` and `source_path`
 provide the source information required to upload the workspaces
 depending the origin. Other configurations representing interaction with
 the platform can be modified: `start_pause` representing a time before
-starting the session, `login_time` representing the time the user
+starting the session, `login_pause` representing the time the user
 usually spends login into the service,`uploading_pause` representing the
-time before uploading the files to the service, `metaedit_Pause`
+time before uploading the files to the service, `metaedit_pause`
 representing the time required to check the metadata before publishing
-and `execution_Pause` corresponding to the time the user takes before
+and `execution_pause` corresponding to the time the user takes before
 executing a job.
 
-    # CreationSession
+    # creation_session
     ### Parameters
     # upload_origin -> Type of upload ("Local","Zenodo","Sciebo")
     # content_type -> Form of archive ('compendium' or 'workspace')
     # source -> For "Direct" upload path to zip file, for "Zenodo" zenodo_record_id OR for "Sciebo" The Sciebo link to the public share.
     # source_path -> ONLY for Sciebo upload path to a subdirectory or a zip file in the public share otherwise empty.
     # start_pause -> Time before starting the session (in seconds)
-    # login_Time -> Login-in time (in seconds)
-    # uploading_Pause -> Time before uploading the files (in seconds)
-    # metaedit_Pause -> Time required to check the metadata before publishing (in seconds)
-    # execution_Pause -> Time before executing a job (in seconds)
+    # login_pause -> Login-in time (in seconds)
+    # uploading_pause -> Time before uploading the files (in seconds)
+    # metaedit_pause -> Time required to check the metadata before publishing (in seconds)
+    # execution_pause -> Time before executing a job (in seconds)
 
     creation_session<-function(upload_origin,
                               content_type,
                               source,
                               source_path,
                               start_pause=0,
-                              login_time=0,
-                              uploading_pause=0,
+                              login_pause=0,
+                              upload_pause=0,
                               metaedit_pause=0,
                               execution_pause=0){
       
@@ -536,14 +538,14 @@ executing a job.
       
       ### LOGIN Simulation
       
-      print(paste0("Ok, I'm going to login ! This usually takes ", login_time," seconds"))
-      Sys.sleep(login_time)
+      print(paste0("Ok, I'm going to login ! This usually takes ", login_pause," seconds"))
+      Sys.sleep(login_pause)
       print("Looks like I'm already in !")
       whoami()
       
       ### Uploading 
       print("OK, time to upload an Compendium !")
-      print(paste0("Let me check the files " , uploading_pause, " seconds before uploading !"))
+      print(paste0("Let me check the files " , upload_pause, " seconds before uploading !"))
       
       if(upload_origin=="Local"){
         upload<-local_upload(compendium = source,content_type = toString(content_type))
@@ -555,13 +557,17 @@ executing a job.
         upload<-public_share_zenodo(zenodo_record_id = source,content_type = toString(content_type))
         print("Uploading from Zenodo !")
       } else {
+        print("There is a problem with the source file ! It must be Local / Sciebo or Zenodo")
         return(NULL)
       }
       
       ### Candidate process
       print(paste0("Now I have to check the metadata before publishing, this would probably take me ", metaedit_pause ," seconds" ))
       
+      print(upload)
+      
       id<-toString(content(upload))
+      print(paste0("My compendium id is: ", id))
       publish<-publish_compendium(id)
       
       print(paste0("My compendium ", id, " is already public !"))
@@ -570,34 +576,141 @@ executing a job.
       
       Sys.sleep(execution_pause)
       print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-      job_executing<-execute_compendium(toString(id))
+      job_execute<-execute_compendium(toString(id))
       
-      response<-job_executing$status
+      response<-job_execute$status
       
-      job_id<-content(job_executing)
+      job_id<-content(job_execute)
 
       if (response==200){
         print(paste0("Looks like it is already executing the job: ",job_id))
       }
+      
+      job_status<-job_status(job_id)
 
-      result<-list(x=upload,y=publish,z=job_executing)
+      result<-list(x=upload,y=publish,z=job_execute,w=job_status)
       return(result)
     }
 
-**TO DO: ** Job execution (Check status !)
+**TO DO: ** Job execution (Check status, websockets !)
+
+Setting up the test environment
+===============================
+
+Before starting the test scenarios some dummy ERC workspaces need to be
+available. For the **examiniation scenario** it is required 10
+Compendium already available on the o2r service (i.e publications that
+are going to be examined) and for the **creation sessions** 3 ERC
+workspaces.
+
+The following method copy a dummy ERC workspace from a `source` folder
+and creates one (or multiple) new modified dummy on a `target` folder.
+In specific, every new dummy workspace includes a shell script that use
+the `Sleep` command to simulate computation time of an ERC. The number
+of dummies and the `SLEEP` time is configurable throught the
+*dummy\_times* parameter. This parameter is expected to be of numeric
+class and every number (integers only) represents the sleeping time of a
+new dummy ERC workspace. In consequence `dummy_times = c(10,100)` will
+result in *two* new ERC workspaces with 10 and 100 seconds of *SLEEP*
+time respectively.
+
+    # create_dummies
+    ### Parameters
+    # dummy_times -> Numeric, for example: c(1,1,2,3,5,8,13)
+    # source -> path to the original dummy 
+    # target -> path to target folder 
+
+    create_dummies<-function(dummy_times,source,target){
+      
+      # Checks if the file source exists and that the format of dummy_times is correct
+      # If check fails exits with error message
+      
+      if (!is.numeric(dummy_times) | !file.exists(source)){
+        return(cat("ERROR: Seconds data type should be integer\n"," and 'Dummy' folder should exist"))
+      }
+      
+      # Configuration of target, source and dataFiles to copy.
+      target<-file.path(target)
+      source<-file.path(source)
+      
+      dataFiles<-dir(source)
+      
+      # Loop over dummy times and creates a new dummy
+      
+      for (seconds in dummy_times){
+        
+        # Skip if seconds is not an integer
+        
+        if (seconds%%1!=0){
+          cat("ERROR: ### Seconds should be an integer number ! ###\n")
+          next
+        }
+        
+        # Create target folder if it does not already exist
+        dir.create(target,recursive=TRUE,showWarnings = FALSE)
+        
+        # Create dummy folder
+        # Generates a ramdom ID to identify dummy folder
+        dummy_id <- do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
+        
+        # Name of the folder includes the sleep time (in seconds) and ID
+        target_dummy_name<-paste0("dummy_",seconds,"_seconds_",dummy_id)
+        target_dummy<-(file.path(target,target_dummy_name))
+        dir.create(target_dummy)
+        
+        # Read files from original dummy and copy them into new dummy folder
+        file.copy(file.path(source,dataFiles),target_dummy,overwrite = TRUE)
+      
+        # Modify dummy 
+         
+         dockerfile<-readLines(file.path(target_dummy,"Dockerfile"),-1)
+         dockerfile[4]<-paste0("ENV SHEEP ", seconds)
+         writeLines(dockerfile,file.path(target_dummy,"Dockerfile"))
+         
+        # Zip dummy
+         
+         zip(target_dummy,file.path(target_dummy,dataFiles),flag="-jq")
+         unlink(target_dummy,recursive=TRUE)
+         
+         cat("*Your dummy ERC [",dummy_id,"] has been succesfully created on ", target_dummy,".zip *\n","*It will sleep: ",seconds," seconds* \n",sep="")
+        # 
+      }
+    }
 
 LoadTest
 ========
 
     #Test for Examination sessions
 
-    #getCookieRemote()
+    #get_cookie_remote()
 
-    #Examination<-data.frame(read.csv("ExaminationScenario.txt", header = TRUE, sep = ","))
+    #Examination<-data.frame(read.csv("ExaminationScenario.csv", header = TRUE, sep = ","))
     #resultsExamination<-mcmapply(readerSession,Examination$Compendium_ID,Examination$Start_Pause,Examination$Login_time,Examination$Execution_Pause,mc.silent = FALSE)
 
     #Test for Creation Sessions
 
-    #Creation<-data.frame(read.csv("CreationScenario.txt",header=TRUE,sep=","))
+    #Creation<-data.frame(read.csv("CreationScenario.csv",header=TRUE,sep=","))
 
-    #resultsCreationa<-mcmapply(CreationSession,Creation$upload_origin,Creation$content_type,Creation$source_1,Creation$source_2,Creation$start_Pause,Creation$login_time,Creation$uploading_Pause,Creation$metaedit_Pause,Creation$execution_Pause)
+    #resultsCreationa<-mcmapply(creation_session,Creation$upload_origin,Creation$content_type,Creation$source,Creation$source_path,Creation$start_pause,Creation$login_pause,Creation$upload_pause,Creation$metaedit_pause,Creation$execution_pause)
+
+Report
+======
+
+    creation_dataframe<-function(df){
+      
+      compendium_id<-content(df[[1]])
+      
+      upload<-df[[1]]$times
+      names(upload)<-paste0('upload_',names(upload))
+      
+      candidate<-df[[2]]$times
+      names(candidate)<-paste0('candidate_',names(candidate))
+      
+      execution<-df[[3]]$times
+      names(execution)<-paste0('execution_',names(execution))
+      
+      info<-c(compendium_id,upload,candidate,execution)
+      df<-data.frame(list(info))
+      df<-df%>%gather("Process","Time",-1)
+      return(df)
+    }
