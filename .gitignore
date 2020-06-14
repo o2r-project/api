@@ -45,9 +45,6 @@ vignettes/*.pdf
 # Mac
 .DS_Store
 
-# Rmarkdown html
-
-*.html
 
 # jmeter log
 *.log

@@ -174,11 +174,12 @@ login information of [orcid](orcidorcid.org) **personal account**.
       #Remote Test
       o2r_remote<-"https://o2r.uni-muenster.de/#/"
       
-      # Read startup file  / login information
+      # Read configuration file
       readRenviron(".Renviron")
 
       available.versions<-list_versions("chromedriver")
-      r<-rsDriver(chromever=available.versions[[1]][1])
+      
+      r<-rsDriver(chromever=available.versions[[1]][5],port=sample(4500:4999,1))
       rem_dr<-r[["client"]]  
       
       # o2r webpage
@@ -436,7 +437,8 @@ Checks the status of a job
     job_status <- function(job_id) {
       endpoint<-Sys.getenv("ENDPOINT")
       cookie<-Sys.getenv("COOKIE")
-      response <- GET(url = paste0(endpoint, "job/", job_id),
+      print(paste0(endpoint, "job/", job_id))
+      response <- GET(url = paste0(endpoint, "job/", job_id,"?steps=all"),
                       accept_json(),
                       # authenticate even if not needed to not destroy cookie caching
                       set_cookies(connect.sid = cookie))
@@ -608,10 +610,10 @@ and creates one (or multiple) new modified dummy on a `target` folder.
 In specific, every new dummy workspace includes a shell script that use
 the `Sleep` command to simulate computation time of an ERC. The number
 of dummies and the `SLEEP` time is configurable throught the
-*dummy\_times* parameter. This parameter is expected to be of numeric
+`dummy_times` parameter. This parameter is expected to be of numeric
 class and every number (integers only) represents the sleeping time of a
 new dummy ERC workspace. In consequence `dummy_times = c(10,100)` will
-result in *two* new ERC workspaces with 10 and 100 seconds of *SLEEP*
+result in **two** new ERC workspaces with 10 and 100 seconds of `SLEEP`
 time respectively.
 
     # create_dummies
@@ -642,7 +644,7 @@ time respectively.
         # Skip if seconds is not an integer
         
         if (seconds%%1!=0){
-          cat("ERROR: ### Seconds should be an integer number ! ###\n")
+          cat("ERROR: ### Seconds must be an integer number ! ###\n")
           next
         }
         
@@ -696,21 +698,42 @@ LoadTest
 Report
 ======
 
-    creation_dataframe<-function(df){
+    creation_dataframe<-function(list){
       
-      compendium_id<-content(df[[1]])
+      compendium_id<-content(list[[1]])
+      names(compendium_id)<-"compendium_id"
       
-      upload<-df[[1]]$times
-      names(upload)<-paste0('upload_',names(upload))
+      upload_times<-list[[1]]$times
+      upload_status<-rep(list[[1]]$status,6)
+      names(upload_status)<-paste0('status5upload_',names(upload_times))
+      names(upload_times)<-paste0('time5upload_',names(upload_times))
       
-      candidate<-df[[2]]$times
-      names(candidate)<-paste0('candidate_',names(candidate))
+      candidate_times<-list[[2]]$times
+      candidate_status<-rep(list[[2]]$status,6)
+      names(candidate_status)<-paste0('status5candidate_',names(candidate_times))
+      names(candidate_times)<-paste0('time5candidate_',names(candidate_times))
+
+      job_id<-content(list[[3]])
+      execution_times<-list[[3]]$times
+      execution_status<-rep(list[[3]]$status,6)
+      names(execution_status)<-paste0('status5execution_',names(execution_times))
+      names(execution_times)<-paste0('time5execution_',names(execution_times))
       
-      execution<-df[[3]]$times
-      names(execution)<-paste0('execution_',names(execution))
+      job_status<-content(list[[4]])$steps
+      job_steps_time_names<-paste0("time5job_",names(job_status))
+      job_steps_status_names<-paste0("status5job_",names(job_status))
       
-      info<-c(compendium_id,upload,candidate,execution)
+      job_steps_start<-sapply(jobStatus,"[",1 )%>% sapply(function(x) as.POSIXct(x,format="%Y-%m-%dT%H:%M:%OS"))
+      job_steps_end<-sapply(jobStatus,"[",2) %>% sapply(function(x) as.POSIXct(x,format="%Y-%m-%dT%H:%M:%OS"))
+      job_steps_time<-job_steps_end-job_steps_start
+      names(job_steps_time)<-job_steps_time_names
+      
+      job_steps_status<-sapply(jobStatus,"[",3)
+      names(job_steps_status)<-job_steps_status_names
+      
+      info<-c(compendium_id,job_id,upload_times,upload_status,candidate_times,candidate_status,execution_times,execution_status,job_steps_time,job_steps_status)
+      
       df<-data.frame(list(info))
-      df<-df%>%gather("Process","Time",-1)
+      df<-df%>%pivot_longer(-c(compendium_id,job_id),names_to=c(".value","process_step"),names_sep="5")
       return(df)
     }
