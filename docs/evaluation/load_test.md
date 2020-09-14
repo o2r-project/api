@@ -37,33 +37,33 @@ corresponding to **o2r service tasks (o2r)**.
 2.  **Login pause (U) :** Time required to loggin into the o2r service
     (e.g remembering the password)
 
-3.  **Pause before upload (U) ** Time required for the user before
+3.  **Pause before upload (U) :** Time required for the user before
     submmiting a paper into the publication (e.g Checking the files and
     format).
 
-4.  **ERC/workspace Upload (o2r) ** Time required by the o2r service to
+4.  **ERC/workspace Upload (o2r) :** Time required by the o2r service to
     upload the ERC or Workspace submmited by the author. After this
     steps the compendium is merely a candidate and is not publicly
     available.This step is part of the [candidate
     process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-5.  **Metadata modification (U) ** Time required by the author to review
+5.  **Metadata modification (U) :** Time required by the author to review
     the metadata of the submmited paper. This step is mandatory to make
     the ERC compendium publicly available. This step is part of the
     [candidate
     process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-6.  **ERC/workspace publication (o2r) ** Time required by the o2r
+6.  **ERC/workspace publication (o2r) :** Time required by the o2r
     service to save the metadata and change the status of the compendia
     to publicly available. This is the final step of the [candidate
     process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-7.  **Execution Pause (U)** As we assume that authors are going to be
+7.  **Execution Pause (U):** As we assume that authors are going to be
     interested in running the analysis of their papers/compendium, this
     time represents an initial examination of the published ERC before
     running a Job.
 
-8.  **Job Execution (o2r) ** Time required by the o2r service to run the
+8.  **Job Execution (o2r) :** Time required by the o2r service to run the
     analysis/ [(Job)](https://o2r.info/api/job/) in the compendium.
 
 **User steps (U)** are adjustable before the test in a configuration
@@ -612,7 +612,7 @@ scripts. Both files are requires to run the containers.
 
 ###### run\_test
 
-This functions run the test based on the configuration parameters.
+This function runs the test based on the configuration parameters.
 During the test the function gives an update of the stage (Special Issue
 creation or user interaction) and the corresponding creation or
 examination sessions. As an ‘output’ the test returns a folder with the
