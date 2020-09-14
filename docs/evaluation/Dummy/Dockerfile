@@ -7,5 +7,5 @@ COPY gotosleep.sh /gotosleep.sh
 
 CMD ["/bin/bash", "/gotosleep.sh"]
 
-# docker build --tag sleeptainer .
-# docker run -it --rm sleeptainer
+CMD docker build --tag sleeptainer .
+CMD docker run -it --rm sleeptainer

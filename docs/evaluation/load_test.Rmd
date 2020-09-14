@@ -6,45 +6,63 @@ output: md_document
 ---
 # o2r Reproducibility Service Load Testing
 
-In order to evaluate the performance of the o2r reproducibility service, we conduct a suite of load tests for expected usage scenarios: an **ERC creation scenario**, an **ERC examination scenario**, and a **combined scenario**. The data collected during these load tests allows operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance. Each section of the document contains the functions required to test the o2r service both in `local` implementation and in the `remote` [o2r.uni-muenster.de](o2r.uni-muenster.de) implementation.
+In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue ("late submissions"). A Submission of a paper to the o2r reproducibility service is called **Creation session** and the interaction of a reader with a paper is called **Examination session**. 
 
-The ERC creation scenario assumes that a number of authors across all time zones prepare an ERC-based submission to a special issue. A special issue call is usually open for ~ 6 months, but often has a high number of submissions close to the deadline. Because of the temporal distribution and the unclear expected activity, we assume **3 parallel creation sessions**.
-
-The number of sessions for the examination scenario is aligned with a typical number of papers in a special issue, i.e. 10 papers, and simulates the case of two concurrent readers per paper, i.e. viewing sessions 20 in total per issue. The test evaluates the performance of the API separately for the first two scenarios.
-
-Finally, a third scenario evaluates the parallel execution of the first two scenarios. This would be the case for a reproducibility service operated by a publisher who continuously runs special issues, **having both readers** and open calls for submissions.
+The data collected during these load tests allows operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance. Each section of the document contains the functions required to test the o2r service both in `local` implementation and in the `remote` [o2r.uni-muenster.de](o2r.uni-muenster.de) implementation.
 
 ## Load testing basics
 
 TODO: what is load testing? (how is not) add some links/literature here
 
-## Creation scenario
+## Creation session
 
 ### Overview
 
-From the Author perspective the test simulates four main steps:
+From the Author perspective the test simulates 8 general steps, some steps correspond to **user interaction (U)** and other steps to process corresponding to **o2r service tasks (o2r)**.
 
-1. Service authentication
+1. **Session start (U) :** Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)
 
-2. Upload of either a workspace or an ERC via either direct file upload or from one of two supported public shares
+2. **Login pause (U) :** Time required to loggin into the o2r service (e.g remembering the password)
 
-3. Metadata editing
+3. **Pause before upload (U) ** Time required for the user before submmiting a paper into the publication (e.g Checking the files and format).
 
-4. Compendium execution and bindings testing
+4. **ERC/workspace Upload (o2r) ** Time required by the o2r service to upload the ERC or Workspace submmited by the author. After this steps the compendium is merely a candidate and is not publicly available.This step is part of the [candidate process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-Every creation session has two main variables: the source and the type of upload. Six combinations of upload type and origin origin are possible in the first step. As the objective is to simulate three parallel cases, the creation scenario will have subsequent creation sessions to cover all the possible cases.
+5. **Metadata modification (U) ** Time required by the author to review the metadata of the submmited paper. This step is mandatory to make the ERC compendium publicly available. This step is part of the [candidate process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-TODO: how often do we run each combinations to get trustworthy data?
+6. **ERC/workspace publication (o2r) ** Time required by the o2r service to save the metadata and change the status of the compendia to publicly available. This is the final step of the [candidate process](https://o2r.info/api/compendium/candidate/#candidate-process)
 
-### Upload type and origin
+7. **Execution Pause (U)** As we assume that authors are going to be interested in running the analysis of their papers/compendium, this time represents an initial examination of the published ERC before running a Job.
 
-The test differentiates between the **two types of uploads**, which can either be a workspace or a complete ERC. A workspace is an archive (.zip Format) of all files needed for a scientific workflow, i.e. the main file in R Markdown format, e.g., main.Rmd, the file for reading, e.g., display.html, and all additionally required data and software files (see ERC specification for details). The finished ERC in addition contains the ERC configuration file (erc.yml) and the files for the computing environment (the manifest in a Dockerfile, the image in image.tar).
+8. **Job Execution (o2r) ** Time required by the o2r service to run the analysis/ [(Job)](https://o2r.info/api/job/) in the compendium. 
 
-The type of upload is configured via the `content_type` parameter for upload requests, see http://o2r.info/api/compendium/upload/.
+**User steps (U)** are adjustable before the test in a configuration file. The steps corresponding to **o2r tasks (o2r)** require a series of interactions with the o2r API service and thus their durations are *not* configurable. These steps are explained in detail in the **o2r task (o2r)** section.
 
-It is of interest if one of the formats significantly impact performance, e.g., because the file sizes of ERC are much bigger because of the image tarball, while the processing is reduced since the manifest and image must not be created during submission.
+## Examination session
 
-The test includes three types of **upload origins**:
+### Overview
+
+An examination sessions consist on a reader interaction with an already available compendia. From the reader/examinator perspective the test simulates 4 general steps, these steps are part of some the steps already described in the creation session:
+
+1. **Session start (U):** Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)
+
+2. **Login pause (U):** Time required to loggin into the o2r service (e.g remembering the password)
+
+3. **Execution Pause (U):**  This time represents an initial examination of the published ERC before running a Job.
+
+4. **Job Execution (o2r):** Time required by the o2r service to run the analysis [(Job)](https://o2r.info/api/job/) in the compendium. 
+
+**User steps (U)** are adjustable before the test in a configuration file. The step corresponding to **o2r tasks (o2r)** require a series of interactions with the o2r API service. This step is explained in the **o2r Task (o2r)** section.
+
+## o2r Tasks (o2r)
+
+### ERC/workspace upload (o2r)
+
+Regarding the upload process two main characteristics are importart: its **origin** and **type**. The first one corresponding to the location of the files (e.g in local machine or a public repository) and the second corresponding to the content of the submitted files.
+
+#### Upload origin
+
+There are three types of upload origins:
 
 1. [Local file upload](http://o2r.info/api/compendium/upload/)
 2. [Public Share from Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
@@ -52,104 +70,79 @@ The test includes three types of **upload origins**:
 
 It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the Record ID identification is used.
 
-### Metadata editing
+#### Upload type
 
-As described on the compendium life cycle, the ‘candidate process’ should be applied to the compendium or workspaces in order to be publicly available. This process should include a modifiable time that the user would take interacting with the platform. Each user just saves the metadata once. After metadata editing the ERC is published.
+The ERC/workspace upload differenciate between **two types of uploads**, which can either be a workspace or a complete ERC. A workspace is an archive (.zip Format) of all files needed for a scientific workflow, i.e. the main file in R Markdown format, e.g., main.Rmd, the file for reading, e.g., display.html, and all additionally required data and software files (see ERC specification for details). The finished ERC in addition contains the ERC configuration file (erc.yml) and the files for the computing environment (the manifest in a Dockerfile, the image in image.tar). 
 
-TODO: document task (https://github.com/o2r-project/api/issues) for later: have authors save metadata several times before publishing
+It is of interest if one of the formats significantly impact performance, e.g., because the file sizes of ERC are much bigger because of the image tarball, while the processing is reduced since the manifest and image must not be created during submission.
 
-### Execution and interaction 
+### Metadata modification (o2r)
 
-After the publication of the compendiums the authors will most likely also execute the ERCs and test the interaction with bindings, if the latter exist. Therefore at least one execution job is started after each upload, see  http://o2r.info/api/job/#execute-a-compendium.
+As described on the compendium life cycle, the `candidate process` should be applied to the compendium or workspaces in order to be publicly available. In this sense is the only step shared by the examination session and creation session that is not and user step. This step requires 2 interactions with the API, the first one requesting the available metadata of the candidate ERC/workspace and the second one saving the medatada modification. For this test, each user saves the metadata once and do not modify the content of the initial submission. This means that the user just confirms that the metadata is correct.
 
-## Examination scenario
+### Job execution (o2r)
 
-### Overview
-
-The reading sessions consist on the simulation of 20 readers accessing and interacting with existing Compendiums (i.e. successfully created Compendia). The reading session will access to a compendium and execute a job (see ##Job). For the test it is required to have at least 10 compendia. The time of start of the execution of each individual examination session should be adjustable. 
-
-From the reader perspective the test simulates two main steps:
-
-1. Service authentication
-
-2. Compendium execution and bindings testing
+After the publication of the compendiums the authors/readers will most likely also execute the ERCs. The 10 steps of a Job execution are described in this [page](https://o2r.info/api/job/#steps-of-a-job). This step requires 3 process, one API request to start the job, the internal Job execution by the o2r service and a series of request to the API to update the status of the Job. The execution finishes when the job status API request indicates that the Job execution has finished.
 
 ## Implementation
 
 ### Overview
 
-The test plan will be scripted using R and is controlled via an R Markdown notebook (this file). The test notebook is part of the API documentation and is published at https://o2r.info/api/evaluation.
+The test is scripted using R and is controlled via an R Markdown notebook (this file). The test consist in 2 main parts, the first one a script controlling the individual o2r user sessions (creation or examination), and the R Markdown controlling the test and allowing multiple simultaneous sessions by using Docker containers. The test notebook is part of the API documentation and is published at https://o2r.info/api/evaluation. 
 
-### Summary of functions
+### o2r user sessions
 
-The test includes a series of functions to conduct the usage scenarios including the required processes divided in 4 groups (1) Service Authentication, (2) ERC / Workspace Upload, (3) Metadata editing (i.e. [Candidate process](http://o2r.info/api/compendium/candidate/)) and (4) Compendium execution.
+The script `o2r_sessions.R` in the `o2r_test` folder includes all of the functions required to simulate all the steps of either an individual **Creation session** or an individual **Examination session**. The main functions of this script are `examination_session` and `creation_session`. As for any interaction with the o2r service the functions **require** an authentication `COOKIE`, in the case of a local or remote service find the cookie `connec.sid` in your browser after loggin in in the o2r service (e.g. using debug tools, `F12`). An authomatized version for this step (that saves you a couple of clikcs) is presented in the **Test** session, however  this function is not estable for all types of systems/browsers.
+
+Each of the functions (`examination_session` and `creation_session`) runs the corresponding session and returns an individual report summarizing the times required by the user (U) or the o2r service (o2r) including subprocess corresponding to the API or the JOB execution.
+
+In this sense, three types of steps (`step_type`) are recorded:
+
+1. **General steps** (`general_step`): These steps correspond to the already described steps for Creation sessions (8 steps) and Examination sessions (4 steps).
+
+2. **API request steps** (`api_request`): The steps correspond to response time of the API for some type of request (e.g, `candidate_metarequest`,`job_status`).
+
+3. **JOB execution** (`job_execution`): The steps correspond to the job execution times described in this [page](https://o2r.info/api/job/#steps-of-a-job).
+
+### Test - Overview
+
+The test simulates the expected usage scenario explained in the previous sections. For this purpose, there are 2 main stages in the test: **Special Issue Creation** and **Special Issue User Interaction**.
+
+The first stage (**Special Issue Creation**) consist in the creation of an Special Issue with the **simultaneous** submission of a configurable number of papers. For our planned usage scenario this consist 10 simultaneous **creation sessions**. As a final result of this stage 10 compendia will be publicly available in the o2r service.
+
+The second stage (**Special Issue User interaction**) consist in two different types of users. The first type of users are examiners (**examination sessions**) that read and interact with the already avaible compendia in the **Special Issue** resulting of the first stage. For the usage scenario we planned 2 readers per compendium. This means that an special issue with 10 compendia expects 20 readers to interact simultaneously (2 per compendium). The second type are authors (**creation sessions**) uploading "late submissions" to the special issue. For the usage scenario 3 submissions are expected and are symultaneous with the **examination sessions**. 
+
+In summary, the first stage requires 10 **creation sessions** and the second stage requieres **20 examination sessions** and **3 creation sessions**. Within stages all sessions are synchronous but the **Special Issue User interaction** stage only starts after the **Special Issue Creation** stage is finished.
+
+### Test implementation
+
+The test implmentation is divided in three parts: Test Configuration, Test report, Test execution. The first one correspond to the authentication on the o2r service and configuration of the required files, the second one correspond to the execution of multiple simultaneos o2r sessions and the last one corresponds to the creation of reports that summarize the test.
 
 ### Required libraries
 
 ```{r libraries}
+
 library(RSelenium)
 library(binman)
 library(httr)
 library(rjson)
 library(stringr)
 library(parallel)
+library(ggplot2)
+library(GGally)
+library(RColorBrewer)
 library(tidyr)
+library(dplyr)
+library(stevedore)
+library(dockerfiler)
+
 ```
 
-### 1. Service Authentication
+#### Test configuration 
 
-#### Remote service
+##### Authentication 
 
-In case of a remote service [o2r.uni-muenster.de](http://o2r.uni-muenster.de) this chunck access to the demo webpage and find the cookie `connec.sid` after a succesfull login. It is required a `.Renviron` file on your local machine next to this file defining USERNAME and PASSWORD variables corresponding to the login information of [orcid](orcidorcid.org) **personal account**.
-
-```{r get_cookie_remote}
-
-#Function to assign in the local environment the Cookie 'connec.sid' and the endpoint corresponding to the type of test (local or remote)
-
-get_cookie_remote<-function(){
-  
-  #Remote Test
-  o2r_remote<-"https://o2r.uni-muenster.de/#/"
-  
-  # Read configuration file
-  readRenviron(".Renviron")
-
-  available.versions<-list_versions("chromedriver")
-  
-  r<-rsDriver(chromever=available.versions[[1]][5],port=sample(4500:4999,1))
-  rem_dr<-r[["client"]]  
-  
-  # o2r webpage
-  rem_dr$navigate(o2r_remote)
-  web_elem<-rem_dr$findElement(using = "xpath", "//a[@href='api/v1/auth/login']")
-  web_elem$clickElement()
-  Sys.sleep(1)
-  # orcid.org login webpage - Personal login
-  
-  web_elem_username<-rem_dr$findElement(using="id",value='userId')
-  Sys.sleep(1)
-  web_elem_pass<-rem_dr$findElement(using="id",value='password')
-  Sys.sleep(1)
-  web_elem_username$sendKeysToElement(list(Sys.getenv("USERNAME")))
-  Sys.sleep(1)
-  web_elem_pass$sendKeysToElement(list(Sys.getenv("PASSWORD"),key="enter"))
-  Sys.sleep(1)
-  
-  # Get cookie
-  cookie<-URLdecode(rem_dr$getAllCookies()[[1]]$value)
-  Sys.sleep(1)
-  Sys.setenv(COOKIE=cookie)
-  Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
-  print(cookie)
-  #Close
-  rem_dr$close()
-  rm(r)
-}
-```
-
-#### Local service 
-
-The following code chunk retrieves the cookie `connec.sid`from the local reference implementation, which is exposed via [o2r-guestlister](). This is a "security hole" which of course does not work when uploading workspaces to a remote reference implementation deployment. It is required a  `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r ip address of your Docker environment inplementation. To find the ip (Usually but not always `localhost`) you have to use the `$docker-machine ip` command.
+The following code chunk retrieves the cookie `connec.sid` from the local reference implementation, which is exposed via [o2r-guestlister](). This is a "security hole" which of course does not work when uploading workspaces to a remote reference implementation deployment. It is required a  `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r ip address of your Docker environment inplementation. To find the ip (Usually, but not always `localhost`) you have to use the `$docker-machine ip` command. As a result the function sets into the working environment a COOCKIE and a ENDPOINT variable.
 
 ```{r get_cookie_local}
 
@@ -157,32 +150,26 @@ get_cookie_local<-function(){
   
   # LocalTest
   o2r_local<-Sys.getenv("IP")
-  
   # Starting Selenium session
   available.versions<-list_versions("chromedriver")
   r<-rsDriver(port=1234L,chromever=available.versions[[1]][1])
   rem_dr<-r[["client"]]  
-  
   # Navigating to o2r local implementation page
-  
   rem_dr$navigate(o2r_local)
-  
   # Click on Login
   web_elem<-rem_dr$findElement(using = "xpath","//a[@href='api/v1/auth/login']")
   web_elem$clickElement()
   Sys.sleep(1)
-  
   # o2r Admin/ Editor / User
-  
   # Click on 'Admin'
   web_elem$findElement(using="xpath","/html/body/div/div[2]/form[3]/button")
   web_elem$clickElement()
-  
+
   # Get cookie and decoding
   cookie<-URLdecode(webElem$getAllCookies()[[1]]$value)
   Sys.sleep(1)
   Sys.setenv(COOKIE=cookie)
-  Sys.setenv(ENDPOINT="https://o2r.uni-muenster.de/api/v1/")
+  Sys.setenv(ENDPOINT="http://localhost/api/v1/")
   
   # Closing Selenium session
   rem_dr$close()
@@ -190,361 +177,35 @@ get_cookie_local<-function(){
 }
 ```
 
+##### Configuration files
 
-#### Who am I ?
+In order to run simultaneous sessions (up to 23), we use Docker containers that execute individual sessions (creation or examination) by using the `o2r_sessions.R` script. For the **Special Issue Creation** we require one folder with the workspaces/ERC to upload and a configuration file for the **creation sessions**. 
 
-Function to verify authentication status. 
+For the **Special Issue User interaction** there are 2 different type of users with different configuration requirements. First, For the **creations sessions** it is required a folder with the 'late submissions' workspaces/ERC and a configuration file. Second, for the **examination sessions** it is requiered a configuration file. The configuration files are `.CSV` with the parameters required to run either a **creation session** or a **examination session** with the `o2r_sessions.R` script.
 
-```{r whoami}
+The following chuncks include functions to create:
 
-whoami<-function(){
-  cookie<-Sys.getenv("COOKIE")
-  endpoint<-Sys.getenv("ENDPOINT")
-  response<-GET(url=paste0(endpoint,"auth/whoami"),
-               accept_json(),
-               set_cookies(connect.sid=cookie),
-               enconde="multipart"
-)
-  return(response)
-}
-```
+1. Dummy Workspaces
+2. Configuration files for **creations sessions** from folders with ERC/Workspaces
+3. Configuration files for **examination sessions** 
 
-### 2. ERC / Workspace Upload
-
-The test differentiates between two types of uploads (either workspace or a complete ERC) and 3 origins (Direct, Zenodo and Sciebo). The following 3 functions (one for each origin) upload the workspaces and the complete ERC for either a `localtest` or a `remotetest`. The function *requires a previous Service authentication* to define `ENDPOINT` and `COOKIE`.
-
-#### [Local upload](http://o2r.info/api/compendium/upload/)
-
-Upload a research workspace or full compendium as a compressed `.zip`.
-
-```{r local_upload}
-
-# local_upload 
-### Parameters
-# compendium -> The archive file
-# content_type -> Form of the archive ('compendium' or 'workspace')
-
-local_upload<-function(compendium,content_type){
-  file<-upload_file(toString(compendium))
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  response<-POST(url=paste0(endpoint,"compendium"),
-                 body=list(
-                   compendium=file,
-                   content_type=content_type),
-                 accept_json(),
-                 set_cookies(connect.sid=cookie),
-                 enconde="multipart"
-  )
-  return(response)
-}  
-```
-
-#### [Public Share - Sciebo](http://o2r.info/api/compendium/public_share/#sciebo)
-
-Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Sciebo](https://sciebo.de/).
-
-```{r public_share_sciebo}
-### Parameters
-# public_share_sciebo
-# share_url -> The Sciebo link to the public share
-# content_type -> Form of archive ('compendium' or 'workspace')
-# path -> Path to a subdirectory or a zip file in the public share
-
-public_share_sciebo<-function(share_url,path,content_type){
-
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  
-  response<-POST(url=paste0(endpoint,"compendium"),
-                 body=list(
-                   share_url=share_url,
-                   content_type=content_type,
-                   path=path),
-                 accept_json(),
-                 set_cookies(connect.sid=cookie),
-                 enconde="multipart"
-  )
-  return(response)
-}
-```
-
-#### [Public Share - Zenodo](http://o2r.info/api/compendium/public_share/#zenodo)
-
-Upload a research workspace or full compendium as a compressed `.zip` from a public share on [Zenodo](https://zenodo.org/) using the `Zenodo Record ID`.
-
-```{r public_share_zenodo}
-# public_share_zenodo
-### Parameters
-# zenodo_record_id -> The Zenodo record id
-# content_type -> Form of archive ('compendium' or 'workspace')
-
-public_share_zenodo<-function(zenodo_record_id,content_type){
-
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  
-  response<-POST(url=paste0(endpoint,"compendium"),
-                 body=list(
-                   content_type=content_type,
-                   zenodo_record_id=zenodo_record_id),
-                 accept_json(),
-                 set_cookies(connect.sid=cookie),
-                 enconde="multipart"
-  )
-  return(response)
-}
-```
-
-### 3. Metadata editing / Publish compendium [(Candidate Process)](http://o2r.info/api/compendium/candidate/#candidate-process)
-
-After uploading a compendium a [succesful metadata update](http://o2r.info/api/compendium/metadata/#update-metadata) is required to make it publicly available. The following code reproduce the metadata extracting and metadata update required to publish the compendium.
-
-```{r publish_compendium}
-
-# publish_compendium
-### Parameters
-# id -> compendium id
-
-publish_compendium <- function(id){
-  
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  
-  url_metadata<-paste0(endpoint,"compendium/",id,"/metadata")
-  print(url_metadata)
-  print("Extracting metadata...")
- 
-  # Extract metadata
-  response <- GET(url=url_metadata,
-                  accept_json(),
-                  set_cookies(connect.sid = cookie))
-  
-  print("Printing metadata")
-  print(response)
-  
-  metadata <-  content(response, as = "text")
-  metadata <- str_sub(string = metadata,start = str_locate(string = metadata, pattern = "\\{\"o2r\"")[[1]],end = str_length(metadata) - 1)
-  
-  print("printing... metadata")
-  print(metadata)
-  
-  # Update metadata "Candidate process"
-  response_update <- PUT(url=url_metadata,
-                         body = metadata,
-                         content_type_json(),
-                         accept_json(),
-                         set_cookies(connect.sid = cookie))
-  return(response_update)
-}
-```
-
-
-### 4. [Compendium execution](http://o2r.info/api/job/)
-
-#### Execution job
-
-Run the analysis (Execution job) in a published compendium. 
-
-```{r execute_compendium}
-# execute_compendium
-### Parameters
-# id -> compendium id
-
-execute_compendium<-function(id){
-  
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  
-  response <- POST(url = paste0(endpoint, "job"),
-                   body = list(compendium_id = id[[1]]),
-                   accept_json(),
-                   set_cookies(connect.sid = cookie))
-  return(response)
-  
-}
-```
-
-#### Job Status
-
-Checks the status of a job
-
-```{r job_status}
-# job_status
-### Parameters
-# job_id -> Job id
-
-job_status <- function(job_id) {
-  endpoint<-Sys.getenv("ENDPOINT")
-  cookie<-Sys.getenv("COOKIE")
-  print(paste0(endpoint, "job/", job_id))
-  response <- GET(url = paste0(endpoint, "job/", job_id,"?steps=all"),
-                  accept_json(),
-                  # authenticate even if not needed to not destroy cookie caching
-                  set_cookies(connect.sid = cookie))
-  return(response)
-}
-```
-
-## ERC examination session
-
-For the examination session it is required an already published compendium  `id`. Aditionally the examination session can be configured adding `start_pause` representing a time before starting the session, `login_pause` representing the time the user usually spends login into the service and `execution_pause` corresponding to the time the user takes before executing a job.
-
-```{r examination_session}
-
-# examination_session
-### Parameters
-# id -> compendium id
-# start_pause -> Time before starting the session (in seconds)
-# login_pause -> Login-in time (in seconds)
-# execution_pause -> Time before executing a job (in seconds)
-
-examination_session<-function(id,
-                              start_pause=0,
-                              login_pause=0,
-                              execution_pause=0){
-  
-  ### Starting pause
-  print(paste0("I'm going to take ", start_pause," seconds before starting to check this Compendium"))
-  Sys.sleep(start_pause)
-  
-  ### Login pause simulation
-  print(paste0("Ok, I'm going to login ! This usually takes ", login_pause," seconds"))
-  Sys.sleep(login_pause)
-  print("Looks like I'm already in !")
-  whoami()
-  
-  ### Running the analysis
-  print(paste0("Let me check the paper ", execution_pause," seconds before running the analysis !"))
-  Sys.sleep(execution_pause)
-  print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-  job_executing<-execute_compendium(toString(id))
-  
-  response<-job_executing$status
-  job_id<-content(job_executing)
-
-  if (response==200){
-    print(paste0("Looks like it is already executing the job: ",job_id))
-  }
-  
-  result<-list(x=job_executing)
-  return(result)
-}
-
-```
-
-## ERC creation session
-
-For the examination session it is required a series of configurations. Firstly, `upload_origin` correspond to the ERC / Workspace Upload origin (Local, Zenodo or Sciebo),`upload_origin` corresponds to the form of archive ('compendium' or 'workspace'), `source` and `source_path` provide the source information required to upload the workspaces depending the origin. Other configurations representing interaction with the platform can be modified: `start_pause` representing a time before starting the session, `login_pause` representing the time the user usually spends login into the service,`uploading_pause` representing the time before uploading the files to the service, `metaedit_pause` representing the time required to check the metadata before publishing and
-`execution_pause` corresponding to the time the user takes before executing a job.
-
-
-```{r creation_session}
-# creation_session
-### Parameters
-# upload_origin -> Type of upload ("Local","Zenodo","Sciebo")
-# content_type -> Form of archive ('compendium' or 'workspace')
-# source -> For "Direct" upload path to zip file, for "Zenodo" zenodo_record_id OR for "Sciebo" The Sciebo link to the public share.
-# source_path -> ONLY for Sciebo upload path to a subdirectory or a zip file in the public share otherwise empty.
-# start_pause -> Time before starting the session (in seconds)
-# login_pause -> Login-in time (in seconds)
-# uploading_pause -> Time before uploading the files (in seconds)
-# metaedit_pause -> Time required to check the metadata before publishing (in seconds)
-# execution_pause -> Time before executing a job (in seconds)
-
-creation_session<-function(upload_origin,
-                          content_type,
-                          source,
-                          source_path,
-                          start_pause=0,
-                          login_pause=0,
-                          upload_pause=0,
-                          metaedit_pause=0,
-                          execution_pause=0){
-  
-  ### STARTING PAUSE
-  
-  print(paste0("I'm going to take ", start_pause," seconds before starting to upload this Compendium"))
-  Sys.sleep(start_pause)
-  
-  ### LOGIN Simulation
-  
-  print(paste0("Ok, I'm going to login ! This usually takes ", login_pause," seconds"))
-  Sys.sleep(login_pause)
-  print("Looks like I'm already in !")
-  whoami()
-  
-  ### Uploading 
-  print("OK, time to upload an Compendium !")
-  print(paste0("Let me check the files " , upload_pause, " seconds before uploading !"))
-  
-  if(upload_origin=="Local"){
-    upload<-local_upload(compendium = source,content_type = toString(content_type))
-    print("Uploading from my computer !")
-  } else if (upload_origin=="Sciebo"){
-    upload<-public_share_sciebo(share_url = toString(source),path=toString(source_path),content_type=toString(content_type))
-    print("Uploading from Sciebo !")
-  } else if (upload_origin=="Zenodo"){
-    upload<-public_share_zenodo(zenodo_record_id = source,content_type = toString(content_type))
-    print("Uploading from Zenodo !")
-  } else {
-    print("There is a problem with the source file ! It must be Local / Sciebo or Zenodo")
-    return(NULL)
-  }
-  
-  ### Candidate process
-  print(paste0("Now I have to check the metadata before publishing, this would probably take me ", metaedit_pause ," seconds" ))
-  
-  print(upload)
-  
-  id<-toString(content(upload))
-  print(paste0("My compendium id is: ", id))
-  publish<-publish_compendium(id)
-  
-  print(paste0("My compendium ", id, " is already public !"))
-  
-  ### Execution process
-  
-  Sys.sleep(execution_pause)
-  print(paste0("Looks interesting ! Let's run an analysis of Compendium: ",id))
-  job_execute<-execute_compendium(toString(id))
-  
-  response<-job_execute$status
-  
-  job_id<-content(job_execute)
-
-  if (response==200){
-    print(paste0("Looks like it is already executing the job: ",job_id))
-  }
-  
-  job_status<-job_status(job_id)
-
-  result<-list(x=upload,y=publish,z=job_execute,w=job_status)
-  return(result)
-}
-
-```
-**TO DO: ** Job execution (Check status, websockets !)
-
-# Setting up the test environment
-
-Before starting the test scenarios some dummy ERC workspaces need to be available. For the **examiniation scenario** it is required 10 Compendium already available on the o2r service (i.e publications that are going to be examined) and for the **creation sessions** 3 ERC workspaces.
+###### Dummy Workspaces
 
 The following method copy a dummy ERC workspace from a `source` folder and creates one (or multiple) new modified dummy on a `target` folder. In specific, every new dummy workspace includes a shell script that use the `Sleep` command to simulate computation time of an ERC. The number of dummies and the `SLEEP` time is configurable throught the `dummy_times` parameter. This parameter is expected to be of numeric class and every number (integers only) represents the sleeping time of a new dummy ERC workspace. In consequence `dummy_times = c(10,100)` will result in **two** new ERC workspaces with 10 and 100 seconds of `SLEEP` time respectively. 
 
-```{r create_dummies}
-# create_dummies
+```{r creat_dummy_workspaceS}
+# create_workspace
 ### Parameters
-# dummy_times -> Numeric, for example: c(1,1,2,3,5,8,13)
+# sleep_times -> Numeric, for example: c(1,1,2,3,5,8,13)
 # source -> path to the original dummy 
 # target -> path to target folder 
 
-create_dummies<-function(dummy_times,source,target){
+create_dummy_workspaces<-function(sleep_times,source,target){
   
   # Checks if the file source exists and that the format of dummy_times is correct
   # If check fails exits with error message
   
-  if (!is.numeric(dummy_times) | !file.exists(source)){
+  if (!is.numeric(sleep_times) | !file.exists(source)){
     return(cat("ERROR: Seconds data type should be integer\n"," and 'Dummy' folder should exist"))
   }
   
@@ -556,7 +217,7 @@ create_dummies<-function(dummy_times,source,target){
   
   # Loop over dummy times and creates a new dummy
   
-  for (seconds in dummy_times){
+  for (seconds in sleep_times){
     
     # Skip if seconds is not an integer
     
@@ -598,70 +259,498 @@ create_dummies<-function(dummy_times,source,target){
 
 ```
 
+A Dummy ERC is available in the `Dummy` folder.
 
-# LoadTest
+###### Configuration files (Creation sessions)
 
-```{r test, eval=FALSE}
+The following method creates a dataframe with the configuration parameters for Creation sessions. The method uses the `folder_path` to examine that folder and configure a creation session with a *Local* `upload_origin`. The `mean_times` and `var` parameters correspond to the times for user steps (U) pauses (Start, login, upload, metaedit and execution). In this sense, the first element in `mean_times` and `var` corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the creation sessions corresponding to the ERC/Workspaces in `folder_path`. 
 
-#Test for Examination sessions
+```{r conf_df_creation_sessions}
 
-#get_cookie_remote()
+# conf_df_creation_sessions
+### Parameters
+# folder_path -> path with a folder with ERC/Workspaces
+# mean_times -> vector with the mean times for the User (U) steps, it should be a vector with 5 values. 
+# var -> vector with the variance of times for the User (U) steps, it should be a vector with 5 values. 
 
-#Examination<-data.frame(read.csv("ExaminationScenario.csv", header = TRUE, sep = ","))
-#resultsExamination<-mcmapply(readerSession,Examination$Compendium_ID,Examination$Start_Pause,Examination$Login_time,Examination$Execution_Pause,mc.silent = FALSE)
+conf_df_creation_sessions<-function(folder_path,mean_times=c(10,20,30,40,50),var=c(2,4,5,6,7)){
+  erc_folders<-list.files(folder_path)
+  number_folders<-length(erc_folders)
+  upload_origin<-rep("Local", times = number_folders)
+  content_type<-rep("workspace", times = number_folders)
+  source<-paste(folder_path,"/",list.files(folder_path),sep="")
+  source_path<-rep(NA,times=number_folders)
+  start_pause<-abs(rnorm(number_folders,mean_times[1],var[1]))
+  login_pause<-abs(rnorm(number_folders,mean_times[2],var[2]))
+  upload_pause<-abs(rnorm(number_folders,mean_times[3],var[3]))
+  metaedit_pause<-abs(rnorm(number_folders,mean_times[4],var[4]))
+  execution_pause<-abs(rnorm(number_folders,mean_times[5],var[5]))
+  df <- data.frame(upload_origin,content_type,source,source_path,start_pause,login_pause,upload_pause,metaedit_pause,execution_pause,stringsAsFactors=FALSE)
+  return(df)
+  }
+```
 
-#Test for Creation Sessions
+###### Configuration files (Examination sessions)
 
-#Creation<-data.frame(read.csv("CreationScenario.csv",header=TRUE,sep=","))
+The following method creates a dataframe with the configuration parameters for examination sessions. The method assigns each element in the `compendium_id` vector (each representing a examination session) their user steps (U) times (Start, login, execution). In this sense, the first element in `mean_times` and `var` corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the examination sessions corresponding to the compendium IDs in `compendium_id`.
 
-#resultsCreationa<-mcmapply(creation_session,Creation$upload_origin,Creation$content_type,Creation$source,Creation$source_path,Creation$start_pause,Creation$login_pause,Creation$upload_pause,Creation$metaedit_pause,Creation$execution_pause)
+```{r conf_df_examination_sessions}
+
+# conf_df_examination_sessions
+### Parameters
+# compendium_id -> path with a folder with ERC/Workspaces
+# mean_times -> vector with the mean times for the User (U) steps, it should be a vector with 3 values. 
+# var -> vector with the variance of times for the User (U) steps, it should be a vector with 3 values. 
+
+conf_df_examination_sessions<-function(compendium_id=c(),mean_times=c(10,20,30),var=c(2,4,6)){
+  number_session<-length(compendium_id)
+  start_pause<-abs(rnorm(number_session,mean_times[1],var[1]))
+  login_pause<-abs(rnorm(number_session,mean_times[2],var[2]))
+  execution_pause<-abs(rnorm(number_session,mean_times[3],var[3]))
+  df <- data.frame(compendium_id,start_pause,login_pause,execution_pause,stringsAsFactors=FALSE)
+  return(df)
+  }
 
 ```
 
+#### Test report
 
-# Report
+##### Synchronize time
 
-```{r}
+This functions uses as input the raw times resulting of the execution of the test. Raw times are stored as doubles in number of seconds since 01.01.1970 [Unix epoch time](https://www.epochconverter.com/) and as the relevant value is the duration of the steps the function synchronizes the times into a relative time scale starting in 0s. The 0 value represents the common start of the synchronized sessions (creation or examination).
 
-creation_dataframe<-function(list){
-  
-  compendium_id<-content(list[[1]])
-  names(compendium_id)<-"compendium_id"
-  
-  upload_times<-list[[1]]$times
-  upload_status<-rep(list[[1]]$status,6)
-  names(upload_status)<-paste0('status5upload_',names(upload_times))
-  names(upload_times)<-paste0('time5upload_',names(upload_times))
-  
-  candidate_times<-list[[2]]$times
-  candidate_status<-rep(list[[2]]$status,6)
-  names(candidate_status)<-paste0('status5candidate_',names(candidate_times))
-  names(candidate_times)<-paste0('time5candidate_',names(candidate_times))
 
-  job_id<-content(list[[3]])
-  execution_times<-list[[3]]$times
-  execution_status<-rep(list[[3]]$status,6)
-  names(execution_status)<-paste0('status5execution_',names(execution_times))
-  names(execution_times)<-paste0('time5execution_',names(execution_times))
+```{r synchronize_time}
+
+synchronize_times<-function(rawtimes_df){
+  min<-min(rawtimes_df$start, na.rm=T)
+  rawtimes_df$start[rawtimes_df$step == "start_pause"]<-min
+  rawtimes_df$start<-rawtimes_df$start-min
+  rawtimes_df$end<-rawtimes_df$end-min
+  synchronize_df<-rawtimes_df
+  return(synchronize_df)
+}
+```
+
+#Timeline plot
+
+This functions creates a timeline plot using the synchronized times of the test representing the general steps for creation or examination sessions.
+
+```{r timeline_plot}
+
+timeline_plot<-function(report_df,test_id){
   
-  job_status<-content(list[[4]])$steps
-  job_steps_time_names<-paste0("time5job_",names(job_status))
-  job_steps_status_names<-paste0("status5job_",names(job_status))
+  gen_steps_df<-report_df[report_df$step_type=="general_step",]
+  gen_steps_df$step<-factor(gen_steps_df$step, levels = unique(gen_steps_df$step))
   
-  job_steps_start<-sapply(jobStatus,"[",1 )%>% sapply(function(x) as.POSIXct(x,format="%Y-%m-%dT%H:%M:%OS"))
-  job_steps_end<-sapply(jobStatus,"[",2) %>% sapply(function(x) as.POSIXct(x,format="%Y-%m-%dT%H:%M:%OS"))
-  job_steps_time<-job_steps_end-job_steps_start
-  names(job_steps_time)<-job_steps_time_names
+  labels<-c("[U] Session start", "[U] Login pause","[U] Pause before upload", "[o2r] ERC Upload","[U] Metadata modification","[o2r] ERC publication","[U] Execution pause", "[o2r] Job execution")
+  colors<-c("#eceff1","#cfd8dc","#b0bec5","#187de9","#90a4ae","#0c56bc","#78909c","#00308f")
+  if(length(unique(gen_steps_df$step))!=8){
+    labels<-c("[U] Session start", "[U] Login pause", "[U] Execution pause","[o2r] Job execution" )
+    colors<-c("#eceff1","#cfd8dc","#78909c","#00308f")
+  }
   
-  job_steps_status<-sapply(jobStatus,"[",3)
-  names(job_steps_status)<-job_steps_status_names
-  
-  info<-c(compendium_id,job_id,upload_times,upload_status,candidate_times,candidate_status,execution_times,execution_status,job_steps_time,job_steps_status)
-  
-  df<-data.frame(list(info))
-  df<-df%>%pivot_longer(-c(compendium_id,job_id),names_to=c(".value","process_step"),names_sep="5")
-  return(df)
+  ggplot(gen_steps_df) + geom_segment(aes(x=start,xend=end, y=job_id, yend=job_id, color=step),size=5)+scale_color_manual(labels =labels, values=colors)+ggtitle(paste0("Timeline"))+xlab("Time (s)")+ylab("Job Execution ID")+labs(color="User steps", caption=paste0("Test ID: ",test_id))+theme(legend.position="bottom",legend.box="vertical",legend.title=element_text(size=8),legend.text = element_text(size = 7),legend.key.size = unit(1,"line"),panel.background = element_blank(),panel.grid=element_line(colour="black", size=0.1), panel.border = element_rect(colour = "black", fill=NA, size=0.1),legend.key=element_blank())+facet_grid(rows = vars(compendium_id),scales="free")+theme(strip.text.y = element_text(angle = 0))
 }
 
 ```
 
+# Step times
+
+This functions creates a plot using the synchronized times of the test representing the api steps and the job execution steps for creation or examination sessions.
+
+```{r}
+
+plot_step_times<-function(df_report,test_id){
+  
+  df_report$duration<-df_report$end-df_report$start
+  
+  duration_df<-df_report[df_report$step_type!="general_step",c(1,2,3,8)]
+  duration_df<-duration_df%>%pivot_wider(names_from = step, values_from = duration)
+  num_col<-ncol(duration_df)
+  duration_df[is.na(duration_df)] <- 0
+  duration_df <- duration_df %>% mutate(across(c(compendium_id:job_id),factor))
+  names<-names(duration_df)[c(-1,-2)]
+  
+  labels<-c("[API] Upload","[API] Metadata \n request","[API] Metadata\n upload","[API] Job Execution \n request", "[JOB] Status","[JOB] Validate bag","[JOB] Generate \n configuration", "[JOB] Validate \n compendium","[JOB] Generate \n manifest","[JOB] Image prepare","[JOB] Image build","[JOB] Image execute", "[JOB] Check", "[JOB] Image save", "[JOB] Cleanup")
+  
+  if(num_col==14){
+    labels<-labels[c(-1:-3)]
+  }
+  
+  nr.cols<-length(unique(duration_df$compendium_id))
+  session_colors<-colorRampPalette(brewer.pal(9, "Paired"))(nr.cols)
+  
+  ggparcoord(duration_df,columns = 3:num_col, groupColumn = 1, showPoints = TRUE, scale="globalminmax") + scale_color_manual(values=session_colors)+ theme(axis.text.x = element_text(size=8,angle = 45,hjust=1)) + labs(x = "Steps",y="Seconds (s)",title="o2R API processing times", caption = paste0("Test ID: ",test_id), col="Compendium ID") + geom_line(size=1)+ scale_x_discrete(breaks=names,labels=labels)
+}
+
+```
+
+
+##### Test execution
+
+The test execution requires two functions, the first one `create_dockerfile` and `run_test`. The first one creates a dockerfile with the configuration to build the environment of the test and the second one executes the test. The `create_dockerfile` function runs inside the `run_test` as it takes the parameters of the test to generate and specific dockerfile environment.
+
+###### Dockerfile
+
+This function creates a dockerfile with the required parameters to containers either for a **creation session** or a **examination session**. This includes authentication parametes, configuration files and folders with required files (workpaces). This dockerfile copies into the envieronment the `test_o2r.r` and the `o2r_test/o2r_sessions.R` scripts. Both files are requires to run the containers.
+
+```{r dockerfile}
+
+library(dockerfiler)
+
+# create_dockerfile
+### Parameters
+# cookie -> o2r`connec.sid` cookie
+# ednpoint ->  o2r endpoint
+# special_issue_folder -> path to folder with ERC/Workspaces for special issue
+# special_issue_conf_file ->path to configuration file for Creation sessions (special issue creation)
+# examination_conf_file -> path to configuration file for Examination sessions (Special issue User interaction) 
+# creation_folder -> path to folder with ERC/Workspaces for "late submissions" (Special issue User interaction) 
+# creation_conf_file -> path to configuration file for Creation sessions (Special issue User interaction / "late submission") 
+
+create_dockerfile<-function(cookie,
+                            endpoint,
+                            special_issue_folder,
+                            special_issue_conf_file,
+                            examination_conf_file,
+                            creation_folder,
+                            creation_conf_file){
+  mydock<-Dockerfile$new("rocker/tidyverse:3.6.3")
+  mydock$ENV("COOKIE", cookie)
+  mydock$ENV("ENDPOINT", endpoint)
+  mydock$RUN("mkdir /usr/scripts")
+  mydock$WORKDIR("/usr/scripts")
+  mydock$COPY("test_o2r.r","test_o2r.r")
+  mydock$COPY("o2r_test","o2r_test")
+  mydock$COPY(special_issue_folder,special_issue_folder)
+  mydock$COPY(special_issue_conf_file,special_issue_conf_file)
+  mydock$COPY(examination_conf_file,examination_conf_file)
+  mydock$COPY(creation_folder,creation_folder)
+  mydock$COPY(creation_conf_file,creation_conf_file)
+  mydock$write()
+}
+
+```
+
+###### run_test
+
+This functions run the test based on the configuration parameters. During the test the function gives an update of the stage (Special Issue creation or user interaction) and the corresponding creation or examination sessions. As an 'output' the test returns a folder with the results of every stage of the test. 
+
+```{r run_test}
+
+# run_test
+### Parameters
+# Exactly same parameters as create_dockerfile function.
+
+run_test<-function(cookie,endpoint,special_issue_folder,special_issue_conf_file, examination_conf_file, creation_folder, creation_conf_file){
+  
+  #  Random ID for TEST
+  test_id<- do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
+  
+  # Test configuration
+  
+  special_issue<-data.frame(read.csv(special_issue_conf_file,header=TRUE,sep=","))
+  examination_special_issue<-data.frame(read.csv(examination_conf_file,header=TRUE,sep=","))
+  creation_special_issue<-data.frame(read.csv(creation_conf_file))
+  
+  # Create docker file
+  
+  create_dockerfile(cookie=cookie,endpoint=endpoint,special_issue_folder=special_issue_folder,
+                    special_issue_conf_file = special_issue_conf_file,
+                    examination_conf_file = examination_conf_file, 
+                    creation_folder=creation_folder,
+                    creation_conf_file=creation_conf_file)
+  
+  # Start docker
+  
+  docker <- stevedore::docker_client()
+  docker$container$prune()
+  
+  # Build docker image  
+  docker$image$build(".", tag = "test_container", nocache = TRUE)
+  
+  # Number of sessions 
+
+  number_compendia_special_issue<-nrow(special_issue)
+  number_examinations<-nrow(examination_special_issue)
+  number_creations<-nrow(creation_special_issue)
+  
+  ########### SPECIAL ISSUE CREATION  ###########
+  #### Creation sessions
+  
+  # Start Special Issue creation session containers
+  
+  si_creation_containers <- list()
+  
+  # Information banner
+  
+  cat(rep("*",28),"\n",rep(" ",11),"TEST CONFIGURATION \n",rep("*",28),"\n",
+      "[o2R TEST ID: ",test_id,"]\n",rep("-",28),"\n","[Creation Special Issue]\n","Number of Compendia in Special Issue:",number_compendia_special_issue,"\n",rep("-",28),"\n","[User interaction]\n","Number of examination sessions:",number_examinations,"\n", "Number of late submissions (creation sessions):", number_creations, "\n",rep("*",28),"\n", rep(" ",11),"TEST STATUS \n", rep("*",28),"\n","[Creation Special Issue:",number_compendia_special_issue," compendia]" ,"\n")
+
+  ### Starts special issue creation (Creation sessions) ###
+  
+  for (i in 1:number_compendia_special_issue) { si_creation_containers  <- c(si_creation_containers ,assign(paste0("si_creation_session_",i),docker$container$run("test_container",c("Rscript","test_o2r.r","Creation",special_issue_conf_file,i),network='host',detach = TRUE, name=paste0("si_creation_session_",i))))}
+  
+  # Update state of the containers
+  
+  special_issue_finish<-FALSE
+  while (special_issue_finish==FALSE){
+    Sys.sleep(2)
+    status<-unlist(lapply(si_creation_containers , function(x) {x$status()}))
+    number_sessions<-length(status)
+    if ("running" %in% status){
+      running<-sum("running"==status)
+      cat("\r",as.character(Sys.time()),":",running,"out of", number_sessions," sessions still running ")
+    }
+    else{
+      special_issue_finish=TRUE
+      cat("\r",rep(" ",9),"Special Issue published!",rep(" ",20))
+      Sys.sleep(1)
+    }
+  }
+  
+  ## REPORT SPECIAL ISSUE CREATION
+  
+  # Creates results folder for creation sessions reports
+  results_folder<-file.path(paste0("results_test_",test_id))
+  special_issue_creation_folder<-file.path(results_folder,"special_issue_creation")
+  dir.create(results_folder)
+  dir.create(special_issue_creation_folder)
+  
+  # Extracts report files from containers
+  lapply(si_creation_containers , function(x){x$cp_out("usr/scripts/result.csv",file.path(special_issue_creation_folder,paste0(x$name(),"_results.csv")))})
+  
+  # Removes docker container sessions
+  lapply(si_creation_containers,function(x){docker$container$remove(x$name())})
+  
+  # Creates unified report and delete individual files
+  sessions_csv<-file.path(special_issue_creation_folder,list.files(special_issue_creation_folder))
+  reports <- lapply(sessions_csv, read.csv)
+  file.remove(sessions_csv)
+  
+  # Creates Special issue dataframe with raw times and writes report file
+  sp_iss_df<-do.call(rbind,reports)
+  rawtimes_path<-file.path(special_issue_creation_folder,paste0("raw_times_test_",test_id,".csv"))
+  write.csv(sp_iss_df,rawtimes_path, row.names = F)
+  
+  # Creates Special issue dataframe with synchronized times and writes report file
+  sp_iss_sync_df<-synchronize_times(sp_iss_df)
+  sync_path<-file.path(special_issue_creation_folder,paste0("synchronized_times_test_",test_id,".csv"))
+  write.csv(sp_iss_sync_df,sync_path, row.names = F)
+  
+  # Timeline plot for Special issue creation
+  timeline<-timeline_plot(report_df = sp_iss_sync_df,test_id = test_id)
+  timeline_path<-file.path(special_issue_creation_folder,paste0("timeline_test_",test_id,".pdf"))
+  ggsave(timeline_path, plot=timeline, width = 10, height = 5)
+  
+  # Steps duration plot for Special issue creation
+  steps_plot<-plot_step_times(df_report = sp_iss_sync_df,test_id = test_id)
+  steps_path<-file.path(special_issue_creation_folder,paste0("steps_test_",test_id,".pdf"))
+  ggsave(steps_path, plot=steps_plot, width = 10, height = 5)
+  
+  # Prints message with Special issue creation result folder
+  cat("\r Special issue loading results saved in folder:\n", special_issue_creation_folder,"\n",rep("-",28),"\n")
+  
+  ########### USER INTERACTION  ###########
+  #### Creation sessions
+  #### Examination sessions
+  
+  # Compendium IDs of Special Issue 
+  special_issue_compendia<-unique(sp_iss_df$compendium_id)
+
+  # Distribution of readers in list of compendia
+  compendia_to_examine<-rep_len(special_issue_compendia,number_examinations)
+  examination_special_issue$compendium_id<-compendia_to_examine
+  
+  # List of containers for examination and creation sessions
+  examination_containers <- list()
+  creation_containers <- list()
+  
+  # Information banner
+  cat("\r[User interaction: ",number_examinations, "examinations - ", number_creations , "creation sessions]\n")
+  cat("Starting User interaction")
+  
+  ### Start user interaction (Creation and examination sessions) ###
+  
+  ## Examination sessions
+  for (i in 1:number_examinations) { examination_containers <- c(examination_containers,assign(paste0("examination_session_",i),docker$container$run("test_container",c("Rscript","test_o2r.r","Examination",examination_conf_file,i,as.character(compendia_to_examine[i])),network='host',detach = TRUE, name=paste0("examination_session_",i))))}
+  
+  ## Creation sessions
+  for (i in 1:number_creations) { creation_containers  <- c(creation_containers ,assign(paste0("creation_session_",i),docker$container$run("test_container",c("Rscript","test_o2r.r","Creation",creation_conf_file,i),network='host',detach = TRUE, name=paste0("creation_session_",i))))}
+  
+  interaction_special_issue_finish<-FALSE
+
+  while (interaction_special_issue_finish==FALSE){
+
+    Sys.sleep(2)
+    status_exam<-unlist(lapply(examination_containers, function(x) {x$status()}))
+    status_creat<-unlist(lapply(creation_containers, function(x) {x$status()}))
+    status<-c(status_exam,status_creat)
+
+    if ("running" %in% status){
+      running_exam<-sum("running"==status_exam)
+      running_creat<-sum("running"==status_creat)
+      cat("\r",as.character(Sys.time()),":",running_exam," examination and", running_creat," creation sessions still running ")
+    }
+    else{
+      interaction_special_issue_finish=TRUE
+      cat("\r",rep(" ",9),"Test finished!",rep(" ",25))
+      cat("\r",rep(" ",7),"User interaction finished !",rep(" ",20))
+    }
+  }
+  
+ ## REPORT USER INTERACTION
+  
+  # Creates results folder for interaction
+  sp_iss_interaction_folder<-file.path(results_folder,"special_issue_interaction")
+  dir.create(sp_iss_interaction_folder)
+  
+  # Creates results folder for examination sessions reports
+  sp_iss_interac_exam_folder<-file.path(sp_iss_interaction_folder,"examination_sessions")
+  dir.create(sp_iss_interac_exam_folder)
+  
+  # Creates results folder for creation sessions reports
+  sp_iss_interac_creat_folder<-file.path(sp_iss_interaction_folder,"creation_sessions")
+  dir.create(sp_iss_interac_creat_folder)
+
+  # Import information from containers
+  
+  lapply(examination_containers, function(x){x$cp_out("usr/scripts/result.csv",file.path(sp_iss_interac_exam_folder,paste0(x$name(),"_results.csv")))})
+  
+    lapply(creation_containers, function(x){x$cp_out("usr/scripts/result.csv",file.path(sp_iss_interac_creat_folder,paste0(x$name(),"_results.csv")))})
+  
+  # Removes docker container sessions
+  lapply(examination_containers,function(x){docker$container$remove(x$name())})
+  lapply(creation_containers,function(x){docker$container$remove(x$name())})
+  
+  # Creates unified reports and delete individual files
+  
+  exam_sessions_csv<-file.path(sp_iss_interac_exam_folder,list.files(sp_iss_interac_exam_folder))
+  exam_reports <- lapply(exam_sessions_csv, read.csv)
+  
+  creat_sessions_csv<-file.path(sp_iss_interac_creat_folder,list.files(sp_iss_interac_creat_folder))
+  creat_reports <- lapply(creat_sessions_csv, read.csv)
+  
+  file.remove(exam_sessions_csv,creat_sessions_csv)
+  
+  # Creates User interaction dataframes with raw times and writes report files
+  
+  int_exam_df<-do.call(rbind,exam_reports)
+  int_creat_df<-do.call(rbind,creat_reports)
+  
+  rawtimes_exam_path<-file.path(sp_iss_interac_exam_folder,paste0("raw_times_test_",test_id,".csv"))
+  write.csv(int_exam_df,rawtimes_exam_path, row.names = F)
+  
+  rawtimes_creat_path<-file.path(sp_iss_interac_creat_folder,paste0("raw_times_test_",test_id,".csv"))
+  write.csv(int_creat_df,rawtimes_creat_path, row.names = F)
+  
+  # Creates User interaction dataframes with synchronized times and writes report files
+  
+  int_exam_synchr_df<-synchronize_times(int_exam_df)
+  int_exam_sync_path<-file.path(sp_iss_interac_exam_folder,paste0("synchronized_times_test_",test_id,".csv"))
+  write.csv(int_exam_synchr_df,int_exam_sync_path, row.names = F)
+
+  int_creat_synchr_df<-synchronize_times(int_creat_df)
+  int_creat_sync_path<-file.path(sp_iss_interac_creat_folder,paste0("synchronized_times_test_",test_id,".csv"))
+  write.csv(int_creat_synchr_df,int_creat_sync_path, row.names = F)
+  
+  ## Timeline plots
+  # Examination sessions
+  timeline_exam<-timeline_plot(report_df = int_exam_synchr_df,test_id = test_id)
+  timeline_path<-file.path(sp_iss_interac_exam_folder,paste0("timeline_test_",test_id,".pdf"))
+  ggsave(timeline_path,plot=timeline_exam, width = 10, height = 5)
+  # Creation sessions
+  timeline_creat<-timeline_plot(report_df = int_creat_synchr_df,test_id = test_id)
+  timeline_creat_path<-file.path(sp_iss_interac_creat_folder,paste0("timeline_test_",test_id,".pdf"))
+  ggsave(timeline_creat_path,plot=timeline_creat, width = 10, height = 5)
+  
+  # Steps duration plot for user interaction  
+  # Examination sessions
+  steps_exam_plot<-plot_step_times(df_report = int_exam_synchr_df,test_id = test_id)
+  steps_exam_path<-file.path(sp_iss_interac_exam_folder,paste0("steps_test_",test_id,".pdf"))
+  ggsave(steps_exam_path,plot=steps_exam_plot, width = 10, height = 5)
+  # Creation sessions
+  steps_creat_plot<-plot_step_times(df_report = int_creat_synchr_df,test_id = test_id)
+  steps_creat_path<-file.path(sp_iss_interac_creat_folder,paste0("steps_test_",test_id,".pdf"))
+  ggsave(steps_creat_path,plot=steps_creat_plot, width = 10, height = 5)
+  
+  
+  # Creates configuration folder with configuration files
+  
+  configuration_folder<-file.path(results_folder,"configuration_files")
+  dir.create(configuration_folder)
+  file.copy("Dockerfile",file.path(configuration_folder,"Dockerfile"))
+  file.remove("Dockerfile")
+  file.copy(special_issue_conf_file,file.path(configuration_folder,special_issue_conf_file))
+  file.remove(special_issue_conf_file)
+  
+  file.copy(creation_conf_file,file.path(configuration_folder,creation_conf_file))
+  file.remove(creation_conf_file)
+  
+  write.csv(examination_special_issue, file.path(configuration_folder,examination_conf_file), row.names = FALSE)
+  file.remove(examination_conf_file)
+  
+  # Reports end of test
+  cat("\r","Examination session results saved in folder : \n", sp_iss_interac_exam_folder,"\n","Creation session results saved in folder: \n",
+        sp_iss_interac_creat_folder,"\n","\n",rep("*",28),"\n",rep("*",9), "TEST", test_id, " FINISHED",rep("*",8),"\n",rep("*",28),"\n",
+      rep(" ",4),"Configuration files moved into test folder")
+}
+```
+
+# TEST
+
+The following chunk reproduce all the required steps to run a test from scratch. 
+It is only required the `o2r_test` and `Dummy` folder, and the `test_o2r.r` file. Similarly a running o2r service on the background is required.
+
+```{r test,eval = FALSE}
+# Creation session
+# Renviron file to pass info
+
+Sys.setenv(COOKIE=URLdecode("s%3AJRJxSDxsMzPz-GHD93LDpeR422btkGgL.oHkT5KNmFgpvMrhUmC6rXHSuWULdHFXjlJ6kGKkrfCI"))
+Sys.setenv(ENDPOINT="http://localhost/api/v1/")
+
+# Configuration parameters
+
+cookie<-Sys.getenv("COOKIE")
+endpoint<-Sys.getenv("ENDPOINT")
+dummy_folder<-file.path("Dummy")
+
+# Creating Workspaces for special issue
+# special_issue_conf_file : File path for configuration file of special issue 
+special_issue_conf_file<-file.path("special_issue_conf.csv")
+special_issue_folder<-file.path("special_issue")
+
+# User interaction Configuration files
+# exam_conf_file : configuration of examination sessions
+exam_conf_file<-file.path("examination.csv")
+# creat_conf_file: configuration of creation sessions ("late submission")
+creat_folder<-file.path("late_submission")
+creat_conf_file<-file.path("creation_late.csv")
+
+# If you do not have workspaces available to test you can create 'dummy' workspaces for your special issue
+create_dummy_workspaces(sleep_times= c(5,10,15,20,20,40,50,60,90,10),source=dummy_folder,target=special_issue_folder)
+# Similarly you can create workspace for your "late submission" 
+create_dummy_workspaces(sleep_times= c(5,10,15),source=dummy_folder,target= creat_folder)
+
+# Base on the content of your special_issue_folder you can create the configuration dataframe of the special issue creation and the late submission
+df_special_issue_conf<-conf_df_creation_sessions(folder_path = special_issue_folder, mean_times=c(5,5,5,5,5),var=c(1,1,1,1,1))
+
+df_conf_creat<-conf_df_creation_sessions(folder_path = creat_folder, mean_times=c(5,5,5,5,5),var=c(1,1,1,1,1))
+
+# You can also create the configuration file for the examination session
+# As there are not compendium available before starting the test, the ID's will be initially NA values. After the Special Issue is created the ID's will be updated.
+
+compendium_id_list<-rep("NA",20)
+df_conf_exam<-conf_df_examination_sessions(compendium_id_list,mean_times = c(5,5,5),var=c(1,1,1))
+
+# You can manually change the configuration on your configuration dataframes and then write the files
+write.csv(df_special_issue_conf, special_issue_conf_file, row.names = FALSE)
+write.csv(df_conf_exam,exam_conf_file,row.names = FALSE)
+write.csv(df_conf_creat,creat_conf_file,row.names = FALSE)
+
+# Running test
+
+test<-run_test(cookie=cookie,endpoint = endpoint, special_issue_folder = special_issue_folder, special_issue_conf_file = special_issue_conf_file , examination_conf_file = exam_conf_file, creation_folder=creat_folder, creation_conf_file = creat_conf_file)
+
+```
