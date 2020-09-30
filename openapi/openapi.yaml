@@ -10,6 +10,8 @@ info:
     name: Creative Commons CC0 1.0 Universal License
     url: 'https://creativecommons.org/publicdomain/zero/1.0/'
   version: '1.0'
+  x-logo:
+   url: 'https://o2r.info/api/logo.png'
 servers:
   - url: 'https://o2r.uni-muenster.de/api/v1'
     description: The standard server for the o2r api

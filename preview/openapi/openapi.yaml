@@ -1,0 +1,309 @@
+openapi: 3.0.3
+info:
+  title: o2r web api
+  description: >-
+    The API provides services around the executable research compendium (ERC),
+    or 'compendium' for short, which is documented in the ERC spec.
+  termsOfService: ''
+  contact: {}
+  license:
+    name: Creative Commons CC0 1.0 Universal License
+    url: 'https://creativecommons.org/publicdomain/zero/1.0/'
+  version: '1.0'
+  x-logo:
+    url: 'https://o2r.info/api/logo.png'
+servers:
+  - url: 'https://o2r.uni-muenster.de/api/v1'
+    description: The standard server for the o2r api
+paths:
+  /compendium:
+    post:
+      tags:
+        - Compendium
+      summary: Upload via API
+      description: >-
+        Upload a research workspace or full compendium as a compressed
+        <code>.zip</code> archive with an HTTP <code>POST</code> request using
+        <code>multipart/form-data</code>.<br>The upload is only allowed for
+        logged in users. Upon successful extraction of archive and processing of
+        the contents, the <code>id</code> for the new compendium is returned.
+      operationId: upload_compendium
+      security:
+        - cookieAuth: []
+      requestBody:
+        description: Compendium to be uploaded.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/new_compendium'
+      responses:
+        '200':
+          description: upload response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/upload_response'
+              examples:
+                upload_success:
+                  $ref: '#/components/examples/upload_success'
+        '400':
+          description: Bad Request due to not supported content_type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                bad_request_content_type:
+                  $ref: '#/components/examples/bad_request_content_type'
+        '401':
+          description: Unauthorized due to user not being logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                unauthorized:
+                  $ref: '#/components/examples/unauthorized'
+        '403':
+          description: Forbidden due to user level not allowing upload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                unauthorized:
+                  $ref: '#/components/examples/upload_forbidden'
+        '422':
+          description: Unprocessable Entity
+    get:
+      tags:
+        - Compendium
+      summary: List compendium
+      description: Returns up to 100 results by default.
+      operationId: list_compendium
+      parameters:
+        - $ref: '#/components/parameters/job_id_query'
+        - $ref: '#/components/parameters/user_query'
+        - $ref: '#/components/parameters/doi_query'
+        - $ref: '#/components/parameters/start_query'
+        - $ref: '#/components/parameters/limit_query'
+      responses:
+        '200':
+          description: A json Array with the matching results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/list_response'
+              examples:
+                list_success:
+                  $ref: '#/components/examples/list_success'
+                list_fail:
+                  $ref: '#/components/examples/list_fail'
+  '/compendium/{compendium_id}':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+  '/compendium/{compendium_id}.{file_extension}':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+      - $ref: '#/components/parameters/file_extension'
+  '/compendium/{compendium_id}/jobs':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+  '/compendium/{compendium_id}/metadata':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+  '/compendium/{compendium_id}/link':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+  '/inspection/{compendium_id}':
+    parameters:
+      - $ref: '#/components/parameters/compendium_id'
+  /job: {}
+  '/job/{job_id}':
+    parameters:
+      - $ref: '#/components/parameters/job_id_path'
+  /recipient: {}
+  /shipment: {}
+  '/shipment/{shipment_id}/status':
+    parameters:
+      - $ref: '#/components/parameters/shipment_id'
+  '/shipment/{shipment_id}/publishment':
+    parameters:
+      - $ref: '#/components/parameters/shipment_id'
+  '/shipment/{shipment_id}/files/{file_id}':
+    parameters:
+      - $ref: '#/components/parameters/shipment_id'
+      - $ref: '#/components/parameters/file_id'
+  /substitution: {}
+  /user: {}
+  '/user/{user_id}':
+    parameters:
+      - $ref: '#/components/parameters/user_id'
+  /auth/login: {}
+  /auth/whoami: {}
+components:
+  schemas:
+    new_compendium:
+      type: object
+      properties:
+        content_type:
+          description: >-
+            The Type of archive that is to be uploaded. Can be 'compendium' or
+            'workspace'. <ul><li><code>compendium</code> - compendium, which is
+            expected to be complete and valid, for <em>examination</em> of a
+            compendium</li> <br> <li><code>workspace</code> - formless
+            workspace, for <em>creation</em> of a compendium</li> </ul>
+          type: string
+          enum:
+            - compendium
+            - workspace
+        compendium:
+          description: The archive file as a compressed .zip
+          type: string
+          format: binary
+    upload_response:
+      type: object
+      properties:
+        id:
+          type: string
+    list_response:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: string
+    general_error_model:
+      type: object
+      properties:
+        error:
+          type: string
+  parameters:
+    job_id_query:
+      name: job_id
+      in: query
+      description: Comma-separated list of related job ids to filter by.
+      required: false
+      schema:
+        type: string
+    user_query:
+      name: user
+      in: query
+      description: Public user identifier to filter by.
+      required: false
+      schema:
+        type: string
+    doi_query:
+      name: doi
+      in: query
+      description: A DOI to filter by.
+      required: false
+      schema:
+        type: string
+    start_query:
+      name: start
+      in: query
+      description: >-
+        Starting point of the result list. <code>start - 1</code> results are
+        skipped. Defaults to <code>1</code>.
+      required: false
+      schema:
+        type: integer
+        default: 1
+    limit_query:
+      name: limit
+      in: query
+      description: >-
+        Limits the number of results in the response. Defaults to
+        <code>100</code>.
+      required: false
+      schema:
+        type: integer
+        default: 100
+    compendium_id:
+      name: compendium_id
+      in: path
+      description: Id of the compendium
+      required: true
+      schema:
+        type: string
+    file_extension:
+      name: file_extension
+      in: path
+      description: File Extension for Compendium Download
+      required: true
+      schema:
+        type: string
+        enum:
+          - zip
+          - tar
+          - tar.gz
+    job_id_path:
+      name: job_id
+      in: path
+      description: Id of the job
+      required: true
+      schema:
+        type: string
+    shipment_id:
+      name: shipment_id
+      in: path
+      description: Id of the shipment
+      required: true
+      schema:
+        type: string
+    file_id:
+      name: file_id
+      in: path
+      description: Id of the File
+      required: true
+      schema:
+        type: string
+    user_id:
+      name: user_id
+      in: path
+      description: Id of the user
+      required: true
+      schema:
+        type: string
+  examples:
+    upload_success:
+      summary: A upload success example
+      value:
+        id: a4Nd1
+    upload_forbidden:
+      summary: A forbidden example
+      value:
+        error: user level does not allow compendium creation
+    list_success:
+      summary: Successful Listing
+      description: Returns all the matching compendia as an array
+      value:
+        results:
+          - nkm4b
+          - nb2sm
+          - ...
+    list_fail:
+      summary: No matching compendium found
+      description: 'If there is no compendium found, the service returns an empty list.'
+      value:
+        results: []
+    bad_request_content_type:
+      summary: A bad request due to content_type
+      value:
+        error: provided content_type not implemented
+    unauthorized:
+      summary: A unthorized error example
+      value:
+        error: user is not authenticated
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+security: []
+tags: []
+externalDocs:
+  description: Find more info in our documentation.
+  url: 'https://o2r.info/api/'
