@@ -4,7 +4,7 @@ Redoc.init('./openapi.yaml',{
   },
   menu:{
     backgroundColor: '#004286',
-    textColor: white
+    textColor: 'white'
   },
   rightPanel:{
     backgroundColor: '#343131'
