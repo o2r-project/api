@@ -11,7 +11,6 @@ info:
     A good starting point for understanding the different parts of the API is the compendium life-cycle.
     
     ---
-    
     ## Citation
     
     To cite this specification please use
@@ -21,7 +20,6 @@ info:
     For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.
     
     ---
-    
     ## General 
     
     The API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.
@@ -29,7 +27,6 @@ info:
     Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.
     
     ---
-    
     ## License
     
     ![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)
@@ -59,9 +56,9 @@ paths:
       
         The upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
         
-         > ### &#x26A0; Required user level and authentication
-         
-         >The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.  
+        <div style=
+        ### &#x26A0; Required user level and authentication
+        The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.  
          
          
         ```
