@@ -1,9 +1,41 @@
 openapi: 3.0.3
 info:
   title: o2r web api
-  description: >-
-    The API provides services around the executable research compendium (ERC),
-    or 'compendium' for short, which is documented in the ERC spec.
+  description: |
+    ## About
+    
+    The o2r web API acts as the interface between the o2r microservices and the web interface.
+    
+    The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented in the ERC spec.
+    
+    A good starting point for understanding the different parts of the API is the compendium life-cycle.
+    
+    ---
+    
+    ## Citation
+    
+    To cite this specification please use
+    
+    >_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_
+    
+    For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.
+    
+    ---
+    
+    ## General 
+    
+    The API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.
+    
+    Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.
+    
+    ---
+    
+    ## License
+    
+    ![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)
+    
+    The o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.
+    
   termsOfService: ''
   contact: {}
   license:
@@ -22,9 +54,32 @@ paths:
       tags:
         - Compendium
       summary: Upload via API
-      description: Upload a research workspace or full compendium as a compressed <code>.zip</code> archive with an HTTP <code>POST</code> request using <code>multipart/form-data</code>.<br>The upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the <code>id</code> for the new compendium is returned.
+      description: |
+        Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.  
+      
+        The upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
+        
+         > ### &#x26A0; Required user level and authentication
+         
+         >The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.  
+         
+         
+        ```
+        curl -F "compendium=@compendium.zip;type=application/zip" \
+            -F content_type=compendium \
+            --cookie "connect.sid=<cookie string here>" \
+            https://…/api/v1/compendium
+        ```
+        
+        ```
+        curl -F "compendium=@path/to/workspace.zip;type=application/zip" \
+            -F content_type=workspace \
+            --cookie "connect.sid=<cookie string here>" \
+          https://…/api/v1/compendium 
+        ```
+        
       operationId: upload_compendium
-      security:
+      security: 
       - cookieAuth: []
       requestBody:
         description: Compendium to be uploaded.
@@ -53,25 +108,25 @@ paths:
                 bad_request_content_type:
                   $ref: '#/components/examples/bad_request_content_type'
         401:
-          description: Unauthorized due to user not being logged in.
+          description: Unauthorized due to user not being logged in. 
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/general_error_model'
               examples:
-                unauthorized:
+                unauthorized: 
                   $ref: '#/components/examples/unauthorized'
         403:
-          description: Forbidden due to user level not allowing upload
+          description: Forbidden due to user level not allowing upload 
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/general_error_model'
               examples:
-                unauthorized:
+                unauthorized: 
                   $ref: '#/components/examples/upload_forbidden'
         422:
-          description: Unprocessable Entity
+          description: Unprocessable Entity 
     get:
       tags:
       - Compendium
@@ -96,9 +151,81 @@ paths:
                   $ref: '#/components/examples/list_success'
                 list_fail:
                   $ref: '#/components/examples/list_fail'
+                  
   /compendium/{compendium_id}:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
+    get:
+      tags:
+      - Compendium
+      - Metadata
+      summary: View compendium and metadata
+      description: This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.
+      operationId: view_compendium
+      responses:
+        200:
+          description: Returns the matching Compendium.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/view_response'
+              examples:
+                view_success:
+                  $ref: '#/components/examples/view_success'
+                view_metadata:
+                  $ref: '#/components/examples/view_metadata'
+      
+        404:        
+          description: No compendium with the given id found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                view_success:
+                  $ref: '#/components/examples/view_not_found'
+
+    delete:
+        tags:
+        - Compendium
+        summary: Delete compendium
+        description: To delete a compendium candidate, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.<div class="admonition note"><p class="admonition-title">Required user level for candidate deletion</p><p>The user deleting a candidate must be the author or have the required <a href="../../user/levels/">user level</a>.</p></div> <div class="admonition important"><p class="admonition-title">Important</p><p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href="../../user/levels/">user level</a>.The compendium contents should be moved to a specific location to the server as a backup.</p></div>
+        operationId: delete_compendium
+        security:
+          - cookieAuth: []
+        responses:  
+          204:
+            description: Deletion successfull
+          401:
+            description: Unauthorized due to user not being logged in.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/general_error_model'
+                examples:
+                  delete_unauthorized:
+                    $ref: '#/components/examples/unauthorized'
+          403:
+            description: Forbidden due to userlevel not being high enough.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/general_error_model'
+                examples:
+                  delete_unauthorized:
+                    $ref: '#/components/examples/delete_forbidden'
+          404:
+            description: No compendium with the given id found.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/general_error_model'
+                examples:
+                  view_success:
+                    $ref: '#/components/examples/delete_not_found'
+        
+          
+                  
   /compendium/{compendium_id}.{file_extension}:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -112,21 +239,21 @@ paths:
   /compendium/{compendium_id}/link:
       parameters:
       - $ref: '#/components/parameters/compendium_id'
-
+  
   #Inspection paths
   /inspection/{compendium_id}:
      parameters:
       - $ref: '#/components/parameters/compendium_id'
-
+      
   #Job paths
   /job: {}
   /job/{job_id}:
     parameters:
       - $ref: '#/components/parameters/job_id_path'
-
+      
   #Recipient paths
   /recipient: {}
-
+  
   #Shipment paths
   /shipment: {}
   '/shipment/{shipment_id}/status':
@@ -139,20 +266,20 @@ paths:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
       - $ref: '#/components/parameters/file_id'
-
+  
   #Substitution paths
   /substitution: {}
-
+  
   #User Paths
   /user: {}
-  '/user/{user_id}':
+  /user/{user_id}:
     parameters:
       - $ref: '#/components/parameters/user_id'
-
+      
   #Auth paths
   /auth/login: {}
   /auth/whoami: {}
-
+  
 components:
   schemas:
     #Request Bodies
@@ -174,7 +301,7 @@ components:
           description: The archive file as a compressed .zip
           type: string
           format: binary
-
+    
     #Responses
     upload_response:
       type: object
@@ -188,17 +315,42 @@ components:
           type: array
           items:
             type: string
-
+    view_response:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/user_id'
+        metadata:
+          type: object
+        created:
+          type: string
+          format: date-string
+        user:
+          type: string
+        bag:
+          type: boolean
+        compendium:
+          type: boolean
+        substituted:
+          type: boolean
+        files:
+          type: object
+          
     #Errors
     general_error_model:
       type: object
       properties:
         error:
           type: string
-
+          
+    #Name tba
+    user_id:
+      type: string
+      pattern: "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$" #regex to much?
+    
   parameters:
     #Query Parameters
-    ##List Query Parameters
+    ##List Query Parameters 
     job_id_query:
       name: job_id
       in: query
@@ -206,7 +358,7 @@ components:
       required: false
       schema:
         type: string
-    user_query:
+    user_query: 
       name: user
       in: query
       description:  Public user identifier to filter by.
@@ -236,7 +388,7 @@ components:
       schema:
         type: integer
         default: 100
-
+    
     #Path Parameters
     compendium_id:
       name: compendium_id
@@ -284,7 +436,7 @@ components:
       required: true
       schema:
         type: string
-
+    
   examples:
     #Response Examples
     ##Upload Response Examples
@@ -294,7 +446,7 @@ components:
     upload_forbidden:
       summary: A forbidden example
       value: {'error':'user level does not allow compendium creation'}
-
+      
     ##List Response Examples
     list_success:
       summary: Successful Listing
@@ -304,6 +456,32 @@ components:
       summary: No matching compendium found
       description: If there is no compendium found, the service returns an empty list.
       value: {"results": []}
+      
+    ##View Response Examples
+    view_success:
+      summary: A view success example
+      description: Returns a object with informations about the matching compendium.
+      value: {"id":"comid", "metadata": ..., "created":"2016-08-01T13:57:40.760Z", "user":"0000-0001-0273-7906", "files": ..., "bag": true, "compendium": true, "supstituted": true} #How to represent an object
+    view_not_found:
+      summary: A view not found example
+      description: Returns a Error
+      value: {"error":"no compendium with this id"}
+      
+    ##Delete Response Examples
+    delete_forbidden:
+      summary: A deletion forbidden example
+      description: Returns a Error
+      value: {"error":"user level not sufficient to delete compendium"}
+    delete_not_found:
+      summary: A deletion not found example
+      description: Returns a Error
+      value: {"error":"compendium not found"}
+    
+    ##Metadata Response Examples
+    view_metadata:
+      summary: An expanded example with metadata
+      description: The metadata for an example compendium
+      value: {"id":"12345","metadata": {"raw": {"title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.","author": "John M. Chambers","more content": ...,},"o2r": {"title": "Programming with Data","creators": [{"name": "John M. Chambers"}],"publication_date": 1998,"more content": ...,},"zenodo": {}},"created": …,"files": …}
 
     ##General Response Examples
     bad_request_content_type:
@@ -312,14 +490,18 @@ components:
     unauthorized:
       summary: A unthorized error example
       value: {'error':'user is not authenticated'}
+      
+      
   securitySchemes:
     cookieAuth:
       type: apiKey
       in: cookie
       name: connect.sid
-
+    
 security: []
-tags: []
+tags:
+  - name: Metadata
+    description: Metadata in a compendium is stored in a directory `.erc`.
 externalDocs:
   description: Find more info in our documentation.
   url: 'https://o2r.info/api/'
