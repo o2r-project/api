@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "o2r web api",
-    "description": "## About\n\nThe o2r web API acts as the interface between the o2r microservices and the web interface.\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented in the ERC spec.\n\nA good starting point for understanding the different parts of the API is the compendium life-cycle.\n\n---\n## Citation\n\nTo cite this specification please use\n\n>_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_\n\nFor a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.\n\n---\n## General \n\nThe API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.\n\nUnless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.\n\n---\n## License\n\n![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)\n\nThe o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.\n",
+    "description": "## About\n\nThe o2r web API acts as the interface between the o2r microservices and the web interface.\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented in the ERC spec.\n\nA good starting point for understanding the different parts of the API is the compendium life-cycle.\n\n---\n## Citation\n\nTo cite this specification please use\n\n>_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_\n\nFor a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.\n\n---\n## General\n\nThe API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.\n\nUnless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.\n\n---\n## License\n\n![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)\n\nThe o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.\n",
     "termsOfService": "",
     "contact": {},
     "license": {
@@ -27,7 +27,7 @@
           "Compendium"
         ],
         "summary": "Upload via API",
-        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.  \n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<div class=\"note\">\n  ### &#x26A0; Required user level and authentication\n  The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.\n</div>\n \n \n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium \n```\n",
+        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.\n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level and authentication</h3>\n  The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.\n</div>\n\n\n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium\n```\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Important</h3>\n  After successful upload the candidate process must be completed for workspaces.\n</div>\n",
         "operationId": "upload_compendium",
         "security": [
           {
@@ -35,7 +35,7 @@
           }
         ],
         "requestBody": {
-          "description": "Compendium to be uploaded.",
+          "description": "The Compendium to be uploaded.\n \n",
           "required": true,
           "content": {
             "multipart/form-data": {
@@ -361,7 +361,7 @@
         "type": "object",
         "properties": {
           "content_type": {
-            "description": "The Type of archive that is to be uploaded. Can be 'compendium' or 'workspace'. <ul><li><code>compendium</code> - compendium, which is expected to be complete and valid, for <em>examination</em> of a compendium</li> <br> <li><code>workspace</code> - formless workspace, for <em>creation</em> of a compendium</li> </ul>",
+            "description": "The Type of archive that is to be uploaded. Can be `compendium` or `workspace`.\n- `compendium` - compendium,\nwhich is expected to be complete and valid, for *examination* of a compendium  \n\n- `workspace` - formless workspace, for *creation* of a compendium\n\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Warning</h3>\n  If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.\n</div>\n",
             "type": "string",
             "enum": [
               "compendium",
