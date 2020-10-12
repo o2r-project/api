@@ -1,0 +1,9 @@
+body{
+  padding: 0;
+  margin: 0
+}
+
+div.note{
+  border: 1px solid #333;
+  background-color: #6ab0de;
+}
