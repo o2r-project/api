@@ -55,10 +55,11 @@ paths:
         Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.
 
         The upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.
-
+        
+        <!--HTML is necessary, due to being essential for the notes-->
         <div class="note blue_note">
           <h3>&#x26A0; Required user level and authentication</h3>
-          The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.
+          The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.
         </div>
 
 
@@ -79,10 +80,12 @@ paths:
           <h3>&#x26A0; Important</h3>
           After successful upload the candidate process must be completed for workspaces.
         </div>
+        
+        For local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.
 
       operationId: upload_compendium
       security:
-      - cookieAuth: []
+      - cookie_authenification: []
       requestBody:
         description: |
           The Compendium to be uploaded.
@@ -162,9 +165,12 @@ paths:
     get:
       tags:
       - Compendium
-      - Metadata
-      summary: View compendium and metadata
-      description: This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.
+      summary: View a single compendium and metadata
+      description: |
+        This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.
+        
+        `curl https://…/api/v1/$ID`
+        
       operationId: view_compendium
       responses:
         200:
@@ -193,13 +199,35 @@ paths:
         tags:
         - Compendium
         summary: Delete compendium
-        description: To delete a compendium candidate, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.<div class="admonition note"><p class="admonition-title">Required user level for candidate deletion</p><p>The user deleting a candidate must be the author or have the required <a href="../../user/levels/">user level</a>.</p></div> <div class="admonition important"><p class="admonition-title">Important</p><p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href="../../user/levels/">user level</a>.The compendium contents should be moved to a specific location to the server as a backup.</p></div>
+        description: |
+          To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.
+        
+          <div class="note green_note">
+            <h3>&#x26A0; Important</h3>
+            <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>
+          </div>
+          <div class="note blue_note">
+            <h3>&#x26A0; Required user level for candidate deletion</h3>
+            <p>The user deleting a candidate must be the author or have the required user level.</p>
+          </div>
+          
+          ## Request
+          
+          The following request deletes the compendium with the identifier 12345, including metadata and files.
+          
+          ```
+          curl -X DELETE https://…/api/v1/compendium/12345 \
+          --cookie "connect.sid=<code string here>"
+
+          ```
+          
         operationId: delete_compendium
         security:
-          - cookieAuth: []
+          - cookie_authenification: []
         responses:
           204:
-            description: Deletion successfull
+            description: |
+              The response has an HTTP status of `204` and an empty body for successful deletion.
           401:
             description: Unauthorized due to user not being logged in.
             content:
@@ -228,12 +256,56 @@ paths:
                   view_success:
                     $ref: '#/components/examples/delete_not_found'
 
-
-
   /compendium/{compendium_id}.{file_extension}:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
       - $ref: '#/components/parameters/file_extension'
+      
+    get:
+      tags:
+       - Compendium
+      summary: Download compendium
+      description: |
+        Download compendium files as an archive.
+        
+        <div class="note yellow_note">
+          <h3>&#x26A0; Warning</h3>
+          <p>This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>
+          
+        Supported formats are as follows:
+        
+        - `zip`
+        - `tar`
+        - `tar.gz`
+        
+        ## Request
+        `GET /api/v1/compendium/$ID.zip`
+        
+        ```
+        GET /api/v1/compendium/:id.zip
+        GET /api/v1/compendium/:id.tar
+        GET /api/v1/compendium/:id.tar.gz
+        GET /api/v1/compendium/:id.tar?gzip
+        GET /api/v1/compendium/:id.zip?image=false
+        ```
+        
+      operationId: download_compendium
+      parameters: 
+        - $ref: '#/components/parameters/gzip_query'
+        - $ref: '#/components/parameters/image_query'
+      responses:
+        200:
+          description: |
+            The response is a file attachment. The suggested file name is available in the HTTP header content-disposition using the respective file extension for a file named with the compendium identifier (e.g. wdpV9.zip, Uh1o0.tar, or LBIt1.tar.gz).
+          content: 
+            application/zip:
+              schema:
+                $ref: '#/components/schemas/view_response'
+              examples:
+                view_success:
+                  $ref: '#/components/examples/view_success'
+                view_metadata:
+                  $ref: '#/components/examples/view_metadata'
   /compendium/{compendium_id}/jobs:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -260,7 +332,7 @@ paths:
 
   #Shipment paths
   /shipment: {}
-  '/shipment/{shipment_id}/status':
+  /shipment/{shipment_id}/status:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
   /shipment/{shipment_id}/publishment:
@@ -398,6 +470,25 @@ components:
       schema:
         type: integer
         default: 100
+    
+    ##Download Parameters
+    gzip_query:
+      name: gzip
+      in: query
+      description: |
+        *only for .tar endpoint* - compress tarball with gzip
+      required: false
+      schema:
+        type: string
+    image_query:
+      name: image
+      in: query
+      description: |
+        `?image=true` or `?image=false` - include tarball of Docker image in the archive , default is true
+      required: false
+      schema:
+        type: boolean
+        default: true
 
     #Path Parameters
     compendium_id:
@@ -464,7 +555,9 @@ components:
       value: {"results": ["nkm4b","nb2sm", ...]}
     list_fail:
       summary: No matching compendium found
-      description: If there is no compendium found, the service returns an empty list.
+      description: |
+        If there is no compendium found, the service returns an empty list.\
+        `GET /api/v1/compendium?doi=not_a_doi`
       value: {"results": []}
 
     ##View Response Examples
@@ -503,15 +596,13 @@ components:
 
 
   securitySchemes:
-    cookieAuth:
+    cookie_authenification:
       type: apiKey
       in: cookie
       name: connect.sid
 
 security: []
-tags:
-  - name: Metadata
-    description: Metadata in a compendium is stored in a directory `.erc`.
+tags: []
 externalDocs:
   description: Find more info in our documentation.
   url: 'https://o2r.info/api/'

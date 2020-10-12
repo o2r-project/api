@@ -27,11 +27,11 @@
           "Compendium"
         ],
         "summary": "Upload via API",
-        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.\n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level and authentication</h3>\n  The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.\n</div>\n\n\n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium\n```\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Important</h3>\n  After successful upload the candidate process must be completed for workspaces.\n</div>\n",
+        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.\n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<!--HTML is necessary, due to being essential for the notes-->\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level and authentication</h3>\n  The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.\n</div>\n\n\n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium\n```\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Important</h3>\n  After successful upload the candidate process must be completed for workspaces.\n</div>\n\nFor local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.\n",
         "operationId": "upload_compendium",
         "security": [
           {
-            "cookieAuth": []
+            "cookie_authenification": []
           }
         ],
         "requestBody": {
@@ -165,11 +165,10 @@
       ],
       "get": {
         "tags": [
-          "Compendium",
-          "Metadata"
+          "Compendium"
         ],
-        "summary": "View compendium and metadata",
-        "description": "This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.",
+        "summary": "View a single compendium and metadata",
+        "description": "This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.\n\n`curl https://…/api/v1/$ID`\n",
         "operationId": "view_compendium",
         "responses": {
           "200": {
@@ -212,16 +211,16 @@
           "Compendium"
         ],
         "summary": "Delete compendium",
-        "description": "To delete a compendium candidate, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.<div class=\"admonition note\"><p class=\"admonition-title\">Required user level for candidate deletion</p><p>The user deleting a candidate must be the author or have the required <a href=\"../../user/levels/\">user level</a>.</p></div> <div class=\"admonition important\"><p class=\"admonition-title\">Important</p><p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href=\"../../user/levels/\">user level</a>.The compendium contents should be moved to a specific location to the server as a backup.</p></div>",
+        "description": "To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.\n\n<div class=\"note green_note\">\n  <h3>&#x26A0; Important</h3>\n  <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>\n</div>\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level for candidate deletion</h3>\n  <p>The user deleting a candidate must be the author or have the required user level.</p>\n</div>\n\n## Request\n\nThe following request deletes the compendium with the identifier 12345, including metadata and files.\n\n```\ncurl -X DELETE https://…/api/v1/compendium/12345 \\\n--cookie \"connect.sid=<code string here>\"\n\n```\n",
         "operationId": "delete_compendium",
         "security": [
           {
-            "cookieAuth": []
+            "cookie_authenification": []
           }
         ],
         "responses": {
           "204": {
-            "description": "Deletion successfull"
+            "description": "The response has an HTTP status of `204` and an empty body for successful deletion.\n"
           },
           "401": {
             "description": "Unauthorized due to user not being logged in.",
@@ -279,7 +278,43 @@
         {
           "$ref": "#/components/parameters/file_extension"
         }
-      ]
+      ],
+      "get": {
+        "tags": [
+          "Compendium"
+        ],
+        "summary": "Download compendium",
+        "description": "Download compendium files as an archive.\n\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Warning</h3>\n  <p>This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>\n  \nSupported formats are as follows:\n\n- `zip`\n- `tar`\n- `tar.gz`\n\n## Request\n`GET /api/v1/compendium/$ID.zip`\n\n```\nGET /api/v1/compendium/:id.zip\nGET /api/v1/compendium/:id.tar\nGET /api/v1/compendium/:id.tar.gz\nGET /api/v1/compendium/:id.tar?gzip\nGET /api/v1/compendium/:id.zip?image=false\n```\n",
+        "operationId": "download_compendium",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/gzip_query"
+          },
+          {
+            "$ref": "#/components/parameters/image_query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response is a file attachment. The suggested file name is available in the HTTP header content-disposition using the respective file extension for a file named with the compendium identifier (e.g. wdpV9.zip, Uh1o0.tar, or LBIt1.tar.gz).\n",
+            "content": {
+              "application/zip": {
+                "schema": {
+                  "$ref": "#/components/schemas/view_response"
+                },
+                "examples": {
+                  "view_success": {
+                    "$ref": "#/components/examples/view_success"
+                  },
+                  "view_metadata": {
+                    "$ref": "#/components/examples/view_metadata"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/compendium/{compendium_id}/jobs": {
       "parameters": [
@@ -485,6 +520,25 @@
           "default": 100
         }
       },
+      "gzip_query": {
+        "name": "gzip",
+        "in": "query",
+        "description": "*only for .tar endpoint* - compress tarball with gzip\n",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "image_query": {
+        "name": "image",
+        "in": "query",
+        "description": "`?image=true` or `?image=false` - include tarball of Docker image in the archive , default is true\n",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "default": true
+        }
+      },
       "compendium_id": {
         "name": "compendium_id",
         "in": "path",
@@ -571,7 +625,7 @@
       },
       "list_fail": {
         "summary": "No matching compendium found",
-        "description": "If there is no compendium found, the service returns an empty list.",
+        "description": "If there is no compendium found, the service returns an empty list.\\\n`GET /api/v1/compendium?doi=not_a_doi`\n",
         "value": {
           "results": []
         }
@@ -652,7 +706,7 @@
       }
     },
     "securitySchemes": {
-      "cookieAuth": {
+      "cookie_authenification": {
         "type": "apiKey",
         "in": "cookie",
         "name": "connect.sid"
@@ -660,12 +714,7 @@
     }
   },
   "security": [],
-  "tags": [
-    {
-      "name": "Metadata",
-      "description": "Metadata in a compendium is stored in a directory `.erc`."
-    }
-  ],
+  "tags": [],
   "externalDocs": {
     "description": "Find more info in our documentation.",
     "url": "https://o2r.info/api/"

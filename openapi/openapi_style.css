@@ -4,16 +4,22 @@ body{
 }
 
 div.note{
-  border-radius: 25px;
   border: none;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  padding-bottom: 10px;
+  background-clip:content-box;
+
 }
 
 div.note > h3{
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   color: white;
+}
+
+div.note > p{
+  padding: 5px;
 }
 
 div.note.blue_note{
