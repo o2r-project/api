@@ -4,7 +4,7 @@ info:
   description: |
     ## About
     
-    The o2r web API acts as the interface between the o2r microservices and the web interface.
+    <span style="color:blue">The o2r web API acts as the interface between the o2r microservices and the web interface.</span>
     
     The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented in the ERC spec.
     
