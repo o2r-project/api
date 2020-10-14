@@ -5,20 +5,16 @@ body{
 
 div.note{
   border: none;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
   padding-bottom: 10px;
   background-clip:content-box;
 
 }
 
-div.note > h3{
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+div.note:nth-child(1){
   color: white;
 }
 
-div.note > p{
+div.note:nth-child(2){
   padding: 5px;
 }
 
@@ -26,7 +22,7 @@ div.note.blue_note{
   background-color: #e7f2fa;
 }
 
-div.note.blue_note> h3{
+div.note.blue_note > p:nth-child(1){
   background-color: #6ab0de;
 }
 
@@ -34,7 +30,7 @@ div.note.yellow_note{
   background-color: #ffedcc;
 }
 
-div.note.yellow_note > h3{
+div.note.yellow_note > p:nth-child(1){
   background-color: #f0b37e;
 }
 
@@ -42,6 +38,6 @@ div.note.green_note{
   background-color:#dbfaf4;
 }
 
-div.note.green_note > h3{
+div.note.green_note > p:nth-child(1){
   background-color: #1abc9c;
 }

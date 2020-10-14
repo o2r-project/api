@@ -27,7 +27,7 @@
           "Compendium"
         ],
         "summary": "Upload via API",
-        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.\n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<!--HTML is necessary, due to being essential for the notes-->\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level and authentication</h3>\n  The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.\n</div>\n\n\n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium\n```\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Important</h3>\n  After successful upload the candidate process must be completed for workspaces.\n</div>\n\nFor local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.\n",
+        "description": "Upload a research workspace or full compendium as a compressed `.zip` archive with an HTTP `POST` request using `multipart/form-data`.\n\nThe upload is only allowed for logged in users. Upon successful extraction of archive and processing of the contents, the `id` for the new compendium is returned.\n\n<!--HTML is necessary, due to being essential for the notes-->\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level and authentication</b></p>\n  <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.</p>\n</div>\n\n\n```\ncurl -F \"compendium=@compendium.zip;type=application/zip\" \\\n    -F content_type=compendium \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n    https://…/api/v1/compendium\n```\n\n```\ncurl -F \"compendium=@path/to/workspace.zip;type=application/zip\" \\\n    -F content_type=workspace \\\n    --cookie \"connect.sid=<cookie string here>\" \\\n  https://…/api/v1/compendium\n```\n<div class=\"note yellow_note\">\n  <p><b>&#x26A0; Important</b></p>\n  <p>After successful upload the candidate process must be completed for workspaces.</p>\n</div>\n\nFor local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.\n",
         "operationId": "upload_compendium",
         "security": [
           {
@@ -35,7 +35,7 @@
           }
         ],
         "requestBody": {
-          "description": "The Compendium to be uploaded.\n \n",
+          "description": "The Compendium to be uploaded.\n",
           "required": true,
           "content": {
             "multipart/form-data": {
@@ -211,7 +211,7 @@
           "Compendium"
         ],
         "summary": "Delete compendium",
-        "description": "To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.\n\n<div class=\"note green_note\">\n  <h3>&#x26A0; Important</h3>\n  <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>\n</div>\n<div class=\"note blue_note\">\n  <h3>&#x26A0; Required user level for candidate deletion</h3>\n  <p>The user deleting a candidate must be the author or have the required user level.</p>\n</div>\n\n## Request\n\nThe following request deletes the compendium with the identifier 12345, including metadata and files.\n\n```\ncurl -X DELETE https://…/api/v1/compendium/12345 \\\n--cookie \"connect.sid=<code string here>\"\n\n```\n",
+        "description": "To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.\n\n<div class=\"note green_note\">\n  <p><b>&#x26A0; Important\n  <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>\n</div>\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level for candidate deletion</b></p>\n  <p>The user deleting a candidate must be the author or have the required user level.</p>\n</div>\n\n## Request\n\nThe following request deletes the compendium with the identifier 12345, including metadata and files.\n\n```\ncurl -X DELETE https://…/api/v1/compendium/12345 \\\n--cookie \"connect.sid=<code string here>\"\n\n```\n",
         "operationId": "delete_compendium",
         "security": [
           {
@@ -284,7 +284,7 @@
           "Compendium"
         ],
         "summary": "Download compendium",
-        "description": "Download compendium files as an archive.\n\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Warning</h3>\n  <p>This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>\n  \nSupported formats are as follows:\n\n- `zip`\n- `tar`\n- `tar.gz`\n\n## Request\n`GET /api/v1/compendium/$ID.zip`\n\n```\nGET /api/v1/compendium/:id.zip\nGET /api/v1/compendium/:id.tar\nGET /api/v1/compendium/:id.tar.gz\nGET /api/v1/compendium/:id.tar?gzip\nGET /api/v1/compendium/:id.zip?image=false\n```\n",
+        "description": "Download compendium files as an archive.\n\n<div class=\"note yellow_note\">\n  <p><b>&#x26A0; Warning</b></p>\n  <p>This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>\n</div>\nSupported formats are as follows:\n\n- `zip`\n- `tar`\n- `tar.gz`\n\n## Request\n`GET /api/v1/compendium/$ID.zip`\n\n```\nGET /api/v1/compendium/:id.zip\nGET /api/v1/compendium/:id.tar\nGET /api/v1/compendium/:id.tar.gz\nGET /api/v1/compendium/:id.tar?gzip\nGET /api/v1/compendium/:id.zip?image=false\n```\n",
         "operationId": "download_compendium",
         "parameters": [
           {
@@ -296,18 +296,56 @@
         ],
         "responses": {
           "200": {
-            "description": "The response is a file attachment. The suggested file name is available in the HTTP header content-disposition using the respective file extension for a file named with the compendium identifier (e.g. wdpV9.zip, Uh1o0.tar, or LBIt1.tar.gz).\n",
+            "description": "The response is a file attachment. The suggested file name is available in the HTTP header content-disposition using the respective file extension for a file named with the compendium identifier (e.g. `wdpV9.zip`, `Uh1o0.tar`, or `LBIt1.tar.gz`).\n",
             "content": {
               "application/zip": {
+                "examples": {
+                  "download_success": {
+                    "$ref": "#/components/examples/download_success"
+                  }
+                }
+              },
+              "application/x-tar": {
+                "examples": {
+                  "download_success": {
+                    "$ref": "#/components/examples/download_success"
+                  }
+                }
+              },
+              "application/octet-stream": {
+                "examples": {
+                  "download_success": {
+                    "$ref": "#/components/examples/download_success"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A bad request.",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/view_response"
+                  "$ref": "#/components/schemas/general_error_model"
                 },
                 "examples": {
                   "view_success": {
-                    "$ref": "#/components/examples/view_success"
-                  },
-                  "view_metadata": {
-                    "$ref": "#/components/examples/view_metadata"
+                    "$ref": "#/components/examples/download_bad_request"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No compendium with the given id found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "view_success": {
+                    "$ref": "#/components/examples/view_not_found"
                   }
                 }
               }
@@ -328,7 +366,129 @@
         {
           "$ref": "#/components/parameters/compendium_id"
         }
-      ]
+      ],
+      "get": {
+        "tags": [
+          "Compendium"
+        ],
+        "summary": "Get the metadata acompendium",
+        "description": "The following endpoint allows to access only the normative o2r-metadata element:\n\n`curl https://…/api/v1/$ID/metadata`\n\n`GET /api/v1/compendium/:id/metadata`\n",
+        "operationId": "get_metadata",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The o2r-metadata object of the specified compendium",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/metadata_response"
+                },
+                "examples": {
+                  "metadata_success": {
+                    "$ref": "#/components/examples/metadata_success"
+                  },
+                  "metadata_spatial": {
+                    "$ref": "#/components/examples/metadata_spatial"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No compendium with the given id found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "view_success": {
+                    "$ref": "#/components/examples/view_not_found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Compendium"
+        ],
+        "summary": "Update the metadata acompendium",
+        "description": "The following endpoint can be used to update the `o2r` metadata elements.\nAll other metadata sub-properties are only updated by the service itself, i.e. brokered metadata.\nAfter creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the download endpoint.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Metadata update rights</b></p>\n  <p> Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>\n</div>\n\n### Metadata update request\n\n```\ncurl -H 'Content-Type: application/json' \\\n  -X PUT \\\n  --cookie \"connect.sid=<code string here>\" \\\n  -d '{ \"o2r\": { \"title\": \"Blue Book\" } }' \\\n  /api/v1/compendium/:id/metadata\n```\nThe request overwrites the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.\n",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull metdata update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/metadata_response"
+                },
+                "examples": {
+                  "metadata_update_success": {
+                    "$ref": "#/components/examples/metadata_update_success"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "metadata_bad_request_incomplete_metadata": {
+                    "$ref": "#/components/examples/metadata_bad_request_incomplete_metadata"
+                  },
+                  "metadata_bad_request_syntax_error": {
+                    "$ref": "#/components/examples/metadata_bad_request_syntax_error"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "metadata_unauthorized": {
+                    "$ref": "#/components/examples/metadata_unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Enitity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "metadata_unprocessable_entity": {
+                    "$ref": "#/components/examples/metadata_unprocessable_entity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/compendium/{compendium_id}/link": {
       "parameters": [
@@ -342,7 +502,76 @@
         {
           "$ref": "#/components/parameters/compendium_id"
         }
-      ]
+      ],
+      "get": {
+        "tags": [
+          "Compendium"
+        ],
+        "summary": "Compendium file listing",
+        "description": "The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.\nIf a job has been run and the programme outputs new data, this new data is included as well.\n\nFile listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.\n\n```text\nnj141\n├── bagit.txt\n└── data\n    ├── paper.Rmd\n    └── Dockerfile\n```\n\nis be represented as\n\n```json\n{\n  \"path\": \"/api/v1/job/nj141/data\",\n  \"name\": \"nj141\",\n  \"children\": [\n    {\n      \"path\": \"/api/v1/job/nj141/data/bagit.txt\",\n      \"name\": \"bagit.xt\",\n      \"type\": \"text/plain\",\n      \"size\": 55\n    },\n    {\n      \"path\": \"/api/v1/job/nj141/data/data\",\n      \"name\": \"data\",\n      \"children\": [\n        {\n          \"path\": \"/api/v1/job/nj141/data/data/paper.Rmd\",\n          \"name\": \"paper.Rmd\",\n          \"type\": \"text/plain\",\n          \"size\": 346512\n        }\n        {\n          \"path\": \"/api/v1/job/nj141/data/data/Dockerfile\",\n          \"name\": \"Dockerfile\",\n          \"type\": \"text/plain\",\n          \"size\": 1729\n        }\n      ]\n    }\n  ]\n}\n```\n\n## `path` property\n\nThe `path` property for each file in the listing is a link to the raw file. Additionally the `GET` parameter `?size=…` can be appended to retrieve previews of the files. In the case of Images (`png`, `jpg`, `gif`, `tiff`), the value defines the maximum width/height. For text files (`txt`, `csv`, scripts), the value defines the amount of lines returned.\n\n### `type` property\n\nThe `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.\n\n## File extension to MIME type mappings\n\nThis list contains the custom mapping of file extensions to MIME types used in the server.\n\n| Extension        | MIME type          |\n|------------------|--------------------|\n| `.R`, `.r`       | `script/x-R`       |\n|  `.RData`, `.Rdata`, `.rdata`, `.rda`   |  `application/x-r-data`  |\n\n## File inspection: RData\n\n`.RData` files are a [binary format](https://stat.ethz.ch/R-manual/R-devel/library/base/html/save.html) for usage with R to save any kind of object (data, functions) using an internal serialisation.\nThe format is [not suitable](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml) for archival or data exchange, but might be included in a compendium out of negligence by or convenience for the author.\n\nSince the file format is binary and not readable by non-R client applications, the API provides the endpoint `/api/v1/inspection` to retrieve a JSON representation of the objects in an RData file.\n\nValues of objects are provided as JSON arrays following the specifications by the R package [`jsonlite`](https://cran.r-project.org/package=jsonlite).\n",
+        "operationId": "get_file",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/file_query"
+          },
+          {
+            "$ref": "#/components/parameters/objects_query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the file is represented as a JSON array",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "files_simple": {
+                    "$ref": "#/components/examples/files_simple"
+                  },
+                  "files_complex_1": {
+                    "$ref": "#/components/examples/files_complex_1"
+                  },
+                  "files_complex_2": {
+                    "$ref": "#/components/examples/files_complex_2"
+                  },
+                  "files_objects_errors": {
+                    "$ref": "#/components/examples/files_objects_errors"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns the file is represented as a JSON array",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "files_simple": {
+                    "$ref": "#/components/examples/files_bad_request_1"
+                  },
+                  "files_complex_1": {
+                    "$ref": "#/components/examples/files_bad_request_2"
+                  },
+                  "files_complex_2": {
+                    "$ref": "#/components/examples/files_bad_request_3"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns the file is represented as a JSON array",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "files_simple": {
+                    "$ref": "#/components/examples/files_server_error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/job": {},
     "/job/{job_id}": {
@@ -396,7 +625,7 @@
         "type": "object",
         "properties": {
           "content_type": {
-            "description": "The Type of archive that is to be uploaded. Can be `compendium` or `workspace`.\n- `compendium` - compendium,\nwhich is expected to be complete and valid, for *examination* of a compendium  \n\n- `workspace` - formless workspace, for *creation* of a compendium\n\n<div class=\"note yellow_note\">\n  <h3>&#x26A0; Warning</h3>\n  If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.\n</div>\n",
+            "description": "The Type of archive that is to be uploaded. Can be `compendium` or `workspace`.\n- `compendium` - compendium,\nwhich is expected to be complete and valid, for *examination* of a compendium\n\n- `workspace` - formless workspace, for *creation* of a compendium\n\n<div class=\"note yellow_note\">\n  <p><b>&#x26A0; Warning</b></p>\n  <p>If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>\n</div>\n",
             "type": "string",
             "enum": [
               "compendium",
@@ -456,6 +685,22 @@
           },
           "files": {
             "type": "object"
+          }
+        }
+      },
+      "metadata_response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "o2r": {
+                "type": "object"
+              }
+            }
           }
         }
       },
@@ -537,6 +782,24 @@
         "schema": {
           "type": "boolean",
           "default": true
+        }
+      },
+      "file_query": {
+        "name": "file",
+        "in": "query",
+        "description": "the name of the file to inspect, or a relative path to a file within the compendium\n",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "objects_query": {
+        "name": "objects",
+        "in": "query",
+        "description": "the name of objects in the file\n",
+        "required": false,
+        "schema": {
+          "type": "string"
         }
       },
       "compendium_id": {
@@ -645,22 +908,22 @@
         }
       },
       "view_not_found": {
-        "summary": "A view not found example",
-        "description": "Returns a Error",
+        "summary": "A not found example",
+        "description": "Returns an error",
         "value": {
           "error": "no compendium with this id"
         }
       },
       "delete_forbidden": {
         "summary": "A deletion forbidden example",
-        "description": "Returns a Error",
+        "description": "Returns an error",
         "value": {
           "error": "user level not sufficient to delete compendium"
         }
       },
       "delete_not_found": {
         "summary": "A deletion not found example",
-        "description": "Returns a Error",
+        "description": "Returns an error",
         "value": {
           "error": "compendium not found"
         }
@@ -690,6 +953,107 @@
           },
           "created": "…",
           "files": "…"
+        }
+      },
+      "metadata_success": {
+        "summary": "A success metadata example",
+        "description": "Returns a json object with the metadata\n",
+        "value": {
+          "id": "compendium_id",
+          "metadata": {
+            "o2r": {
+              "...": "..."
+            }
+          }
+        }
+      },
+      "metadata_spatial": {
+        "summary": "Spatial property of the metadata object",
+        "description": "For discovery purposes, the metadata includes extracted GeoJSON bounding boxes based on data files in a workspace.\n\nCurrently supported spatial data sources:\n\n- shapefiles\n\nThe following structure is made available per file.\n\nThe `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.\n",
+        "value": "{\n  \"id\":\"compendium_id\",\n  \"metadata\": {\n    \"o2r\": {\n      \"spatial\": {\n          \"files\": [\n              {\n                  \"geojson\": {\n                      \"bbox\": [\n                          -2.362060546875,\n                          52.0862573323384,\n                          -1.285400390625,\n                          52.649729197309426\n                      ],\n                      \"geometry\": {\n                          \"coordinates\": [\n                              [\n                                  [\n                                      -2.362060546875,\n                                      52.0862573323384\n                                  ],\n                                  [\n                                      -1.285400390625,\n                                      52.649729197309426\n                                  ]\n                              ]\n                          ],\n                          \"type\": \"Polygon\"\n                      },\n                      \"type\": \"Feature\"\n                  },\n                  \"source_file\": \"path/to/file1.geojson\"\n              },\n              {\n                  \"geojson\": {\n                      \"bbox\": [\n                          7.595369517803192,\n                          51.96245837645124,\n                          7.62162297964096,\n                          51.96966694957956\n                      ],\n                      \"geometry\": {\n                          \"coordinates\": [\n                              [\n                                  [\n                                      7.595369517803192,\n                                      51.96245837645124\n                                  ],\n                                  [\n                                      7.62162297964096,\n                                      51.96966694957956\n                                  ]\n                              ]\n                          ],\n                          \"type\": \"Polygon\"\n                      },\n                      \"type\": \"Feature\"\n                  },\n                  \"source_file\": \"path/to/file2.shp\"\n              }\n          ],\n          \"union\": {\n              \"geojson\": {\n                  \"bbox\": [\n                      -2.362060546875,\n                      51.96245837645124,\n                      7.62162297964096,\n                      51.96245837645124\n                  ],\n                  \"geometry\": {\n                      \"coordinates\": [\n                          [\n                              -2.362060546875,\n                              51.96245837645124\n                          ],\n                          [\n                              7.62162297964096,\n                              51.96245837645124\n                          ],\n                          [\n                              7.62162297964096,\n                              52.649729197309426\n                          ],\n                          [\n                              -2.362060546875,\n                              52.649729197309426\n                          ]\n                      ],\n                      \"type\": \"Polygon\"\n                  },\n                  \"type\": \"Feature\"\n              }\n          }\n      }\n      \"...\":\"...\"\n    }\n  }\n}\n"
+      },
+      "metadata_update_success": {
+        "summary": "A success metadata update example",
+        "description": "Returns a json object with the updated excerpt.",
+        "value": "{\n  \"id\":\"compendium_id\",\n  \"metadata\": {\n    \"o2r\": {\n      \"title\": \"Blue Book\"\n    }\n  }\n}\n"
+      },
+      "metadata_unauthorized": {
+        "summary": "Unauthorized",
+        "description": "Returns an error, due to not being authorized",
+        "value": {
+          "error": "not authorized"
+        }
+      },
+      "metadata_bad_request_incomplete_metadata": {
+        "summary": "Bad Request due to Incomplete metadata",
+        "description": "Returns an error due to missing metadata in the request (e.g. description property missing)",
+        "value": "{\n    \"error\":\"Error updating metadata file, see log for details\",\n    \"log\": \"[o2rmeta] 20180302.085940 received arguments: {'debug': True, 'tool': 'validate', 'schema': 'schema/json/o2r-meta-schema.json', 'candidate': '/tmp/o2r/compendium/1cAIr/data/.erc/metadata_o2r_1.json'}\n    [o2rmeta] 20180302.085940 launching validator\n    [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json\n    [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'\n\n    Failed validating 'type' in schema['properties']['description']:\n        {'type': 'string'}\n\n        On instance['description']:\n            None\"\n}\n"
+      },
+      "metadata_bad_request_syntax_error": {
+        "summary": "Syntax error",
+        "value": "\"SyntaxEroor [...]\"\n"
+      },
+      "metadata_unprocessable_entity": {
+        "summary": "Unporcessable Entity in metadata update",
+        "description": "The JSON doesnt meet the requirements.\n",
+        "value": {
+          "error": "JSON with root element 'o2r' required"
+        }
+      },
+      "download_success": {
+        "summary": "A successfull zip-file Download example",
+        "description": "A successfull download of a compendium as a `.zip` file. \n\nThe zip file contains a comment with the original URL.\n```\n$ unzip -z CXE1c.zip\nArchive:  CXE1c.zip\nCreated by o2r [https://…/api/v1/compendium/CXE1c.zip]\n```\n",
+        "value": "Content-Type: application/zip\nTransfer-Encoding: chunked\nContent-Disposition: attachment; filename=\"$ID.zip\"\nX-Response-Time: 13.556ms\n"
+      },
+      "download_bad_request": {
+        "summary": "A bad request for download example",
+        "description": "Returns an error",
+        "value": {
+          "error": "no job found for this compendium, run a job before downloading with image"
+        }
+      },
+      "files_simple": {
+        "summary": "Simple data type example",
+        "description": "Returns a JSON array representation of the data types.\n\n`GET /api/v1/inspection/<compendium id>?file=simple.Rdata`\n",
+        "value": "{  \n  \"aChar\":[  \n    \"a\"\n  ],\n  \"aDouble\":[  \n    2.3\n  ],\n  \"anInteger\":[  \n    1\n  ],\n  \"aString\":[  \n    \"The force is great in o2r.\"\n  ]\n}\n"
+      },
+      "files_complex_1": {
+        "summary": "Complex data type example",
+        "description": "Lists are be nested objects, and vectors are JSON arrays (see jsonlite docs for details, defaults are used):\n\n`GET /api/v1/inspection/<compendium id>?file=complex.Rdata`\n",
+        "value": "{  \n  \"characterVector\":[  \n    \"one\",\n    \"two\",\n    \"3\"\n  ],\n  \"logicalVector\":[  \n    true,\n    true,\n    false\n  ],\n  \"numericVector\":[  \n    1,\n    2,\n    -7,\n    0.8\n  ],\n  \"orderedList\":{  \n    \"name\":[  \n      \"Fred\"\n    ],\n    \"mynumbers\":[  \n      1,\n      2\n    ],\n    \"age\":[  \n      5.3\n    ]\n  }\n}\n"
+      },
+      "files_complex_2": {
+        "summary": "Complex data type example",
+        "description": "Data frames and matrices are mapped to JSON arrays of complex objects (see jsonlite docs for details, defaults are used):\n\n`GET /api/v1/inspection/<compendium id>?file=matrices.Rdata`\n",
+        "value": "{  \n  \"dataFrame\":[  \n    {  \n      \"ID\":1,\n      \"Passed\":true,\n      \"Colour\":\"red\"\n    },\n    {  \n      \"ID\":2,\n      \"Passed\":true,\n      \"Colour\":\"white\"\n    },\n    {  \n      \"ID\":3,\n      \"Passed\":true,\n      \"Colour\":\"red\"\n    },\n    {  \n      \"ID\":4,\n      \"Passed\":false\n    }\n  ],\n  \"namedMatrix\":[  \n    [  \n      1,\n      26\n    ],\n    [  \n      24,\n      68\n    ]\n  ]\n}\n"
+      },
+      "files_objects_errors": {
+        "summary": "Example with objects error",
+        "description": "If selected objects are not loadable from the file, an errors property in the response is given for each problematic object:\n\n`GET /api/v1/inspection/<compendium id>?file=simple.RData&objects=bar,anInteger,foo`\n",
+        "value": "{  \n  \"anInteger\":[  \n    1\n  ],\n  \"errors\":[  \n    \"Error: Object 'bar' does not exist in the file simple.RData\",\n    \"Error: Object 'foo' does not exist in the file simple.RData\"\n  ]\n}\n"
+      },
+      "files_bad_request_1": {
+        "summary": "Parameter missing",
+        "value": {
+          "error": "Query parameter 'file' missing"
+        }
+      },
+      "files_bad_request_2": {
+        "summary": "File does not exists",
+        "value": {
+          "error": "file 'not_available.Rdata' does not exist in compendium kOSMO"
+        }
+      },
+      "files_bad_request_3": {
+        "summary": "Compendium does not exists",
+        "value": {
+          "error": "compendium '12345' does not exist"
+        }
+      },
+      "files_server_error": {
+        "summary": "Internal Server Error",
+        "value": {
+          "error": "Error loading objects"
         }
       },
       "bad_request_content_type": {
