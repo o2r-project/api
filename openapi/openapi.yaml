@@ -943,7 +943,7 @@ paths:
   /substitution:
     post:
       tags:
-        - Compendium
+        - Extras
       summary: Create substitution
       description: |
         `Create substitution` produces a new compendium with its own files in the storage and metadata in the database.
@@ -1018,7 +1018,7 @@ paths:
     
     get:
       tags:
-        - Compendium
+        - Extras
     
 
   #User Paths

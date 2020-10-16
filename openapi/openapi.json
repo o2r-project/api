@@ -1024,7 +1024,7 @@
     "/substitution": {
       "post": {
         "tags": [
-          "Compendium"
+          "Extras"
         ],
         "summary": "Create substitution",
         "description": "`Create substitution` produces a new compendium with its own files in the storage and metadata in the database.\nA substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.\nRequired content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).\n  \n  \n  The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>\n</div>\n\n`POST /api/v1/substitution`\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user creating a new substitution must have the required user level.</p>\n</div>\n\nYou can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.\n",
@@ -1106,7 +1106,7 @@
       },
       "get": {
         "tags": [
-          "Compendium"
+          "Extras"
         ]
       }
     },
