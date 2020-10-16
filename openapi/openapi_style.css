@@ -10,11 +10,11 @@ div.note{
 
 }
 
-div.note:nth-child(1){
+div.note > p:nth-child(1){
   color: white;
 }
 
-div.note:nth-child(2){
+div.note > p:nth-child(2){
   padding: 5px;
 }
 

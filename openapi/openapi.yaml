@@ -203,7 +203,7 @@ paths:
           To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.
 
           <div class="note green_note">
-            <p><b>&#x26A0; Important
+            <p><b>&#x26A0; Important</b></p>
             <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>
           </div>
           <div class="note blue_note">
@@ -333,6 +333,27 @@ paths:
   /compendium/{compendium_id}/jobs:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
+    get: 
+      tags:
+        - Compendium
+      summary: List related execution jobs
+      description: |
+        `curl https://…/api/v1/compendium/$ID/jobs`
+
+        `GET /api/v1/compendium/:id/jobs`
+
+      operationId: compendium_list_job
+      responses:
+        200:
+          description: Returns a JSON object with the jobs related to the compendium
+          content:
+            application/json:
+              examples:
+                job_list_simple:
+                  $ref: '#/components/examples/compendium_list_job_success'
+                job_list_fail:
+                  $ref: '#/components/examples/job_list_fail'
+                  
   /compendium/{compendium_id}/metadata:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -434,6 +455,7 @@ paths:
               examples:
                 metadata_unprocessable_entity:
                   $ref: '#/components/examples/metadata_unprocessable_entity' 
+                  
   /compendium/{compendium_id}/link:
       parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -559,26 +581,363 @@ paths:
                   $ref: '#/components/examples/files_server_error'
 
   #Job paths
-  /job: {}
+  /job:
+    post:
+      tags:
+       - Compendium
+      summary: Create a new job
+      description: |
+        Create and run a new execution job with an HTTP POST request using multipart/form-data. Requires a compendium_id.
+        <div class="note blue_note">
+          <p><b>&#x26A0; Required user level and authentication</b></p>
+          <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>
+        </div>
+        
+        `curl -F compendium_id=$ID https://…/api/v1/job`
+        
+        `POST /api/v1/job`
+        
+      operationId: create_job
+      security:
+        - cookie_authenification: []
+      requestBody:
+        description: |
+          The Compendium to be uploaded.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/new_job'
+      responses:
+        200:
+          description: A successfull job creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/job_response'
+              examples:
+                job_success:
+                  $ref: '#/components/examples/job_success'
+        404:
+          description: No matching compendium found
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                not_found:
+                  $ref: '#/components/examples/view_not_found'
+        500:
+          description: Internal server Error
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                not_found:
+                  $ref: '#/components/examples/job_server_error'
+    
+    get: 
+      tags:
+        - Compendium
+      summary: List Jobs
+      description: |
+        Lists jobs with filtering and pagination, returning up to 100 results by default.
+
+        Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
+        
+        Results can be filtered:
+        
+        - by `compendium_id` i.e. `compendium_id=a4Dnm`,
+        - by `status` i.e. `status=success` or
+        - by `user` i.e. `user=0000-0000-0000-0001`
+        
+        `curl https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`
+      parameters:
+        - $ref: '#/components/parameters/compendium_id_query'
+        - $ref: '#/components/parameters/start_query'
+        - $ref: '#/components/parameters/limit_query'
+        - $ref: '#/components/parameters/user_query'
+        - $ref: '#/components/parameters/fields_query'
+      operationId: list_job
+      responses:
+        200:
+          description: Returns a JSON object with the matching jobs
+          content:
+            application/json:
+              examples:
+                job_list_simple:
+                  $ref: '#/components/examples/job_list_simple'
+                job_list_expanded:
+                  $ref: '#/components/examples/job_list_expanded'
+                job_list_fail:
+                  $ref: '#/components/examples/job_list_fail'
+            
   /job/{job_id}:
     parameters:
       - $ref: '#/components/parameters/job_id_path'
-
+    get:
+      tags:
+        - Compendium
+      summary: View single job
+      description: |
+        View details for a single job. The file listing format is described in compendium files.
+      parameters:
+        - $ref: '#/components/parameters/steps_query'
+      operationId: view_job
+      responses:
+        200:
+          description: Returns a JSON object with job details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/view_job_response'
+              examples:
+                view_job_success:
+                  $ref: '#/components/examples/view_job_success'
+        404:
+          description: No matching compendium found
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                not_found:
+                  $ref: '#/components/examples/view_not_found'
+  
   #Recipient paths
-  /recipient: {}
+  /recipient:
+    get:
+      tags: 
+        - Compendium
+      summary: Supported recipients
+      description: | 
+        Use the _recipient_ endpoint to find out, which repositories are available and configured.
+        The response is list of tuples with `id` and `label` of each repository.
+        The `id` is the repository identifier to be used in requests to the `/shipment` endpoint, e.g. to define the recipient, while `label` is a human-readable text string suitable for display in user interfaces.
+        An implementation may support one or more of the following repositories:
+        
+        - `b2share` - [Eudat b2share](https://b2share.eudat.eu/)
+        - `b2share_sandbox` - [Eudat b2share Sandbox](https://trng-b2share.eudat.eu/)
+        - `zenodo` - [Zenodo Sandbox](https://zenodo.org)
+        - `zenodo_sandbox` - [Zenodo Sandbox](https://sandbox.zenodo.org)
+        
+        The `download` recipient is a surrogate to enable shipping to the user's local storage.
+      operationId: list_reciepients
+      responses:
+        200: 
+          description: Retruns A JSON object with all supported recipients.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recipient_response'
+              examples:
+                recipient_success:
+                  $ref: '#/components/examples/recipient_success'
 
   #Shipment paths
-  /shipment: {}
+  /shipment:
+    get:
+      tags:
+        - Compendium
+      summary: List shipments
+      description: |
+        This is a basic request to list all shipments identifiers.
+        `GET /api/v1/shipment`
+        You can also get only the shipment identifiers belonging to a compendium id (e.g. `4XgD97`).
+
+        `GET /api/v1/shipment?compendium_id=4XgD97`
+      operationId: list_shipment
+      parameters:
+        - $ref: '#/components/parameters/compendium_id_shipment_query'
+      responses:
+        200:
+          description: A list of all shuipment ids.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shipment_response'
+              examples:
+                list_success:
+                  $ref: '#/components/examples/shipment_success'
+  /shipment/{shipment_id}:
+    parameters:
+      - $ref: '#/components/parameters/shipment_id'
+    get:
+      tags:
+        - Compendium
+      summary: Get a single shipment
+      description: |
+        Example request:
+        
+        `GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff`
+      operationId: view_shipment
+      responses:
+        200: 
+          description: A json object with the matching results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/view_shipment_response'
+              examples:
+                view_shipment_success:
+                  $ref: '#/components/examples/view_shipment_success' 
+    
+    post: 
+      tags:
+        - Compendium
+      summary: Create a new shipment
+      description: |
+        You can start a initial creation of a shipment, leading to transmission to a repository and creation of a deposition, using a `POST` request.
+
+        `POST /api/v1/shipment`
+        
+        <div class="note blue_note">
+          <p><b>&#x26A0; Required user level</b></p>
+          <p>The user sending the request to create a shipment must have the required [user level](user/levels.md).</p>
+        </div>
+        
+
+
+      operationId: upload_shipment
+      security:
+      - cookie_authenification: []
+      requestBody:
+        description: |
+          The shipment to be uploaded.
+
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/new_shipment'
+      responses:
+        201:
+          description: |
+            The response contains the shipment document, see Get a single shipment. Some of the fields are not available (have value `null`) until after publishing, e.g. `deposition_url`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/upload_shipment_response'
+              examples:
+                upload_shipment_success:
+                  $ref: '#/components/examples/upload_shipment_success'
+        202:
+          description: | 
+            If the recipient is the download surrogate, the response will be `202` and a zip stream with the Content type `application/zip`. The download zip stream is also available under the url of the shipment plus /dl, once it has been created, e.g.:
+
+            `http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl`
+
+          
+          content:
+            application/zip:
+              examples:
+                upload_shipment_zip:
+                  $ref: '#/components/examples/upload_shipment_zip'
+                  
   /shipment/{shipment_id}/status:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
+      
+    get:
+      tags:
+        - Compendium
+      summary: Shipment status
+      description: |
+        A shipment can have three possible status:
+
+        - `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.
+        
+        - `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.
+        
+        - `error` - an error occurred during shipment or publishing.
+        
+        To get only a shipment's current status you may use the sub-resource `/status`.
+        
+      operationId: shipment_status
+      responses:
+        200:
+          description: Retruns A JSON object with the shipment id and status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shipment_status_response'
+              examples:
+                shipment_status_success:
+                  $ref: '#/components/examples/shipment_status_success'
+      
   /shipment/{shipment_id}/publishment:
-   parameters:
+    parameters:
       - $ref: '#/components/parameters/shipment_id'
+    
+    put:
+      tags:
+        - Compendium
+      summary: Publish in a deposition
+      description: |
+        The publishment is supposed to have completed the status shipped where metadata requirements for publication have been checked.
+      
+         <div class="note blue_note">
+          <p><b>&#x26A0; Note</b></p>
+          <p>Once published, a deposition can no longer be deleted on the supported repositories.</p>
+        </div>
+        
+        `PUT api/v1/shipment/<shipment_id>/publishment`
+        
+        Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
+        
+      responses: 
+        200:
+            description: Returns a JSON object with the id and status of the shipment
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/shipment_status_response'
+                examples:
+                  job_list_simple:
+                    $ref: '#/components/examples/publish_put_success'
+    
+    get:
+      tags:
+        - Compendium
+      summary: List deposition files
+      description: |
+        You can request a list of all files in a deposition and their properties with the sub-resource `/publishment`.
+
+        `GET api/v1/shipment/<shipment_id>/publishment`
+        
+        You can find the `id` of the file you want to interact with in this json list object at `files[n].id`, where `n` is the position of that file in the array.
+        Files can be identified in this response by either their id in the depot, their filename or their checksum.
+      
+      responses:
+        200:
+          description: Returns a JSON object with all the deposition files of this shipment.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/shipment_files_response'
+              examples:
+                shipment_files_success:
+                    $ref: '#/components/examples/shipment_files_success'
+      
   /shipment/{shipment_id}/files/{file_id}:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
       - $ref: '#/components/parameters/file_id'
+    
+    delete:
+      tags:
+        - Compendium
+      summary: Delete a specific file from a deposition
+      description: | 
+        You can delete files from a `shipped` shipment's deposition. You must state a file's identifier, which can be retrieved from the shipment's deposition files property `id`, as the `file_id` path parameter. Files for a `published` shipment usually cannot be deleted.
+
+        `DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
+      
+      responses:
+        204:
+          description: Deletion successfull
+        
 
   #Substitution paths
   /substitution: {}
@@ -620,13 +979,51 @@ components:
           description: The archive file as a compressed .zip
           type: string
           format: binary
-
+    
+    new_job:
+      type: object
+      properties:
+        compendium_id:
+          description: |
+            The identifier of the compendium to base this job on.
+          type: string
+      required:
+        - compendium_id
+        
+    new_shipment:
+      type: object
+      properties:
+        compendium_id: 
+          type: string
+          description: The id of the compendium
+        recipient:
+          type: string
+          description: The id of the compendium
+        update_packaging:
+          type: boolean
+          default: false
+          description: |
+            The shipment creation only succeeds if a valid package is already present under the provided compendium identifier, or if no packaging is present at all and a new package can be created. In case a partial or invalid package is given, this parameter can control the shipment creation process: If it is set to `true`, the shipment package is updated during the shipment creation in order to make it valid, if set to `false` the shipment creation results in an error.
+        cookie:
+          type: string
+          description: |
+            An authentication cookie must be set in the request header, but it may also be provided via a `cookie` form parameter as a fallback
+        shipment_id:
+          type: string
+          description: |
+             A user-defined identifier for the shipment (see id in response)
+      
+      required:
+        - compendium_id
+        -  recipient
+      
     #Responses
     upload_response:
       type: object
       properties:
         id:
           type: string
+          
     list_response:
       type: object
       properties:
@@ -634,6 +1031,7 @@ components:
           type: array
           items:
             type: string
+            
     view_response:
       type: object
       properties:
@@ -654,6 +1052,7 @@ components:
           type: boolean
         files:
           type: object
+          
     metadata_response:
       type: object
       properties:
@@ -664,6 +1063,114 @@ components:
           properties:
             o2r:
               type: object
+              
+    job_response:
+      type: object
+      properties:
+        job_id:
+          type: string
+          
+    view_job_response:
+      type: object
+      properties:
+        id:
+          type: string
+        compendium_id:
+          type: string
+        steps::
+          type: object
+        status:
+          type: string
+          enum:
+            - success
+            - failure
+            - running
+        files:
+          type: object
+          
+    recipient_response:
+      type: object
+      properties:
+        recipients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              label:
+                type: string
+                
+    shipment_response:
+      type: array
+      items:
+        type: string
+        
+    view_shipment_response:
+      type: object
+      properties:
+        id:
+          type: string
+        compendium_id:
+          type: string
+        deposition_id:
+          type: string
+        deposition_url:
+          type: string
+        update_packaging:
+          type: string
+        recipient:
+          type: string
+        last_modified:
+          type: string
+          format: date-time
+        user:
+          type: string
+        status:
+          type: string
+          enum:
+           - shipped
+           - published
+           - error
+        md:
+          type: object
+          
+    upload_shipment_response:
+      type: object
+      properties:
+        id:
+          type: string
+        deposition_id:
+          type: string
+
+        recipient:
+          type: string
+        status:
+          type: string
+          enum:
+           - shipped
+           - published
+           - error
+           
+    shipment_status_response:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - shipped
+            - published
+            - error
+         
+    shipment_files_response:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
     #Errors
     general_error_model:
       type: object
@@ -716,7 +1223,43 @@ components:
       schema:
         type: integer
         default: 100
+    compendium_id_query:
+      name: compendium_id
+      in: query
+      description: Comma-separated list of related compendium ids to filter by.
+      required: false
+      schema:
+        type: string
+    fields_query:
+     name: fields
+     in: query
+     description: |
+      Specify which additional attributes results list should contain. Can contain following fields: `status`, `user`. Defaults to none.
+     required: false
+     schema:
+      enum: 
+        - status
+        - user
+        - status, user
+    steps_query:
+      name: steps
+      in: query
+      description: |
+        The properties `status`, `start` and `end` of _all steps_ are always included in the response.
 
+        Supported values for `steps` are `all` or a comma separated list of one or more step names, e.g. `generate_configuration,check`.
+        The response will contain the default properties for all steps but other properties only for the selected ones.
+        Any other values for `steps` or not providing the parameter at all will return the default (e.g. `steps=no`).
+      required: false
+      schema: 
+        type: string
+    compendium_id_shipment_query:
+      name: compendium_id
+      in: query
+      description: The identifier of a specific compendium
+      required: false
+      schema:
+        type: string
     ##Download Parameters
     gzip_query:
       name: gzip
@@ -808,6 +1351,7 @@ components:
     upload_success:
       summary: A upload success example
       value: {'id': 'a4Nd1'}
+      
     upload_forbidden:
       summary: A forbidden example
       value: {'error':'user level does not allow compendium creation'}
@@ -817,6 +1361,7 @@ components:
       summary: Successful Listing
       description: Returns all the matching compendia as an array
       value: {"results": ["nkm4b","nb2sm", ...]}
+      
     list_fail:
       summary: No matching compendium found
       description: |
@@ -829,6 +1374,7 @@ components:
       summary: A view success example
       description: Returns a object with informations about the matching compendium.
       value: {"id":"comid", "metadata": ..., "created":"2016-08-01T13:57:40.760Z", "user":"0000-0001-0273-7906", "files": ..., "bag": true, "compendium": true, "supstituted": true} #How to represent an object
+      
     view_not_found:
       summary: A not found example
       description: Returns an error
@@ -839,6 +1385,7 @@ components:
       summary: A deletion forbidden example
       description: Returns an error
       value: {"error":"user level not sufficient to delete compendium"}
+      
     delete_not_found:
       summary: A deletion not found example
       description: Returns an error
@@ -1170,20 +1717,315 @@ components:
     files_bad_request_1:
       summary: Parameter missing
       value: {"error": "Query parameter 'file' missing"}
+      
     files_bad_request_2:
       summary: File does not exists
       value: {"error": "file 'not_available.Rdata' does not exist in compendium kOSMO"}
+      
     files_bad_request_3:
       summary: Compendium does not exists
       value: {"error": "compendium '12345' does not exist"}
+      
     files_server_error:
       summary: Internal Server Error
       value: {"error": "Error loading objects"}
-      
+    
+    ##Job Response Examples
+    job_success:
+      summary: A successfull job creation
+      description: Returns the id of the new job
+      value: {"job_id":"ngK4m"}
+    
+    job_server_error:
+      summary: A internal server error during job creation
+      description: Returns an error
+      value: {"error":"could not create job"}
+    
+    job_list_simple:
+      summary: A job listing with only the job ids
+      description: |
+        `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success`
+      value: |
+        {
+          "results": [
+            "nkm4L",
+            "asdi5",
+            "nb2sg",
+            …
+          ]
+        }
+        
+    job_list_expanded:
+      summary: A job listing with job id and status
+      description: |
+        The overall job state can be added to the job list response:
+
+        `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success&fields=status`
+      value: | 
+        {
+          "results": [
+            {
+              "id":"nkm4L",
+              "status":"failure"
+            },
+            {
+              "id":"asdi5",
+              "status":"success"
+            },
+            {
+              "id":"nb2sg",
+              "status":"running"
+            },
+            …
+          ]
+        }
+        
+    job_list_fail: 
+      summary: Job listing with no matching jobs
+      description: |
+        If there are no jobs, the returned list is empty.
+      value: |
+        {
+          "results": [ ]
+        }
+   
+    view_job_success:
+      summary:  A successfull job view example
+      value: |
+        {
+          "id":"UMmJ7",
+          "compendium_id":"BSgxj",
+          "steps":{
+            "validate_bag":{
+              "status":"skipped",
+              "text":[
+                "Not a bag"
+              ],
+              "end":"2017-11-17T13:22:48.105Z",
+              "start":"2017-11-17T13:22:48.105Z"
+            },
+            "generate_configuration":{
+              "status":"success",
+              "text":[
+                "configuration file not found, generating it...",
+                "Saved configuration file to job and compendium"
+              ],
+              "end":"2017-11-17T13:22:48.119Z",
+              "start":"2017-11-17T13:22:48.113Z"
+            },
+            "validate_compendium":{
+              "status":"success",
+              "text":[
+                "all checks passed"
+              ],
+              "end":"2017-11-17T13:22:48.127Z",
+              "start":"2017-11-17T13:22:48.125Z"
+            },
+            "generate_manifest":{
+              "status":"success",
+              "text":[
+                /* abbreviated */
+                "INFO [2017-11-17 13:22:56] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)",
+                "INFO [2017-11-17 13:22:56] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB",
+                "INFO [2017-11-17 13:22:58] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml",
+                "INFO [2017-11-17 13:22:58] Created Dockerfile-Object based on /erc/main.Rmd",
+                "INFO [2017-11-17 13:22:58] Writing dockerfile to /erc/Dockerfile",
+                /* abbreviated */
+                "generated manifest"
+              ],
+              "manifest":"Dockerfile",
+              "end":"2017-11-17T13:22:58.865Z",
+              "start":"2017-11-17T13:22:48.129Z"
+            },
+            "image_prepare":{
+              "status":"success",
+              "text":[
+                "payload with 756224 total bytes created"
+              ],
+              "end":"2017-11-17T13:22:58.906Z",
+              "start":"2017-11-17T13:22:58.875Z"
+            },
+            "image_build":{
+              "status":"success",
+              "text":[
+                "Step 1/6 : FROM rocker/r-ver:3.4.2",
+                "---> 3cf05960bf30",
+                /* abbreviated */
+                "---> Running in eb7ccd432592",
+                "---> 84db129215f6",
+                "Removing intermediate container eb7ccd432592",
+                "Successfully built 84db129215f6",
+                "Successfully tagged erc:UMmJ7"
+              ],
+              "end":"2017-11-17T13:22:59.899Z",
+              "start":"2017-11-17T13:22:58.912Z"
+            },
+            "image_execute":{
+              "status":"success",
+              "text":[
+                "[started image execution]",
+                /* abbreviated */
+                "Output created: display.html\r\n> \r\n>",
+                "[finished image execution]"
+              ],
+              "statuscode":0,
+              "start":"2017-11-17T13:22:59.904Z"
+            },
+            "check":{
+              "status":"failure",
+              "text":[
+                "Check failed"
+              ],
+              "images":[
+                {
+                  "imageIndex":0,
+                  "resizeOperationCode":0,
+                  "compareResults":{
+                    "differences":204786,
+                    "dimension":1290240
+                  }
+                }
+              ],
+              "display":{
+                "diff":"/api/v1/job/UMmJ7/data/check.html"
+              },
+              "errors":[ ],
+              "checkSuccessful":false,
+              "end":"2017-11-17T13:23:04.439Z",
+              "start":"2017-11-17T13:23:03.479Z"
+            },
+            "image_save": {
+              "status": "success",
+              "text": [
+                "[Saving image tarball file]",
+                "[Saved image tarball to file (size: 875.14 MB)]"
+              ],
+              "start": "2018-01-29T17:38:55.111Z",
+              "file": "image.tar",
+              "end": "2018-01-29T17:39:36.845Z"
+            },
+            "cleanup":{
+              "status":"success",
+              "text":[
+                "Running regular cleanup",
+                "Removed image with tag erc:UMmJ7: [{\"Untagged\":\"erc:UMmJ7\"},{\"Deleted\":\"sha256:84db129215f60f805320e0f70c54a706b6e4030f4627c74abfb1e17f287fefa8\"},{\"Deleted\":\"sha256:0dc5b951dc58a10e50ea42dd14a1cd59b080199d9ca40cadd0a4fc8ae5e0d139\"},{\"Deleted\":\"sha256:ea88669b92a1c67dc2825f9f6d90d334a6032882d3d31bc85671afbd04adaa70\"}]",
+                "Deleted temporary payload file."
+              ],
+              "end":"2017-11-17T13:23:05.592Z",
+              "start":"2017-11-17T13:23:04.575Z"
+            }
+          },
+          "status":"failure",
+          "files":{ /* see compendium */  }
+        }
+        
+    compendium_list_job_success:
+      summary: A job listing with all related execution jobs
+      value: |
+        {
+          "results": [
+            "nkm4L",
+            "asdi5",
+            "nb2sg",
+            …
+          ]
+        }
+    
+    ##Recipient Examples
+    recipient_success:
+      summary: A successfull reciepent listing
+      value: |
+        {
+            "recipients": [{
+                "id": "download",
+                "label": "Download"
+            }, {
+                "id": "b2share_sandbox",
+                "label": "Eudat b2share Sandbox"
+            }, {
+                "id": "zenodo_sandbox",
+                "label": "Zenodo Sandbox"
+            }]
+        }
+        
+    ##Shipment Examples
+    shipment_success:
+      summary: A successfull listing of shipments
+      description: Returns a JSON array with all shipment ids
+      value: ["dc351fc6-314f-4947-a235-734ab5971eff", "..."]
+    
+    view_shipment_success:
+      summary: A successfull view of a shipment
+      description: | 
+        Retruns a JSON object with information on the specified shipment.
+        <div class="note blue_note">
+          <p><b>&#x26A0; Note</b></p>
+          <p>Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
+        </div>
+      value: |
+        {
+          "last_modified": "2016-12-12 10:34:32.001475",
+          "recipient": "zenodo",
+          "id": "dc351fc6-314f-4947-a235-734ab5971eff",
+          "deposition_id": "63179",
+          "user": "0000-0002-1825-0097",
+          "status": "shipped",
+          "compendium_id": "4XgD97",
+          "deposition_url": "https://zenodo.org/record/63179"
+        }
+        
+    upload_shipment_success:
+      summary: A successfull creation of a shipment
+      value: |
+        {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "recipient": "zenodo",
+          "status": "shipped",
+          "deposition_id": "79102"
+        }
+    
+    upload_shipment_zip:
+      summary: Zip stream for download
+      value: (zip stream starting point)
+        
+    shipment_status_success:
+      summary: A successfull status view of a shipment
+      value: |
+        {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "status": "shipped"
+        }
+        
+    publish_put_success:
+      summary: A successfull pulishment 
+      value: |
+        {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "status": "published"
+        }
+        
+    shipment_files_success:
+      summary: A successfull listing of the depositon files
+      value: |
+        {
+          "files": [{
+              "filesize": 393320,
+              "id": "bae2a60c-bd59-47e1-a443-b34bb7d0a981",
+              "filename": "4XgD9.zip",
+              "checksum": "702f4db3e53b22176d1d5ddcda462a27",
+              "links": {
+                  "self": "https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981",
+                  "download": "https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip"
+              }
+          }]
+        }
+
+                  
     ##General Response Examples
     bad_request_content_type:
       summary: A bad request due to content_type
       value: {'error':'provided content_type not implemented'}
+      
     unauthorized:
       summary: A unthorized error example
       value: {'error':'user is not authenticated'}
