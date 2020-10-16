@@ -1021,7 +1021,95 @@
         }
       }
     },
-    "/substitution": {},
+    "/substitution": {
+      "post": {
+        "tags": [
+          "Compendium"
+        ],
+        "summary": "Create substitution",
+        "description": "`Create substitution` produces a new compendium with its own files in the storage and metadata in the database.\nA substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.\nRequired content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).\n  \n  \n  The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>\n</div>\n\n`POST /api/v1/substitution`\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user creating a new substitution must have the required user level.</p>\n</div>\n\nYou can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.\n",
+        "operationId": "upload_substitution",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "requestBody": {
+          "description": "The Compendium to be uploaded.\n",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/new_substitution"
+              },
+              "examples": {
+                "substitution_request_body": {
+                  "$ref": "#/components/examples/substitution_request_body"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/upload_response"
+                },
+                "examples": {
+                  "upload_success": {
+                    "$ref": "#/components/examples/substitution_creation_success"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized due to user level not being sufficient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "substitution_unauthorized_1": {
+                    "$ref": "#/components/examples/substitution_unauthorized_1"
+                  },
+                  "substitution_unauthorized_2": {
+                    "$ref": "#/components/examples/substitution_unauthorized_2"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "substitution_not_found_1": {
+                    "$ref": "#/components/examples/substitution_not_found_1"
+                  },
+                  "substitution_not_found_2": {
+                    "$ref": "#/components/examples/substitution_not_found_2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Compendium"
+        ]
+      }
+    },
     "/user": {},
     "/user/{user_id}": {
       "parameters": [
@@ -1094,6 +1182,45 @@
           "compendium_id",
           "recipient"
         ]
+      },
+      "new_substitution": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "string",
+            "description": "id of the base compendium"
+          },
+          "overlay": {
+            "type": "string",
+            "description": "id of the overlay compendium"
+          },
+          "substitutionFiles": {
+            "type": "array",
+            "description": "Array of file substitutions specified by `base` and `overlay`",
+            "items": {
+              "type": "object",
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "description": "name of the file from base compendium"
+                },
+                "overlay": {
+                  "type": "string",
+                  "description": "name of the overlay compendium that is exchanged for the original file"
+                }
+              }
+            }
+          },
+          "metadataHandling": {
+            "type": "string",
+            "enum": [
+              "keepBase",
+              "extractAndMerge",
+              "extract"
+            ],
+            "description": "property to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)\n"
+          }
+        }
       },
       "upload_response": {
         "type": "object",
@@ -1772,7 +1899,51 @@
       },
       "shipment_files_success": {
         "summary": "A successfull listing of the depositon files",
-        "value": "{\n  \"files\": [{\n      \"filesize\": 393320,\n      \"id\": \"bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n      \"filename\": \"4XgD9.zip\",\n      \"checksum\": \"702f4db3e53b22176d1d5ddcda462a27\",\n      \"links\": {\n          \"self\": \"https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n          \"download\": \"https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip\"\n      }\n  }]\n}\n\n          \n"
+        "value": "{\n  \"files\": [{\n      \"filesize\": 393320,\n      \"id\": \"bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n      \"filename\": \"4XgD9.zip\",\n      \"checksum\": \"702f4db3e53b22176d1d5ddcda462a27\",\n      \"links\": {\n          \"self\": \"https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n          \"download\": \"https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip\"\n      }\n  }]\n}\n"
+      },
+      "substitution_request_body": {
+        "summary": "Request body for a new substitution.",
+        "value": {
+          "base": "G92NL",
+          "overlay": "9fCTR",
+          "substitutionFiles": [
+            {
+              "base": "climate-timeseries.csv",
+              "overlay": "mytimeseries_data.csv"
+            }
+          ],
+          "metadataHandling": "keepBase"
+        }
+      },
+      "substitution_creation_success": {
+        "summary": "Successfull Substitution Creation",
+        "value": {
+          "id": "oMMFn"
+        }
+      },
+      "substitution_unauthorized_1": {
+        "summary": "Unauthorized due to not being authenticated",
+        "value": {
+          "error": "not authenticated"
+        }
+      },
+      "substitution_unauthorized_2": {
+        "summary": "Unauthorized due to not being allowed this action",
+        "value": {
+          "error": "not allowed"
+        }
+      },
+      "substitution_not_found_1": {
+        "summary": "Base compendium not found",
+        "value": {
+          "error": "base compendium not found"
+        }
+      },
+      "substitution_not_found_2": {
+        "summary": "Overlay compendium not found",
+        "value": {
+          "error": "overlay compendium not found"
+        }
       },
       "bad_request_content_type": {
         "summary": "A bad request due to content_type",

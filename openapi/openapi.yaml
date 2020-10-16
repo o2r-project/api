@@ -940,7 +940,86 @@ paths:
         
 
   #Substitution paths
-  /substitution: {}
+  /substitution:
+    post:
+      tags:
+        - Compendium
+      summary: Create substitution
+      description: |
+        `Create substitution` produces a new compendium with its own files in the storage and metadata in the database.
+        A substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
+        Required content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.
+        
+        <div class="note blue_note">
+          <p><b>&#x26A0; Note</b></p>
+          <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).
+          
+          
+          The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>
+        </div>
+
+        `POST /api/v1/substitution`
+
+        <div class="note blue_note">
+          <p><b>&#x26A0; Required user level</b></p>
+          <p>The user creating a new substitution must have the required user level.</p>
+        </div>
+        
+        You can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.
+
+      operationId: upload_substitution
+      security:
+      - cookie_authenification: []
+      requestBody:
+        description: |
+          The Compendium to be uploaded.
+
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/new_substitution'
+            examples:
+              substitution_request_body:
+                $ref: '#/components/examples/substitution_request_body'
+                
+      responses:
+        201:
+          description: Creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/upload_response'
+              examples:
+                upload_success:
+                  $ref: '#/components/examples/substitution_creation_success'
+        401:
+          description: Unauthorized due to user level not being sufficient.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                substitution_unauthorized_1:
+                  $ref: '#/components/examples/substitution_unauthorized_1'
+                substitution_unauthorized_2:
+                  $ref: '#/components/examples/substitution_unauthorized_2'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                substitution_not_found_1:
+                  $ref: '#/components/examples/substitution_not_found_1'
+                substitution_not_found_2:
+                  $ref: '#/components/examples/substitution_not_found_2'
+    
+    get:
+      tags:
+        - Compendium
+    
 
   #User Paths
   /user: {}
@@ -1016,6 +1095,36 @@ components:
       required:
         - compendium_id
         -  recipient
+        
+    new_substitution:
+      type: object
+      properties:
+        base:
+          type: string
+          description: id of the base compendium
+        overlay:
+          type: string
+          description: id of the overlay compendium
+        substitutionFiles:
+          type: array
+          description: Array of file substitutions specified by `base` and `overlay`
+          items:
+            type: object
+            properties: 
+              base:
+                type: string
+                description: name of the file from base compendium
+              overlay:
+                type: string
+                description: name of the overlay compendium that is exchanged for the original file
+        metadataHandling:
+          type: string
+          enum:
+            - keepBase
+            - extractAndMerge
+            - extract
+          description: |
+            property to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)
       
     #Responses
     upload_response:
@@ -1171,6 +1280,7 @@ components:
           type: array
           items:
             type: object
+    
     #Errors
     general_error_model:
       type: object
@@ -2019,6 +2129,31 @@ components:
               }
           }]
         }
+        
+    ##Substitute Examples
+    substitution_request_body:
+      summary: Request body for a new substitution.
+      value: {"base": "G92NL", "overlay": "9fCTR", "substitutionFiles": [{"base": "climate-timeseries.csv","overlay": "mytimeseries_data.csv"}],"metadataHandling": "keepBase"}
+    
+    substitution_creation_success:
+      summary: Successfull Substitution Creation
+      value: {"id": "oMMFn"}
+
+    substitution_unauthorized_1:
+      summary: Unauthorized due to not being authenticated
+      value: {"error":"not authenticated"}
+      
+    substitution_unauthorized_2:
+      summary: Unauthorized due to not being allowed this action
+      value: {"error":"not allowed"}
+      
+    substitution_not_found_1:
+      summary: Base compendium not found
+      value: {"error":"base compendium not found"}
+      
+    substitution_not_found_2:
+      summary: Overlay compendium not found
+      value: {"error":"overlay compendium not found"}
 
                   
     ##General Response Examples
