@@ -520,7 +520,130 @@
         {
           "$ref": "#/components/parameters/compendium_id"
         }
-      ]
+      ],
+      "put": {
+        "tags": [
+          "Extras"
+        ],
+        "summary": "Create link",
+        "description": "The following request creates a link for the candidate compendium with the identifier 12345.\n```\ncurl -X PUT https://…/api/v1/compendium/12345/link \\\n    --cookie \"connect.sid=<code string here>\"\n```\n",
+        "operationId": "upload_link",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Link creation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/link_response"
+                },
+                "examples": {
+                  "link_success": {
+                    "$ref": "#/components/examples/link_success"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad Request due to not supported content_type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "unauthorized": {
+                    "$ref": "#/components/examples/metadata_unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized due to user not being logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "not_found": {
+                    "$ref": "#/components/examples/delete_not_found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Extras"
+        ],
+        "summary": "Create link",
+        "description": "The following request deletes a link for the candidate compendium with the identifier 12345.\n```\ncurl -X DELETE https://…/api/v1/compendium/12345/link \\\n    --cookie \"connect.sid=<code string here>\"\n```\n",
+        "operationId": "delete_link",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Link deletion successfull"
+          },
+          "401": {
+            "description": "Bad Request due to not supported content_type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "unauthorized": {
+                    "$ref": "#/components/examples/metadata_unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden due to user level not allowing upload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "Forbidden": {
+                    "$ref": "#/components/examples/delete_forbidden"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unauthorized due to user not being logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "not_found": {
+                    "$ref": "#/components/examples/delete_not_found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/inspection/{compendium_id}": {
       "parameters": [
@@ -1107,7 +1230,153 @@
       "get": {
         "tags": [
           "Extras"
-        ]
+        ],
+        "summary": "List substituted Compenium",
+        "description": "`curl https://.../api/v1/substitution`\n\n`GET /api/v1/substitution`\n",
+        "operationId": "view_substitution",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/overlay_query"
+          },
+          {
+            "$ref": "#/components/parameters/base_query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The successfull Listing of all the substitutions as JSON object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list_response"
+                },
+                "examples": {
+                  "substitution_list_success": {
+                    "$ref": "#/components/examples/substitution_list_success"
+                  },
+                  "substitution_list_fail": {
+                    "$ref": "#/components/examples/substitution_list_fail"
+                  },
+                  "substituion_list_base": {
+                    "$ref": "#/components/examples/substitution_list_base"
+                  },
+                  "substitution_list_overlay": {
+                    "$ref": "#/components/examples/substitution_list_overlay"
+                  },
+                  "substitution_list_base_overlay": {
+                    "$ref": "#/components/examples/substitution_list_base_overlay"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "substitution_undefined_1": {
+                    "$ref": "#/components/examples/substitution_undefined_1"
+                  },
+                  "substitution_undefined_2": {
+                    "$ref": "#/components/examples/substitution_undefined_2"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The successfull Listing of all the substitutions as JSON object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "substitution_unauthorized_1": {
+                    "$ref": "#/components/examples/substitution_unauthorized_1"
+                  },
+                  "substitution_unauthorized_2": {
+                    "$ref": "#/components/examples/substitution_unauthorized_2"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "substitution_not_found_1": {
+                    "$ref": "#/components/examples/substitution_not_found_1"
+                  },
+                  "substitution_not_found_2": {
+                    "$ref": "#/components/examples/substitution_not_found_2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/link": {
+      "get": {
+        "tags": [
+          "Extras"
+        ],
+        "summary": "List links",
+        "description": "```\ncurl -X GET http://localhost/api/v1/link\n     --cookie \"connect.sid=s%3AVU61x4E<rest of cookie>\"\n```\n",
+        "operationId": "list_link",
+        "security": [
+          {
+            "cookie_authenification": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Link creation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/link_list_response"
+                },
+                "examples": {
+                  "link_list_success": {
+                    "$ref": "#/components/examples/link_list_success"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad Request due to not supported content_type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "unauthorized": {
+                    "$ref": "#/components/examples/metadata_unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/user": {},
@@ -1435,6 +1704,44 @@
           }
         }
       },
+      "link_response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "compendium_id": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string",
+            "format": "user_id"
+          }
+        }
+      },
+      "link_list_response": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "compendium_id": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string",
+                  "format": "user_id"
+                }
+              }
+            }
+          }
+        }
+      },
       "general_error_model": {
         "type": "object",
         "properties": {
@@ -1568,6 +1875,24 @@
         "name": "objects",
         "in": "query",
         "description": "the name of objects in the file\n",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "overlay_query": {
+        "name": "overlay",
+        "in": "query",
+        "description": "id of the overlay compendium that the results should be related to",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "base_query": {
+        "name": "base",
+        "in": "query",
+        "description": "id of the base compendium that the results should be related to",
         "required": false,
         "schema": {
           "type": "string"
@@ -1943,6 +2268,95 @@
         "summary": "Overlay compendium not found",
         "value": {
           "error": "overlay compendium not found"
+        }
+      },
+      "substitution_list_success": {
+        "summary": "A successfull basic listing of substitutes",
+        "description": "The result is a list of compendia ids which were created by a substitution process.",
+        "value": {
+          "results": [
+            "oMMFn",
+            "asdi5",
+            "nb2sg",
+            "…"
+          ]
+        }
+      },
+      "substitution_list_fail": {
+        "summary": "No substitutes found",
+        "description": "If there are no substitutions yet, the returned list is empty.",
+        "value": {
+          "results": []
+        }
+      },
+      "substitution_list_base": {
+        "summary": "Filter by base",
+        "description": "`curl https://.../api/v1/substitution?base=jfL3w`\n\n`GET /api/v1/substitution?base=jfL3w`\n\nResult is a list of substituted compendia based on the given base compendium.\n",
+        "value": {
+          "results": [
+            "wGmFn",
+            "…"
+          ]
+        }
+      },
+      "substitution_list_overlay": {
+        "summary": "Filter by overlay",
+        "description": "`curl https://.../api/v1/substitution?overlay=as4Kj`\n\n`GET /api/v1/substitution?overlay=as4Kj`\n\nResult is a list of substituted compendia based on the given overlay compendium.\n",
+        "value": {
+          "results": [
+            "9pQ34",
+            "1Tnd3",
+            "…"
+          ]
+        }
+      },
+      "substitution_list_base_overlay": {
+        "summary": "Filter by base and overlay",
+        "description": "`curl https://.../api/v1/substitution?base=lO3Td&overlay=as4Kj`\n\n`GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`\n\nResult is a list of substituted compendia based on the given base and overlay compendium.\n",
+        "value": {
+          "results": [
+            "9pQ34",
+            "1Tnd3",
+            "…"
+          ]
+        }
+      },
+      "substitution_undefined_1": {
+        "summary": "Base compendium undefined",
+        "value": {
+          "error": "base compendium undefined"
+        }
+      },
+      "substitution_undefined_2": {
+        "summary": "Overlay compendium undefined",
+        "value": {
+          "error": "Overlay compendium undefined"
+        }
+      },
+      "link_success": {
+        "summary": "A successfull link creation",
+        "description": "The response has an HTTP status of `200` if the public link was created.\nThe response body provides the public link `id`, which can be used for subsequent requests to:\n\n- view the candidate compendium\n- download candidate compendium files\n- start jobs for the candidate compendium\n\nOnly **1 public link** is created per candidate compendium.\n_Subsequent requests will return the same link._\n",
+        "value": {
+          "id": "lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr",
+          "compendium_id": "xkjzY",
+          "user": "0000-0002-1701-2564"
+        }
+      },
+      "link_list_success": {
+        "summary": "Successfull listing of links",
+        "value": {
+          "results": [
+            {
+              "id": "b56Cy5EG7oiCBPCZMjXIPXoSyPVxiGVA",
+              "compendium_id": "eENFZ",
+              "user": "0000-0002-1701-2564"
+            },
+            {
+              "id": "p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt",
+              "compendium_id": "xkjzY",
+              "user": "0000-0002-1701-2564"
+            }
+          ]
         }
       },
       "bad_request_content_type": {

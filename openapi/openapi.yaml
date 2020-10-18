@@ -457,8 +457,95 @@ paths:
                   $ref: '#/components/examples/metadata_unprocessable_entity' 
                   
   /compendium/{compendium_id}/link:
-      parameters:
+    parameters:
       - $ref: '#/components/parameters/compendium_id'
+    put:
+      tags:
+        - Extras
+      summary: Create link
+      description: |
+        The following request creates a link for the candidate compendium with the identifier 12345.
+        ```
+        curl -X PUT https://…/api/v1/compendium/12345/link \
+            --cookie "connect.sid=<code string here>"
+        ```
+      operationId: upload_link
+      security:
+        - cookie_authenification: []
+      responses: 
+        200:
+          description: Link creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/link_response'
+              examples:
+                link_success:
+                  $ref: '#/components/examples/link_success'
+        401:
+          description: Bad Request due to not supported content_type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                unauthorized:
+                  $ref: '#/components/examples/metadata_unauthorized'
+        404:
+          description: Unauthorized due to user not being logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                not_found:
+                  $ref: '#/components/examples/delete_not_found'
+      
+        
+    delete:
+      tags:
+        - Extras
+      summary: Create link
+      description: |
+        The following request deletes a link for the candidate compendium with the identifier 12345.
+        ```
+        curl -X DELETE https://…/api/v1/compendium/12345/link \
+            --cookie "connect.sid=<code string here>"
+        ```
+      operationId: delete_link
+      security:
+        - cookie_authenification: []
+      responses: 
+        204:
+          description: Link deletion successfull 
+        401:
+          description: Bad Request due to not supported content_type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                unauthorized:
+                  $ref: '#/components/examples/metadata_unauthorized'
+        403:
+          description: Forbidden due to user level not allowing upload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/delete_forbidden'
+        404:
+          description: Unauthorized due to user not being logged in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                not_found:
+                  $ref: '#/components/examples/delete_not_found'    
+                
 
   #Inspection paths
   /inspection/{compendium_id}:
@@ -760,6 +847,7 @@ paths:
               examples:
                 list_success:
                   $ref: '#/components/examples/shipment_success'
+                  
   /shipment/{shipment_id}:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
@@ -938,7 +1026,6 @@ paths:
         204:
           description: Deletion successfull
         
-
   #Substitution paths
   /substitution:
     post:
@@ -1019,10 +1106,108 @@ paths:
     get:
       tags:
         - Extras
-    
+      summary: List substituted Compenium
+      description: |
+        `curl https://.../api/v1/substitution`
+        
+        `GET /api/v1/substitution`
 
+      operationId: view_substitution
+      security:
+        - cookie_authenification: []
+      parameters:
+        - $ref: '#/components/parameters/overlay_query'
+        - $ref: '#/components/parameters/base_query'
+      responses:
+        200:
+          description: The successfull Listing of all the substitutions as JSON object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/list_response'
+              examples:
+                substitution_list_success:
+                  $ref: '#/components/examples/substitution_list_success'
+                substitution_list_fail:
+                  $ref: '#/components/examples/substitution_list_fail'
+                substituion_list_base:
+                  $ref: '#/components/examples/substitution_list_base'
+                substitution_list_overlay:
+                  $ref: '#/components/examples/substitution_list_overlay'
+                substitution_list_base_overlay:
+                  $ref: '#/components/examples/substitution_list_base_overlay'
+        400:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                substitution_undefined_1:
+                  $ref: '#/components/examples/substitution_undefined_1'
+                substitution_undefined_2:
+                  $ref: '#/components/examples/substitution_undefined_2'
+        401:
+          description: The successfull Listing of all the substitutions as JSON object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                substitution_unauthorized_1:
+                  $ref: '#/components/examples/substitution_unauthorized_1'
+                substitution_unauthorized_2:
+                  $ref: '#/components/examples/substitution_unauthorized_2'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                substitution_not_found_1:
+                  $ref: '#/components/examples/substitution_not_found_1'
+                substitution_not_found_2:
+                  $ref: '#/components/examples/substitution_not_found_2'
+                
+  #Link paths
+  /link:
+    get:
+      tags:
+        - Extras
+      summary: List links
+      description: |
+        ```
+        curl -X GET http://localhost/api/v1/link
+             --cookie "connect.sid=s%3AVU61x4E<rest of cookie>"
+        ```
+      operationId: list_link
+      security:
+        - cookie_authenification: []
+      responses: 
+        200:
+          description: Link creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/link_list_response'
+              examples:
+                link_list_success:
+                  $ref: '#/components/examples/link_list_success'
+        401:
+          description: Bad Request due to not supported content_type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                unauthorized:
+                  $ref: '#/components/examples/metadata_unauthorized'
+          
+                  
   #User Paths
   /user: {}
+  
   /user/{user_id}:
     parameters:
       - $ref: '#/components/parameters/user_id'
@@ -1280,6 +1465,33 @@ components:
           type: array
           items:
             type: object
+            
+    link_response:
+      type: object
+      properties:
+        id:
+          type: string
+        compendium_id:
+          type: string
+        user:
+          type: string
+          format: user_id
+    
+    link_list_response: 
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              compendium_id:
+                type: string
+              user:
+                type: string
+                format: user_id
     
     #Errors
     general_error_model:
@@ -1303,6 +1515,7 @@ components:
       required: false
       schema:
         type: string
+        
     user_query:
       name: user
       in: query
@@ -1310,6 +1523,7 @@ components:
       required: false
       schema:
         type: string
+        
     doi_query:
       name: doi
       in: query
@@ -1317,6 +1531,7 @@ components:
       required: false
       schema:
         type: string
+        
     start_query:
       name: start
       in: query
@@ -1325,6 +1540,7 @@ components:
       schema:
         type: integer
         default: 1
+        
     limit_query:
       name: limit
       in: query
@@ -1333,6 +1549,7 @@ components:
       schema:
         type: integer
         default: 100
+        
     compendium_id_query:
       name: compendium_id
       in: query
@@ -1340,6 +1557,7 @@ components:
       required: false
       schema:
         type: string
+        
     fields_query:
      name: fields
      in: query
@@ -1351,6 +1569,7 @@ components:
         - status
         - user
         - status, user
+        
     steps_query:
       name: steps
       in: query
@@ -1363,6 +1582,7 @@ components:
       required: false
       schema: 
         type: string
+        
     compendium_id_shipment_query:
       name: compendium_id
       in: query
@@ -1398,6 +1618,7 @@ components:
       required: true
       schema:
         type: string
+        
     objects_query:
       name: objects
       in: query
@@ -1406,8 +1627,25 @@ components:
       required: false
       schema:
         type: string
+        
+    ##Substitution Parameters
+    overlay_query:
+      name: overlay
+      in: query
+      description: id of the overlay compendium that the results should be related to
+      required: false
+      schema:
+        type: string
+        
+    base_query:
+      name: base
+      in: query
+      description: id of the base compendium that the results should be related to
+      required: false
+      schema:
+        type: string
     
-    #Path Parameters
+    ##Path Parameters
     compendium_id:
       name: compendium_id
       in: path
@@ -1415,6 +1653,7 @@ components:
       required: true
       schema:
         type: string
+        
     file_extension:
       name: file_extension
       in: path
@@ -1426,6 +1665,7 @@ components:
         - zip
         - tar
         - tar.gz
+        
     job_id_path:
       name: job_id
       in: path
@@ -1433,6 +1673,7 @@ components:
       required: true
       schema:
         type: string
+        
     shipment_id:
       name: shipment_id
       in: path
@@ -1440,6 +1681,7 @@ components:
       required: true
       schema:
         type: string
+        
     file_id:
       name: file_id
       in: path
@@ -1447,6 +1689,7 @@ components:
       required: true
       schema:
         type: string
+        
     user_id:
       name: user_id
       in: path
@@ -2130,6 +2373,7 @@ components:
           }]
         }
         
+        
     ##Substitute Examples
     substitution_request_body:
       summary: Request body for a new substitution.
@@ -2154,8 +2398,114 @@ components:
     substitution_not_found_2:
       summary: Overlay compendium not found
       value: {"error":"overlay compendium not found"}
+    
+    substitution_list_success:
+      summary: A successfull basic listing of substitutes
+      description: The result is a list of compendia ids which were created by a substitution process.
+      value: {
+                "results": [
+                  "oMMFn",
+                  "asdi5",
+                  "nb2sg",
+                  …
+                ]
+              }
+              
+    substitution_list_fail:
+      summary: No substitutes found
+      description: If there are no substitutions yet, the returned list is empty.
+      value:  {
+                "results": [ ]
+              }
+              
+    substitution_list_base:
+      summary: Filter by base
+      description: |
+        `curl https://.../api/v1/substitution?base=jfL3w`
 
-                  
+        `GET /api/v1/substitution?base=jfL3w`
+        
+        Result is a list of substituted compendia based on the given base compendium.
+      value:  {
+                "results": [
+                  "wGmFn",
+                  …
+                ]
+              }
+              
+    substitution_list_overlay:
+      summary: Filter by overlay
+      description: |
+        `curl https://.../api/v1/substitution?overlay=as4Kj`
+
+        `GET /api/v1/substitution?overlay=as4Kj`
+        
+        Result is a list of substituted compendia based on the given overlay compendium.
+      value: 
+        {
+          "results": [
+            "9pQ34",
+            "1Tnd3",
+            …
+          ]
+        } 
+        
+    substitution_list_base_overlay:
+      summary: Filter by base and overlay
+      description: |
+        `curl https://.../api/v1/substitution?base=lO3Td&overlay=as4Kj`
+
+        `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
+        
+        Result is a list of substituted compendia based on the given base and overlay compendium.
+      value: 
+        {
+          "results": [
+            "9pQ34",
+            "1Tnd3",
+            …
+          ]
+        } 
+        
+    substitution_undefined_1:
+      summary: Base compendium undefined
+      value: {"error":"base compendium undefined"}
+    
+    substitution_undefined_2:
+      summary: Overlay compendium undefined
+      value: {"error":"Overlay compendium undefined"}
+    
+    ##Link examples
+    link_success:
+      summary: A successfull link creation
+      description: |
+        The response has an HTTP status of `200` if the public link was created.
+        The response body provides the public link `id`, which can be used for subsequent requests to:
+        
+        - view the candidate compendium
+        - download candidate compendium files
+        - start jobs for the candidate compendium
+        
+        Only **1 public link** is created per candidate compendium.
+        _Subsequent requests will return the same link._
+        
+      value: 
+        id: lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr
+        compendium_id: xkjzY
+        user: 0000-0002-1701-2564
+             
+    link_list_success:
+      summary: Successfull listing of links
+      value:
+        results:
+          - id: b56Cy5EG7oiCBPCZMjXIPXoSyPVxiGVA
+            compendium_id: eENFZ
+            user: 0000-0002-1701-2564
+          - id: p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt
+            compendium_id: xkjzY
+            user: 0000-0002-1701-2564
+      
+      
     ##General Response Examples
     bad_request_content_type:
       summary: A bad request due to content_type
