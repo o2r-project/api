@@ -53,7 +53,7 @@ info:
     url: 'https://creativecommons.org/publicdomain/zero/1.0/'
   version: '1.0'
   x-logo:
-   url: 'https://o2r.info/api/logo.png'
+   url: '..\custom_theme\img\o2r-logo-only-white.svg'
 servers:
   - url: 'https://o2r.uni-muenster.de/api/v1'
     description: The public demo server for the o2r api
