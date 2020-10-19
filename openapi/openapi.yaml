@@ -40,7 +40,7 @@ info:
     url: 'https://creativecommons.org/publicdomain/zero/1.0/'
   version: '1.0'
   x-logo:
-   url: 'https://o2r.info/api/logo.png'
+   url: '..\custom_theme\img\o2r-logo-only-white.svg'
 servers:
   - url: 'https://o2r.uni-muenster.de/api/v1'
     description: The standard server for the o2r api
@@ -319,7 +319,7 @@ paths:
               examples:
                 view_success:
                   $ref: '#/components/examples/view_not_found'
-        
+
         400:
           description: A bad request.
           content:
@@ -329,11 +329,11 @@ paths:
               examples:
                 view_success:
                   $ref: '#/components/examples/download_bad_request' #Muss das hier geupdated werden?
-                  
+
   /compendium/{compendium_id}/jobs:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
-    get: 
+    get:
       tags:
         - Compendium
       summary: List related execution jobs
@@ -353,7 +353,7 @@ paths:
                   $ref: '#/components/examples/compendium_list_job_success'
                 job_list_fail:
                   $ref: '#/components/examples/job_list_fail'
-                  
+
   /compendium/{compendium_id}/metadata:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -363,9 +363,9 @@ paths:
       summary: Get the metadata acompendium
       description: |
         The following endpoint allows to access only the normative o2r-metadata element:
-        
+
         `curl https://…/api/v1/$ID/metadata`
-        
+
         `GET /api/v1/compendium/:id/metadata`
       operationId: get_metadata
       security:
@@ -391,7 +391,7 @@ paths:
               examples:
                 view_success:
                   $ref: '#/components/examples/view_not_found'
-        
+
     put:
       tags:
         - Compendium
@@ -400,14 +400,14 @@ paths:
         The following endpoint can be used to update the `o2r` metadata elements.
         All other metadata sub-properties are only updated by the service itself, i.e. brokered metadata.
         After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the download endpoint.
-        
+
         <div class="note blue_note">
           <p><b>&#x26A0; Metadata update rights</b></p>
           <p> Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>
         </div>
-        
+
         ### Metadata update request
-        
+
         ```
         curl -H 'Content-Type: application/json' \
           -X PUT \
@@ -427,7 +427,7 @@ paths:
                 $ref: '#/components/schemas/metadata_response'
               examples:
                 metadata_update_success:
-                  $ref: '#/components/examples/metadata_update_success' 
+                  $ref: '#/components/examples/metadata_update_success'
         401:
           description: Unauthorized
           content:
@@ -436,7 +436,7 @@ paths:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 metadata_unauthorized:
-                  $ref: '#/components/examples/metadata_unauthorized' 
+                  $ref: '#/components/examples/metadata_unauthorized'
         400:
           description: Bad Request
           content:
@@ -454,8 +454,8 @@ paths:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 metadata_unprocessable_entity:
-                  $ref: '#/components/examples/metadata_unprocessable_entity' 
-                  
+                  $ref: '#/components/examples/metadata_unprocessable_entity'
+
   /compendium/{compendium_id}/link:
     parameters:
       - $ref: '#/components/parameters/compendium_id'
@@ -472,7 +472,7 @@ paths:
       operationId: upload_link
       security:
         - cookie_authenification: []
-      responses: 
+      responses:
         200:
           description: Link creation response
           content:
@@ -500,8 +500,8 @@ paths:
               examples:
                 not_found:
                   $ref: '#/components/examples/delete_not_found'
-      
-        
+
+
     delete:
       tags:
         - Extras
@@ -515,9 +515,9 @@ paths:
       operationId: delete_link
       security:
         - cookie_authenification: []
-      responses: 
+      responses:
         204:
-          description: Link deletion successfull 
+          description: Link deletion successfull
         401:
           description: Bad Request due to not supported content_type
           content:
@@ -544,8 +544,8 @@ paths:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 not_found:
-                  $ref: '#/components/examples/delete_not_found'    
-                
+                  $ref: '#/components/examples/delete_not_found'
+
 
   #Inspection paths
   /inspection/{compendium_id}:
@@ -558,9 +558,9 @@ paths:
       description: |
         The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
         If a job has been run and the programme outputs new data, this new data is included as well.
-        
+
         File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
-        
+
         ```text
         nj141
         ├── bagit.txt
@@ -568,9 +568,9 @@ paths:
             ├── paper.Rmd
             └── Dockerfile
         ```
-        
+
         is be represented as
-        
+
         ```json
         {
           "path": "/api/v1/job/nj141/data",
@@ -603,38 +603,38 @@ paths:
           ]
         }
         ```
-        
+
         ## `path` property
-        
+
         The `path` property for each file in the listing is a link to the raw file. Additionally the `GET` parameter `?size=…` can be appended to retrieve previews of the files. In the case of Images (`png`, `jpg`, `gif`, `tiff`), the value defines the maximum width/height. For text files (`txt`, `csv`, scripts), the value defines the amount of lines returned.
-        
+
         ### `type` property
-        
+
         The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.
-        
+
         ## File extension to MIME type mappings
-        
+
         This list contains the custom mapping of file extensions to MIME types used in the server.
-        
+
         | Extension        | MIME type          |
         |------------------|--------------------|
         | `.R`, `.r`       | `script/x-R`       |
         |  `.RData`, `.Rdata`, `.rdata`, `.rda`   |  `application/x-r-data`  |
-        
+
         ## File inspection: RData
 
         `.RData` files are a [binary format](https://stat.ethz.ch/R-manual/R-devel/library/base/html/save.html) for usage with R to save any kind of object (data, functions) using an internal serialisation.
         The format is [not suitable](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml) for archival or data exchange, but might be included in a compendium out of negligence by or convenience for the author.
-        
+
         Since the file format is binary and not readable by non-R client applications, the API provides the endpoint `/api/v1/inspection` to retrieve a JSON representation of the objects in an RData file.
-        
+
         Values of objects are provided as JSON arrays following the specifications by the R package [`jsonlite`](https://cran.r-project.org/package=jsonlite).
       operationId: get_file
       parameters:
         - $ref: '#/components/parameters/file_query'
         - $ref: '#/components/parameters/objects_query'
       responses:
-        200: 
+        200:
           description: Returns the file is represented as a JSON array
           content:
             application/json:
@@ -647,7 +647,7 @@ paths:
                   $ref: '#/components/examples/files_complex_2'
                 files_objects_errors:
                   $ref: '#/components/examples/files_objects_errors'
-                
+
         400:
           description: Returns the file is represented as a JSON array
           content:
@@ -679,11 +679,11 @@ paths:
           <p><b>&#x26A0; Required user level and authentication</b></p>
           <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>
         </div>
-        
+
         `curl -F compendium_id=$ID https://…/api/v1/job`
-        
+
         `POST /api/v1/job`
-        
+
       operationId: create_job
       security:
         - cookie_authenification: []
@@ -709,7 +709,7 @@ paths:
           description: No matching compendium found
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 not_found:
@@ -718,13 +718,13 @@ paths:
           description: Internal server Error
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 not_found:
                   $ref: '#/components/examples/job_server_error'
-    
-    get: 
+
+    get:
       tags:
         - Compendium
       summary: List Jobs
@@ -732,13 +732,13 @@ paths:
         Lists jobs with filtering and pagination, returning up to 100 results by default.
 
         Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.
-        
+
         Results can be filtered:
-        
+
         - by `compendium_id` i.e. `compendium_id=a4Dnm`,
         - by `status` i.e. `status=success` or
         - by `user` i.e. `user=0000-0000-0000-0001`
-        
+
         `curl https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`
       parameters:
         - $ref: '#/components/parameters/compendium_id_query'
@@ -759,7 +759,7 @@ paths:
                   $ref: '#/components/examples/job_list_expanded'
                 job_list_fail:
                   $ref: '#/components/examples/job_list_fail'
-            
+
   /job/{job_id}:
     parameters:
       - $ref: '#/components/parameters/job_id_path'
@@ -786,33 +786,33 @@ paths:
           description: No matching compendium found
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 not_found:
                   $ref: '#/components/examples/view_not_found'
-  
+
   #Recipient paths
   /recipient:
     get:
-      tags: 
+      tags:
         - Compendium
       summary: Supported recipients
-      description: | 
+      description: |
         Use the _recipient_ endpoint to find out, which repositories are available and configured.
         The response is list of tuples with `id` and `label` of each repository.
         The `id` is the repository identifier to be used in requests to the `/shipment` endpoint, e.g. to define the recipient, while `label` is a human-readable text string suitable for display in user interfaces.
         An implementation may support one or more of the following repositories:
-        
+
         - `b2share` - [Eudat b2share](https://b2share.eudat.eu/)
         - `b2share_sandbox` - [Eudat b2share Sandbox](https://trng-b2share.eudat.eu/)
         - `zenodo` - [Zenodo Sandbox](https://zenodo.org)
         - `zenodo_sandbox` - [Zenodo Sandbox](https://sandbox.zenodo.org)
-        
+
         The `download` recipient is a surrogate to enable shipping to the user's local storage.
       operationId: list_reciepients
       responses:
-        200: 
+        200:
           description: Retruns A JSON object with all supported recipients.
           content:
             application/json:
@@ -847,7 +847,7 @@ paths:
               examples:
                 list_success:
                   $ref: '#/components/examples/shipment_success'
-                  
+
   /shipment/{shipment_id}:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
@@ -857,11 +857,11 @@ paths:
       summary: Get a single shipment
       description: |
         Example request:
-        
+
         `GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff`
       operationId: view_shipment
       responses:
-        200: 
+        200:
           description: A json object with the matching results.
           content:
             application/json:
@@ -869,9 +869,9 @@ paths:
                 $ref: '#/components/schemas/view_shipment_response'
               examples:
                 view_shipment_success:
-                  $ref: '#/components/examples/view_shipment_success' 
-    
-    post: 
+                  $ref: '#/components/examples/view_shipment_success'
+
+    post:
       tags:
         - Compendium
       summary: Create a new shipment
@@ -879,12 +879,12 @@ paths:
         You can start a initial creation of a shipment, leading to transmission to a repository and creation of a deposition, using a `POST` request.
 
         `POST /api/v1/shipment`
-        
+
         <div class="note blue_note">
           <p><b>&#x26A0; Required user level</b></p>
           <p>The user sending the request to create a shipment must have the required [user level](user/levels.md).</p>
         </div>
-        
+
 
 
       operationId: upload_shipment
@@ -911,22 +911,22 @@ paths:
                 upload_shipment_success:
                   $ref: '#/components/examples/upload_shipment_success'
         202:
-          description: | 
+          description: |
             If the recipient is the download surrogate, the response will be `202` and a zip stream with the Content type `application/zip`. The download zip stream is also available under the url of the shipment plus /dl, once it has been created, e.g.:
 
             `http://localhost:8087/api/v1/shipment/22e7b17c-0047-4cb9-9041-bb87f30de388/dl`
 
-          
+
           content:
             application/zip:
               examples:
                 upload_shipment_zip:
                   $ref: '#/components/examples/upload_shipment_zip'
-                  
+
   /shipment/{shipment_id}/status:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
-      
+
     get:
       tags:
         - Compendium
@@ -935,13 +935,13 @@ paths:
         A shipment can have three possible status:
 
         - `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.
-        
+
         - `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.
-        
+
         - `error` - an error occurred during shipment or publishing.
-        
+
         To get only a shipment's current status you may use the sub-resource `/status`.
-        
+
       operationId: shipment_status
       responses:
         200:
@@ -953,28 +953,28 @@ paths:
               examples:
                 shipment_status_success:
                   $ref: '#/components/examples/shipment_status_success'
-      
+
   /shipment/{shipment_id}/publishment:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
-    
+
     put:
       tags:
         - Compendium
       summary: Publish in a deposition
       description: |
         The publishment is supposed to have completed the status shipped where metadata requirements for publication have been checked.
-      
+
          <div class="note blue_note">
           <p><b>&#x26A0; Note</b></p>
           <p>Once published, a deposition can no longer be deleted on the supported repositories.</p>
         </div>
-        
+
         `PUT api/v1/shipment/<shipment_id>/publishment`
-        
+
         Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
-        
-      responses: 
+
+      responses:
         200:
             description: Returns a JSON object with the id and status of the shipment
             content:
@@ -984,7 +984,7 @@ paths:
                 examples:
                   job_list_simple:
                     $ref: '#/components/examples/publish_put_success'
-    
+
     get:
       tags:
         - Compendium
@@ -993,39 +993,39 @@ paths:
         You can request a list of all files in a deposition and their properties with the sub-resource `/publishment`.
 
         `GET api/v1/shipment/<shipment_id>/publishment`
-        
+
         You can find the `id` of the file you want to interact with in this json list object at `files[n].id`, where `n` is the position of that file in the array.
         Files can be identified in this response by either their id in the depot, their filename or their checksum.
-      
+
       responses:
         200:
           description: Returns a JSON object with all the deposition files of this shipment.
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/shipment_files_response'
               examples:
                 shipment_files_success:
                     $ref: '#/components/examples/shipment_files_success'
-      
+
   /shipment/{shipment_id}/files/{file_id}:
     parameters:
       - $ref: '#/components/parameters/shipment_id'
       - $ref: '#/components/parameters/file_id'
-    
+
     delete:
       tags:
         - Compendium
       summary: Delete a specific file from a deposition
-      description: | 
+      description: |
         You can delete files from a `shipped` shipment's deposition. You must state a file's identifier, which can be retrieved from the shipment's deposition files property `id`, as the `file_id` path parameter. Files for a `published` shipment usually cannot be deleted.
 
         `DELETE api/v1/shipment/<shipment_id>/files/<file_id>`
-      
+
       responses:
         204:
           description: Deletion successfull
-        
+
   #Substitution paths
   /substitution:
     description: |
@@ -1042,12 +1042,12 @@ paths:
         `Create substitution` produces a new compendium with its own files in the storage and metadata in the database.
         A substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.
         Required content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.
-        
+
         <div class="note blue_note">
           <p><b>&#x26A0; Note</b></p>
           <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).
-          
-          
+
+
           The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>
         </div>
 
@@ -1057,7 +1057,7 @@ paths:
           <p><b>&#x26A0; Required user level</b></p>
           <p>The user creating a new substitution must have the required user level.</p>
         </div>
-        
+
         You can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.
 
       operationId: upload_substitution
@@ -1075,7 +1075,7 @@ paths:
             examples:
               substitution_request_body:
                 $ref: '#/components/examples/substitution_request_body'
-                
+
       responses:
         201:
           description: Creation response
@@ -1108,14 +1108,14 @@ paths:
                   $ref: '#/components/examples/substitution_not_found_1'
                 substitution_not_found_2:
                   $ref: '#/components/examples/substitution_not_found_2'
-    
+
     get:
       tags:
         - Extras
       summary: List substituted Compenium
       description: |
         `curl https://.../api/v1/substitution`
-        
+
         `GET /api/v1/substitution`
 
       operationId: view_substitution
@@ -1175,7 +1175,7 @@ paths:
                   $ref: '#/components/examples/substitution_not_found_1'
                 substitution_not_found_2:
                   $ref: '#/components/examples/substitution_not_found_2'
-                
+
   #Link paths
   /link:
     get:
@@ -1190,7 +1190,7 @@ paths:
       operationId: list_link
       security:
         - cookie_authenification: []
-      responses: 
+      responses:
         200:
           description: Link listing response
           content:
@@ -1209,8 +1209,8 @@ paths:
               examples:
                 unauthorized:
                   $ref: '#/components/examples/metadata_unauthorized'
-          
-                  
+
+
   #User Paths
   /user:
     get:
@@ -1219,16 +1219,16 @@ paths:
       summary: List users
       description: |
         Return a list of user ids. Pagination (including defaults) as described for compendia is available for users.
-        
+
         `curl https://…/api/v1/user`
-        
+
         `GET /api/v1/user`
-        
+
       operationId: list_user
       parameters:
         - $ref: '#/components/parameters/user_start_query'
         - $ref: '#/components/parameters/user_limit_query'
-      responses: 
+      responses:
         200:
           description: User listing response
           content:
@@ -1249,11 +1249,11 @@ paths:
               examples:
                 user_list_bad_request:
                   $ref: '#/components/examples/user_list_bad_request'
-      
+
   /user/{user_id}:
     parameters:
       - $ref: '#/components/parameters/user_id'
-    get: 
+    get:
       tags:
         - Users
       summary: View a single user
@@ -1263,9 +1263,9 @@ paths:
         `curl https://…/api/v1/user/$ID`
 
         `GET /api/v1/user/:id`
-        
+
       operationId: view_user
-      responses: 
+      responses:
         200:
           description: View user response
           content:
@@ -1286,7 +1286,7 @@ paths:
               examples:
                 user_list_bad_request:
                   $ref: '#/components/examples/user_not_found'
-    
+
     patch:
       tags:
         - Users
@@ -1294,19 +1294,19 @@ paths:
       description: |
         You can update information of an existing user using the `HTTP` operation `PATCH`.
         Change user level request
-        
+
         The user level can be changed with an `HTTP` `PATCH` request. The new level is passed to the API via a query parameter, i.e. ..?level=<new level value>. The value must be an int (integer). The response is the full user document with the updated value.
-        
-        
+
+
         <div class="note blue_note">
           <p><b>&#x26A0; Required user level</b></p>
           <p>The user sending the request to change the level must have the required user level.</p>
         </div>
-        
+
       operationId: edit_user
       parameters:
         - $ref: '#/components/parameters/user_level_query'
-      responses: 
+      responses:
         200:
           description: Edit user response
           content:
@@ -1363,7 +1363,7 @@ paths:
         Navigate the web browser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
         If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, the start page of the o2r website.
-        
+
         If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.
       operationId: login_user
       responses:
@@ -1378,17 +1378,17 @@ paths:
         As the cookie is present in both authenticated and unauthenticated sessions, clients (e.g. web browser user interfaces) must know if their session is authenticated, and if so, as which ORCID user. For this, send a `GET` request to the `/api/v1/auth/whoami` endpoint, including your session cookie.
 
         `curl https://…/api/v1/auth/whoami --cookie "connect.sid=…`
-        
+
         `GET /api/v1/auth/whoami`
       operationId: whoami_user
       security:
         - cookie_authenification: []
-      responses: 
+      responses:
         200:
           description: Returns ocrid id and user name as a JSON object
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/user_whoami_response'
               examples:
                 user_whoami_success:
@@ -1401,7 +1401,7 @@ paths:
                 $ref: '#/components/schemas/general_error_model'
               examples:
                 user_unauthorized:
-                  $ref: '#/components/examples/unauthorized'  
+                  $ref: '#/components/examples/unauthorized'
 
 components:
   schemas:
@@ -1430,7 +1430,7 @@ components:
           description: The archive file as a compressed .zip
           type: string
           format: binary
-    
+
     new_job:
       type: object
       properties:
@@ -1440,11 +1440,11 @@ components:
           type: string
       required:
         - compendium_id
-        
+
     new_shipment:
       type: object
       properties:
-        compendium_id: 
+        compendium_id:
           type: string
           description: The id of the compendium
         recipient:
@@ -1463,11 +1463,11 @@ components:
           type: string
           description: |
              A user-defined identifier for the shipment (see id in response)
-      
+
       required:
         - compendium_id
         -  recipient
-        
+
     new_substitution:
       type: object
       properties:
@@ -1482,7 +1482,7 @@ components:
           description: Array of file substitutions specified by `base` and `overlay`
           items:
             type: object
-            properties: 
+            properties:
               base:
                 type: string
                 description: name of the file from base compendium
@@ -1497,14 +1497,14 @@ components:
             - extract
           description: |
             property to specify, if the metadata of the base ERC will be adopted (`keepBase` = **keep metadata** of base ERC) or there will be a new extraction of metadata, that will be merged into the metadata of the base ERC (`extractAndMerge` = **extract and merge metadata** for new ERC) or that will not be merged (`extract` = **extract metadata** of new ERC)
-      
+
     #Responses
     upload_response:
       type: object
       properties:
         id:
           type: string
-          
+
     list_response:
       type: object
       properties:
@@ -1512,7 +1512,7 @@ components:
           type: array
           items:
             type: string
-            
+
     view_response:
       type: object
       properties:
@@ -1533,7 +1533,7 @@ components:
           type: boolean
         files:
           type: object
-          
+
     metadata_response:
       type: object
       properties:
@@ -1544,13 +1544,13 @@ components:
           properties:
             o2r:
               type: object
-              
+
     job_response:
       type: object
       properties:
         job_id:
           type: string
-          
+
     view_job_response:
       type: object
       properties:
@@ -1568,7 +1568,7 @@ components:
             - running
         files:
           type: object
-          
+
     recipient_response:
       type: object
       properties:
@@ -1581,12 +1581,12 @@ components:
                 type: string
               label:
                 type: string
-                
+
     shipment_response:
       type: array
       items:
         type: string
-        
+
     view_shipment_response:
       type: object
       properties:
@@ -1615,7 +1615,7 @@ components:
            - error
         md:
           type: object
-          
+
     upload_shipment_response:
       type: object
       properties:
@@ -1632,7 +1632,7 @@ components:
            - shipped
            - published
            - error
-           
+
     shipment_status_response:
       type: object
       properties:
@@ -1644,7 +1644,7 @@ components:
             - shipped
             - published
             - error
-         
+
     shipment_files_response:
       type: object
       properties:
@@ -1652,7 +1652,7 @@ components:
           type: array
           items:
             type: object
-            
+
     link_response:
       type: object
       properties:
@@ -1663,8 +1663,8 @@ components:
         user:
           type: string
           format: user_id
-    
-    link_list_response: 
+
+    link_list_response:
       type: object
       properties:
         results:
@@ -1679,7 +1679,7 @@ components:
               user:
                 type: string
                 format: user_id
-                
+
     user_view_response:
       type: object
       properties:
@@ -1688,7 +1688,7 @@ components:
           format: user_id
         name:
           type: string
-        level: 
+        level:
           type: integer
         lastseen:
           type: string
@@ -1696,15 +1696,15 @@ components:
       required:
         - id
         - name
-          
+
     user_whoami_response:
       type: object
       properties:
         ocrid:
           type: string
-        name: 
+        name:
           type: string
-    
+
     #Errors
     general_error_model:
       type: object
@@ -1727,7 +1727,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     user_query:
       name: user
       in: query
@@ -1735,7 +1735,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     doi_query:
       name: doi
       in: query
@@ -1743,7 +1743,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     start_query:
       name: start
       in: query
@@ -1752,7 +1752,7 @@ components:
       schema:
         type: integer
         default: 1
-        
+
     limit_query:
       name: limit
       in: query
@@ -1761,7 +1761,7 @@ components:
       schema:
         type: integer
         default: 100
-        
+
     compendium_id_query:
       name: compendium_id
       in: query
@@ -1769,7 +1769,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     fields_query:
      name: fields
      in: query
@@ -1777,11 +1777,11 @@ components:
       Specify which additional attributes results list should contain. Can contain following fields: `status`, `user`. Defaults to none.
      required: false
      schema:
-      enum: 
+      enum:
         - status
         - user
         - status, user
-        
+
     steps_query:
       name: steps
       in: query
@@ -1792,9 +1792,9 @@ components:
         The response will contain the default properties for all steps but other properties only for the selected ones.
         Any other values for `steps` or not providing the parameter at all will return the default (e.g. `steps=no`).
       required: false
-      schema: 
+      schema:
         type: string
-        
+
     compendium_id_shipment_query:
       name: compendium_id
       in: query
@@ -1802,7 +1802,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     ##Download Parameters
     gzip_query:
       name: gzip
@@ -1812,7 +1812,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     image_query:
       name: image
       in: query
@@ -1822,7 +1822,7 @@ components:
       schema:
         type: boolean
         default: true
-    
+
     ##File Parameters
     file_query:
       name: file
@@ -1832,7 +1832,7 @@ components:
       required: true
       schema:
         type: string
-        
+
     objects_query:
       name: objects
       in: query
@@ -1841,7 +1841,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     ##Substitution Parameters
     overlay_query:
       name: overlay
@@ -1850,7 +1850,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     base_query:
       name: base
       in: query
@@ -1858,7 +1858,7 @@ components:
       required: false
       schema:
         type: string
-    
+
     ##User Parameters
     user_start_query:
       name: start
@@ -1868,7 +1868,7 @@ components:
       schema:
         type: integer
         default: 1
-      
+
     user_limit_query:
       name: limit
       in: query
@@ -1877,13 +1877,13 @@ components:
       schema:
         type: integer
         default: 100
-        
+
     user_level_query:
       name: level
       in: query
       schema:
         type: integer
-    
+
     ##Path Parameters
     compendium_id:
       name: compendium_id
@@ -1892,7 +1892,7 @@ components:
       required: true
       schema:
         type: string
-        
+
     file_extension:
       name: file_extension
       in: path
@@ -1904,7 +1904,7 @@ components:
         - zip
         - tar
         - tar.gz
-        
+
     job_id_path:
       name: job_id
       in: path
@@ -1912,7 +1912,7 @@ components:
       required: true
       schema:
         type: string
-        
+
     shipment_id:
       name: shipment_id
       in: path
@@ -1920,7 +1920,7 @@ components:
       required: true
       schema:
         type: string
-        
+
     file_id:
       name: file_id
       in: path
@@ -1928,7 +1928,7 @@ components:
       required: true
       schema:
         type: string
-        
+
     user_id:
       name: user_id
       in: path
@@ -1943,7 +1943,7 @@ components:
     upload_success:
       summary: A upload success example
       value: {'id': 'a4Nd1'}
-      
+
     upload_forbidden:
       summary: A forbidden example
       value: {'error':'user level does not allow compendium creation'}
@@ -1953,7 +1953,7 @@ components:
       summary: Successful Listing
       description: Returns all the matching compendia as an array
       value: {"results": ["nkm4b","nb2sm", ...]}
-      
+
     list_fail:
       summary: No matching compendium found
       description: |
@@ -1966,7 +1966,7 @@ components:
       summary: A view success example
       description: Returns a object with informations about the matching compendium.
       value: {"id":"comid", "metadata": ..., "created":"2016-08-01T13:57:40.760Z", "user":"0000-0001-0273-7906", "files": ..., "bag": true, "compendium": true, "supstituted": true} #How to represent an object
-      
+
     view_not_found:
       summary: A not found example
       description: Returns an error
@@ -1977,7 +1977,7 @@ components:
       summary: A deletion forbidden example
       description: Returns an error
       value: {"error":"user level not sufficient to delete compendium"}
-      
+
     delete_not_found:
       summary: A deletion not found example
       description: Returns an error
@@ -1988,7 +1988,7 @@ components:
       summary: An expanded example with metadata
       description: The metadata for an example compendium
       value: {"id":"12345","metadata": {"raw": {"title": "Programming with Data. Springer, New York, 1998. ISBN 978-0-387-98503-9.","author": "John M. Chambers","more content": ...,},"o2r": {"title": "Programming with Data","creators": [{"name": "John M. Chambers"}],"publication_date": 1998,"more content": ...,},"zenodo": {}},"created": …,"files": …}
-      
+
     metadata_success:
       summary: A success metadata example
       description: |
@@ -2002,18 +2002,18 @@ components:
             }
           }
         }
-        
+
     metadata_spatial:
       summary: Spatial property of the metadata object
       description: |
         For discovery purposes, the metadata includes extracted GeoJSON bounding boxes based on data files in a workspace.
-        
+
         Currently supported spatial data sources:
-        
+
         - shapefiles
-        
+
         The following structure is made available per file.
-        
+
         The `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.
       value: |
         {
@@ -2114,7 +2114,7 @@ components:
             }
           }
         }
-        
+
     metadata_update_success:
       summary: A success metadata update example
       description: Returns a json object with the updated excerpt.
@@ -2127,12 +2127,12 @@ components:
             }
           }
         }
-        
+
     metadata_unauthorized:
-      summary: Unauthorized 
+      summary: Unauthorized
       description: Returns an error, due to not being authorized
       value: {"error":"not authorized"}
-      
+
     metadata_bad_request_incomplete_metadata:
       summary: Bad Request due to Incomplete metadata
       description: Returns an error due to missing metadata in the request (e.g. description property missing)
@@ -2143,31 +2143,31 @@ components:
             [o2rmeta] 20180302.085940 launching validator
             [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json
             [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'
-        
+
             Failed validating 'type' in schema['properties']['description']:
                 {'type': 'string'}
-        
+
                 On instance['description']:
                     None"
         }
-        
+
     metadata_bad_request_syntax_error:
       summary: Syntax error
-      value: | 
+      value: |
         "SyntaxEroor [...]"
-        
+
     metadata_unprocessable_entity:
       summary: Unporcessable Entity in metadata update
       description: |
         The JSON doesnt meet the requirements.
       value: {"error":"JSON with root element 'o2r' required"}
-    
+
     ##Download Response Example
     download_success:
       summary: A successfull zip-file Download example
       description: |
-        A successfull download of a compendium as a `.zip` file. 
-        
+        A successfull download of a compendium as a `.zip` file.
+
         The zip file contains a comment with the original URL.
         ```
         $ unzip -z CXE1c.zip
@@ -2179,36 +2179,36 @@ components:
         Transfer-Encoding: chunked
         Content-Disposition: attachment; filename="$ID.zip"
         X-Response-Time: 13.556ms
-        
+
     download_bad_request:
       summary: A bad request for download example
       description: Returns an error
       value: {"error":"no job found for this compendium, run a job before downloading with image"}
-      
+
     ##Files Response Examples
     files_simple:
       summary: Simple data type example
       description: |
         Returns a JSON array representation of the data types.
-        
+
         `GET /api/v1/inspection/<compendium id>?file=simple.Rdata`
-        
+
       value: |
-        {  
-          "aChar":[  
+        {
+          "aChar":[
             "a"
           ],
-          "aDouble":[  
+          "aDouble":[
             2.3
           ],
-          "anInteger":[  
+          "anInteger":[
             1
           ],
-          "aString":[  
+          "aString":[
             "The force is great in o2r."
           ]
         }
-        
+
     files_complex_1:
       summary: Complex data type example
       description: |
@@ -2216,37 +2216,37 @@ components:
 
         `GET /api/v1/inspection/<compendium id>?file=complex.Rdata`
       value: |
-        {  
-          "characterVector":[  
+        {
+          "characterVector":[
             "one",
             "two",
             "3"
           ],
-          "logicalVector":[  
+          "logicalVector":[
             true,
             true,
             false
           ],
-          "numericVector":[  
+          "numericVector":[
             1,
             2,
             -7,
             0.8
           ],
-          "orderedList":{  
-            "name":[  
+          "orderedList":{
+            "name":[
               "Fred"
             ],
-            "mynumbers":[  
+            "mynumbers":[
               1,
               2
             ],
-            "age":[  
+            "age":[
               5.3
             ]
           }
         }
-        
+
     files_complex_2:
       summary: Complex data type example
       description: |
@@ -2254,40 +2254,40 @@ components:
 
         `GET /api/v1/inspection/<compendium id>?file=matrices.Rdata`
       value: |
-        {  
-          "dataFrame":[  
-            {  
+        {
+          "dataFrame":[
+            {
               "ID":1,
               "Passed":true,
               "Colour":"red"
             },
-            {  
+            {
               "ID":2,
               "Passed":true,
               "Colour":"white"
             },
-            {  
+            {
               "ID":3,
               "Passed":true,
               "Colour":"red"
             },
-            {  
+            {
               "ID":4,
               "Passed":false
             }
           ],
-          "namedMatrix":[  
-            [  
+          "namedMatrix":[
+            [
               1,
               26
             ],
-            [  
+            [
               24,
               68
             ]
           ]
         }
-      
+
     files_objects_errors:
       summary: Example with objects error
       description: |
@@ -2296,43 +2296,43 @@ components:
         `GET /api/v1/inspection/<compendium id>?file=simple.RData&objects=bar,anInteger,foo`
 
       value: |
-        {  
-          "anInteger":[  
+        {
+          "anInteger":[
             1
           ],
-          "errors":[  
+          "errors":[
             "Error: Object 'bar' does not exist in the file simple.RData",
             "Error: Object 'foo' does not exist in the file simple.RData"
           ]
         }
-        
+
     files_bad_request_1:
       summary: Parameter missing
       value: {"error": "Query parameter 'file' missing"}
-      
+
     files_bad_request_2:
       summary: File does not exists
       value: {"error": "file 'not_available.Rdata' does not exist in compendium kOSMO"}
-      
+
     files_bad_request_3:
       summary: Compendium does not exists
       value: {"error": "compendium '12345' does not exist"}
-      
+
     files_server_error:
       summary: Internal Server Error
       value: {"error": "Error loading objects"}
-    
+
     ##Job Response Examples
     job_success:
       summary: A successfull job creation
       description: Returns the id of the new job
       value: {"job_id":"ngK4m"}
-    
+
     job_server_error:
       summary: A internal server error during job creation
       description: Returns an error
       value: {"error":"could not create job"}
-    
+
     job_list_simple:
       summary: A job listing with only the job ids
       description: |
@@ -2346,14 +2346,14 @@ components:
             …
           ]
         }
-        
+
     job_list_expanded:
       summary: A job listing with job id and status
       description: |
         The overall job state can be added to the job list response:
 
         `GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success&fields=status`
-      value: | 
+      value: |
         {
           "results": [
             {
@@ -2371,8 +2371,8 @@ components:
             …
           ]
         }
-        
-    job_list_fail: 
+
+    job_list_fail:
       summary: Job listing with no matching jobs
       description: |
         If there are no jobs, the returned list is empty.
@@ -2380,7 +2380,7 @@ components:
         {
           "results": [ ]
         }
-   
+
     view_job_success:
       summary:  A successfull job view example
       value: |
@@ -2510,7 +2510,7 @@ components:
           "status":"failure",
           "files":{ /* see compendium */  }
         }
-        
+
     compendium_list_job_success:
       summary: A job listing with all related execution jobs
       value: |
@@ -2522,7 +2522,7 @@ components:
             …
           ]
         }
-    
+
     ##Recipient Examples
     recipient_success:
       summary: A successfull reciepent listing
@@ -2539,16 +2539,16 @@ components:
                 "label": "Zenodo Sandbox"
             }]
         }
-        
+
     ##Shipment Examples
     shipment_success:
       summary: A successfull listing of shipments
       description: Returns a JSON array with all shipment ids
       value: ["dc351fc6-314f-4947-a235-734ab5971eff", "..."]
-    
+
     view_shipment_success:
       summary: A successfull view of a shipment
-      description: | 
+      description: |
         Retruns a JSON object with information on the specified shipment.
         <div class="note blue_note">
           <p><b>&#x26A0; Note</b></p>
@@ -2565,7 +2565,7 @@ components:
           "compendium_id": "4XgD97",
           "deposition_url": "https://zenodo.org/record/63179"
         }
-        
+
     upload_shipment_success:
       summary: A successfull creation of a shipment
       value: |
@@ -2575,11 +2575,11 @@ components:
           "status": "shipped",
           "deposition_id": "79102"
         }
-    
+
     upload_shipment_zip:
       summary: Zip stream for download
       value: (zip stream starting point)
-        
+
     shipment_status_success:
       summary: A successfull status view of a shipment
       value: |
@@ -2587,15 +2587,15 @@ components:
           "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
           "status": "shipped"
         }
-        
+
     publish_put_success:
-      summary: A successfull pulishment 
+      summary: A successfull pulishment
       value: |
         {
           "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
           "status": "published"
         }
-        
+
     shipment_files_success:
       summary: A successfull listing of the depositon files
       value: |
@@ -2611,13 +2611,13 @@ components:
               }
           }]
         }
-        
-        
+
+
     ##Substitute Examples
     substitution_request_body:
       summary: Request body for a new substitution.
       value: {"base": "G92NL", "overlay": "9fCTR", "substitutionFiles": [{"base": "climate-timeseries.csv","overlay": "mytimeseries_data.csv"}],"metadataHandling": "keepBase"}
-    
+
     substitution_creation_success:
       summary: Successfull Substitution Creation
       value: {"id": "oMMFn"}
@@ -2625,19 +2625,19 @@ components:
     substitution_unauthorized_1:
       summary: Unauthorized due to not being authenticated
       value: {"error":"not authenticated"}
-      
+
     substitution_unauthorized_2:
       summary: Unauthorized due to not being allowed this action
       value: {"error":"not allowed"}
-      
+
     substitution_not_found_1:
       summary: Base compendium not found
       value: {"error":"base compendium not found"}
-      
+
     substitution_not_found_2:
       summary: Overlay compendium not found
       value: {"error":"overlay compendium not found"}
-    
+
     substitution_list_success:
       summary: A successfull basic listing of substitutes
       description: The result is a list of compendia ids which were created by a substitution process.
@@ -2649,21 +2649,21 @@ components:
                   …
                 ]
               }
-              
+
     substitution_list_fail:
       summary: No substitutes found
       description: If there are no substitutions yet, the returned list is empty.
       value:  {
                 "results": [ ]
               }
-              
+
     substitution_list_base:
       summary: Filter by base
       description: |
         `curl https://.../api/v1/substitution?base=jfL3w`
 
         `GET /api/v1/substitution?base=jfL3w`
-        
+
         Result is a list of substituted compendia based on the given base compendium.
       value:  {
                 "results": [
@@ -2671,68 +2671,68 @@ components:
                   …
                 ]
               }
-              
+
     substitution_list_overlay:
       summary: Filter by overlay
       description: |
         `curl https://.../api/v1/substitution?overlay=as4Kj`
 
         `GET /api/v1/substitution?overlay=as4Kj`
-        
+
         Result is a list of substituted compendia based on the given overlay compendium.
-      value: 
+      value:
         {
           "results": [
             "9pQ34",
             "1Tnd3",
             …
           ]
-        } 
-        
+        }
+
     substitution_list_base_overlay:
       summary: Filter by base and overlay
       description: |
         `curl https://.../api/v1/substitution?base=lO3Td&overlay=as4Kj`
 
         `GET /api/v1/substitution?base=lO3Td&overlay=as4Kj`
-        
+
         Result is a list of substituted compendia based on the given base and overlay compendium.
-      value: 
+      value:
         {
           "results": [
             "9pQ34",
             "1Tnd3",
             …
           ]
-        } 
-        
+        }
+
     substitution_undefined_1:
       summary: Base compendium undefined
       value: {"error":"base compendium undefined"}
-    
+
     substitution_undefined_2:
       summary: Overlay compendium undefined
       value: {"error":"Overlay compendium undefined"}
-    
+
     ##Link examples
     link_success:
       summary: A successfull link creation
       description: |
         The response has an HTTP status of `200` if the public link was created.
         The response body provides the public link `id`, which can be used for subsequent requests to:
-        
+
         - view the candidate compendium
         - download candidate compendium files
         - start jobs for the candidate compendium
-        
+
         Only **1 public link** is created per candidate compendium.
         _Subsequent requests will return the same link._
-        
-      value: 
+
+      value:
         id: lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr
         compendium_id: xkjzY
         user: 0000-0002-1701-2564
-             
+
     link_list_success:
       summary: Successfull listing of links
       value:
@@ -2743,33 +2743,33 @@ components:
           - id: p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt
             compendium_id: xkjzY
             user: 0000-0002-1701-2564
-      
+
     ##User examples
     user_list_success:
       summary: A successfull listing of users
       description: Returns a JSON object with user ids.
-      value: 
+      value:
         results:
                - 0000-0002-1825-0097
                - 0000-0002-1825-0097
-             
+
     user_list_fail:
       summary: No users found
       description: |
         If there are no users, the returned list is empty.
       value: {"results": []}
-    
+
     user_list_bad_request:
       summary: Bad Request due to limit
-      value: 
+      value:
         error: limit must be larger than 0
-        
+
     user_view_simple:
       summary: User id and name
-      value: 
+      value:
         id: 0000-0002-1825-0097
         name: o2r
-             
+
     user_view_expanded:
       summary: Expanded user information
       description: |
@@ -2781,12 +2781,12 @@ components:
         name: o2r
         level: 0
         lastseen: '2016-08-15T12:32:23.972Z'
-        
+
     user_not_found:
       summary: User not found
       value:
         error: no user with this id
-    
+
     user_edit_response:
       summary: A successfull edit of a user
       description: |
@@ -2797,28 +2797,28 @@ components:
         name: o2r
         level: 42
         lastseen: '2016-08-15T12:32:23.972Z'
-        
-    user_edit_forbidden: 
+
+    user_edit_forbidden:
       summary: User edit forbidden
-      value: 
+      value:
         error: user level does not allow edit
-        
+
     user_edit_bad_request:
       summary: bad request due to level parameter
       value:
         error: parameter 'level' could not be parsed as an integer
-      
+
     user_whoami_success:
       summary: A successfull whoami request
       value:
         orcid: 0000-0002-1825-0097
         name: o2r
-        
+
     ##General Response Examples
     bad_request_content_type:
       summary: A bad request due to content_type
       value: {'error':'provided content_type not implemented'}
-      
+
     unauthorized:
       summary: A unthorized error example
       value: {'error':'user is not authenticated'}
@@ -2839,9 +2839,9 @@ tags:
       Users are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.
       On registration, each account is assigned a level `0`.
       Only admin users and the user herself can read the level of a user.
-      
+
       The following is a list of actions and the corresponding required _minimum_ user level.
-      
+
       - `0` _Users_ (everybody)
           - Create new jobs
           - View compendia, jobs, user details
@@ -2859,40 +2859,40 @@ tags:
           - Edit user levels up to own level
           - Delete compendia and candidates
           - View status pages of microservices
-      
+
       ## Authentication
 
       User authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.
-      
+
       ### Client authentication
-      
+
       To execute restricted operations of the API, such as [compendium upload]() or [job execution](), a client must provide an authentication token via a cookie.
-      
+
       A client must first login on the website to access a browser cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
       Provide the content of the cookie when making requests to the API as shown in the request example below.
-      
+
       ### Access authentication information for direct API access
-      
+
       To run commands which require authentication from the command line, a user must login on the website first.
       Then open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
       Use the the contents of the cookie for your requests, for example as shown below when using curl.
-      
+
       ```bash
       curl [...] --cookie "connect.sid=<code string here>" \
            https://…/api/v1/endpoint
       ```
-      
+
       ### Authentication within microservices
-      
+
       **Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.
-      
+
       ### Authentication provider
-      
+
       Session authentication is done using the OAuth 2.0 protocol.
       Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
       Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
       They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.
-      
+
 externalDocs:
   description: Find more info in our documentation.
   url: 'https://o2r.info/api/'

@@ -7,7 +7,6 @@ div.note{
   border: none;
   padding-bottom: 10px;
   background-clip:content-box;
-
 }
 
 div.note > p:nth-child(1){
