@@ -1145,6 +1145,7 @@
       }
     },
     "/substitution": {
+      "description": "Substitution is the combination of an base compendium, \"base\" for short, and an overlay compendium, or \"overlay\".\nA user can choose files from the overlay to replace files of the base, or upload new files.\nAdditionally the user can choose, if the metadata of the base ERC will be adopted for substitution (`keepBase`) or there will be a new extraction of the metadata for the substituted ERC.\nThis new extraction is divided into two choices.\nThe user can let the new extracted metadata be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**) or just save the extracted metadata (`extract` - **not implemented**).\n",
       "post": {
         "tags": [
           "Extras"
@@ -1347,7 +1348,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Link creation response",
+            "description": "Link listing response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1379,13 +1380,198 @@
         }
       }
     },
-    "/user": {},
+    "/user": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List users",
+        "description": "Return a list of user ids. Pagination (including defaults) as described for compendia is available for users.\n\n`curl https://…/api/v1/user`\n\n`GET /api/v1/user`\n",
+        "operationId": "list_user",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_start_query"
+          },
+          {
+            "$ref": "#/components/parameters/user_limit_query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User listing response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list_response"
+                },
+                "examples": {
+                  "user_list_success": {
+                    "$ref": "#/components/examples/user_list_success"
+                  },
+                  "user_list_fail": {
+                    "$ref": "#/components/examples/user_list_fail"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_list_bad_request": {
+                    "$ref": "#/components/examples/user_list_bad_request"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/{user_id}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/user_id"
         }
-      ]
+      ],
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "View a single user",
+        "description": "Show the details of a user.\n\n`curl https://…/api/v1/user/$ID`\n\n`GET /api/v1/user/:id`\n",
+        "operationId": "view_user",
+        "responses": {
+          "200": {
+            "description": "View user response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user_view_response"
+                },
+                "examples": {
+                  "user_view_simple": {
+                    "$ref": "#/components/examples/user_view_simple"
+                  },
+                  "user_view_expanded": {
+                    "$ref": "#/components/examples/user_view_expanded"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_list_bad_request": {
+                    "$ref": "#/components/examples/user_not_found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Edit user",
+        "description": "You can update information of an existing user using the `HTTP` operation `PATCH`.\nChange user level request\n\nThe user level can be changed with an `HTTP` `PATCH` request. The new level is passed to the API via a query parameter, i.e. ..?level=<new level value>. The value must be an int (integer). The response is the full user document with the updated value.\n\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user sending the request to change the level must have the required user level.</p>\n</div>\n",
+        "operationId": "edit_user",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_level_query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Edit user response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user_view_response"
+                },
+                "examples": {
+                  "user_view_simple": {
+                    "$ref": "#/components/examples/user_edit_response"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_edit_bad_request": {
+                    "$ref": "#/components/examples/user_edit_bad_request"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_unauthorized": {
+                    "$ref": "#/components/examples/unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_list_bad_request": {
+                    "$ref": "#/components/examples/user_edit_forbidden"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/general_error_model"
+                },
+                "examples": {
+                  "user_list_bad_request": {
+                    "$ref": "#/components/examples/user_not_found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/auth/login": {},
     "/auth/whoami": {}
@@ -1742,6 +1928,29 @@
           }
         }
       },
+      "user_view_response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "user_id"
+          },
+          "name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "integer"
+          },
+          "lastseen": {
+            "type": "string",
+            "format": "datetime"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
       "general_error_model": {
         "type": "object",
         "properties": {
@@ -1896,6 +2105,31 @@
         "required": false,
         "schema": {
           "type": "string"
+        }
+      },
+      "user_start_query": {
+        "name": "start",
+        "in": "query",
+        "description": "`start` is the index of the first list item in the response, defaults to `1`. It must be numeric and larger than `0`.\n",
+        "schema": {
+          "type": "integer",
+          "default": 1
+        }
+      },
+      "user_limit_query": {
+        "name": "limit",
+        "in": "query",
+        "description": "`limit` is the number of results in the response, defaults to `100`. It numeric and larger than `0`.\n",
+        "schema": {
+          "type": "integer",
+          "default": 100
+        }
+      },
+      "user_level_query": {
+        "name": "level",
+        "in": "query",
+        "schema": {
+          "type": "integer"
         }
       },
       "compendium_id": {
@@ -2359,6 +2593,74 @@
           ]
         }
       },
+      "user_list_success": {
+        "summary": "A successfull listing of users",
+        "description": "Returns a JSON object with user ids.",
+        "value": {
+          "results": [
+            "0000-0002-1825-0097",
+            "0000-0002-1825-0097"
+          ]
+        }
+      },
+      "user_list_fail": {
+        "summary": "No users found",
+        "description": "If there are no users, the returned list is empty.\n",
+        "value": {
+          "results": []
+        }
+      },
+      "user_list_bad_request": {
+        "summary": "Bad Request due to limit",
+        "value": {
+          "error": "limit must be larger than 0"
+        }
+      },
+      "user_view_simple": {
+        "summary": "User id and name",
+        "value": {
+          "id": "0000-0002-1825-0097",
+          "name": "o2r"
+        }
+      },
+      "user_view_expanded": {
+        "summary": "Expanded user information",
+        "description": "The content of the response depends on the state and level of the user that requests the resource. The above response only contains the id and the publicly visible name. The following response contains more details and requires a certain user level of the authenticated user making the request:\n\n`curl --cookie \"connect.sid=<session cookie here>\" https://…/api/v1/user/0000-0002-1825-0097`\n",
+        "value": {
+          "id": "0000-0002-1825-0097",
+          "name": "o2r",
+          "level": 0,
+          "lastseen": "2016-08-15T12:32:23.972Z"
+        }
+      },
+      "user_not_found": {
+        "summary": "User not found",
+        "value": {
+          "error": "no user with this id"
+        }
+      },
+      "user_edit_response": {
+        "summary": "A successfull edit of a user",
+        "description": "`curl --request PATCH --cookie \"connect.sid=<session cookie here>\" \\\nhttps://…/api/v1/user/0000-0002-1825-0097?level=42``\n",
+        "value": {
+          "id": "0000-0002-1825-0097",
+          "name": "o2r",
+          "level": 42,
+          "lastseen": "2016-08-15T12:32:23.972Z"
+        }
+      },
+      "user_edit_forbidden": {
+        "summary": "User edit forbidden",
+        "value": {
+          "error": "user level does not allow edit"
+        }
+      },
+      "user_edit_bad_request": {
+        "summary": "bad request due to level parameter",
+        "value": {
+          "error": "parameter 'level' could not be parsed as an integer"
+        }
+      },
       "bad_request_content_type": {
         "summary": "A bad request due to content_type",
         "value": {
@@ -2381,7 +2683,12 @@
     }
   },
   "security": [],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "# User levels\n\nUsers are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.\nOn registration, each account is assigned a level `0`.\nOnly admin users and the user herself can read the level of a user.\n\nThe following is a list of actions and the corresponding required _minimum_ user level.\n\n- `0` _Users_ (everybody)\n    - Create new jobs\n    - View compendia, jobs, user details\n- `100` _Known users_\n    - Create new compendium\n    - Create shipments\n    - Create substitutions\n    - Delete own candidates\n- `500` _Editors_\n    - Edit user levels up to own level\n    - Edit compendium metadata\n    - Delete candidates\n    - Manage [public links](../compendium/link.md) for candidates\n- `1000` _Admins_\n    - Edit user levels up to own level\n    - Delete compendia and candidates\n    - View status pages of microservices\n"
+    }
+  ],
   "externalDocs": {
     "description": "Find more info in our documentation.",
     "url": "https://o2r.info/api/"
