@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "o2r web api",
-    "description": "## About\n\nThe o2r web API acts as the interface between the o2r microservices and the web interface.\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented in the ERC spec.\n\nA good starting point for understanding the different parts of the API is the compendium life-cycle.\n\n---\n## Citation\n\nTo cite this specification please use\n\n>_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_\n\nFor a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.\n\n---\n## General\n\nThe API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.\n\nUnless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.\n\n---\n## License\n\n![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)\n\nThe o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.\n",
+    "description": "## About\n\nThe o2r web API acts as the interface between the o2r microservices and the web interface.\n\nThe API provides services around the executable research compendium (ERC), or \"compendium\" for short, which is documented in the ERC spec.\n\nA good starting point for understanding the different parts of the API is the compendium life-cycle.\n\n---\n## Citation\n\nTo cite this specification please use\n\n>_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_\n\nFor a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.\n\n---\n## General\n\nThe API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.\n\nUnless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.\n\n---\n## License\n\n![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)\n\nThe o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.\n\n---\n## Compendium lifecycle\n\nAn authorized user (see [user levels](#section/User-levels)) can create compendia from different sources, i.e. [direct API upload](#operation/upload_compendium) or [via a public share](public_share.md).\nThe uploaded workspace is then treated as a [candidate compendium](candidate.md) until all required [metadata](metadata.md) is provided.\nA candidate must be [saved](candidate.md) to become publicly available, and then may not become a candidate again.\nA published compendium can be [executed](../job.md) and the whole compendium can be [shipped](../shipment.md) to repositories for preservation purposes.\nA user can combine data and workflow of multiple compendia with [substitution](substitute.md).\n\n[Specific users](../user/levels.md) can (i) create [public links](link.md) for candidates so these can be inspected by third parties without logging in, and (ii) manage [users](../user/user.md)).\n\nThe API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](../user/auth.md).\n",
     "termsOfService": "",
     "contact": {},
     "license": {
@@ -17,7 +17,7 @@
   "servers": [
     {
       "url": "https://o2r.uni-muenster.de/api/v1",
-      "description": "The standard server for the o2r api"
+      "description": "The public demo server for the o2r api"
     }
   ],
   "paths": {
@@ -362,7 +362,7 @@
       ],
       "get": {
         "tags": [
-          "Compendium"
+          "Execution"
         ],
         "summary": "List related execution jobs",
         "description": "`curl https://…/api/v1/compendium/$ID/jobs`\n\n`GET /api/v1/compendium/:id/jobs`\n",
@@ -394,7 +394,7 @@
       ],
       "get": {
         "tags": [
-          "Compendium"
+          "Metadata"
         ],
         "summary": "Get the metadata acompendium",
         "description": "The following endpoint allows to access only the normative o2r-metadata element:\n\n`curl https://…/api/v1/$ID/metadata`\n\n`GET /api/v1/compendium/:id/metadata`\n",
@@ -442,7 +442,7 @@
       },
       "put": {
         "tags": [
-          "Compendium"
+          "Metadata"
         ],
         "summary": "Update the metadata acompendium",
         "description": "The following endpoint can be used to update the `o2r` metadata elements.\nAll other metadata sub-properties are only updated by the service itself, i.e. brokered metadata.\nAfter creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the download endpoint.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Metadata update rights</b></p>\n  <p> Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>\n</div>\n\n### Metadata update request\n\n```\ncurl -H 'Content-Type: application/json' \\\n  -X PUT \\\n  --cookie \"connect.sid=<code string here>\" \\\n  -d '{ \"o2r\": { \"title\": \"Blue Book\" } }' \\\n  /api/v1/compendium/:id/metadata\n```\nThe request overwrites the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.\n",
@@ -724,7 +724,7 @@
     "/job": {
       "post": {
         "tags": [
-          "Compendium"
+          "Execution"
         ],
         "summary": "Create a new job",
         "description": "Create and run a new execution job with an HTTP POST request using multipart/form-data. Requires a compendium_id.\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level and authentication</b></p>\n  <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>\n</div>\n\n`curl -F compendium_id=$ID https://…/api/v1/job`\n\n`POST /api/v1/job`\n",
@@ -795,7 +795,7 @@
       },
       "get": {
         "tags": [
-          "Compendium"
+          "Execution"
         ],
         "summary": "List Jobs",
         "description": "Lists jobs with filtering and pagination, returning up to 100 results by default.\n\nResults are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter `fields`.\n\nResults can be filtered:\n\n- by `compendium_id` i.e. `compendium_id=a4Dnm`,\n- by `status` i.e. `status=success` or\n- by `user` i.e. `user=0000-0000-0000-0001`\n\n`curl https://…/api/v1/job?limit=100&start=2&compendium_id=$ID&status=success&fields=status`\n",
@@ -847,7 +847,7 @@
       ],
       "get": {
         "tags": [
-          "Compendium"
+          "Execution"
         ],
         "summary": "View single job",
         "description": "View details for a single job. The file listing format is described in compendium files.\n",
@@ -894,7 +894,7 @@
     "/recipient": {
       "get": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "Supported recipients",
         "description": "Use the _recipient_ endpoint to find out, which repositories are available and configured.\nThe response is list of tuples with `id` and `label` of each repository.\nThe `id` is the repository identifier to be used in requests to the `/shipment` endpoint, e.g. to define the recipient, while `label` is a human-readable text string suitable for display in user interfaces.\nAn implementation may support one or more of the following repositories:\n\n- `b2share` - [Eudat b2share](https://b2share.eudat.eu/)\n- `b2share_sandbox` - [Eudat b2share Sandbox](https://trng-b2share.eudat.eu/)\n- `zenodo` - [Zenodo Sandbox](https://zenodo.org)\n- `zenodo_sandbox` - [Zenodo Sandbox](https://sandbox.zenodo.org)\n\nThe `download` recipient is a surrogate to enable shipping to the user's local storage.\n",
@@ -921,7 +921,7 @@
     "/shipment": {
       "get": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "List shipments",
         "description": "This is a basic request to list all shipments identifiers.\n`GET /api/v1/shipment`\nYou can also get only the shipment identifiers belonging to a compendium id (e.g. `4XgD97`).\n\n`GET /api/v1/shipment?compendium_id=4XgD97`\n",
@@ -958,7 +958,7 @@
       ],
       "get": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "Get a single shipment",
         "description": "Example request:\n\n`GET /api/v1/shipment/dc351fc6-314f-4947-a235-734ab5971eff`\n",
@@ -983,7 +983,7 @@
       },
       "post": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "Create a new shipment",
         "description": "You can start a initial creation of a shipment, leading to transmission to a repository and creation of a deposition, using a `POST` request.\n\n`POST /api/v1/shipment`\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user sending the request to create a shipment must have the required [user level](user/levels.md).</p>\n</div>\n",
@@ -1043,7 +1043,7 @@
       ],
       "get": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "Shipment status",
         "description": "A shipment can have three possible status:\n\n- `shipped` - a deposition has been created at a repository and completed the necessary metadata for publication.\n\n- `published` - the contents of the shipment are published on the repository, in which case the publishment can not be undone.\n\n- `error` - an error occurred during shipment or publishing.\n\nTo get only a shipment's current status you may use the sub-resource `/status`.\n",
@@ -1075,7 +1075,7 @@
       ],
       "put": {
         "tags": [
-          "Compendium"
+          "Shipment"
         ],
         "summary": "Publish in a deposition",
         "description": "The publishment is supposed to have completed the status shipped where metadata requirements for publication have been checked.\n\n <div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>Once published, a deposition can no longer be deleted on the supported repositories.</p>\n</div>\n\n`PUT api/v1/shipment/<shipment_id>/publishment`\n\nNote that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.\n",
@@ -1151,7 +1151,7 @@
           "Extras"
         ],
         "summary": "Create substitution",
-        "description": "`Create substitution` produces a new compendium with its own files in the storage and metadata in the database.\nA substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.\nRequired content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).\n  \n  \n  The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>\n</div>\n\n`POST /api/v1/substitution`\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user creating a new substitution must have the required user level.</p>\n</div>\n\nYou can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.\n",
+        "description": "`Create substitution` produces a new compendium with its own files in the storage and metadata in the database.\nA substitution can be created with an HTTP `POST` request using `multipart/form-data` and content-type `JSON`.\nRequired content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).\n\n\n  The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>\n</div>\n\n`POST /api/v1/substitution`\n\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Required user level</b></p>\n  <p>The user creating a new substitution must have the required user level.</p>\n</div>\n\nYou can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.\n",
         "operationId": "upload_substitution",
         "security": [
           {
@@ -2371,12 +2371,110 @@
       "metadata_spatial": {
         "summary": "Spatial property of the metadata object",
         "description": "For discovery purposes, the metadata includes extracted GeoJSON bounding boxes based on data files in a workspace.\n\nCurrently supported spatial data sources:\n\n- shapefiles\n\nThe following structure is made available per file.\n\nThe `spatial` key has a `union` bounding box, that wraps all extracted bounding boxes.\n",
-        "value": "{\n  \"id\":\"compendium_id\",\n  \"metadata\": {\n    \"o2r\": {\n      \"spatial\": {\n          \"files\": [\n              {\n                  \"geojson\": {\n                      \"bbox\": [\n                          -2.362060546875,\n                          52.0862573323384,\n                          -1.285400390625,\n                          52.649729197309426\n                      ],\n                      \"geometry\": {\n                          \"coordinates\": [\n                              [\n                                  [\n                                      -2.362060546875,\n                                      52.0862573323384\n                                  ],\n                                  [\n                                      -1.285400390625,\n                                      52.649729197309426\n                                  ]\n                              ]\n                          ],\n                          \"type\": \"Polygon\"\n                      },\n                      \"type\": \"Feature\"\n                  },\n                  \"source_file\": \"path/to/file1.geojson\"\n              },\n              {\n                  \"geojson\": {\n                      \"bbox\": [\n                          7.595369517803192,\n                          51.96245837645124,\n                          7.62162297964096,\n                          51.96966694957956\n                      ],\n                      \"geometry\": {\n                          \"coordinates\": [\n                              [\n                                  [\n                                      7.595369517803192,\n                                      51.96245837645124\n                                  ],\n                                  [\n                                      7.62162297964096,\n                                      51.96966694957956\n                                  ]\n                              ]\n                          ],\n                          \"type\": \"Polygon\"\n                      },\n                      \"type\": \"Feature\"\n                  },\n                  \"source_file\": \"path/to/file2.shp\"\n              }\n          ],\n          \"union\": {\n              \"geojson\": {\n                  \"bbox\": [\n                      -2.362060546875,\n                      51.96245837645124,\n                      7.62162297964096,\n                      51.96245837645124\n                  ],\n                  \"geometry\": {\n                      \"coordinates\": [\n                          [\n                              -2.362060546875,\n                              51.96245837645124\n                          ],\n                          [\n                              7.62162297964096,\n                              51.96245837645124\n                          ],\n                          [\n                              7.62162297964096,\n                              52.649729197309426\n                          ],\n                          [\n                              -2.362060546875,\n                              52.649729197309426\n                          ]\n                      ],\n                      \"type\": \"Polygon\"\n                  },\n                  \"type\": \"Feature\"\n              }\n          }\n      }\n      \"...\":\"...\"\n    }\n  }\n}\n"
+        "value": {
+          "spatial": {
+            "files": [
+              {
+                "geojson": {
+                  "bbox": [
+                    -2.362060546875,
+                    52.0862573323384,
+                    -1.285400390625,
+                    52.649729197309426
+                  ],
+                  "geometry": {
+                    "coordinates": [
+                      [
+                        [
+                          -2.362060546875,
+                          52.0862573323384
+                        ],
+                        [
+                          -1.285400390625,
+                          52.649729197309426
+                        ]
+                      ]
+                    ],
+                    "type": "Polygon"
+                  },
+                  "type": "Feature"
+                },
+                "source_file": "path/to/file1.geojson"
+              },
+              {
+                "geojson": {
+                  "bbox": [
+                    7.595369517803192,
+                    51.96245837645124,
+                    7.62162297964096,
+                    51.96966694957956
+                  ],
+                  "geometry": {
+                    "coordinates": [
+                      [
+                        [
+                          7.595369517803192,
+                          51.96245837645124
+                        ],
+                        [
+                          7.62162297964096,
+                          51.96966694957956
+                        ]
+                      ]
+                    ],
+                    "type": "Polygon"
+                  },
+                  "type": "Feature"
+                },
+                "source_file": "path/to/file2.shp"
+              }
+            ],
+            "union": {
+              "geojson": {
+                "bbox": [
+                  -2.362060546875,
+                  51.96245837645124,
+                  7.62162297964096,
+                  51.96245837645124
+                ],
+                "geometry": {
+                  "coordinates": [
+                    [
+                      -2.362060546875,
+                      51.96245837645124
+                    ],
+                    [
+                      7.62162297964096,
+                      51.96245837645124
+                    ],
+                    [
+                      7.62162297964096,
+                      52.649729197309426
+                    ],
+                    [
+                      -2.362060546875,
+                      52.649729197309426
+                    ]
+                  ],
+                  "type": "Polygon"
+                },
+                "type": "Feature"
+              }
+            }
+          }
+        }
       },
       "metadata_update_success": {
         "summary": "A success metadata update example",
         "description": "Returns a json object with the updated excerpt.",
-        "value": "{\n  \"id\":\"compendium_id\",\n  \"metadata\": {\n    \"o2r\": {\n      \"title\": \"Blue Book\"\n    }\n  }\n}\n"
+        "value": {
+          "id": "compendium_id",
+          "metadata": {
+            "o2r": {
+              "title": "Blue Book"
+            }
+          }
+        }
       },
       "metadata_unauthorized": {
         "summary": "Unauthorized",
@@ -2388,11 +2486,14 @@
       "metadata_bad_request_incomplete_metadata": {
         "summary": "Bad Request due to Incomplete metadata",
         "description": "Returns an error due to missing metadata in the request (e.g. description property missing)",
-        "value": "{\n    \"error\":\"Error updating metadata file, see log for details\",\n    \"log\": \"[o2rmeta] 20180302.085940 received arguments: {'debug': True, 'tool': 'validate', 'schema': 'schema/json/o2r-meta-schema.json', 'candidate': '/tmp/o2r/compendium/1cAIr/data/.erc/metadata_o2r_1.json'}\n    [o2rmeta] 20180302.085940 launching validator\n    [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json\n    [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'\n\n    Failed validating 'type' in schema['properties']['description']:\n        {'type': 'string'}\n\n        On instance['description']:\n            None\"\n}\n"
+        "value": {
+          "error": "Error updating metadata file, see log for details",
+          "log": "[o2rmeta] 20180302.085940 received arguments: {'debug': True, 'tool': 'validate', 'schema': 'schema/json/o2r-meta-schema.json', 'candidate': '/tmp/o2r/compendium/1cAIr/data/.erc/metadata_o2r_1.json'} [o2rmeta] 20180302.085940 launching validator [o2rmeta] 20180302.085940 checking metadata_o2r_1.json against o2r-meta-schema.json [o2rmeta] 20180302.085940 !invalid: None is not of type 'string'\nFailed validating 'type' in schema['properties']['description']: {'type': 'string'}\nOn instance['description']: None"
+        }
       },
       "metadata_bad_request_syntax_error": {
         "summary": "Syntax error",
-        "value": "\"SyntaxEroor [...]\"\n"
+        "value": "SyntaxEroor [...]"
       },
       "metadata_unprocessable_entity": {
         "summary": "Unporcessable Entity in metadata update",
@@ -2403,8 +2504,13 @@
       },
       "download_success": {
         "summary": "A successfull zip-file Download example",
-        "description": "A successfull download of a compendium as a `.zip` file. \n\nThe zip file contains a comment with the original URL.\n```\n$ unzip -z CXE1c.zip\nArchive:  CXE1c.zip\nCreated by o2r [https://…/api/v1/compendium/CXE1c.zip]\n```\n",
-        "value": "Content-Type: application/zip\nTransfer-Encoding: chunked\nContent-Disposition: attachment; filename=\"$ID.zip\"\nX-Response-Time: 13.556ms\n"
+        "description": "A successfull download of a compendium as a `.zip` file.\n\nThe zip file contains a comment with the original URL.\n```\n$ unzip -z CXE1c.zip\nArchive:  CXE1c.zip\nCreated by o2r [https://…/api/v1/compendium/CXE1c.zip]\n```\n",
+        "value": {
+          "Content-Type": "application/zip",
+          "Transfer-Encoding": "chunked",
+          "Content-Disposition": "attachment; filename=\"$ID.zip\"",
+          "X-Response-Time": "13.556ms"
+        }
       },
       "download_bad_request": {
         "summary": "A bad request for download example",
@@ -2416,22 +2522,104 @@
       "files_simple": {
         "summary": "Simple data type example",
         "description": "Returns a JSON array representation of the data types.\n\n`GET /api/v1/inspection/<compendium id>?file=simple.Rdata`\n",
-        "value": "{  \n  \"aChar\":[  \n    \"a\"\n  ],\n  \"aDouble\":[  \n    2.3\n  ],\n  \"anInteger\":[  \n    1\n  ],\n  \"aString\":[  \n    \"The force is great in o2r.\"\n  ]\n}\n"
+        "value": {
+          "aChar": [
+            "a"
+          ],
+          "aDouble": [
+            2.3
+          ],
+          "anInteger": [
+            1
+          ],
+          "aString": [
+            "The force is great in o2r."
+          ]
+        }
       },
       "files_complex_1": {
         "summary": "Complex data type example",
         "description": "Lists are be nested objects, and vectors are JSON arrays (see jsonlite docs for details, defaults are used):\n\n`GET /api/v1/inspection/<compendium id>?file=complex.Rdata`\n",
-        "value": "{  \n  \"characterVector\":[  \n    \"one\",\n    \"two\",\n    \"3\"\n  ],\n  \"logicalVector\":[  \n    true,\n    true,\n    false\n  ],\n  \"numericVector\":[  \n    1,\n    2,\n    -7,\n    0.8\n  ],\n  \"orderedList\":{  \n    \"name\":[  \n      \"Fred\"\n    ],\n    \"mynumbers\":[  \n      1,\n      2\n    ],\n    \"age\":[  \n      5.3\n    ]\n  }\n}\n"
+        "value": {
+          "characterVector": [
+            "one",
+            "two",
+            "3"
+          ],
+          "logicalVector": [
+            true,
+            true,
+            false
+          ],
+          "numericVector": [
+            1,
+            2,
+            -7,
+            0.8
+          ],
+          "orderedList": {
+            "name": [
+              "Fred"
+            ],
+            "mynumbers": [
+              1,
+              2
+            ],
+            "age": [
+              5.3
+            ]
+          }
+        }
       },
       "files_complex_2": {
         "summary": "Complex data type example",
         "description": "Data frames and matrices are mapped to JSON arrays of complex objects (see jsonlite docs for details, defaults are used):\n\n`GET /api/v1/inspection/<compendium id>?file=matrices.Rdata`\n",
-        "value": "{  \n  \"dataFrame\":[  \n    {  \n      \"ID\":1,\n      \"Passed\":true,\n      \"Colour\":\"red\"\n    },\n    {  \n      \"ID\":2,\n      \"Passed\":true,\n      \"Colour\":\"white\"\n    },\n    {  \n      \"ID\":3,\n      \"Passed\":true,\n      \"Colour\":\"red\"\n    },\n    {  \n      \"ID\":4,\n      \"Passed\":false\n    }\n  ],\n  \"namedMatrix\":[  \n    [  \n      1,\n      26\n    ],\n    [  \n      24,\n      68\n    ]\n  ]\n}\n"
+        "value": {
+          "dataFrame": [
+            {
+              "ID": 1,
+              "Passed": true,
+              "Colour": "red"
+            },
+            {
+              "ID": 2,
+              "Passed": true,
+              "Colour": "white"
+            },
+            {
+              "ID": 3,
+              "Passed": true,
+              "Colour": "red"
+            },
+            {
+              "ID": 4,
+              "Passed": false
+            }
+          ],
+          "namedMatrix": [
+            [
+              1,
+              26
+            ],
+            [
+              24,
+              68
+            ]
+          ]
+        }
       },
       "files_objects_errors": {
         "summary": "Example with objects error",
         "description": "If selected objects are not loadable from the file, an errors property in the response is given for each problematic object:\n\n`GET /api/v1/inspection/<compendium id>?file=simple.RData&objects=bar,anInteger,foo`\n",
-        "value": "{  \n  \"anInteger\":[  \n    1\n  ],\n  \"errors\":[  \n    \"Error: Object 'bar' does not exist in the file simple.RData\",\n    \"Error: Object 'foo' does not exist in the file simple.RData\"\n  ]\n}\n"
+        "value": {
+          "anInteger": [
+            1
+          ],
+          "errors": [
+            "Error: Object 'bar' does not exist in the file simple.RData",
+            "Error: Object 'foo' does not exist in the file simple.RData"
+          ]
+        }
       },
       "files_bad_request_1": {
         "summary": "Parameter missing",
@@ -2474,29 +2662,198 @@
       "job_list_simple": {
         "summary": "A job listing with only the job ids",
         "description": "`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success`\n",
-        "value": "{\n  \"results\": [\n    \"nkm4L\",\n    \"asdi5\",\n    \"nb2sg\",\n    …\n  ]\n}\n"
+        "value": {
+          "results": [
+            "nkm4L",
+            "asdi5",
+            "nb2sg",
+            "…"
+          ]
+        }
       },
       "job_list_expanded": {
         "summary": "A job listing with job id and status",
         "description": "The overall job state can be added to the job list response:\n\n`GET /api/v1/job?limit=100&start=2&compendium_id=a4Dnm&status=success&fields=status`\n",
-        "value": "{\n  \"results\": [\n    {\n      \"id\":\"nkm4L\",\n      \"status\":\"failure\"\n    },\n    {\n      \"id\":\"asdi5\",\n      \"status\":\"success\"\n    },\n    {\n      \"id\":\"nb2sg\",\n      \"status\":\"running\"\n    },\n    …\n  ]\n}\n"
+        "value": {
+          "results": [
+            {
+              "id": "nkm4L",
+              "status": "failure"
+            },
+            {
+              "id": "asdi5",
+              "status": "success"
+            },
+            {
+              "id": "nb2sg",
+              "status": "running"
+            },
+            "…"
+          ]
+        }
       },
       "job_list_fail": {
         "summary": "Job listing with no matching jobs",
         "description": "If there are no jobs, the returned list is empty.\n",
-        "value": "{\n  \"results\": [ ]\n}\n"
+        "value": {
+          "results": []
+        }
       },
       "view_job_success": {
         "summary": "A successfull job view example",
-        "value": "{\n  \"id\":\"UMmJ7\",\n  \"compendium_id\":\"BSgxj\",\n  \"steps\":{\n    \"validate_bag\":{\n      \"status\":\"skipped\",\n      \"text\":[\n        \"Not a bag\"\n      ],\n      \"end\":\"2017-11-17T13:22:48.105Z\",\n      \"start\":\"2017-11-17T13:22:48.105Z\"\n    },\n    \"generate_configuration\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"configuration file not found, generating it...\",\n        \"Saved configuration file to job and compendium\"\n      ],\n      \"end\":\"2017-11-17T13:22:48.119Z\",\n      \"start\":\"2017-11-17T13:22:48.113Z\"\n    },\n    \"validate_compendium\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"all checks passed\"\n      ],\n      \"end\":\"2017-11-17T13:22:48.127Z\",\n      \"start\":\"2017-11-17T13:22:48.125Z\"\n    },\n    \"generate_manifest\":{\n      \"status\":\"success\",\n      \"text\":[\n        /* abbreviated */\n        \"INFO [2017-11-17 13:22:56] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)\",\n        \"INFO [2017-11-17 13:22:56] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB\",\n        \"INFO [2017-11-17 13:22:58] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml\",\n        \"INFO [2017-11-17 13:22:58] Created Dockerfile-Object based on /erc/main.Rmd\",\n        \"INFO [2017-11-17 13:22:58] Writing dockerfile to /erc/Dockerfile\",\n        /* abbreviated */\n        \"generated manifest\"\n      ],\n      \"manifest\":\"Dockerfile\",\n      \"end\":\"2017-11-17T13:22:58.865Z\",\n      \"start\":\"2017-11-17T13:22:48.129Z\"\n    },\n    \"image_prepare\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"payload with 756224 total bytes created\"\n      ],\n      \"end\":\"2017-11-17T13:22:58.906Z\",\n      \"start\":\"2017-11-17T13:22:58.875Z\"\n    },\n    \"image_build\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"Step 1/6 : FROM rocker/r-ver:3.4.2\",\n        \"---> 3cf05960bf30\",\n        /* abbreviated */\n        \"---> Running in eb7ccd432592\",\n        \"---> 84db129215f6\",\n        \"Removing intermediate container eb7ccd432592\",\n        \"Successfully built 84db129215f6\",\n        \"Successfully tagged erc:UMmJ7\"\n      ],\n      \"end\":\"2017-11-17T13:22:59.899Z\",\n      \"start\":\"2017-11-17T13:22:58.912Z\"\n    },\n    \"image_execute\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"[started image execution]\",\n        /* abbreviated */\n        \"Output created: display.html\\r\\n> \\r\\n>\",\n        \"[finished image execution]\"\n      ],\n      \"statuscode\":0,\n      \"start\":\"2017-11-17T13:22:59.904Z\"\n    },\n    \"check\":{\n      \"status\":\"failure\",\n      \"text\":[\n        \"Check failed\"\n      ],\n      \"images\":[\n        {\n          \"imageIndex\":0,\n          \"resizeOperationCode\":0,\n          \"compareResults\":{\n            \"differences\":204786,\n            \"dimension\":1290240\n          }\n        }\n      ],\n      \"display\":{\n        \"diff\":\"/api/v1/job/UMmJ7/data/check.html\"\n      },\n      \"errors\":[ ],\n      \"checkSuccessful\":false,\n      \"end\":\"2017-11-17T13:23:04.439Z\",\n      \"start\":\"2017-11-17T13:23:03.479Z\"\n    },\n    \"image_save\": {\n      \"status\": \"success\",\n      \"text\": [\n        \"[Saving image tarball file]\",\n        \"[Saved image tarball to file (size: 875.14 MB)]\"\n      ],\n      \"start\": \"2018-01-29T17:38:55.111Z\",\n      \"file\": \"image.tar\",\n      \"end\": \"2018-01-29T17:39:36.845Z\"\n    },\n    \"cleanup\":{\n      \"status\":\"success\",\n      \"text\":[\n        \"Running regular cleanup\",\n        \"Removed image with tag erc:UMmJ7: [{\\\"Untagged\\\":\\\"erc:UMmJ7\\\"},{\\\"Deleted\\\":\\\"sha256:84db129215f60f805320e0f70c54a706b6e4030f4627c74abfb1e17f287fefa8\\\"},{\\\"Deleted\\\":\\\"sha256:0dc5b951dc58a10e50ea42dd14a1cd59b080199d9ca40cadd0a4fc8ae5e0d139\\\"},{\\\"Deleted\\\":\\\"sha256:ea88669b92a1c67dc2825f9f6d90d334a6032882d3d31bc85671afbd04adaa70\\\"}]\",\n        \"Deleted temporary payload file.\"\n      ],\n      \"end\":\"2017-11-17T13:23:05.592Z\",\n      \"start\":\"2017-11-17T13:23:04.575Z\"\n    }\n  },\n  \"status\":\"failure\",\n  \"files\":{ /* see compendium */  }\n}\n"
+        "description": "&#x2757;  This is an abbreviated example\n",
+        "value": {
+          "id": "UMmJ7",
+          "compendium_id": "BSgxj",
+          "steps": {
+            "validate_bag": {
+              "status": "skipped",
+              "text": [
+                "Not a bag"
+              ],
+              "end": "2017-11-17T13:22:48.105Z",
+              "start": "2017-11-17T13:22:48.105Z"
+            },
+            "generate_configuration": {
+              "status": "success",
+              "text": [
+                "configuration file not found, generating it...",
+                "Saved configuration file to job and compendium"
+              ],
+              "end": "2017-11-17T13:22:48.119Z",
+              "start": "2017-11-17T13:22:48.113Z"
+            },
+            "validate_compendium": {
+              "status": "success",
+              "text": [
+                "all checks passed"
+              ],
+              "end": "2017-11-17T13:22:48.127Z",
+              "start": "2017-11-17T13:22:48.125Z"
+            },
+            "generate_manifest": {
+              "status": "success",
+              "text": [
+                "INFO [2017-11-17 13:22:56] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)",
+                "INFO [2017-11-17 13:22:56] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB",
+                "INFO [2017-11-17 13:22:58] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml",
+                "INFO [2017-11-17 13:22:58] Created Dockerfile-Object based on /erc/main.Rmd",
+                "INFO [2017-11-17 13:22:58] Writing dockerfile to /erc/Dockerfile",
+                "generated manifest"
+              ],
+              "manifest": "Dockerfile",
+              "end": "2017-11-17T13:22:58.865Z",
+              "start": "2017-11-17T13:22:48.129Z"
+            },
+            "image_prepare": {
+              "status": "success",
+              "text": [
+                "payload with 756224 total bytes created"
+              ],
+              "end": "2017-11-17T13:22:58.906Z",
+              "start": "2017-11-17T13:22:58.875Z"
+            },
+            "image_build": {
+              "status": "success",
+              "text": [
+                "Step 1/6 : FROM rocker/r-ver:3.4.2",
+                "---> 3cf05960bf30",
+                "---> Running in eb7ccd432592",
+                "---> 84db129215f6",
+                "Removing intermediate container eb7ccd432592",
+                "Successfully built 84db129215f6",
+                "Successfully tagged erc:UMmJ7"
+              ],
+              "end": "2017-11-17T13:22:59.899Z",
+              "start": "2017-11-17T13:22:58.912Z"
+            },
+            "image_execute": {
+              "status": "success",
+              "text": [
+                "[started image execution]",
+                "Output created: display.html\r\n> \r\n>",
+                "[finished image execution]"
+              ],
+              "statuscode": 0,
+              "start": "2017-11-17T13:22:59.904Z"
+            },
+            "check": {
+              "status": "failure",
+              "text": [
+                "Check failed"
+              ],
+              "images": [
+                {
+                  "imageIndex": 0,
+                  "resizeOperationCode": 0,
+                  "compareResults": {
+                    "differences": 204786,
+                    "dimension": 1290240
+                  }
+                }
+              ],
+              "display": {
+                "diff": "/api/v1/job/UMmJ7/data/check.html"
+              },
+              "errors": [],
+              "checkSuccessful": false,
+              "end": "2017-11-17T13:23:04.439Z",
+              "start": "2017-11-17T13:23:03.479Z"
+            },
+            "image_save": {
+              "status": "success",
+              "text": [
+                "[Saving image tarball file]",
+                "[Saved image tarball to file (size: 875.14 MB)]"
+              ],
+              "start": "2018-01-29T17:38:55.111Z",
+              "file": "image.tar",
+              "end": "2018-01-29T17:39:36.845Z"
+            },
+            "cleanup": {
+              "status": "success",
+              "text": [
+                "Running regular cleanup",
+                "Removed image with tag erc:UMmJ7: [{\"Untagged\":\"erc:UMmJ7\"},{\"Deleted\":\"sha256:84db129215f60f805320e0f70c54a706b6e4030f4627c74abfb1e17f287fefa8\"},{\"Deleted\":\"sha256:0dc5b951dc58a10e50ea42dd14a1cd59b080199d9ca40cadd0a4fc8ae5e0d139\"},{\"Deleted\":\"sha256:ea88669b92a1c67dc2825f9f6d90d334a6032882d3d31bc85671afbd04adaa70\"}]",
+                "Deleted temporary payload file."
+              ],
+              "end": "2017-11-17T13:23:05.592Z",
+              "start": "2017-11-17T13:23:04.575Z"
+            }
+          },
+          "status": "failure",
+          "files": {}
+        }
       },
       "compendium_list_job_success": {
         "summary": "A job listing with all related execution jobs",
-        "value": "{\n  \"results\": [\n    \"nkm4L\",\n    \"asdi5\",\n    \"nb2sg\",\n    …\n  ]\n}\n"
+        "value": {
+          "results": [
+            "nkm4L",
+            "asdi5",
+            "nb2sg",
+            "…"
+          ]
+        }
       },
       "recipient_success": {
         "summary": "A successfull reciepent listing",
-        "value": "{\n    \"recipients\": [{\n        \"id\": \"download\",\n        \"label\": \"Download\"\n    }, {\n        \"id\": \"b2share_sandbox\",\n        \"label\": \"Eudat b2share Sandbox\"\n    }, {\n        \"id\": \"zenodo_sandbox\",\n        \"label\": \"Zenodo Sandbox\"\n    }]\n}\n"
+        "value": {
+          "recipients": [
+            {
+              "id": "download",
+              "label": "Download"
+            },
+            {
+              "id": "b2share_sandbox",
+              "label": "Eudat b2share Sandbox"
+            },
+            {
+              "id": "zenodo_sandbox",
+              "label": "Zenodo Sandbox"
+            }
+          ]
+        }
       },
       "shipment_success": {
         "summary": "A successfull listing of shipments",
@@ -2509,11 +2866,25 @@
       "view_shipment_success": {
         "summary": "A successfull view of a shipment",
         "description": "Retruns a JSON object with information on the specified shipment.\n<div class=\"note blue_note\">\n  <p><b>&#x26A0; Note</b></p>\n  <p>Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>\n</div>\n",
-        "value": "{\n  \"last_modified\": \"2016-12-12 10:34:32.001475\",\n  \"recipient\": \"zenodo\",\n  \"id\": \"dc351fc6-314f-4947-a235-734ab5971eff\",\n  \"deposition_id\": \"63179\",\n  \"user\": \"0000-0002-1825-0097\",\n  \"status\": \"shipped\",\n  \"compendium_id\": \"4XgD97\",\n  \"deposition_url\": \"https://zenodo.org/record/63179\"\n}\n"
+        "value": {
+          "last_modified": "2016-12-12 10:34:32.001475",
+          "recipient": "zenodo",
+          "id": "dc351fc6-314f-4947-a235-734ab5971eff",
+          "deposition_id": "63179",
+          "user": "0000-0002-1825-0097",
+          "status": "shipped",
+          "compendium_id": "4XgD97",
+          "deposition_url": "https://zenodo.org/record/63179"
+        }
       },
       "upload_shipment_success": {
         "summary": "A successfull creation of a shipment",
-        "value": "{\n  \"id\": \"9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e\",\n  \"recipient\": \"zenodo\",\n  \"status\": \"shipped\",\n  \"deposition_id\": \"79102\"\n}\n"
+        "value": {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "recipient": "zenodo",
+          "status": "shipped",
+          "deposition_id": "79102"
+        }
       },
       "upload_shipment_zip": {
         "summary": "Zip stream for download",
@@ -2521,15 +2892,34 @@
       },
       "shipment_status_success": {
         "summary": "A successfull status view of a shipment",
-        "value": "{\n  \"id\": \"9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e\",\n  \"status\": \"shipped\"\n}\n"
+        "value": {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "status": "shipped"
+        }
       },
       "publish_put_success": {
         "summary": "A successfull pulishment",
-        "value": "{\n  \"id\": \"9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e\",\n  \"status\": \"published\"\n}\n"
+        "value": {
+          "id": "9ff3d75e-23dc-423e-a6c6-6987ac5ffc3e",
+          "status": "published"
+        }
       },
       "shipment_files_success": {
         "summary": "A successfull listing of the depositon files",
-        "value": "{\n  \"files\": [{\n      \"filesize\": 393320,\n      \"id\": \"bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n      \"filename\": \"4XgD9.zip\",\n      \"checksum\": \"702f4db3e53b22176d1d5ddcda462a27\",\n      \"links\": {\n          \"self\": \"https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981\",\n          \"download\": \"https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip\"\n      }\n  }]\n}\n"
+        "value": {
+          "files": [
+            {
+              "filesize": 393320,
+              "id": "bae2a60c-bd59-47e1-a443-b34bb7d0a981",
+              "filename": "4XgD9.zip",
+              "checksum": "702f4db3e53b22176d1d5ddcda462a27",
+              "links": {
+                "self": "https://sandbox.zenodo.org/api/deposit/depositions/71552/files/bae2a60c-bd59-47e1-a443-b34bb7d0a981",
+                "download": "https://sandbox.zenodo.org/api/files/31dc8f3d-df00-4d8a-bd99-64ef341372b3/4XgD9.zip"
+              }
+            }
+          ]
+        }
       },
       "substitution_request_body": {
         "summary": "Request body for a new substitution.",
@@ -2763,8 +3153,24 @@
   "security": [],
   "tags": [
     {
+      "name": "Compendium",
+      "description": "## Candidate process\n\nAfter uploading a compendium is _not_ instantly publicly available.\nIt is merely a **candidate**, because metadata still must be completed for the compendium to be valid.\nUsers with sufficient rights can create [public links](link.md) for a candidate compendium.\n\nThe following process models this intermediate state of a compendium.\n\n### Creation and view\n\nCandidates can be identified by the property `candidate`.\nIt is set to `true` after creating a new compendium by [upload](upload.md) or [public share submission](public_share.md) **and** the authoring user having reviewed the metadata.\n\n<div class=\"note blue_note\">\n    <p><b>&#x26A0; Note</b></p>\n    <p>It is not possible to circumvent the metadata review.\n    Only a successful metadata update can set `candidate: true`.</p>\n</div>\n\n**Example:**\n\n```json\n{\n  \"id\":\"12345\",\n  \"metadata\": … ,\n  \"created\": \"2016-08-01T13:57:40.760Z\",\n  \"files\": …,\n  \"candidate\": true\n}\n```\n\nOnly the creating user and users with [required level](../user/levels.md) can view a candidate and see the `candidate` property while it is `true`.\n\nWhen accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list is extended by available candidates.\nThe candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.\n\n### Metadata review and saving\n\nAfter the user has reviewed and potentially updated the metadata as required and [saved them](metadata.md#update-metadata) successfully, then the candidate status is changed (`candidate: false`) and the compendium is publicly available.\n\nThe `candidate` property is not exposed any more if it is `false`.\n\nIt is _not_ possible to save invalid metadata or to manually change the `candidate` property, therefore a compendium cannot become a candidate again after successful completion of the creation.\n\n### Deletion\n\nUnlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](delete.md).\n"
+    },
+    {
+      "name": "Metadata",
+      "description": "### Basics\n\nMetadata in a compendium is stored in a directory `.erc`. This directory contains the normative metadata documents using a file naming scheme `<PREFIX>_<MODEL>_<VERSION>.<FORMAT>` filled via each metadata mapping file found in the broker tool of the o2r metadata tool suite, the default prefix is `metadata`, e.g. `metadata_o2r_1.json`, `metadata_zenodo_1.json`, or `metadata_datacite_41.xml`. The filename of the extracted raw metadata has no versioning and is constantly found as `metadata_raw.json`.\n\nA copy of the files in this directory is kept in database for easier access, so every compendium returned by the API can contain different sub-properties in the metadata property.\n_This API always returns the database copy of the metadata elements._\nYou can download the respective files to access the normative metadata documents.\n\n### Metadata formats\n\nThe files are available on demand, but metadata variants are created after each metadata update.\n\nThe sub-properties of the `metadata` and their content are\n\n- `raw` contains raw metadata extracted automatically\n- `o2r` holds the **main information for display** and is modelled according the the o2r metadata model. This metadata is reviewed by the user and the basis for translating to other metadata formats and also for [search](../search.md).\n- `zenodo` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo and is brokered from `o2r` metadata\n- `zenodo_sandbox` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo Sandbox, i.e. a clone of `zenodo` metadata\n\n<div class=\"note blue_note\">\n    <p><b>&#x26A0; Note</b></p>\n    <p>The information in each sub-property are subject to independent workflows and may differ from one another.\n    The term <b>brokering</b> is used for translation from one metadata format into another.</p>\n\n## Metadata validation\n\nOnly valid metadata can be saved to a compendium.\nThe `o2r` metadata element is validated against a [JSON Schema](http://json-schema.org/) using the `validate` tool of [`o2r-meta`](https://github.com/o2r-project/o2r-meta).\nThe schema file is included in the `o2r-meta` repository: [https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json](https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json).\n"
+    },
+    {
+      "name": "Execution",
+      "description": "## Execute a compendium\n\nExecution jobs are used to run the analysis in a compendium.\nWhen a new execution job is started, the contents of the research compendium are cloned to create a trackable execution (see [Job files](#job-files)).\nThe status information, logs and final working directory data are saved in their final state, so that they can be reviewed later on.\n\nAll execution jobs are tied to a single research compendium and reflect the execution history of that research compendium.\n\nA trivial execution job would be a completely unmodified compendium, to test the executability and thus basic reproducibility of the contained workflow.\n\n### Job files\n\nAll files except the following are copied to a separate storage for each job:\n\n- existing image tarballs, e.g. `image.tar` to reduce size of copied files and because jobs use images from the local image repository anyway\n- the [_display file_](https://o2r.info/erc-spec/spec/#main-display-file) to make sure the check does not wrongly work on the original display file\n\n### Job status\n\nThe property `job.status` shows the **overall status** of a job.\n\nThe overall status can be one of following:\n\n- `success` - if status of all steps is `success`.\n- `failure` - if status of at least one step is `failure`.\n- `running` - if status of at least one step is `running` and no status is `failure`.\n\nMore information about `steps` can be found in subsection `Steps` of section `View single job`.\n\n### Steps of a job\n\nOne job consists of a series of steps.\nThe are executed in order.\n\n- **validate_bag**\n  Validate the BagIt bag using the npm library [bagit](https://www.npmjs.com/package/bagit); may be skipped if compendium is not a bag, will usually fail because of added metadata files during upload.\n- **generate_configuration**\n  Create a compendium configuration file; may be skipped if configuration file is already present.\n- **validate_compendium**\n  Parses and validates the bagtainer configuration file.\n- **generate_manifest**\n  Executes the given analysis to create a container manifest; may be skipped if manifest file is already present.\n- **image_prepare**\n  Create an archive of the payload (i.e. the workspace, or the data in a BagIt bag), which allows to build and run the image also on remote hosts.\n- **image_build**\n  Build an image and tag it `erc:<job_id>`.\n- **image_execute**\n  Run the container and return based on status code of program that ran inside the container.\n- **check**\n  Run a check on the contents of the container. Validate the results of the executed calculations. The check provides either a list of errors or a reference to displayable content in the property `display.diff`.\n- **image_save**\n  Export the image to a file within the compendium directory (potentially a large file!). This is skipped if the check failed.\n- **cleanup**\n  Remove image or job files (depending on server-side settings).\n\n#### Status\n\nAll steps can have one of the following status:\n\n- `queued`: step is not yet started\n- `running`: step is currently running\n- `success`: step is completed successfully - positive result\n- `failure`: step is completed unsuccessfully - negative result\n- `skipped`: step does not fit the given input or results of previous steps, e.g. bag validation is not done for non-bag workspaces - neutral result\n\n#### Step metadata\n\nAdditional explanations on steps' status will be transmitted in the `text` property.\n`text` is an array, with the latest element holding the newest information.\nDuring long running steps, the `text` element is updated by appending new information when available.\n\nThe `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.\n\nSpecific steps may carry more information in additional properties.\n"
+    },
+    {
+      "name": "Shipment",
+      "description": "## Ship compendia and metadata\n\nShipments are used to deliver compendia and their metadata to third party repositories or archives.\nThis section covers shipment related requests, including repository file management.\n\n### Packaging\n\nThe packaging of a compendium ensures a recipient can verify the integrity of the transported data.\nCurrently, the shipment process always creates [BagIt](http://tools.ietf.org/html/draft-kunze-bagit) bags to package a compendium.\n"
+    },
+    {
       "name": "Users",
-      "description": "## User levels\n\nUsers are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.\nOn registration, each account is assigned a level `0`.\nOnly admin users and the user herself can read the level of a user.\n\nThe following is a list of actions and the corresponding required _minimum_ user level.\n\n- `0` _Users_ (everybody)\n    - Create new jobs\n    - View compendia, jobs, user details\n- `100` _Known users_\n    - Create new compendium\n    - Create shipments\n    - Create substitutions\n    - Delete own candidates\n- `500` _Editors_\n    - Edit user levels up to own level\n    - Edit compendium metadata\n    - Delete candidates\n    - Manage [public links](../compendium/link.md) for candidates\n- `1000` _Admins_\n    - Edit user levels up to own level\n    - Delete compendia and candidates\n    - View status pages of microservices\n\n## Authentication\n\nUser authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.\n\n### Client authentication\n\nTo execute restricted operations of the API, such as [compendium upload]() or [job execution](), a client must provide an authentication token via a cookie.\n\nA client must first login on the website to access a browser cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nProvide the content of the cookie when making requests to the API as shown in the request example below.\n\n### Access authentication information for direct API access\n\nTo run commands which require authentication from the command line, a user must login on the website first.\nThen open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nUse the the contents of the cookie for your requests, for example as shown below when using curl.\n\n```bash\ncurl [...] --cookie \"connect.sid=<code string here>\" \\\n     https://…/api/v1/endpoint\n```\n\n### Authentication within microservices\n\n**Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.\n\n### Authentication provider\n\nSession authentication is done using the OAuth 2.0 protocol.\nCurrently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.\nUsers must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.\nThey are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.\n"
+      "description": "## User levels\n\nUsers are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.\nOn registration, each account is assigned a level `0`.\nOnly admin users and the user herself can read the level of a user.\n\nThe following is a list of actions and the corresponding required _minimum_ user level.\n\n- `0` _Users_ (everybody)\n    - Create new jobs\n    - View compendia, jobs, user details\n- `100` _Known users_\n    - Create new compendium\n    - Create shipments\n    - Create substitutions\n    - Delete own candidates\n- `500` _Editors_\n    - Edit user levels up to own level\n    - Edit compendium metadata\n    - Delete candidates\n    - Manage [public links](../compendium/link.md) for candidates\n- `1000` _Admins_\n    - Edit user levels up to own level\n    - Delete compendia and candidates\n    - View status pages of microservices\n\n##  User authentication\n\nUser authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.\n\n### Client authentication\n\nTo execute restricted operations of the API, such as [compendium upload]() or [job execution](), a client must provide an authentication token via a cookie.\n\nA client must first login on the website to access a browser cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nProvide the content of the cookie when making requests to the API as shown in the request example below.\n\n### Access authentication information for direct API access\n\nTo run commands which require authentication from the command line, a user must login on the website first.\nThen open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nUse the the contents of the cookie for your requests, for example as shown below when using curl.\n\n```bash\ncurl [...] --cookie \"connect.sid=<code string here>\" \\\n     https://…/api/v1/endpoint\n```\n\n### Authentication within microservices\n\n**Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.\n\n### Authentication provider\n\nSession authentication is done using the OAuth 2.0 protocol.\nCurrently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.\nUsers must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.\nThey are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.\n"
     }
   ],
   "externalDocs": {
