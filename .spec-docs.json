@@ -1,0 +1,6 @@
+{
+    "apiSpecPath": "openapi/openapi.yaml",
+    "docsRoot": "openapi_docs",
+    "defaultBranch": "master",
+    "branchPathBase": "preview"
+}

@@ -1,0 +1,43 @@
+body{
+  padding: 0;
+  margin: 0
+}
+
+div.note{
+  border: none;
+  padding-bottom: 10px;
+  background-clip:content-box;
+}
+
+div.note > p:nth-child(1){
+  color: white;
+}
+
+div.note > p:nth-child(2){
+  padding: 5px;
+  color: black
+}
+
+div.note.blue_note{
+  background-color: #e7f2fa;
+}
+
+div.note.blue_note > p:nth-child(1){
+  background-color: #6ab0de;
+}
+
+div.note.yellow_note{
+  background-color: #ffedcc;
+}
+
+div.note.yellow_note > p:nth-child(1){
+  background-color: #f0b37e;
+}
+
+div.note.green_note{
+  background-color:#dbfaf4;
+}
+
+div.note.green_note > p:nth-child(1){
+  background-color: #1abc9c;
+}
