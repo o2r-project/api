@@ -152,27 +152,23 @@ The compendium contents should be moved to a specific location to the server as 
 </div>
 <h2 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h2>
 <p>The following request deletes the compendium with the identifier <code>12345</code>, including metadata and files.</p>
-<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345 \
+<pre><code class="language-bash">curl -X DELETE https://…/api/v1/compendium/12345 \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
-
 <h2 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
 <p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
-<pre><code class="bash">204 OK
+<pre><code class="language-bash">204 OK
 </code></pre>
-
 <h2 id="error-responses-for-compendium-delete">Error responses for compendium delete<a class="headerlink" href="#error-responses-for-compendium-delete" title="Permanent link">&para;</a></h2>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}
 </code></pre>
-
-<pre><code class="json">403 Forbidden
+<pre><code class="language-json">403 Forbidden
 
 {&quot;error&quot;:&quot;user level not sufficient to delete compendium&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;compendium not found&quot;}
 </code></pre>

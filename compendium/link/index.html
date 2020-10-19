@@ -175,10 +175,9 @@ Jobs for private links are <em>not listed</em> in the generic job list, but they
 <h2 id="create-link">Create link<a class="headerlink" href="#create-link" title="Permanent link">&para;</a></h2>
 <h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
 <p>The following request creates a link for the <em>candidate</em> compendium with the identifier <code>12345</code>.</p>
-<pre><code class="bash">curl -X PUT https://…/api/v1/compendium/12345/link \
+<pre><code class="language-bash">curl -X PUT https://…/api/v1/compendium/12345/link \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
-
 <h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
 <p>The response has an HTTP status of <code>200</code> if the public link was created.
 The response body provides the public link <code>id</code>, which can be used for subsequent requests to:</p>
@@ -189,7 +188,7 @@ The response body provides the public link <code>id</code>, which can be used fo
 </ul>
 <p>Only <strong>1 public link</strong> is created per candidate compendium.
 <em>Subsequent requests will return the same link.</em></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
     &quot;id&quot;:&quot;lSaOCqxmNEO8Og42a0ONVRYUVoDWeBLr&quot;,
@@ -197,15 +196,13 @@ The response body provides the public link <code>id</code>, which can be used fo
     &quot;user&quot;:&quot;0000-0002-1701-2564&quot;
 }
 </code></pre>
-
 <h2 id="list-links">List links<a class="headerlink" href="#list-links" title="Permanent link">&para;</a></h2>
 <h3 id="request_1">Request<a class="headerlink" href="#request_1" title="Permanent link">&para;</a></h3>
-<pre><code class="bash">curl -X GET http://localhost/api/v1/link
+<pre><code class="language-bash">curl -X GET http://localhost/api/v1/link
     --cookie &quot;connect.sid=s%3AVU61x4E&lt;rest of cookie&gt;&quot;
 </code></pre>
-
 <h3 id="reponse">Reponse<a class="headerlink" href="#reponse" title="Permanent link">&para;</a></h3>
-<pre><code class="json">HTTP 200
+<pre><code class="language-json">HTTP 200
 
 {
   &quot;results&quot;: [
@@ -222,32 +219,27 @@ The response body provides the public link <code>id</code>, which can be used fo
   ]
 }
 </code></pre>
-
 <h2 id="delete-link">Delete link<a class="headerlink" href="#delete-link" title="Permanent link">&para;</a></h2>
 <h3 id="request_2">Request<a class="headerlink" href="#request_2" title="Permanent link">&para;</a></h3>
 <p>The following request deletes a link for the compendium with the identifier <code>12345</code>.</p>
-<pre><code class="bash">curl -X DELETE https://…/api/v1/compendium/12345/link \
+<pre><code class="language-bash">curl -X DELETE https://…/api/v1/compendium/12345/link \
     --cookie &quot;connect.sid=&lt;code string here&gt;&quot;
 </code></pre>
-
 <h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
 <p>The response has an HTTP status of <code>204</code> and an empty body for successful deletion.</p>
-<pre><code class="bash">204 No Content
+<pre><code class="language-bash">204 No Content
 </code></pre>
-
 <h2 id="error-responses-for-public-link-management">Error responses for public link management<a class="headerlink" href="#error-responses-for-public-link-management" title="Permanent link">&para;</a></h2>
 <p>The following errors can occur on all management operations (create, list, delete).</p>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}
 </code></pre>
-
-<pre><code class="json">403 Forbidden
+<pre><code class="language-json">403 Forbidden
 
 {&quot;error&quot;:&quot;user level not sufficient to delete compendium&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;compendium not found&quot;}
 </code></pre>

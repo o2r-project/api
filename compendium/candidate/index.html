@@ -153,7 +153,7 @@ It is set to <code>true</code> after creating a new compendium by <a href="../up
 Only a successful <a href="../metadata/#update-metadata">metadata update</a> can set <code>candidate: true</code>.</p>
 </div>
 <p><strong>Example:</strong></p>
-<pre><code class="json">{
+<pre><code class="language-json">{
   &quot;id&quot;:&quot;12345&quot;,
   &quot;metadata&quot;: … ,
   &quot;created&quot;: &quot;2016-08-01T13:57:40.760Z&quot;,
@@ -161,7 +161,6 @@ Only a successful <a href="../metadata/#update-metadata">metadata update</a> can
   &quot;candidate&quot;: true
 }
 </code></pre>
-
 <p>Only the creating user and users with <a href="../../user/levels/">required level</a> can view a candidate and see the <code>candidate</code> property while it is <code>true</code>.</p>
 <p>When accessing a <a href="../view/#list-compendia">list of compendia</a> for a specific user <em>as that user</em>, then this list is extended by available candidates.
 The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.</p>

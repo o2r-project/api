@@ -187,7 +187,7 @@ Required content of the request are the identifiers of the base and overlay comp
 <h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
 <p><code>POST /api/v1/substitution</code></p>
 <p>Request body for a new substitution:</p>
-<pre><code class="json">{
+<pre><code class="language-json">{
   &quot;base&quot;: &quot;G92NL&quot;,
   &quot;overlay&quot;: &quot;9fCTR&quot;,
   &quot;substitutionFiles&quot;: [
@@ -199,7 +199,6 @@ Required content of the request are the identifiers of the base and overlay comp
   &quot;metadataHandling&quot;: &quot;keepBase&quot;
 }
 </code></pre>
-
 <h3 id="request-body-properties">Request body properties<a class="headerlink" href="#request-body-properties" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>base</code> - id of the base compendium</li>
@@ -214,34 +213,29 @@ Required content of the request are the identifiers of the base and overlay comp
 <p>The user creating a new substitution must have the required <a href="../../user/levels/">user level</a>.</p>
 </div>
 <h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
-<pre><code class="json">201 CREATED
+<pre><code class="language-json">201 CREATED
 
 {
   &quot;id&quot;: &quot;oMMFn&quot;
 }
 </code></pre>
-
 <h3 id="error-responses">Error responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h3>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authenticated&quot;}
 </code></pre>
-
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not allowed&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;base compendium not found&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
-
 <h2 id="view-substituted-compendium">View substituted Compendium<a class="headerlink" href="#view-substituted-compendium" title="Permanent link">&para;</a></h2>
 <h3 id="request_1">Request<a class="headerlink" href="#request_1" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/compendium/$ID</code></p>
@@ -250,7 +244,7 @@ Required content of the request are the identifiers of the base and overlay comp
 <h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
 <p>A substituted compendium is be saved as a usual compendium, but with additional metadata specifying this as a substituted compendium and giving information about the substitution.</p>
 <p>Example 01 - in case there are no conflicts between filenames of any base file and overlay file :</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;: &quot;oMMFn&quot;,
@@ -275,9 +269,8 @@ Required content of the request are the identifiers of the base and overlay comp
   ...
 }
 </code></pre>
-
 <p>Example 02 - in case the overlay file has the same filename as one of the existing base files and is in a sub-directory in the overlay compendium:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;: &quot;oMMFn&quot;,
@@ -302,7 +295,6 @@ Required content of the request are the identifiers of the base and overlay comp
   ...
 }
 </code></pre>
-
 <h3 id="response-additional-metadata">Response additional metadata<a class="headerlink" href="#response-additional-metadata" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>metadata.substitution</code> - object, specifying information about the substitution<ul>
@@ -326,7 +318,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 <p><code>GET /api/v1/substitution</code></p>
 <h3 id="response_2">Response<a class="headerlink" href="#response_2" title="Permanent link">&para;</a></h3>
 <p>The result is a list of compendia ids which were created by a substitution process.</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -337,14 +329,12 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
   ]
 }
 </code></pre>
-
 <p>If there are no substitutions yet, the returned list is empty.</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 {
   &quot;results&quot;: [ ]
 }
 </code></pre>
-
 <h3 id="filter-results-with-following-parameters">Filter results with following parameters:<a class="headerlink" href="#filter-results-with-following-parameters" title="Permanent link">&para;</a></h3>
 <p><code>curl https://.../api/v1/substitution?base=$BASE_ID&amp;overlay=$OVERLAY_ID</code></p>
 <p><code>GET /api/v1/substitution?base=base_id&amp;overlay=overlay_id</code></p>
@@ -354,7 +344,7 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
 <p><code>curl https://.../api/v1/substitution?base=jfL3w</code></p>
 <p><code>GET /api/v1/substitution?base=jfL3w</code></p>
 <p>Result is a list of substituted compendia based on the given base compendium:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -363,14 +353,13 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
   ]
 }
 </code></pre>
-
 <ul>
 <li>Filter by <code>overlay</code>:</li>
 </ul>
 <p><code>curl https://.../api/v1/substitution?overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?overlay=as4Kj</code></p>
 <p>Result is a list of substituted compendia based on the given overlay compendium:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -380,14 +369,13 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
   ]
 }
 </code></pre>
-
 <ul>
 <li>Filter by <code>base</code> and <code>overlay</code>:</li>
 </ul>
 <p><code>curl https://.../api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
 <p><code>GET /api/v1/substitution?base=lO3Td&amp;overlay=as4Kj</code></p>
 <p>Result is a list of substituted compendia based on the given base <em>and</em> overlay compendium:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -396,38 +384,31 @@ If there is a conflict with any basefilename and an overlayfilename, the overlay
   ]
 }
 </code></pre>
-
 <h3 id="error-responses_1">Error responses<a class="headerlink" href="#error-responses_1" title="Permanent link">&para;</a></h3>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authenticated&quot;}
 </code></pre>
-
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not allowed&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;base compendium not found&quot;}
 </code></pre>
-
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;overlay compendium not found&quot;}
 </code></pre>
-
-<pre><code class="json">400 Not Found
+<pre><code class="language-json">400 Not Found
 
 {&quot;error&quot;:&quot;base file is undefined&quot;}
 </code></pre>
-
-<pre><code class="json">400 Not Found
+<pre><code class="language-json">400 Not Found
 
 {&quot;error&quot;:&quot;overlay file is undefined&quot;}
 </code></pre>
-
 <h3 id="url-parameters-for-substituted-compendium-lists">URL parameters for substituted compendium lists<a class="headerlink" href="#url-parameters-for-substituted-compendium-lists" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:base</code> - id of the base compendium that the results should be related to</li>

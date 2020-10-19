@@ -160,7 +160,7 @@
 <p>Return a list of user ids. <a href="../../compendium/view/">Pagination (including defaults) as described for compendia</a> is available for users.</p>
 <p><code>curl https://…/api/v1/user</code></p>
 <p><code>GET /api/v1/user</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
     &quot;results&quot;: [
@@ -169,14 +169,12 @@
     ]
 }
 </code></pre>
-
 <p>If there are no users, the returned list is empty:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 {
   &quot;results&quot;: [ ]
 }
 </code></pre>
-
 <p>Pagination is supported using the query parameters <code>start</code> and <code>limit</code>.</p>
 <ul>
 <li><code>limit</code> is the number of results in the response, defaults to <code>10</code>. It numeric and larger than <code>0</code>.</li>
@@ -184,26 +182,24 @@
 </ul>
 <p><code>GET /api/v1/user?start=5&amp;limit=10</code></p>
 <h3 id="error-responses-for-user-list">Error responses for user list<a class="headerlink" href="#error-responses-for-user-list" title="Permanent link">&para;</a></h3>
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {&quot;error&quot;:&quot;limit must be larger than 0&quot;}
 </code></pre>
-
 <h2 id="view-single-user">View single user<a class="headerlink" href="#view-single-user" title="Permanent link">&para;</a></h2>
 <p>Show the details of a user.</p>
 <p><code>curl https://…/api/v1/user/$ID</code></p>
 <p><code>GET /api/v1/user/:id</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
     &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
     &quot;name&quot;: &quot;o2r&quot;
 }
 </code></pre>
-
 <p>The content of the response depends on the state and level of the user that requests the resource. The above response only contains the id and the publicly visible name. The following response contains more details and requires a certain user level of the authenticated user making the request:</p>
 <p><code>curl --cookie "connect.sid=&lt;session cookie here&gt;" https://…/api/v1/user/0000-0002-1825-0097</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
     &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
@@ -212,17 +208,15 @@
     &quot;lastseen&quot;: &quot;2016-08-15T12:32:23.972Z&quot;
 }
 </code></pre>
-
 <h3 id="url-parameters-for-single-user-view">URL parameters for single user view<a class="headerlink" href="#url-parameters-for-single-user-view" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - the user id</li>
 </ul>
 <h3 id="error-responses-for-single-user-view">Error responses for single user view<a class="headerlink" href="#error-responses-for-single-user-view" title="Permanent link">&para;</a></h3>
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;no user with this id&quot;}
 </code></pre>
-
 <h2 id="edit-user">Edit user<a class="headerlink" href="#edit-user" title="Permanent link">&para;</a></h2>
 <p>You can update information of an existing user using the <code>HTTP</code> operation <code>PATCH</code>.</p>
 <h3 id="change-user-level-request">Change user level request<a class="headerlink" href="#change-user-level-request" title="Permanent link">&para;</a></h3>
@@ -234,11 +228,10 @@ The response is the full user document with the updated value.</p>
 <p class="admonition-title">Required user level</p>
 <p>The user sending the request to change the level must have the required <a href="../levels/">user level</a>.</p>
 </div>
-<pre><code class="bash">curl --request PATCH --cookie &quot;connect.sid=&lt;session cookie here&gt;&quot; \
+<pre><code class="language-bash">curl --request PATCH --cookie &quot;connect.sid=&lt;session cookie here&gt;&quot; \
   https://…/api/v1/user/0000-0002-1825-0097?level=42`
 </code></pre>
-
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
     &quot;id&quot;: &quot;0000-0002-1825-0097&quot;,
@@ -247,23 +240,20 @@ The response is the full user document with the updated value.</p>
     &quot;lastseen&quot;: &quot;2016-08-15T12:32:23.972Z&quot;
 }
 </code></pre>
-
 <h3 id="error-responses-for-user-level-change">Error responses for user level change<a class="headerlink" href="#error-responses-for-user-level-change" title="Permanent link">&para;</a></h3>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {
   &quot;error&quot;: &quot;user is not authenticated&quot;
 }
 </code></pre>
-
-<pre><code class="json">403 Forbidden
+<pre><code class="language-json">403 Forbidden
 
 {
   &quot;error&quot;: &quot;user level does not allow edit&quot;
 }
 </code></pre>
-
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {
   &quot;error&quot;: &quot;parameter 'level' could not be parsed as an integer&quot;

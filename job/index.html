@@ -240,26 +240,23 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
 </div>
 <p><code>curl -F compendium_id=$ID https://…/api/v1/job</code></p>
 <p><code>POST /api/v1/job</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {&quot;job_id&quot;:&quot;ngK4m&quot;}
 </code></pre>
-
 <h3 id="body-parameters-for-new-jobs">Body parameters for new jobs<a class="headerlink" href="#body-parameters-for-new-jobs" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>compendium_id</code> (<code>string</code>): <strong>Required</strong> The identifier of the compendium to base this job on.</li>
 </ul>
 <h3 id="error-responses-for-new-jobs">Error responses for new jobs<a class="headerlink" href="#error-responses-for-new-jobs" title="Permanent link">&para;</a></h3>
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
 </code></pre>
-
-<pre><code class="json">500 Internal Server Error
+<pre><code class="language-json">500 Internal Server Error
 
 {&quot;error&quot;:&quot;could not create job&quot;}
 </code></pre>
-
 <h2 id="list-jobs">List jobs<a class="headerlink" href="#list-jobs" title="Permanent link">&para;</a></h2>
 <p>Lists jobs with filtering and pagination, returning up to 100 results by default.</p>
 <p>Results are be sorted by descending date of last change. The content of the response can be limited to certain properties of each result by providing a list of fields, i.e. the parameter <code>fields</code>.</p>
@@ -271,7 +268,7 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
 </ul>
 <p><code>curl https://…/api/v1/job?limit=100&amp;start=2&amp;compendium_id=$ID&amp;status=success&amp;fields=status</code></p>
 <p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;status=success</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -282,10 +279,9 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
   ]
 }
 </code></pre>
-
 <p>The overall job state can be added to the job list response:</p>
 <p><code>GET /api/v1/job?limit=100&amp;start=2&amp;compendium_id=a4Dnm&amp;status=success&amp;fields=status</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;results&quot;: [
@@ -305,14 +301,12 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
   ]
 }
 </code></pre>
-
 <p>If there are no jobs, the returned list is empty:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 {
   &quot;results&quot;: [ ]
 }
 </code></pre>
-
 <h3 id="get-query-parameters-for-listing-jobs">GET query parameters for listing jobs<a class="headerlink" href="#get-query-parameters-for-listing-jobs" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>compendium_id</code> - Comma-separated list of related compendium ids to filter by.</li>
@@ -327,7 +321,7 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
 The file listing format is described in <a href="../compendium/files/">compendium files</a>.</p>
 <p><code>curl https://…/api/v1/job/$ID?steps=all</code></p>
 <p><code>GET /api/v1/job/:id?steps=all</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;:&quot;UMmJ7&quot;,
@@ -456,7 +450,6 @@ The file listing format is described in <a href="../compendium/files/">compendiu
   &quot;files&quot;:{ /* see compendium */  }
 }
 </code></pre>
-
 <h3 id="url-parameters-for-single-job-view">URL parameters for single job view<a class="headerlink" href="#url-parameters-for-single-job-view" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - id of the job to be viewed</li>
@@ -467,16 +460,15 @@ The file listing format is described in <a href="../compendium/files/">compendiu
 The response will contain the default properties for all steps but other properties only for the selected ones.
 Any other values for <code>steps</code> or not providing the parameter at all will return the default (e.g. <code>steps=no</code>).</p>
 <h3 id="error-responses-for-single-job-view">Error responses for single job view<a class="headerlink" href="#error-responses-for-single-job-view" title="Permanent link">&para;</a></h3>
-<pre><code class="json">404 Not Found
+<pre><code class="language-json">404 Not Found
 
 {&quot;error&quot;:&quot;no compendium with this ID found&quot;}
 </code></pre>
-
 <h2 id="job-status-updates">Job status updates<a class="headerlink" href="#job-status-updates" title="Permanent link">&para;</a></h2>
 <p>You can subscribe to real time status updates on jobs using <a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a>.
 The implementation is based on <a href="http://socket.io">socket.io</a> and using their client is recommended.</p>
 <p>The job log is available at <code>https://o2r.uni-muenster.de</code> under the namespace <code>api/v1/logs/job</code>.</p>
-<pre><code class="JavaScript"># create a socket.io client:
+<pre><code class="language-JavaScript"># create a socket.io client:
 var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
 </code></pre>
               

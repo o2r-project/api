@@ -159,15 +159,14 @@
 <p>The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
 If a job has been run and the programme outputs new data, this new data is included as well.</p>
 <p>File listings are represented as a Object. The file structure for a synthetic job <code>nj141</code> is as follows.</p>
-<pre><code class="text">nj141
+<pre><code class="language-text">nj141
 ├── bagit.txt
 └── data
     ├── paper.Rmd
     └── Dockerfile
 </code></pre>
-
 <p>is be represented as</p>
-<pre><code class="json">{
+<pre><code class="language-json">{
   &quot;path&quot;: &quot;/api/v1/job/nj141/data&quot;,
   &quot;name&quot;: &quot;nj141&quot;,
   &quot;children&quot;: [
@@ -198,7 +197,6 @@ If a job has been run and the programme outputs new data, this new data is inclu
   ]
 }
 </code></pre>
-
 <h2 id="path-property"><code>path</code> property<a class="headerlink" href="#path-property" title="Permanent link">&para;</a></h2>
 <p>The <code>path</code> property for each file in the listing is a link to the raw file. Additionally the <code>GET</code> parameter <code>?size=…</code> can be appended to retrieve previews of the files. In the case of Images (<code>png</code>, <code>jpg</code>, <code>gif</code>, <code>tiff</code>), the value defines the maximum width/height. For text files (<code>txt</code>, <code>csv</code>, scripts), the value defines the amount of lines returned.</p>
 <h3 id="type-property"><code>type</code> property<a class="headerlink" href="#type-property" title="Permanent link">&para;</a></h3>
@@ -230,7 +228,7 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
 <p>Values of objects are provided as JSON arrays following the specifications by the R package <a href="https://cran.r-project.org/package=jsonlite"><code>jsonlite</code></a>.</p>
 <h3 id="simple-data-types">Simple data types<a class="headerlink" href="#simple-data-types" title="Permanent link">&para;</a></h3>
 <p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=simple.Rdata</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {  
   &quot;aChar&quot;:[  
@@ -247,11 +245,10 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
   ]
 }
 </code></pre>
-
 <h3 id="complex-data-types">Complex data types<a class="headerlink" href="#complex-data-types" title="Permanent link">&para;</a></h3>
 <p>Lists are be nested objects, and vectors are JSON arrays (see <a href="https://rdrr.io/cran/jsonlite/man/fromJSON.html"><code>jsonlite</code> docs</a> for details, defaults are used):</p>
 <p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=complex.Rdata</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {  
   &quot;characterVector&quot;:[  
@@ -284,10 +281,9 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
   }
 }
 </code></pre>
-
 <p>Data frames and matrices are mapped to JSON arrays of complex objects (see <a href="https://rdrr.io/cran/jsonlite/man/fromJSON.html"><code>jsonlite</code> docs</a> for details, defaults are used):</p>
 <p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=matrices.Rdata</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {  
   &quot;dataFrame&quot;:[  
@@ -323,7 +319,6 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
   ]
 }
 </code></pre>
-
 <h3 id="path-parameters">Path parameters<a class="headerlink" href="#path-parameters" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>compendium_id</code> <em>mandatory</em> - the compendium identifier to inspect the file from</li>
@@ -335,7 +330,7 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
 </ul>
 <p>If selected objects are not loadable from the file, an <code>errors</code> property in the response is given for each problematic object:</p>
 <p><code>GET /api/v1/inspection/&lt;compendium id&gt;?file=simple.RData&amp;objects=bar,anInteger,foo</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {  
   &quot;anInteger&quot;:[  
@@ -347,24 +342,20 @@ The format is <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd0
   ]
 }
 </code></pre>
-
 <h3 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {&quot;error&quot;: &quot;Query parameter 'file' missing&quot;}
 </code></pre>
-
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {&quot;error&quot;: &quot;file 'not_available.Rdata' does not exist in compendium kOSMO&quot;}
 </code></pre>
-
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {&quot;error&quot;: &quot;compendium '12345' does not exist&quot;}
 </code></pre>
-
-<pre><code class="json">500 Internal Server Error
+<pre><code class="language-json">500 Internal Server Error
 
 {&quot;error&quot;: &quot;Error loading objects&quot;}
 </code></pre>

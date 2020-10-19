@@ -191,7 +191,7 @@ The schema file is included in the <code>o2r-meta</code> repository: <a href="ht
 <p><code>curl https://…/api/v1/$ID</code></p>
 <p><code>GET /api/v1/compendium/:id</code></p>
 <p>Abbreviated example response:</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;:&quot;12345&quot;,
@@ -219,12 +219,11 @@ The schema file is included in the <code>o2r-meta</code> repository: <a href="ht
   &quot;files&quot;: …
 }
 </code></pre>
-
 <h2 id="get-o2r-metadata">Get o2r metadata<a class="headerlink" href="#get-o2r-metadata" title="Permanent link">&para;</a></h2>
 <p>The following endpoint allows to access <em>only</em> the normative o2r-metadata element:</p>
 <p><code>curl https://…/api/v1/$ID/metadata</code></p>
 <p><code>GET /api/v1/compendium/:id/metadata</code></p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;:&quot;compendium_id&quot;,
@@ -235,7 +234,6 @@ The schema file is included in the <code>o2r-meta</code> repository: <a href="ht
   }
 }
 </code></pre>
-
 <h3 id="url-parameters">URL parameters<a class="headerlink" href="#url-parameters" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>:id</code> - compendium id</li>
@@ -247,7 +245,7 @@ The schema file is included in the <code>o2r-meta</code> repository: <a href="ht
 <li><a href="https://en.wikipedia.org/wiki/Shapefile">shapefiles</a></li>
 </ul>
 <p>The following structure is made available per file:</p>
-<pre><code class="json">    &quot;spatial&quot;: {
+<pre><code class="language-json">    &quot;spatial&quot;: {
         &quot;files&quot;: [
             {
                 &quot;geojson&quot;: {
@@ -338,7 +336,6 @@ The schema file is included in the <code>o2r-meta</code> repository: <a href="ht
         }
     }
 </code></pre>
-
 <p>The <code>spatial</code> key has a <code>union</code> bounding box, that wraps all extracted bounding boxes.</p>
 <h2 id="update-metadata">Update metadata<a class="headerlink" href="#update-metadata" title="Permanent link">&para;</a></h2>
 <p>The following endpoint can be used to update the <code>o2r</code> metadata elements.
@@ -349,13 +346,12 @@ After creation the metadata is persisted to both files and database, so updating
 <p>Only authors of a compendium or users with the required <a href="../../user/levels/">user level</a> can update a compendium's metadata.</p>
 </div>
 <h3 id="metadata-update-request">Metadata update request<a class="headerlink" href="#metadata-update-request" title="Permanent link">&para;</a></h3>
-<pre><code class="bash">curl -H 'Content-Type: application/json' \
+<pre><code class="language-bash">curl -H 'Content-Type: application/json' \
   -X PUT \
   --cookie &quot;connect.sid=&lt;code string here&gt;&quot; \
   -d '{ &quot;o2r&quot;: { &quot;title&quot;: &quot;Blue Book&quot; } }' \
   /api/v1/compendium/:id/metadata
 </code></pre>
-
 <p>The request <em>overwrites</em> the existing metadata properties, so the <em>full</em> o2r metadata must be put with a JSON object called <code>o2r</code> at the root, even if only specific fields are changed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -367,7 +363,7 @@ After creation the metadata is persisted to both files and database, so updating
 </ul>
 <h3 id="metadata-update-response">Metadata update response<a class="headerlink" href="#metadata-update-response" title="Permanent link">&para;</a></h3>
 <p>The response contains an excerpt of a compendium with only the o2r metadata property.</p>
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {
   &quot;id&quot;:&quot;compendium_id&quot;,
@@ -378,14 +374,12 @@ After creation the metadata is persisted to both files and database, so updating
   }
 }
 </code></pre>
-
 <h3 id="metadata-update-error-responses">Metadata update error responses<a class="headerlink" href="#metadata-update-error-responses" title="Permanent link">&para;</a></h3>
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;not authorized&quot;}
 </code></pre>
-
-<pre><code class="json">400 Incomplete metadata (description property missing)
+<pre><code class="language-json">400 Incomplete metadata (description property missing)
 
 {
     &quot;error&quot;:&quot;Error updating metadata file, see log for details&quot;,
@@ -401,17 +395,14 @@ After creation the metadata is persisted to both files and database, so updating
             None&quot;
 }
 </code></pre>
-
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 &quot;SyntaxError [...]&quot;
 </code></pre>
-
-<pre><code class="json">422 Unprocessable Entity
+<pre><code class="language-json">422 Unprocessable Entity
 
 {&quot;error&quot;:&quot;JSON with root element 'o2r' required&quot;}
 </code></pre>
-
 <h2 id="other-metadata-properties">Other metadata properties<a class="headerlink" href="#other-metadata-properties" title="Permanent link">&para;</a></h2>
 <p>Besides the <code>metadata</code> element, a compendium persists some additional properties to reduce computation on the server, and to allows client applications to improve the user experience.</p>
 <ul>
@@ -420,7 +411,7 @@ After creation the metadata is persisted to both files and database, so updating
 </ul>
 <p><strong>Example:</strong></p>
 <p>(Properties <code>metadata</code> and <code>files</code> not shown for brevity.)</p>
-<pre><code class="json">{
+<pre><code class="language-json">{
 
     &quot;id&quot;: &quot;U9IZ7&quot;,
     &quot;metadata&quot;: {},

@@ -144,7 +144,7 @@
 <p><code>GET /api/v1/search?q=Reproducible</code></p>
 <p><code>GET /api/v1/search?q=great reproducible research</code></p>
 <p>The <strong>response</strong> is <code>JSON</code> with the root element is <code>hits</code>, which has the same as the <code>hits</code> element from an Elasticsearch response but does not include internal fields such as <code>_index</code>, <code>_type</code>, and <code>_id</code>.</p>
-<pre><code class="json">200 ok
+<pre><code class="language-json">200 ok
 
 {
   &quot;hits&quot;: {
@@ -163,7 +163,6 @@
   }
 }
 </code></pre>
-
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The available metadata is a synced clone of the compendium metadata stored in the main database.
@@ -204,7 +203,7 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
 <p>Besides these fields, all metadata of the <a href="../compendium/metadata/#metadata-formats"><code>o2r</code> metadata format</a> can be used.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <h4 id="temporal-search">Temporal search<a class="headerlink" href="#temporal-search" title="Permanent link">&para;</a></h4>
-<pre><code class="bash">POST /api/v1/search -d '{
+<pre><code class="language-bash">POST /api/v1/search -d '{
   &quot;query&quot;: {
       &quot;bool&quot;: {
           &quot;must&quot;: {
@@ -232,9 +231,8 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
   &quot;size&quot;: 10
 }'
 </code></pre>
-
 <h4 id="spatial-search">Spatial search<a class="headerlink" href="#spatial-search" title="Permanent link">&para;</a></h4>
-<pre><code class="json">{
+<pre><code class="language-json">{
     &quot;bool&quot;: {
         &quot;must&quot;: {
             &quot;match_all&quot;: {}
@@ -253,11 +251,10 @@ Queries can include filters, aggregation and spatio-temporal operations as defin
      }
 }
 </code></pre>
-
 <p>In this example a filter has been nested within a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html">boolean/must match</a> query.
 The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> field of the dataset with a <code>within</code> relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.</p>
 <h4 id="resource-search">Resource search<a class="headerlink" href="#resource-search" title="Permanent link">&para;</a></h4>
-<pre><code class="json">{
+<pre><code class="language-json">{
     &quot;query&quot;: {
         &quot;terms&quot;: {
             &quot;_index&quot;: [&quot;compendia&quot;]
@@ -265,9 +262,8 @@ The filter has been applied to the <code>metadata.o2r.spatial.geometry</code> fi
     }
 }
 </code></pre>
-
 <h4 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h4>
-<pre><code class="json">200 ok
+<pre><code class="language-json">200 ok
 
 {
   &quot;hits&quot;: {

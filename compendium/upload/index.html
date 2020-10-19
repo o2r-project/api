@@ -146,23 +146,20 @@ Upon successful extraction of archive and processing of the contents, the <code>
 <p>The user creating a new compendium must have the required <a href="../../user/levels/">user level</a>.
 Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="../../user/auth/">user authentication</a>.</p>
 </div>
-<pre><code class="bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
+<pre><code class="language-bash">curl -F &quot;compendium=@compendium.zip;type=application/zip&quot; \
     -F content_type=compendium \
     --cookie &quot;connect.sid=&lt;cookie string here&gt;&quot; \
      https://…/api/v1/compendium 
 </code></pre>
-
-<pre><code class="bash">curl -F &quot;compendium=@path/to/workspace.zip;type=application/zip&quot; \
+<pre><code class="language-bash">curl -F &quot;compendium=@path/to/workspace.zip;type=application/zip&quot; \
     -F content_type=workspace \
     --cookie &quot;connect.sid=&lt;cookie string here&gt;&quot; \
      https://…/api/v1/compendium 
 </code></pre>
-
-<pre><code class="json">200 OK
+<pre><code class="language-json">200 OK
 
 {&quot;id&quot;:&quot;a4Ndl&quot;}
 </code></pre>
-
 <div class="admonition warning">
 <p class="admonition-title">Important</p>
 <p>After successful upload the <strong><a href="./#candidate-process">candidate process</a></strong> must be completed for workspaces.</p>
@@ -181,24 +178,20 @@ Requests must be authenticated with a cookie <code>connect.sid</code>, see <a hr
 <p>If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>
 </div>
 <h2 id="error-responses-for-compendium-upload">Error responses for compendium upload<a class="headerlink" href="#error-responses-for-compendium-upload" title="Permanent link">&para;</a></h2>
-<pre><code class="json">400 Bad Request
+<pre><code class="language-json">400 Bad Request
 
 {&quot;error&quot;:&quot;provided content_type not implemented&quot;}
 </code></pre>
-
-<pre><code class="json">401 Unauthorized
+<pre><code class="language-json">401 Unauthorized
 
 {&quot;error&quot;:&quot;user is not authenticated&quot;}
 </code></pre>
-
-<pre><code class="json">403 Forbidden
+<pre><code class="language-json">403 Forbidden
 
 {&quot;error&quot;:&quot;user level does not allow compendium creation&quot;}
 </code></pre>
-
-<pre><code class="json">422 Unprocessable Entity
+<pre><code class="language-json">422 Unprocessable Entity
 </code></pre>
-
 <p>For local testing you can quickly upload some of the example compendia and workspaces from the <a href="https://github.com/o2r-project/erc-examples">erc-examples</a> project.</p>
               
             </div>
