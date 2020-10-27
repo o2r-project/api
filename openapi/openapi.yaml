@@ -4,47 +4,47 @@ info:
   description: |
     ## About
 
-    The o2r web API acts as the interface between the o2r microservices and the web interface.
+    The o2r web API acts as the interface between the [o2r](https://o2r.info) [microservices](https://o2r.info/architecture/) and the [web interface](https://github.com/o2r-project/o2r-platform).
 
-    The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented in the ERC spec.
+    The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented [in the ERC spec](https://o2r.info/erc-spec/).
 
-    A good starting point for understanding the different parts of the API is the compendium life-cycle.
+    **A good starting point for understanding the different parts of the API is the [compendium life-cycle](#section/Compendium-lifecycle).**
 
     ---
-    ## Citation
+    **Citation**
 
     To cite this specification please use
 
-    >_Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. doi:10.5281/zenodo.2203844_
+    >*Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. [doi:10.5281/zenodo.2203844](https://zenodo.org/record/2203844)*
 
-    For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit https://o2r.info/results/.
-
-    ---
-    ## General
-
-    The API is implemented as a RESTful API. The entrypoint for the current version is /api/v1.
-
-    Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require authentication with a specific user level.
+    For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit [https://o2r.info/results/](https://o2r.info/results/).
 
     ---
-    ## License
+    **General**
+
+    The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is /api/v1.
+
+    Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require [authentication](#section/User-authentication) with a specific [user level](#section/User-levels).
+
+    ---
+    **License**
 
     ![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)
 
-    The o2r Executable Research Compendium specification is licensed under Creative Commons CC0 1.0 Universal License, see file LICENSE. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.
+    The o2r Executable Research Compendium specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file `LICENSE`. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.
 
     ---
-    ## Compendium lifecycle
+    **Compendium lifecycle**
 
-    An authorized user (see [user levels](#section/User-levels)) can create compendia from different sources, i.e. [direct API upload](#operation/upload_compendium) or [via a public share](public_share.md).
-    The uploaded workspace is then treated as a [candidate compendium](candidate.md) until all required [metadata](metadata.md) is provided.
-    A candidate must be [saved](candidate.md) to become publicly available, and then may not become a candidate again.
-    A published compendium can be [executed](../job.md) and the whole compendium can be [shipped](../shipment.md) to repositories for preservation purposes.
-    A user can combine data and workflow of multiple compendia with [substitution](substitute.md).
+    An authorized user (see [user levels](#section/User-levels)) can create compendia from different sources, i.e. [direct API upload](#operation/upload_compendium) or [via a public share](#).
+    The uploaded workspace is then treated as a [candidate compendium](#section/Candidate-process) until all required [metadata](#tag/Metadata) is provided.
+    A candidate must be [saved](#section/Candidate-process) to become publicly available, and then may not become a candidate again.
+    A published compendium can be [executed](#tag/Execution) and the whole compendium can be [shipped](#tag/Shipment) to repositories for preservation purposes.
+    A user can combine data and workflow of multiple compendia with [substitution](#tag/#operation/upload_substitution).
 
-    [Specific users](../user/levels.md) can (i) create [public links](link.md) for candidates so these can be inspected by third parties without logging in, and (ii) manage [users](../user/user.md)).
+    [Specific users](#section/User-levels) can (i) create [public links](#tag/#operation/upload_link) for candidates so these can be inspected by third parties without logging in, and (ii) manage [users](#tag/Users)).
 
-    The API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](../user/auth.md).
+    The API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](#section/User-authentication).
 
   termsOfService: ''
   contact: {}
@@ -71,8 +71,8 @@ paths:
 
         <!--HTML is necessary, due to being essential for the notes-->
         <div class="note blue_note">
-          <p><b>&#x26A0; Required user level and authentication</b></p>
-          <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.</p>
+          <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
+          <p>&thinsp;The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.</p>
         </div>
 
 
@@ -90,11 +90,78 @@ paths:
           https://…/api/v1/compendium
         ```
         <div class="note yellow_note">
-          <p><b>&#x26A0; Important</b></p>
-          <p>After successful upload the candidate process must be completed for workspaces.</p>
+          <p><b>&thinsp;&#x26A0; Important</b></p>
+          <p>&thinsp;After successful upload the candidate process must be completed for workspaces.</p>
         </div>
 
         For local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.
+
+        ## Public share
+
+        Load a research compendium by submitting a link to a cloud resource using an HTTP `POST` request using `multipart/form-data`.
+
+        Currently, the following repositories are supported:
+
+        - [Sciebo](https://sciebo.de)
+        - [Zenodo](https://zenodo.org)
+        - [Zenodo Sandbox](https://sandbox.zenodo.org)
+
+        ## Common
+
+        All repositories use the same API endpoint `https://…/api/v1/compendium`, but with different required/optional parameters.
+
+        The upload is only allowed for logged in users.
+
+        <div class="note blue_note">
+          <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
+          <p>&thinsp;The user creating a new compendium must have the required [user level](#section/User-levels).
+          Requests must be authenticated with a cookie `connect.sid`, see [user authentication](#section/User-authentication).</p>
+        </div>
+
+        To run the load from the command line, login on the website and open you browser cookies.
+        Find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.
+        Copy the contents of the cookie into the request example below.
+
+        Upon successful download from the public share, the `id` for the new compendium is returned.
+
+        ```bash
+        curl -F "content_type=compendium" \
+            -F "share_url=https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA"  \
+            --cookie "connect.sid=<code string here>" \
+             https://…/api/v1/compendium
+        ```
+
+        <div class="note yellow_note">
+          <p><b>&thinsp;&#x26A0; Warning "Important"</b></p>
+          <p>&thinsp;After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.</p>
+        </div>
+
+        ## Sciebo
+
+        [Sciebo](http://www.sciebo.de/en/about/index.html) is a cloud storage service at North Rhine-Westphalian universities.
+        Although it builds on ownCloud and the implementation might be able to handle any ownCloud link, only Sciebo's publish shares are supported by this API.
+
+        ### File selection
+
+        Depending on the public share contents different processes are triggered:
+
+        1. If a file named `bagit.txt` is found, the directory is checked for Bagit validity
+        2. If a single zip file is found, the file is extracted, if multiple zip files are found, the filename has to be specified, otherwise an error is returned
+        3. If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading
+        4. Depending on the value of `content_type` (see below), the public share contents are treated as a complete compendium or as a  workspace
+
+        #### Example data
+
+        For testing purposes you can use the following public share, which contains a few ready-to-use compendia:
+
+        [Example data](https://uni-muenster.sciebo.de/s/G8vxQ1h50V4HpuA)
+
+        For testing purposes you can use the following public shares.
+        They contain the a compendium with metadata.
+
+        - Sciebo: [`https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA`](https://uni-muenster.sciebo.de/index.php/s/G8vxQ1h50V4HpuA)
+        - Zenodo: [`https://sandbox.zenodo.org/record/69114`](https://sandbox.zenodo.org/record/69114)
+
 
       operationId: upload_compendium
       security:
@@ -145,8 +212,21 @@ paths:
               examples:
                 unauthorized:
                   $ref: '#/components/examples/upload_forbidden'
+                host_not_allowed:
+                  $ref: '#/components/examples/host_not_allowed'
         422:
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/general_error_model'
+              examples:
+                url_invalid:
+                  $ref: '#/components/examples/url_invalid'
+                doi_invalid:
+                  $ref: '#/components/examples/doi_invalid'
+                encoding_invalid:
+                  $ref: '#/components/examples/encoding_invalid'
     get:
       tags:
       - Compendium
@@ -216,12 +296,12 @@ paths:
           To delete a compendium **candidate**, an HTTP <code>DELETE</code> request can be send to the compendium endpoint.
 
           <div class="note green_note">
-            <p><b>&#x26A0; Important</b></p>
-            <p>Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>
+            <p><b>&thinsp;&#x26A0; Important</b></p>
+            <p>&thinsp;Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>
           </div>
           <div class="note blue_note">
-            <p><b>&#x26A0; Required user level for candidate deletion</b></p>
-            <p>The user deleting a candidate must be the author or have the required user level.</p>
+            <p><b>&thinsp;&#x26A0; Required user level for candidate deletion</b></p>
+            <p>&thinsp;The user deleting a candidate must be the author or have the required user level.</p>
           </div>
 
           ## Request
@@ -282,8 +362,8 @@ paths:
         Download compendium files as an archive.
 
         <div class="note yellow_note">
-          <p><b>&#x26A0; Warning</b></p>
-          <p>This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>
+          <p><b>&thinsp;&#x26A0; Warning</b></p>
+          <p>&thinsp;This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>
         </div>
         Supported formats are as follows:
 
@@ -415,8 +495,8 @@ paths:
         After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the download endpoint.
 
         <div class="note blue_note">
-          <p><b>&#x26A0; Metadata update rights</b></p>
-          <p> Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>
+          <p><b>&thinsp;&#x26A0; Metadata update rights</b></p>
+          <p>&thinsp; Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>
         </div>
 
         ### Metadata update request
@@ -474,7 +554,7 @@ paths:
       - $ref: '#/components/parameters/compendium_id'
     put:
       tags:
-        - Extras
+        - Compendium
       summary: Create link
       description: |
         The following request creates a link for the candidate compendium with the identifier 12345.
@@ -517,7 +597,7 @@ paths:
 
     delete:
       tags:
-        - Extras
+        - Compendium
       summary: Create link
       description: |
         The following request deletes a link for the candidate compendium with the identifier 12345.
@@ -561,126 +641,128 @@ paths:
 
 
   #Inspection paths
-  /inspection/{compendium_id}:
-    parameters:
-      - $ref: '#/components/parameters/compendium_id'
-    get:
-      tags:
-        - Compendium
-      summary: Compendium file listing
-      description: |
-        The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
-        If a job has been run and the programme outputs new data, this new data is included as well.
+  #/inspection/{compendium_id}:
+  #  parameters:
+  #    - $ref: '#/components/parameters/compendium_id'
+  #  get:
+  #    tags:
+  #      - Compendium
+  #    summary: Compendium file listing
+  #    description: |
+  #      The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
+  #      If a job has been run and the programme outputs new data, this new data is included as well.
 
-        File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
+  #      File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
 
-        ```text
-        nj141
-        ├── bagit.txt
-        └── data
-            ├── paper.Rmd
-            └── Dockerfile
-        ```
+  #      ```text
+  #      nj141
+  #      ├── bagit.txt
+  #      └── data
+  #         ├── paper.Rmd
+  #          └── Dockerfile
+  #      ```
 
-        is be represented as
+    #    is be represented as
 
-        ```json
-        {
-          "path": "/api/v1/job/nj141/data",
-          "name": "nj141",
-          "children": [
-            {
-              "path": "/api/v1/job/nj141/data/bagit.txt",
-              "name": "bagit.xt",
-              "type": "text/plain",
-              "size": 55
-            },
-            {
-              "path": "/api/v1/job/nj141/data/data",
-              "name": "data",
-              "children": [
-                {
-                  "path": "/api/v1/job/nj141/data/data/paper.Rmd",
-                  "name": "paper.Rmd",
-                  "type": "text/plain",
-                  "size": 346512
-                }
-                {
-                  "path": "/api/v1/job/nj141/data/data/Dockerfile",
-                  "name": "Dockerfile",
-                  "type": "text/plain",
-                  "size": 1729
-                }
-              ]
-            }
-          ]
-        }
-        ```
+    #    ```json
+    #    {
+    #      "path": "/api/v1/job/nj141/data",
+    #      "name": "nj141",
+    #      "children": [
+    #        {
+    #          "path": "/api/v1/job/nj141/data/bagit.txt",
+    #          "name": "bagit.xt",
+    #          "type": "text/plain",
+    #          "size": 55
+    #        },
+    #        {
+    #          "path": "/api/v1/job/nj141/data/data",
+    #          "name": "data",
+    #          "children": [
+    #            {
+    #              "path": "/api/v1/job/nj141/data/data/paper.Rmd",
+    #              "name": "paper.Rmd",
+    #              "type": "text/plain",
+    #              "size": 346512
+    #            }
+    #            {
+    #              "path": "/api/v1/job/nj141/data/data/Dockerfile",
+    #              "name": "Dockerfile",
+    #              "type": "text/plain",
+    #              "size": 1729
+    #            }
+    #          ]
+    #        }
+    #      ]
+    #    }
+    #    ```
 
-        ## `path` property
+    #    ## `path` property
 
-        The `path` property for each file in the listing is a link to the raw file. Additionally the `GET` parameter `?size=…` can be appended to retrieve previews of the files. In the case of Images (`png`, `jpg`, `gif`, `tiff`), the value defines the maximum width/height. For text files (`txt`, `csv`, scripts), the value defines the amount of lines returned.
+    #    The `path` property for each file in the listing is a link to the raw file. Additionally the `GET` parameter `?size=…` can be appended to retrieve previews of the files. In the case of Images (`png`, `jpg`, `gif`, `tiff`), the value defines the maximum width/height. For text files (`txt`, `csv`, scripts), the value defines the amount of lines returned.
 
-        ### `type` property
+    #    ### `type` property
 
-        The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.
+    #    The `type` property is a best guess for the MIME type of the file content. It is a result of the files extension. Look at the list of extension to type mapping below.
 
-        ## File extension to MIME type mappings
+    #    ## File extension to MIME type mappings
 
-        This list contains the custom mapping of file extensions to MIME types used in the server.
+    #    This list contains the custom mapping of file extensions to MIME types used in the server.
 
-        | Extension        | MIME type          |
-        |------------------|--------------------|
-        | `.R`, `.r`       | `script/x-R`       |
-        |  `.RData`, `.Rdata`, `.rdata`, `.rda`   |  `application/x-r-data`  |
+    #    | Extension        | MIME type          |
+    #    |------------------|--------------------|
+    #    | `.R`, `.r`       | `script/x-R`       |
+    #    |  `.RData`, `.Rdata`, `.rdata`, `.rda`   |  `application/x-r-data`  |
 
-        ## File inspection: RData
+    #    ## File inspection: RData
 
-        `.RData` files are a [binary format](https://stat.ethz.ch/R-manual/R-devel/library/base/html/save.html) for usage with R to save any kind of object (data, functions) using an internal serialisation.
-        The format is [not suitable](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml) for archival or data exchange, but might be included in a compendium out of negligence by or convenience for the author.
+    #    `.RData` files are a [binary format](https://stat.ethz.ch/R-manual/R-devel/library/base/html/save.html) for usage with R to save any kind of object (data, functions) using an internal serialisation.
+    #    The format is [not suitable](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml) for archival or data exchange, but might be included in a compendium out of negligence by or convenience for the author.
 
-        Since the file format is binary and not readable by non-R client applications, the API provides the endpoint `/api/v1/inspection` to retrieve a JSON representation of the objects in an RData file.
+    #    Since the file format is binary and not readable by non-R client applications, the API provides the endpoint `/api/v1/inspection` to retrieve a JSON representation of the objects in an RData file.
 
-        Values of objects are provided as JSON arrays following the specifications by the R package [`jsonlite`](https://cran.r-project.org/package=jsonlite).
-      operationId: get_file
-      parameters:
-        - $ref: '#/components/parameters/file_query'
-        - $ref: '#/components/parameters/objects_query'
-      responses:
-        200:
-          description: Returns the file is represented as a JSON array
-          content:
-            application/json:
-              examples:
-                files_simple:
-                  $ref: '#/components/examples/files_simple'
-                files_complex_1:
-                  $ref: '#/components/examples/files_complex_1'
-                files_complex_2:
-                  $ref: '#/components/examples/files_complex_2'
-                files_objects_errors:
-                  $ref: '#/components/examples/files_objects_errors'
+    #    Values of objects are provided as JSON arrays following the specifications by the R package [`jsonlite`](https://cran.r-project.org/package=jsonlite).
+    #  operationId: get_file
+    #  parameters:
+    #    - $ref: '#/components/parameters/file_query'
+    #    - $ref: '#/components/parameters/objects_query'
+    #  responses:
+    #    200:
+    #      description: Returns the file is represented as a JSON array
+    #      content:
+    #        application/json:
+    #          examples:
+    #            files_simple:
+    #              $ref: '#/components/examples/files_simple'
+    #           files_complex_1:
+    #             $ref: '#/components/examples/files_complex_1'
+    #            files_complex_2:
+    #              $ref: '#/components/examples/files_complex_2'
+    #           files_objects_errors:
+    #              $ref: '#/components/examples/files_objects_errors'
 
-        400:
-          description: Returns the file is represented as a JSON array
-          content:
-            application/json:
-              examples:
-                files_simple:
-                  $ref: '#/components/examples/files_bad_request_1'
-                files_complex_1:
-                  $ref: '#/components/examples/files_bad_request_2'
-                files_complex_2:
-                  $ref: '#/components/examples/files_bad_request_3'
-        500:
-          description: Returns the file is represented as a JSON array
-          content:
-            application/json:
-              examples:
-                files_simple:
-                  $ref: '#/components/examples/files_server_error'
+    #    400:
+    #      description: Returns the file is represented as a JSON array
+    #      content:
+    #        application/json:
+    #          examples:
+    #            files_simple:
+    #              $ref: '#/components/examples/files_bad_request_1'
+    #            files_complex_1:
+    #             $ref: '#/components/examples/files_bad_request_2'
+    #            files_complex_2:
+    #                $ref: '#/components/examples/files_bad_request_3'
+    #   500:
+    #      description: Returns the file is represented as a JSON array
+    #      content:
+    #        application/json:
+    #          examples:
+    #            files_simple:
+    #             $ref: '#/components/examples/files_server_error'
+    #
 
   #Job paths
+
   /job:
     post:
       tags:
@@ -689,8 +771,8 @@ paths:
       description: |
         Create and run a new execution job with an HTTP POST request using multipart/form-data. Requires a compendium_id.
         <div class="note blue_note">
-          <p><b>&#x26A0; Required user level and authentication</b></p>
-          <p>The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>
+          <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
+          <p>&thinsp;The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>
         </div>
 
         `curl -F compendium_id=$ID https://…/api/v1/job`
@@ -894,8 +976,8 @@ paths:
         `POST /api/v1/shipment`
 
         <div class="note blue_note">
-          <p><b>&#x26A0; Required user level</b></p>
-          <p>The user sending the request to create a shipment must have the required [user level](user/levels.md).</p>
+          <p><b>&thinsp;&#x26A0; Required user level</b></p>
+          <p>&thinsp;The user sending the request to create a shipment must have the required [user level](user/levels.md).</p>
         </div>
 
 
@@ -979,8 +1061,8 @@ paths:
         The publishment is supposed to have completed the status shipped where metadata requirements for publication have been checked.
 
          <div class="note blue_note">
-          <p><b>&#x26A0; Note</b></p>
-          <p>Once published, a deposition can no longer be deleted on the supported repositories.</p>
+          <p><b>&thinsp;&#x26A0; Note</b></p>
+          <p>&thinsp;Once published, a deposition can no longer be deleted on the supported repositories.</p>
         </div>
 
         `PUT api/v1/shipment/<shipment_id>/publishment`
@@ -1049,7 +1131,7 @@ paths:
       The user can let the new extracted metadata be merged into the existing metadata of the base ERC (`extractAndMerge` - **not implemented**) or just save the extracted metadata (`extract` - **not implemented**).
     post:
       tags:
-        - Extras
+        - Compendium
       summary: Create substitution
       description: |
         `Create substitution` produces a new compendium with its own files in the storage and metadata in the database.
@@ -1057,8 +1139,8 @@ paths:
         Required content of the request are the identifiers of the base and overlay compendia and at least one pair of _substitution files_, consisting of a base file and an overlay file.
 
         <div class="note blue_note">
-          <p><b>&#x26A0; Note</b></p>
-          <p>  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).
+          <p><b>&thinsp;&#x26A0; Note</b></p>
+          <p>&thinsp;  A substitution process removes potentially existing packaging information, i.e. if the base compendium was a BagIt bag, the substitution will only contain the payload directory contents (<code>/data</code> directory).
 
 
           The overlay file is stripped of all paths and is copied directly into the substitution's root directory.</p>
@@ -1067,8 +1149,8 @@ paths:
         `POST /api/v1/substitution`
 
         <div class="note blue_note">
-          <p><b>&#x26A0; Required user level</b></p>
-          <p>The user creating a new substitution must have the required user level.</p>
+          <p><b>&thinsp;&#x26A0; Required user level</b></p>
+          <p>&thinsp;The user creating a new substitution must have the required user level.</p>
         </div>
 
         You can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.
@@ -1124,7 +1206,7 @@ paths:
 
     get:
       tags:
-        - Extras
+        - Compendium
       summary: List substituted Compenium
       description: |
         `curl https://.../api/v1/substitution`
@@ -1193,7 +1275,7 @@ paths:
   /link:
     get:
       tags:
-        - Extras
+        - Compendium
       summary: List links
       description: |
         ```
@@ -1311,8 +1393,8 @@ paths:
 
 
         <div class="note blue_note">
-          <p><b>&#x26A0; Required user level</b></p>
-          <p>The user sending the request to change the level must have the required user level.</p>
+          <p><b>&thinsp;&#x26A0; Required user level</b></p>
+          <p>&thinsp;The user sending the request to change the level must have the required user level.</p>
         </div>
 
       operationId: edit_user
@@ -1374,12 +1456,12 @@ paths:
       description: |
         Navigate the web browser (e.g. via a HTML `<a>` link) to `/api/v1/auth/login`, which then redirects the user and request access to your ORCID profile. After granting access, ORCID redirects the user back to the `/api/v1/auth/login` endpoint with a unique `code` param that is used to verify the request.
 
-        If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `301 redirect`, which redirects the user back to `/`, the start page of the o2r website.
+        If the verification was successful, the endpoint returns a session cookie named `connect.sid`, which is tied to a authenticated session. The server answers with a `302 redirect`, which redirects the user back to `/`, the start page of the o2r website.
 
         If the login is unsuccessful, the user is not redirected back to the site and no further redirects are configured.
       operationId: login_user
       responses:
-        301:
+        302:
           description: Access request for OCRID profile then it will redirect to the [Main Page](https://o2r.uni-muenster.de/#/)
 
   /auth/whoami:
@@ -1431,8 +1513,8 @@ components:
             - `workspace` - formless workspace, for *creation* of a compendium
 
             <div class="note yellow_note">
-              <p><b>&#x26A0; Warning</b></p>
-              <p>If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>
+              <p><b>&thinsp;&#x26A0; Warning</b></p>
+              <p>&thinsp;If a complete ERC is submitted as a workspace, it may result in an error, or the contained metadata and other files may be overwritten by the creation process.</p>
             </div>
 
           type: string
@@ -1443,6 +1525,28 @@ components:
           description: The archive file as a compressed .zip
           type: string
           format: binary
+        path:
+          type: string
+          description: |
+            Path to a subdirectory or a zip file in the public share (optional)
+              - default is `/`
+              - the leading `/` is optional, the loader supports both ways
+              - when a directory has multiple zip files, the path can be used to specify which file is used, e.g. `path=/metatainer.zip`
+        doi:
+          type: string
+          description:  A [DOI](https://doi.org) resolving to the zenodo record
+        zenodo_record_id:
+          type: string
+          description: The ID of the zenodo record
+        filename:
+          type: string
+          description: |
+            Filename of your compendium. For now, only zip-files are supported.
+            - if no `filename` is provided the first zip file is selected
+            - multiple files are currently not supported
+
+      required:
+        - content_type
 
     new_job:
       type: object
@@ -2492,8 +2596,8 @@ components:
       description: |
         Retruns a JSON object with information on the specified shipment.
         <div class="note blue_note">
-          <p><b>&#x26A0; Note</b></p>
-          <p>Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
+          <p><b>&thinsp;&#x26A0; Note</b></p>
+          <p>&thinsp;Returned deposition URLs (property `deposition_url`) from Zenodo as well as Eudat b2share (records) will only be functional after publishing.</p>
         </div>
       value:
         {
@@ -2755,6 +2859,25 @@ components:
         orcid: 0000-0002-1825-0097
         name: o2r
 
+    ##Public Share Examples
+    host_not_allowed:
+      summary: Forbidden due to public share host not allowed.
+      value:
+        error: host is not allowed
+
+    url_invalid:
+      summary: Unporcessable Entity due to invalid public share URL
+      value:
+        error: public share URL is invalid
+    doi_invalid:
+      summary: Unporcessable Entity due to invalid DOI
+      value:
+        error: DOI is invalid
+    encoding_invalid:
+      summary: Unporcessable Entity due to invalid file encoding
+      value:
+        error: "files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"
+
     ##General Response Examples
     bad_request_content_type:
       summary: A bad request due to content_type
@@ -2763,6 +2886,11 @@ components:
     unauthorized:
       summary: A unthorized error example
       value: {'error':'user is not authenticated'}
+
+
+
+
+
 
   securitySchemes:
     cookie_authenification:
@@ -2788,8 +2916,8 @@ tags:
       It is set to `true` after creating a new compendium by [upload](upload.md) or [public share submission](public_share.md) **and** the authoring user having reviewed the metadata.
 
       <div class="note blue_note">
-          <p><b>&#x26A0; Note</b></p>
-          <p>It is not possible to circumvent the metadata review.
+          <p><b>&thinsp;&#x26A0; Note</b></p>
+          <p>&thinsp;It is not possible to circumvent the metadata review.
           Only a successful metadata update can set `candidate: true`.</p>
       </div>
 
@@ -2805,7 +2933,7 @@ tags:
       }
       ```
 
-      Only the creating user and users with [required level](../user/levels.md) can view a candidate and see the `candidate` property while it is `true`.
+      Only the creating user and users with [required level](#section/User-levels) can view a candidate and see the `candidate` property while it is `true`.
 
       When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list is extended by available candidates.
       The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.
@@ -2821,7 +2949,6 @@ tags:
       ### Deletion
 
       Unlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](delete.md).
-
   - name: Metadata
     description: |
       ### Basics
@@ -2844,8 +2971,8 @@ tags:
       - `zenodo_sandbox` holds [Zenodo](https://zenodo.org/) metadata for shipments made to Zenodo Sandbox, i.e. a clone of `zenodo` metadata
 
       <div class="note blue_note">
-          <p><b>&#x26A0; Note</b></p>
-          <p>The information in each sub-property are subject to independent workflows and may differ from one another.
+          <p><b>&thinsp;&#x26A0; Note</b></p>
+          <p>&thinsp;The information in each sub-property are subject to independent workflows and may differ from one another.
           The term <b>brokering</b> is used for translation from one metadata format into another.</p>
       </div>
       ## Metadata validation
@@ -2962,7 +3089,7 @@ tags:
           - Edit user levels up to own level
           - Edit compendium metadata
           - Delete candidates
-          - Manage [public links](../compendium/link.md) for candidates
+          - Manage [public links](#operation/upload_link) for candidates
       - `1000` _Admins_
           - Edit user levels up to own level
           - Delete compendia and candidates
