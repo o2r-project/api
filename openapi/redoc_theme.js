@@ -15,6 +15,7 @@ Redoc.init('./openapi.yaml',{
 
 find_drafts();
 
+
 async function find_drafts(){
   var all_drafts = await document.getElementsByTagName("span");
   console.log(all_drafts);
