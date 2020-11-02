@@ -41,3 +41,7 @@ div.note.green_note{
 div.note.green_note > p:nth-child(1){
   background-color: #1abc9c;
 }
+
+.dUeKSG.draft{
+  background-color: #ff8533;
+}
