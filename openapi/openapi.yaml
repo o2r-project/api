@@ -72,7 +72,7 @@ paths:
         <!--HTML is necessary, due to being essential for the notes-->
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
-          <p>&thinsp;The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie <code>connect.sid</code>, see user authentication.</p>
+          <p>&thinsp;The user creating a new compendium must have the required <a href="#section/User-levels">user level</a>. Requests must be authenticated with a cookie <code>connect.sid</code>, see <a href="#section/User-authentication">user authentication</a>.</p>
         </div>
 
 
@@ -91,10 +91,10 @@ paths:
         ```
         <div class="note yellow_note">
           <p><b>&thinsp;&#x26A0; Important</b></p>
-          <p>&thinsp;After successful upload the candidate process must be completed for workspaces.</p>
+          <p>&thinsp;After successful upload the <a href="#section/Candidate-process">candidate process</a> must be completed for workspaces.</p>
         </div>
 
-        For local testing you can quickly upload some of the example compendia and workspaces from the erc-examples project.
+        For local testing you can quickly upload some of the example compendia and workspaces from the [erc-examples](https://github.com/o2r-project/erc-examples) project.
 
         ## Public share
 
@@ -114,8 +114,8 @@ paths:
 
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
-          <p>&thinsp;The user creating a new compendium must have the required [user level](#section/User-levels).
-          Requests must be authenticated with a cookie `connect.sid`, see [user authentication](#section/User-authentication).</p>
+          <p>&thinsp;The user creating a new compendium must have the required <a href="#section/User-levels">user level</a>.
+          Requests must be authenticated with a cookie `connect.sid`, see <a href="#section/User-authentication">user authentication</a>.</p>
         </div>
 
         To run the load from the command line, login on the website and open you browser cookies.
@@ -133,7 +133,7 @@ paths:
 
         <div class="note yellow_note">
           <p><b>&thinsp;&#x26A0; Warning "Important"</b></p>
-          <p>&thinsp;After successful load from a public share, the **[candidate process](upload.md#candidate-process)** applies.</p>
+          <p>&thinsp;After successful load from a public share, the <a href="upload.md#candidate-process">candidate process</a> applies.</p>
         </div>
 
         ## Sciebo
@@ -297,11 +297,11 @@ paths:
 
           <div class="note green_note">
             <p><b>&thinsp;&#x26A0; Important</b></p>
-            <p>&thinsp;Once a compendium is not a candidate anymore, it can only be deleted by admins with the required user level. The compendium contents should be moved to a specific location to the server as a backup.</p>
+            <p>&thinsp;Once a compendium is not a candidate anymore, it can only be deleted by admins with the required <a href="#section/User-levels">user level</a>. The compendium contents should be moved to a specific location to the server as a backup.</p>
           </div>
           <div class="note blue_note">
             <p><b>&thinsp;&#x26A0; Required user level for candidate deletion</b></p>
-            <p>&thinsp;The user deleting a candidate must be the author or have the required user level.</p>
+            <p>&thinsp;The user deleting a candidate must be the author or have the required <a href="#section/User-levels">user level</a>.</p>
           </div>
 
           ## Request
@@ -363,7 +363,7 @@ paths:
 
         <div class="note yellow_note">
           <p><b>&thinsp;&#x26A0; Warning</b></p>
-          <p>&thinsp;This download feature does not provide access to complete and valid compendia, because it does not comprise an update of the packaging, while it does include brokered metadata files. To download a valid compendium, create a shipment with the appropriate recipient.</p>
+          <p>&thinsp;This download feature does <i>not</i> provide access to complete and valid compendia, because it does not comprise an update of the <a href="#section/Ship-compendia-and-metadata">packaging</a>, while it does include <a href="#operation/update_metadata">brokered metadata files</a>. To download a valid compendium, create a <a href="#tag/Shipment">shipment</a> with the appropriate recipient.</p>
         </div>
         Supported formats are as follows:
 
@@ -453,7 +453,7 @@ paths:
     get:
       tags:
         - Metadata
-      summary: Get the metadata acompendium
+      summary: Get the compendium metadata 
       description: |
         The following endpoint allows to access only the normative o2r-metadata element:
 
@@ -488,15 +488,15 @@ paths:
     put:
       tags:
         - Metadata
-      summary: Update the metadata acompendium
+      summary: Update the compendium metadata
       description: |
         The following endpoint can be used to update the `o2r` metadata elements.
         All other metadata sub-properties are only updated by the service itself, i.e. brokered metadata.
-        After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the download endpoint.
+        After creation the metadata is persisted to both files and database, so updating the metadata via this endpoint allows to trigger a brokering process and to retrieve different metadata formats either via this metadata API or via downloading the respective file using the [download endpoint](#operation/download_compendium).
 
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Metadata update rights</b></p>
-          <p>&thinsp; Only authors of a compendium or users with the required user level can update a compendium's metadata.</p>
+          <p>&thinsp; Only authors of a compendium or users with the required <a href="#section/User-levels>"user level</a> can update a compendium's metadata.</p>
         </div>
 
         ### Metadata update request
@@ -509,6 +509,7 @@ paths:
           /api/v1/compendium/:id/metadata
         ```
         The request overwrites the existing metadata properties, so the full o2r metadata must be put with a JSON object called `o2r` at the root, even if only specific fields are changed.
+      operationId: update_metadata
       security:
         - cookie_authenification: []
       responses:
@@ -772,7 +773,7 @@ paths:
         Create and run a new execution job with an HTTP POST request using multipart/form-data. Requires a compendium_id.
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Required user level and authentication</b></p>
-          <p>&thinsp;The user creating a new compendium must have the required user level. Requests must be authenticated with a cookie `connect.sid`, see user authentication.</p>
+          <p>&thinsp;The user creating a new compendium must have the required <a href="#section/User-levels">user level.</a> Requests must be authenticated with a cookie `connect.sid`, see <a href="#section/User-authentication">user authentication.</a></p>
         </div>
 
         `curl -F compendium_id=$ID https://…/api/v1/job`
@@ -997,7 +998,7 @@ paths:
       responses:
         201:
           description: |
-            The response contains the shipment document, see Get a single shipment. Some of the fields are not available (have value `null`) until after publishing, e.g. `deposition_url`.
+            The response contains the shipment document, see [Get a single shipment](#operation/view_compendium). Some of the fields are not available (have value `null`) until after [publishing](#operation/publish_deposition), e.g. `deposition_url`.
           content:
             application/json:
               schema:
@@ -1068,7 +1069,7 @@ paths:
         `PUT api/v1/shipment/<shipment_id>/publishment`
 
         Note that a publishment is not possible if the recipient is the download surrogate which immediately results in a zip stream as a response.
-
+      operationId: publish_deposition
       responses:
         200:
             description: Returns a JSON object with the id and status of the shipment
@@ -1150,7 +1151,7 @@ paths:
 
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Required user level</b></p>
-          <p>&thinsp;The user creating a new substitution must have the required user level.</p>
+          <p>&thinsp;The user creating a new substitution must have the required <a href="#section/User-levels">user level</a>.</p>
         </div>
 
         You can view the newly suvbstituted Compendium with the standard get Request for compendium view `GET /api/v1/compendium/:id`. The response will include extra metadata on the substitution.
@@ -1312,7 +1313,7 @@ paths:
         - Users
       summary: List users
       description: |
-        Return a list of user ids. Pagination (including defaults) as described for compendia is available for users.
+        Return a list of user ids. [Pagination (including defaults) as described for compendia](../compendium/view.md) is available for users.
 
         `curl https://…/api/v1/user`
 
@@ -1394,7 +1395,7 @@ paths:
 
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Required user level</b></p>
-          <p>&thinsp;The user sending the request to change the level must have the required user level.</p>
+          <p>&thinsp;The user sending the request to change the level must have the required <a href="#section/User">user level</a></p>
         </div>
 
       operationId: edit_user
@@ -2906,19 +2907,19 @@ tags:
 
       After uploading a compendium is _not_ instantly publicly available.
       It is merely a **candidate**, because metadata still must be completed for the compendium to be valid.
-      Users with sufficient rights can create [public links](link.md) for a candidate compendium.
+      Users with sufficient rights can create [public links](#operation/upload_link) for a candidate compendium.
 
       The following process models this intermediate state of a compendium.
 
       ### Creation and view
 
       Candidates can be identified by the property `candidate`.
-      It is set to `true` after creating a new compendium by [upload](upload.md) or [public share submission](public_share.md) **and** the authoring user having reviewed the metadata.
+      It is set to `true` after creating a new compendium by [upload](#operation/upload_compendium) or [public share submission](#operation/upload_compendium) **and** the authoring user having reviewed the metadata.
 
       <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Note</b></p>
           <p>&thinsp;It is not possible to circumvent the metadata review.
-          Only a successful metadata update can set `candidate: true`.</p>
+          Only a successful <a href="#operation/get_metadata">metadata update</a> can set <code>candidate: true</code>.</p>
       </div>
 
       **Example:**
@@ -2935,7 +2936,7 @@ tags:
 
       Only the creating user and users with [required level](#section/User-levels) can view a candidate and see the `candidate` property while it is `true`.
 
-      When accessing a [list of compendia](view.md#list-compendia) for a specific user _as that user_, then this list is extended by available candidates.
+      When accessing a [list of compendia](#operation/list_compendium) for a specific user _as that user_, then this list is extended by available candidates.
       The candidates may be added to the response independently from any pagination settings, i.e. if a client requests the first 10 compendia for a user having two candidates, the client should be prepared to handle 12 items in the response.
 
       ### Metadata review and saving
@@ -2948,7 +2949,7 @@ tags:
 
       ### Deletion
 
-      Unlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](delete.md).
+      Unlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](#operation/delete_compendium).
   - name: Metadata
     description: |
       ### Basics
@@ -2975,11 +2976,13 @@ tags:
           <p>&thinsp;The information in each sub-property are subject to independent workflows and may differ from one another.
           The term <b>brokering</b> is used for translation from one metadata format into another.</p>
       </div>
-      ## Metadata validation
+      
+      ### Metadata validation
 
       Only valid metadata can be saved to a compendium.
       The `o2r` metadata element is validated against a [JSON Schema](http://json-schema.org/) using the `validate` tool of [`o2r-meta`](https://github.com/o2r-project/o2r-meta).
       The schema file is included in the `o2r-meta` repository: [https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json](https://raw.githubusercontent.com/o2r-project/o2r-meta/master/schema/json/o2r-meta-schema.json).
+      
   - name: Execution
     description: |
       ## Execute a compendium
@@ -3056,6 +3059,19 @@ tags:
       The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
 
       Specific steps may carry more information in additional properties.
+      
+      ## Job status updates
+
+      You can subscribe to real time status updates on jobs using [WebSockets](https://en.wikipedia.org/wiki/WebSocket).
+      The implementation is based on [socket.io](http://socket.io) and using their client is recommended.
+      
+      The job log is available at `https://o2r.uni-muenster.de` under the namespace `api/v1/logs/job`.
+      
+      ```JavaScript
+      # create a socket.io client:
+      var socket = io('https://o2r.uni-muenster.de/api/v1/logs/job');
+      ```
+      
   - name: Shipment
     description: |
       ## Ship compendia and metadata
