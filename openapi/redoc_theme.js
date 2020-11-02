@@ -13,13 +13,18 @@ Redoc.init('./openapi.yaml',{
   }
 }, document.getElementById('redoc-container'));
 
-var all_drafts = document.getElementsByTagName("span");
-console.log(all_drafts);
-for (var i = 0; i < all_drafts.length; i++){
-  if(/Draft/.test(all_drafts[i].innerHTML)){
-    console.log(all_drafts[i].innerHTML);
-  }
-  else{
-    console.count()
+find_drafts();
+
+async function find_drafts(){
+  var all_drafts = await document.getElementsByTagName("span");
+  console.log(all_drafts);
+  console.log(all_drafts.item(0));
+  for (var i = 0; i < all_drafts.length; i++){
+      if(/Draft/.test(all_drafts[i].innerHTML)){
+        console.log(all_drafts[i].innerHTML);
+    }
+    else{
+      console.count();
+    }
   }
 }
