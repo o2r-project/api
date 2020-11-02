@@ -3,7 +3,7 @@ Redoc.init('./openapi.yaml',{
       colors:{
       main: '#004286'
     },
-    menu:{
+    sidebar:{
       backgroundColor: '#004286',
       textColor: 'white'
     },
@@ -11,13 +11,11 @@ Redoc.init('./openapi.yaml',{
       backgroundColor: '#343131'
     }
   }
-}, document.getElementById('redoc-container'));
-
-find_drafts();
+}, document.getElementById('redoc-container'), find_drafts());
 
 
-async function find_drafts(){
-  var all_drafts = await document.getElementsByTagName("span");
+function find_drafts(){
+  var all_drafts = document.getElementsByTagName("span");
   console.log(all_drafts);
   console.log(all_drafts.item(0));
   for (var i = 0; i < all_drafts.length; i++){
