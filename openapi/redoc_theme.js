@@ -20,7 +20,8 @@ function find_drafts(){
   console.log(all_drafts.item(0));
   for (var i = 0; i < all_drafts.length; i++){
       if(/Draft/.test(all_drafts[i].innerHTML)){
-        console.log(all_drafts[i].innerHTML);
+        var previous_node = all_drafts[i].previousSibling;
+        previous_node.className = "sc-fznBMq dUeKSG operation-type draft";
     }
   }
 }
