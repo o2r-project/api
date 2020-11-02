@@ -1498,7 +1498,40 @@ paths:
               examples:
                 user_unauthorized:
                   $ref: '#/components/examples/unauthorized'
-
+                  
+  ##API Info Paths
+  /api:
+    get:
+      tags: 
+        - API Info
+      summary: Get api info
+      operationId: get_api_info
+      responses:
+         200: 
+          description: Returns JSON object with some api info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api_info_response'
+              examples:
+                user_whoami_success:
+                    $ref: '#/components/examples/api_info_success'
+  /api/v1:
+    get:
+      tags: 
+        - API Info
+      summary: List api endpoints
+      operationId: get_api_list
+      responses:
+         200: 
+          description: Returns JSON object with the currently available endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api_list_response'
+              examples:
+                user_whoami_success:
+                    $ref: '#/components/examples/api_list_success'
 components:
   schemas:
     #Request Bodies
@@ -1822,7 +1855,20 @@ components:
           type: string
         name:
           type: string
-
+          
+    api_info_response:
+      type: object
+      properties: 
+        about:
+          type: string
+        versions:
+          type: object
+        quote:
+          type: string
+    
+    api_list_response:
+      type: object
+      
     #Errors
     general_error_model:
       type: object
@@ -2878,7 +2924,31 @@ components:
       summary: Unporcessable Entity due to invalid file encoding
       value:
         error: "files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"
-
+        
+    ##API Info Examples
+    api_info_success:
+      summary: A successfull api info request
+      value:
+        about: 'https://o2r.info'
+        versions:
+          current: /api/v1
+          v1: /api/v1
+        quote: There's always a bigger fish.
+        
+    api_list_success:
+      summary: A successfull api endpoint list request
+      value:
+        auth: /api/v1/auth
+        compendia: /api/v1/compendium
+        jobs: /api/v1/job
+        users: /api/v1/user
+        search: /api/v1/search
+        shipments: /api/v1/shipment
+        recipients: /api/v1/recipient
+        substitutions: /api/v1/substitution
+        links: /api/v1/link
+        
+        
     ##General Response Examples
     bad_request_content_type:
       summary: A bad request due to content_type
@@ -3143,6 +3213,8 @@ tags:
       Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
       Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
       They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.
+  - name: API Info
+    description: Get technical info from the api 
 
 externalDocs:
   description: Find more info in our documentation.

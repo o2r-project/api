@@ -1581,6 +1581,58 @@
           }
         }
       }
+    },
+    "/api": {
+      "get": {
+        "tags": [
+          "API Info"
+        ],
+        "summary": "Get api info",
+        "operationId": "get_api_info",
+        "responses": {
+          "200": {
+            "description": "Returns JSON object with some api info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_info_response"
+                },
+                "examples": {
+                  "user_whoami_success": {
+                    "$ref": "#/components/examples/api_info_success"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1": {
+      "get": {
+        "tags": [
+          "API Info"
+        ],
+        "summary": "List api endpoints",
+        "operationId": "get_api_list",
+        "responses": {
+          "200": {
+            "description": "Returns JSON object with the currently available endpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/api_list_response"
+                },
+                "examples": {
+                  "user_whoami_success": {
+                    "$ref": "#/components/examples/api_list_success"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1987,6 +2039,23 @@
             "type": "string"
           }
         }
+      },
+      "api_info_response": {
+        "type": "object",
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "versions": {
+            "type": "object"
+          },
+          "quote": {
+            "type": "string"
+          }
+        }
+      },
+      "api_list_response": {
+        "type": "object"
       },
       "general_error_model": {
         "type": "object",
@@ -3119,6 +3188,31 @@
           "error": "files with unsupported encoding detected: [{'file':'/tmp/o2r/compendium/ejpmi/data/test.txt','encoding':'Shift_JIS'}]"
         }
       },
+      "api_info_success": {
+        "summary": "A successfull api info request",
+        "value": {
+          "about": "https://o2r.info",
+          "versions": {
+            "current": "/api/v1",
+            "v1": "/api/v1"
+          },
+          "quote": "There's always a bigger fish."
+        }
+      },
+      "api_list_success": {
+        "summary": "A successfull api endpoint list request",
+        "value": {
+          "auth": "/api/v1/auth",
+          "compendia": "/api/v1/compendium",
+          "jobs": "/api/v1/job",
+          "users": "/api/v1/user",
+          "search": "/api/v1/search",
+          "shipments": "/api/v1/shipment",
+          "recipients": "/api/v1/recipient",
+          "substitutions": "/api/v1/substitution",
+          "links": "/api/v1/link"
+        }
+      },
       "bad_request_content_type": {
         "summary": "A bad request due to content_type",
         "value": {
@@ -3161,6 +3255,10 @@
     {
       "name": "Users",
       "description": "## User levels\n\nUsers are authenticated via OAuth and the actions on the website are limited by the `level` associated with an account.\nOn registration, each account is assigned a level `0`.\nOnly admin users and the user herself can read the level of a user.\n\nThe following is a list of actions and the corresponding required _minimum_ user level.\n\n- `0` _Users_ (everybody)\n    - Create new jobs\n    - View compendia, jobs, user details\n- `100` _Known users_\n    - Create new compendium\n    - Create shipments\n    - Create substitutions\n    - Delete own candidates\n- `500` _Editors_\n    - Edit user levels up to own level\n    - Edit compendium metadata\n    - Delete candidates\n    - Manage [public links](#operation/upload_link) for candidates\n- `1000` _Admins_\n    - Edit user levels up to own level\n    - Delete compendia and candidates\n    - View status pages of microservices\n\n##  User authentication\n\nUser authentication is done via authenticated sessions, which are referenced with a cookie called `connect.sid`. For every endpoint that needs user authentication, a cookie with an authenticated session is required.\n\n### Client authentication\n\nTo execute restricted operations of the API, such as [compendium upload]() or [job execution](), a client must provide an authentication token via a cookie.\n\nA client must first login on the website to access a browser cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nProvide the content of the cookie when making requests to the API as shown in the request example below.\n\n### Access authentication information for direct API access\n\nTo run commands which require authentication from the command line, a user must login on the website first.\nThen open you browser cookies and find a cookie issued by `o2r.uni-muenster.de` with the name `connect.sid`.\nUse the the contents of the cookie for your requests, for example as shown below when using curl.\n\n```bash\ncurl [...] --cookie \"connect.sid=<code string here>\" \\\n     https://…/api/v1/endpoint\n```\n\n### Authentication within microservices\n\n**Attention:** The authentication process _requires_ a secured connection, i.e. `HTTPS`.\n\n### Authentication provider\n\nSession authentication is done using the OAuth 2.0 protocol.\nCurrently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.\nUsers must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.\nThey are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.\n"
+    },
+    {
+      "name": "API Info",
+      "description": "Get technical info from the api"
     }
   ],
   "externalDocs": {
