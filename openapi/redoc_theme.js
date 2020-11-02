@@ -16,7 +16,10 @@ Redoc.init('./openapi.yaml',{
 var all_drafts = document.getElementsByTagName("span");
 console.log(all_drafts);
 for (var i = 0; i < all_drafts.length; i++){
-  if(/Draft:/.test(all_drafts[i].innerHTML)){
+  if(/Draft/.test(all_drafts[i].innerHTML)){
     console.log(all_drafts[i].innerHTML);
+  }
+  else{
+    console.count()
   }
 }
