@@ -1537,7 +1537,7 @@ paths:
       tags:
         - Compendium
       summary: |
-        Draft: search
+        &#x1F6A7; Search
       responses:
         200:
           description: search response
