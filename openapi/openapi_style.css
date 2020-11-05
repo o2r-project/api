@@ -43,5 +43,5 @@ div.note.green_note > p:nth-child(1){
 }
 
 .dUeKSG.draft{
-  background-color: #ff8533;
+  background: repeating-linear-gradient( 45deg, #eda51b, #eda51b 5px, #000 5px, #000 10px );
 }
