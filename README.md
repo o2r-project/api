@@ -9,36 +9,30 @@ The "working" state should always be in the `master` branch, which is published 
 
 ## Build
 
-This specification is written in [Markdown](https://daringfireball.net/projects/markdown/) and deployed automatically using Travis CI.
-You can use `mkdocs` to render it locally, or view the latest master-branch on <https://o2r.info/api/>.
-See the [MkDocs documentation](http://www.mkdocs.org/) for details.
+This specification is written in [YAML](https://yaml.org/) and deployed automatically using ReDoc. There is also a [JSON version](https://www.json.org/json-en.html) available but it is not used to render the docs.
+See the [ReDoc documentation](https://github.com/Redocly/redoc) for details.
 
-```bash
-# pip install mkdocs
-# mkdocs --version
-mkdocs serve
+You can download the `openapi.yaml` and install the [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) so that you can render a zero-dependency static HTML file of our docs locally.
 
-mkdocs build
+```
+npm i -g redoc-cli
+
+redoc-cli bundle [path to your yaml/json openapi file]
+
 ```
 
-### Automated Builds
+The command will create the HTML file in your current directory. :warning: This will not include our style changes!
+
+### Github pages build
 
 [![Build Status](https://travis-ci.org/o2r-project/api.svg?branch=master)](https://travis-ci.org/o2r-project/api)
 
-The current master branch is automatically built on Travis CI and deployed to the GitHub Page at <https://o2r.info/api/>.
-Our combination of the `.travis.yml` and `.deploy.sh` will run the `mkdocs` command on every direct commit or merge on the master branch and deploy the rendered HTML documents to the `gh-pages` branch in this repository.
+The current master branch is automatically built on ReDoc and deployed to the GitHub Page at <https://o2r.info/api/>.
+Our combination of the `openapi.yaml` and ReDoc's `redoc.standalone.js` will render a html which is then deployed through gh-pages. Our script `redoc_theme.js` contains the actual ReDoc initialization command and makes a few style changes through  callback functions to correspond to our project.
 
-Travis authenticates its push to the `gh-pages` branch using a [personal access token](https://github.com/settings/tokens) of the user [@o2r-user](https://github.com/o2r-user).
-The access token is encrypted in the `.travis.yml` [using Travis CLI](https://docs.travis-ci.com/user/encryption-keys/) _for the repository o2r-project/api_:
+The css rules which expand the core ReDoc style are in the `openapi_style.css` file.  
 
-```bash
-travis encrypt --repo o2r-project/api GH_TOKEN=<token here>
-```
 
-The variable `GH_TOKEN` is used in the deploy script.
-The token generated on the GitHub website should not be stored anywhere, simply generate a new one if needed.
-
-This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/api/settings), so that malicious changes to the Travis configuration file will be noticed by the repository maintainer before merging a pull request.
 
 ## License
 
