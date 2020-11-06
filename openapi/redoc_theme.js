@@ -11,7 +11,7 @@ Redoc.init('./openapi.yaml',{
       backgroundColor: '#343131'
     }
   }
-}, document.getElementById('redoc-container'), function(e){find_drafts();});
+}, document.getElementById('redoc-container'), function(e){find_drafts();style_code();});
 
 
 /**
@@ -41,6 +41,6 @@ function find_drafts(){
 function style_code(){
   var all_code = document.getElementsByTagName("code");
   for(var i = 0; i < all_code.length; i ++ ){
-    all_code[i].className =+ " pretty";
+    all_code[i].className = "pretty";
   }
 }
