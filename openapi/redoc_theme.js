@@ -41,6 +41,6 @@ function find_drafts(){
 function style_code(){
   var all_code = document.getElementsByTagName("code");
   for(var i = 0; i < all_code.length; i ++ ){
-    all_code[i].className = "pretty";
+    all_code[i].setAttribute("style", "color: crimson;font-family: Courier, monospace;padding: 0px 5px;font-size: 13px;font-weight: 400;word-break: break-word;");
   }
 }
