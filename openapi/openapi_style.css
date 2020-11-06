@@ -43,10 +43,10 @@ div.note.green_note > p:nth-child(1){
 }
 
 .dUeKSG.draft{
-  background: repeating-linear-gradient( 45deg, #eda51b, #eda51b 5px, #000 5px, #000 10px );
+  background: repeating-linear-gradient( -45deg, #eda51b, #eda51b 5px, #000 5px, #000 10px );
 }
 
-code{
+code.pretty{
   color: crimson;
   font-family: Courier, monospace;
   padding: 0px 5px;
