@@ -496,7 +496,7 @@ paths:
 
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Metadata update rights</b></p>
-          <p>&thinsp; Only authors of a compendium or users with the required <a href="#section/User-levels>"user level</a> can update a compendium's metadata.</p>
+          <p>&thinsp; Only authors of a compendium or users with the required <a href="#section/User-levels">user level</a> can update a compendium's metadata.</p>
         </div>
 
         ### Metadata update request
@@ -1567,12 +1567,12 @@ paths:
         - [http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678](http://o2r.uni-muenster.de/api/v1/search?q=10.5555%2F12345678)
         - [http://o2r.uni-muenster.de/api/v1/search?q=geo&resources=compendia](http://o2r.uni-muenster.de/api/v1/search?q=geo&resources=compendia)
         - [http://o2r.uni-muenster.de/api/v1/search?q=failure&resources=jobs](http://o2r.uni-muenster.de/api/v1/search?q=failure&resources=jobs)
-        
+
 
       parameters:
         - $ref: '#/components/parameters/q_query'
         - $ref: '#/components/parameters/resources_query'
-        
+
       operationId: simple_search
       responses:
         200:
@@ -1584,7 +1584,7 @@ paths:
               examples:
                 simple_search_success:
                     $ref: '#/components/examples/simple_search_success'
-                    
+
     post:
       tags:
         - Compendium
@@ -1595,11 +1595,11 @@ paths:
 
         A complex search is enabled via `POST` requests with a `JSON` payload as `HTTP POST` data (_not_ `multipart/form-data`) accepting an `application/json` content type as response.
         Queries can include filters, aggregation and spatio-temporal operations as defined in the [Elasticsearch Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
-        
+
         `curl -X POST -H 'Content-Type: application/json' 'https://.../api/v1/search' -d '$QUERY_DSL'`
-        
+
         The **response** structure is the same as for [simple search](#operation/simple_search).
-        
+
         <div class="note blue_note">
           <p><b>&thinsp;&#x26A0; Note</b></p>
           <p>&thinsp; Use the index names <code>compendia</code> and <code>jobs</code> in a terms query to only retrieve one resource type.</p>
@@ -1611,7 +1611,7 @@ paths:
 
           - `metadata.o2r.temporal.begin` and `metadata.o2r.temporal.end` provide a compendium's temporal extent
           - `metadata.o2r.spatial.geometry` has the compendium's spatial extent
-          
+
           Besides these fields, all metadata of the [`o2r` metadata format](#tag/Metadata) can be used.
 
         required: true
@@ -1770,7 +1770,7 @@ components:
           type: number
         size:
           type: integer
-        
+
 
     #Responses
     upload_response:
@@ -1991,13 +1991,13 @@ components:
 
     api_list_response:
       type: object
-      
+
     simple_search_response:
       type: object
       properties:
         hits:
           type: object
-          properties: 
+          properties:
             total:
               type: integer
             max_score:
@@ -2006,7 +2006,7 @@ components:
               type: array
               items:
                 type: object
-            
+
 
     #Errors
     general_error_model:
@@ -2105,7 +2105,7 @@ components:
       required: false
       schema:
         type: string
-        
+
     q_query:
       name: q
       in: query
@@ -2127,7 +2127,7 @@ components:
           - jobs
           - all
         default: all
-        
+
 
     ##Download Parameters
     gzip_query:
@@ -3109,7 +3109,7 @@ components:
         recipients: /api/v1/recipient
         substitutions: /api/v1/substitution
         links: /api/v1/link
-        
+
     simple_search_success:
       summary: A successfull simple search
       description: |
@@ -3118,7 +3118,7 @@ components:
           <p>&thinsp;The available metadata is a synced clone of the compendium metadata stored in the main database.
             For more information on the mapping from the main database to the search database, take a look at the <code>o2r-finder</code> <a href="https://github.com/o2r-project/o2r-finder">microservice</a></p>
         </div>
-      value: 
+      value:
         hits:
           total: 1
           max_score: 1.0586987
@@ -3127,13 +3127,13 @@ components:
               _source:
                 metadata:
                   o2r: ...
-                  
+
     temporal_search:
       summary: A temporal search
       description: |
         In this example a filter has been nested within a [boolean/must match](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) query.
         The filter has been applied to the `metadata.o2r.spatial.geometry` field of the dataset with a `within` relation so that only compendia with a spatial extent completely contained in the provided shape are fetched.
-      value: 
+      value:
         query:
           bool:
             must:
@@ -3168,8 +3168,8 @@ components:
           terms:
             _index:
               - compendia
-        
-        
+
+
 
 
     ##General Response Examples
