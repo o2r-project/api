@@ -11,7 +11,7 @@ Redoc.init('./openapi.yaml',{
       backgroundColor: '#343131'
     }
   }
-}, document.getElementById('redoc-container'), function(e){find_drafts(); sytle_code();});
+}, document.getElementById('redoc-container'), function(e){find_drafts();});
 
 
 /**
