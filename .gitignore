@@ -1,3 +1,5 @@
 docs/html
 site
 o2r-web-api\.pdf
+node_modules
+package-lock.json

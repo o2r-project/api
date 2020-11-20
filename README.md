@@ -7,38 +7,51 @@ Project description: [https://o2r.info](https://o2r.info)
 We're a research project, so _everything in this API and its documentation is subject to change_.
 The "working" state should always be in the `master` branch, which is published online at [https://o2r.info/api](https://o2r.info/api), and [open pull requests](https://github.com/o2r-project/api/pulls) reflect features under development.
 
-## Build
+## API docs
 
-This specification is written in [Markdown](https://daringfireball.net/projects/markdown/) and deployed automatically using Travis CI.
-You can use `mkdocs` to render it locally, or view the latest master-branch on <https://o2r.info/api/>.
-See the [MkDocs documentation](http://www.mkdocs.org/) for details.
+This specification follows the [Open API 3.0.3 specification](https://en.wikipedia.org/wiki/OpenAPI_Specification).
+It is written in [YAML](https://yaml.org/) and deployed automatically using ReDoc.
+See the [ReDoc documentation](https://github.com/Redocly/redoc) for details.
 
-```bash
-# pip install mkdocs
-# mkdocs --version
-mkdocs serve
+### View
 
-mkdocs build
-```
-
-### Automated Builds
-
-[![Build Status](https://travis-ci.org/o2r-project/api.svg?branch=master)](https://travis-ci.org/o2r-project/api)
-
-The current master branch is automatically built on Travis CI and deployed to the GitHub Page at <https://o2r.info/api/>.
-Our combination of the `.travis.yml` and `.deploy.sh` will run the `mkdocs` command on every direct commit or merge on the master branch and deploy the rendered HTML documents to the `gh-pages` branch in this repository.
-
-Travis authenticates its push to the `gh-pages` branch using a [personal access token](https://github.com/settings/tokens) of the user [@o2r-user](https://github.com/o2r-user).
-The access token is encrypted in the `.travis.yml` [using Travis CLI](https://docs.travis-ci.com/user/encryption-keys/) _for the repository o2r-project/api_:
+The docs are build dynamically based on `openapi.yml` when `index.html` is opened in a browser.
+You can do this locally by starting a web browser in the `/docs` directory:
 
 ```bash
-travis encrypt --repo o2r-project/api GH_TOKEN=<token here>
+docker run --rm -it -v $(pwd)/docs:/usr/share/nginx/html:ro nginx
 ```
 
-The variable `GH_TOKEN` is used in the deploy script.
-The token generated on the GitHub website should not be stored anywhere, simply generate a new one if needed.
+Then open http://localhost/index.html.
 
-This has some security risks, as described [here](https://gist.github.com/domenic/ec8b0fc8ab45f39403dd#sign-up-for-travis-and-add-your-project). To mitigate these risks, we have disabled the option "Build pull requests" is on the [Travis configuration page for this repo](https://travis-ci.org/o2r-project/api/settings), so that malicious changes to the Travis configuration file will be noticed by the repository maintainer before merging a pull request.
+### Build
+
+You can render the `openapi.yml` in this repository with [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool.
+The output is a a zero-dependency static HTML file in your current directory.
+
+```bash
+#npm i -g redoc-cli
+
+redoc-cli bundle docs/openapi.yml
+```
+
+:warning: This will not include our style changes!
+
+Our combination of the `openapi.yml` and ReDoc's `redoc.standalone.js` will render a html which is then deployed via the `/docs` folder. Our script `redoc_theme.js` contains the actual ReDoc initialization command and makes a few style changes through  callback functions to correspond to our project.
+The css rules which expand the core ReDoc style are in the `openapi_style.css` file.
+
+### Github pages build
+
+The pages at [https://o2r.info/api/](https://o2r.info/api/) are built locally by developers on relevant changes.
+The website is served from the directory `/docs`, which must be configured in the repository settings.
+
+### Develop locally
+
+You can serve the HTML page (without style changes!) and automatically re-rendering on changes with
+
+```bash
+redoc-cli serve --watch docs/openapi.yml
+```
 
 ## License
 
