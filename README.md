@@ -7,32 +7,51 @@ Project description: [https://o2r.info](https://o2r.info)
 We're a research project, so _everything in this API and its documentation is subject to change_.
 The "working" state should always be in the `master` branch, which is published online at [https://o2r.info/api](https://o2r.info/api), and [open pull requests](https://github.com/o2r-project/api/pulls) reflect features under development.
 
-## Build
+## API docs
 
-This specification is written in [YAML](https://yaml.org/) and deployed automatically using ReDoc. There is also a [JSON version](https://www.json.org/json-en.html) available but it is not used to render the docs.
+This specification follows the [Open API 3.0.3 specification](https://en.wikipedia.org/wiki/OpenAPI_Specification).
+It is written in [YAML](https://yaml.org/) and deployed automatically using ReDoc.
 See the [ReDoc documentation](https://github.com/Redocly/redoc) for details.
 
-You can download the `openapi.yaml` and install the [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) so that you can render a zero-dependency static HTML file of our docs locally.
+### View
 
+The docs are build dynamically based on `openapi.yml` when `index.html` is opened in a browser.
+You can do this locally by starting a web browser in the `/docs` directory:
+
+```bash
+docker run --rm -it -v $(pwd)/docs:/usr/share/nginx/html:ro nginx
 ```
-npm i -g redoc-cli
 
-redoc-cli bundle [path to your yaml/json openapi file]
+Then open http://localhost/index.html.
 
+### Build
+
+You can render the `openapi.yml` in this repository with [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool.
+The output is a a zero-dependency static HTML file in your current directory.
+
+```bash
+#npm i -g redoc-cli
+
+redoc-cli bundle docs/openapi.yml
 ```
 
-The command will create the HTML file in your current directory. :warning: This will not include our style changes!
+:warning: This will not include our style changes!
+
+Our combination of the `openapi.yml` and ReDoc's `redoc.standalone.js` will render a html which is then deployed via the `/docs` folder. Our script `redoc_theme.js` contains the actual ReDoc initialization command and makes a few style changes through  callback functions to correspond to our project.
+The css rules which expand the core ReDoc style are in the `openapi_style.css` file.
 
 ### Github pages build
 
-[![Build Status](https://travis-ci.org/o2r-project/api.svg?branch=master)](https://travis-ci.org/o2r-project/api)
+The pages at [https://o2r.info/api/](https://o2r.info/api/) are built locally by developers on relevant changes.
+The website is served from the directory `/docs`, which must be configured in the repository settings.
 
-The current master branch is automatically built on ReDoc and deployed to the GitHub Page at <https://o2r.info/api/>.
-Our combination of the `openapi.yaml` and ReDoc's `redoc.standalone.js` will render a html which is then deployed through gh-pages. Our script `redoc_theme.js` contains the actual ReDoc initialization command and makes a few style changes through  callback functions to correspond to our project.
+### Develop locally
 
-The css rules which expand the core ReDoc style are in the `openapi_style.css` file.  
+You can serve the HTML page (without style changes!) and automatically re-rendering on changes with
 
-
+```bash
+redoc-cli serve --watch docs/openapi.yml
+```
 
 ## License
 

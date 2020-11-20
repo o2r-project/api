@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: o2r web api
+  title: o2r web API
   description: |
     ## About
 
@@ -8,33 +8,25 @@ info:
 
     The API provides services around the executable research compendium (ERC), or "compendium" for short, which is documented [in the ERC spec](https://o2r.info/erc-spec/).
 
-    **A good starting point for understanding the different parts of the API is the [compendium life-cycle](#section/Compendium-lifecycle).**
-
-    ---
-    **Citation**
-
+    **A good starting point for understanding the different parts of the API is the [compendium life-cycle](#compendium-lifecycle).**
+    The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is /api/v1.
+    Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require [authentication](#section/User-authentication) with a specific [user level](#section/User-levels).
+    
     To cite this specification please use
 
-    >*Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. [doi:10.5281/zenodo.2203844](https://zenodo.org/record/2203844)*
+    > _Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. [doi:10.5281/zenodo.2203844](https://zenodo.org/record/2203844)_
 
-    For a complete list of publications, posters, presentations, and software projects from th2 o2r project please visit [https://o2r.info/results/](https://o2r.info/results/).
-
-    ---
-    **General**
-
-    The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is /api/v1.
-
-    Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require [authentication](#section/User-authentication) with a specific [user level](#section/User-levels).
+    For a complete list of publications, posters, presentations, and software projects from the o2r project please visit [https://o2r.info/results/](https://o2r.info/results/).
 
     ---
-    **License**
+    ### License
 
     ![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)
 
-    The o2r Executable Research Compendium specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file `LICENSE`. To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.
+    The o2r Executable Research Compendium specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file [`LICENSE`](https://github.com/o2r-project/api/blob/master/LICENSE). To the extent possible under law, the people who associated CC0 with this work have waived all copyright and related or neighboring rights to this work. This work is published from: Germany.
 
     ---
-    **Compendium lifecycle**
+    ### Compendium lifecycle
 
     An authorized user (see [user levels](#section/User-levels)) can create compendia from different sources, i.e. [direct API upload](#operation/upload_compendium) or [via a public share](#).
     The uploaded workspace is then treated as a [candidate compendium](#section/Candidate-process) until all required [metadata](#tag/Metadata) is provided.
@@ -47,13 +39,17 @@ info:
     The API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](#section/User-authentication).
 
   termsOfService: ''
-  contact: {}
+  contact:
+    name: o2r project
+    email: o2r.team@uni-muenster.de
+    url: https://o2r.info/about
   license:
     name: Creative Commons CC0 1.0 Universal License
     url: 'https://creativecommons.org/publicdomain/zero/1.0/'
   version: '1.0'
   x-logo:
-   url: '..\custom_theme\img\o2r-logo-only-white.svg'
+   url: 'img\o2r-logo-only-white.svg'
+   altText: o2r projet logo
 servers:
   - url: 'https://o2r.uni-muenster.de/api/v1'
     description: The public demo server for the o2r api

@@ -1,4 +1,4 @@
-Redoc.init('./openapi.yaml',{
+Redoc.init('./o2r-openapi.yml',{
   theme:{
       colors:{
       main: '#004286'
