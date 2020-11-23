@@ -1,87 +1,84 @@
 ---
-title: "o2r - Html test"
+title: "HTML performance test of o2r user interface"
 author: "Juan Sebastian Garzon Alvarado"
 output: md_document
 ---
 
-This documet contais some script that opens an ERC (see https://o2r.uni-muenster.de/#/) and measures how long it takes until the HTML-page has fininished [rendering](https://en.wikipedia.org/wiki/Front_end_and_back_end).
+This document contains some script that opens an ERC (see https://o2r.uni-muenster.de/#/) and measures how long it takes until the HTML-page has fininished [rendering](https://en.wikipedia.org/wiki/Front_end_and_back_end).
 
 ## Required libraries
 
 ```{r libraries}
-library(RSelenium)
-library(parallel)
-library(binman)
+library("RSelenium")
+library("parallel")
+library("binman")
 ```
 
 ## Function
 
-The `visitERC` function opens an ERC and returns information about the backend performance and frontend performance. For a similar approach ussing python visit this [repository](https://github.com/chewitt-swts/GeicoAutoTest/blob/master/PageLoadTimeClass.py)
+The `visitERC` function opens an ERC and returns information about the backend performance and frontend performance.
+For a similar approach that informed this workflow using Python visit  [github.com/chewitt-swts/GeicoAutoTest](https://github.com/chewitt-swts/GeicoAutoTest/blob/master/PageLoadTimeClass.py).
 
 ```{r visitERC}
-
 #Function to visit an ERC (web) and extract information about rendering time
-
-visitERC<-function(erc,portNumber){
+visitERC <- function(erc, portNumber){
   
   #Starting Selenium server
-  available.versions<-list_versions("chromedriver")
-  r<-rsDriver(port=portNumber,chromever=available.versions[[1]][1])
-  remDr<-r[["client"]]
+  available.versions <- binman::list_versions("chromedriver")
+  r <- rsDriver(port=portNumber,chromever=available.versions[[1]][1])
+  remDr <- r[["client"]]
   
   # Navigating to webpage
-  
   remDr$navigate(erc)
   
   # Extracting information
-  navigationStart<-remDr$executeScript("return window.performance.timing.navigationStart")
-  responseStart<-remDr$executeScript("return window.performance.timing.responseStart")
-  domComplete<-remDr$executeScript("return window.performance.timing.domComplete")
+  navigationStart <- remDr$executeScript("return window.performance.timing.navigationStart")
+  responseStart <- remDr$executeScript("return window.performance.timing.responseStart")
+  domComplete <- remDr$executeScript("return window.performance.timing.domComplete")
   
-  # Stoping server
-  
+  # Stopping server
   remDr$close()
   r[["server"]]$stop()
-  result<-list(x=navigationStart,y=responseStart,z=domComplete)
+  result <- list(x = navigationStart, y = responseStart, z = domComplete)
   return(result)
 }
 ```
 
 ## Test
 
-For this test it is required to define the `ERC` link that is going to be rendered and the number of visits (`num_visits`) to perform. The number of simultaneous visits is limited to the number of CPU cores of your machine. This means that a machine with 2 cores would make at most 2 simultaneous visits. For a test with `N` visits (and 2 avaiblable cores) the test will perform `N/2` consecutive series of visits (2 simultaneous) until reaching that number. Visit this [link](https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html) for more information about parallel computing in R.
+For this test it is required to define the `ERC_url` link that is going to be rendered and the number of visits (`num_visits`) to perform.
+The number of simultaneous visits is limited to the number of CPU cores of your machine.
+This means that a machine with 2 cores would make at most 2 simultaneous visits.
+For a test with `N` visits (and 2 available cores) the test will perform `N/2` consecutive series of visits (2 simultaneous) until reaching that number.
+Visit [this link](https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html) for more information about parallel computing in R.
 
 The test information is recorded on the dataframe `df`.
 
 ```{r testing}
-
 # Defining parameters
-num_visits<-10
-ERC<-"https://o2r.uni-muenster.de/ui/#/erc/BR5vo"
+num_visits <- 10
+ERC_url <- "https://o2r.uni-muenster.de/ui/#/erc/BR5vo"
 
 # Creating dataframe with link and port number (to avoid Selenium Server errors)
-
-links<-replicate(num_visits,ERC)
-df<-data.frame(Links=links)
+links <- replicate(num_visits, ERC_url)
+df <- data.frame(links = links)
 df$port<-((4567:(4567+nrow(df)-1)))
 
 # Applying function
-
-results<-mcmapply(visitERC,df$Links,df$port)
+results <- mcmapply(FUN = visitERC, df$links, df$port)
 
 # Adding information to dataframe
-
-df$NavigationStart<-unlist(results[1,])
-df$responseStart<-unlist(results[2,])
-df$domComplete<-unlist(results[3,])
+df$NavigationStart <- unlist(results[1,])
+df$responseStart <- unlist(results[2,])
+df$domComplete <- unlist(results[3,])
 
 # Calculations
-df['backendPerformance_calc']<- df$responseStar-df$NavigationStart
-df['frontendPerformance_cal']<- df$domComplete-df$responseStart
+df['backendPerformance_calc'] <- df$responseStar - df$NavigationStart
+df['frontendPerformance_cal'] <- df$domComplete - df$responseStart
 
 print(df)
 ```
 
 # TO DO
-Add statistics / analysis (?)
 
+- Add statistics / analysis
