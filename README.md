@@ -53,6 +53,11 @@ You can serve the HTML page (without style changes!) and automatically re-render
 redoc-cli serve --watch docs/openapi.yml
 ```
 
+## Load testing
+
+This repository contains a collection of [R Markdown](https://rmarkdown.rstudio.com/) documents that can be used to evaluate the performance of the o2r reproducibility service.
+See the directory `docs/evaluation` for R code and documentation for running load tests on the API and the user interface.
+
 ## License
 
 The o2r Web API specification is licensed under [Creative Commons CC0 1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/), see file `LICENSE`.
