@@ -3,7 +3,6 @@ title: "o2r reproducibility service load testing"
 subtitle: "Technology report"
 author: "Juan Sebastian Garzon Alvarado, Daniel Nüst"
 date: "2020-11-23"
-output: md_document
 ---
 # o2r Reproducibility Service Load Testing
 

@@ -1,7 +1,6 @@
 ---
 title: "HTML performance test of o2r user interface"
 author: "Juan Sebastian Garzon Alvarado"
-output: md_document
 ---
 
 This document contains some script that opens an ERC (see https://o2r.uni-muenster.de/#/) and measures how long it takes until the HTML-page has fininished [rendering](https://en.wikipedia.org/wiki/Front_end_and_back_end).
