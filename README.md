@@ -40,9 +40,9 @@ redoc-cli bundle docs/openapi.yml
 Our combination of the `openapi.yml` and ReDoc's `redoc.standalone.js` will render a html which is then deployed via the `/docs` folder. Our script `redoc_theme.js` contains the actual ReDoc initialization command and makes a few style changes through  callback functions to correspond to our project.
 The css rules which expand the core ReDoc style are in the `openapi_style.css` file.
 
-### Github pages build
+### Web pages build
 
-The pages at [https://o2r.info/api/](https://o2r.info/api/) are built locally by developers on relevant changes.
+The pages at [https://o2r.info/api/](https://o2r.info/api/) are rendered client side (API docs) or are built locally by developers on relevant changes (load test docs).
 The website is served from the directory `/docs`, which must be configured in the repository settings.
 
 ### Develop locally
