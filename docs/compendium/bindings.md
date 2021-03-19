@@ -22,8 +22,8 @@ Request body for a new binding:
   "sourcecode": {
     "file": "main.Rmd",
     "codelines": [{
-      "start": 101,
-      "end": 503
+      "first_line": 101,
+      "last_line": 503
       }],
     "parameter": [{
       "text": "duration <- 24",
@@ -50,8 +50,8 @@ Request body for a new binding:
 - `sourcecode` all code-related information needed to create a binding for result specified above
   - `file` - main file of the research compendium containing the R code
   - `codelines` - array of code chunks including the code needed to generate the result
-    - `start` - start of the code chunk
-    - `end` - end of the code chunk
+    - `first_line` - start of the code chunk
+    - `last_line` - end of the code chunk
   - `parameter` - array of parameters that should be made interactive
     - `text` - parameter as it is initialized in the code
     - `name` - the name of the parameter without the value
@@ -74,7 +74,11 @@ Request body for a new binding:
 }
 ```
 
-## Extract R code
+## Extract R code  -- Deprected
+
+
+### code lines extraction works now on the front end
+
 
 `POST /api/v1/bindings/extractR`
 
