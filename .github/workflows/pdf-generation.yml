@@ -41,5 +41,6 @@ jobs:
       with:
         commit_author: PDF bot <f_ferm01@uni-muenster.de>
         commit_message: update spec pdf
+        branch: master
 
      
