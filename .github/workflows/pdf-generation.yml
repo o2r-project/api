@@ -41,7 +41,7 @@ jobs:
       with:
         commit_user_name: Fmazin # defaults to "GitHub Actions"
         commit_user_email: fabian.fermazin@wwu.de # defaults to "actions@github.com"
-        commit_author: PDF bot
+        commit_author: PDF bot <o2r.projekt@uni-muenster.de>
         commit_message: update spec pdf
         branch: master
 
