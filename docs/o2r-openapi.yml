@@ -861,6 +861,27 @@ paths:
       summary: View single job
       description: |
         View details for a single job. The file listing format is described in compendium files.
+        
+        #### Step metadata
+
+        Additional explanations on steps' status will be transmitted in the `text` property.
+        `text` is an array, with the latest element holding the newest information.
+        During long running steps, the `text` element is updated by appending new information when available.
+
+        The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+
+        Specific steps may carry more information in additional properties.
+        
+        #### Step Status
+
+        All steps can have one of the following status:
+
+        - `queued`: step is not yet started
+        - `running`: step is currently running
+        - `success`: step is completed successfully - positive result
+        - `failure`: step is completed unsuccessfully - negative result
+        - `skipped`: step does not fit the given input or results of previous steps, e.g. bag validation is not done for non-bag workspaces - neutral result
+
       parameters:
         - $ref: '#/components/parameters/steps_query'
       operationId: view_job
@@ -3329,25 +3350,6 @@ tags:
       - **cleanup**
         Remove image or job files (depending on server-side settings).
 
-      #### Status
-
-      All steps can have one of the following status:
-
-      - `queued`: step is not yet started
-      - `running`: step is currently running
-      - `success`: step is completed successfully - positive result
-      - `failure`: step is completed unsuccessfully - negative result
-      - `skipped`: step does not fit the given input or results of previous steps, e.g. bag validation is not done for non-bag workspaces - neutral result
-
-      #### Step metadata
-
-      Additional explanations on steps' status will be transmitted in the `text` property.
-      `text` is an array, with the latest element holding the newest information.
-      During long running steps, the `text` element is updated by appending new information when available.
-
-      The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
-
-      Specific steps may carry more information in additional properties.
 
       ## Job status updates
 
