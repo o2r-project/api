@@ -6,7 +6,7 @@ on:
     branches:
     - master
     paths:
-    - '!**.pdf'
+    - '!docs/pdf/'
     
   workflow_dispatch:
 
@@ -33,13 +33,13 @@ jobs:
       run: npm install -g mdpdf@2.1.1 --unsafe-perm
     
     - name: Convert spec to md
-      run: widdershins ./docs/o2r-openapi.yml -c false -o ./docs/o2r-openapi.md
+      run: widdershins ./docs/o2r-openapi.yml -c false -o ./docs/pdf/o2r-openapi.md
 
     - name: Convert md to pdf
-      run: mdpdf ./docs/o2r-openapi.md
+      run: mdpdf ./docs/pdf/o2r-openapi.md
 
     - name: Delete the md file
-      run: rm ./docs/*.md
+      run: rm ./docs/pdf/*.md
 
     - name: Commit the new PDF
       uses: stefanzweifel/git-auto-commit-action@v4
