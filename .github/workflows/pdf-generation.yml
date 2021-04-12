@@ -26,7 +26,7 @@ jobs:
       run: npm install -g widdershins
 
     - name: Install mdpdf
-      run: npm install -g mdpdf --unsafe-perm
+      run: npm install -g mdpdf@2.1.1 --unsafe-perm
     
     - name: Convert spec to md
       run: widdershins ./docs/o2r-openapi.yml -c false -o ./docs/o2r-openapi.md
