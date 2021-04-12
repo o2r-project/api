@@ -40,7 +40,7 @@ jobs:
     - name: Commit the new PDF
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_author: PDF bot <fabian.fermazin@wwu.de>
+        commit_author: PDF bot <o2r.projekt@uni-muenster.de>
         commit_message: update spec pdf
         branch: master
 
