@@ -11,7 +11,7 @@ info:
     **A good starting point for understanding the different parts of the API is the [compendium life-cycle](#compendium-lifecycle).**
     The API is implemented as a [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful API. The entrypoint for the current version is /api/v1.
     Unless specified otherwise, responses are always in JSON format. Body parameters in `POST` requests are expected in `multipart/form-data format.` Requests to the API should always be made with a secure connection using  `HTTPS`. Some requests require [authentication](#section/User-authentication) with a specific [user level](#section/User-levels).
-    
+
     To cite this specification please use
 
     > _Nüst, Daniel, 2018. Reproducibility Service for Executable Research Compendia: Technical Specifications and Reference Implementation. Zenodo. [doi:10.5281/zenodo.2203844](https://zenodo.org/record/2203844)_
@@ -38,7 +38,6 @@ info:
 
     The API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](#section/User-authentication).
 
-  termsOfService: ''
   contact:
     name: o2r project
     email: o2r.team@uni-muenster.de
@@ -256,7 +255,7 @@ paths:
       - Compendium
       summary: View a single compendium and metadata
       description: |
-        This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as ISO8601.
+        This includes the complete metadata set, related job ids and a tree representation of the included files. The created timestamp refers to the upload of the compendium. It is formated as [RFC-3339](tools.ietf.org/html/rfc3339).
 
         `curl https://…/api/v1/$ID`
 
@@ -868,7 +867,7 @@ paths:
         `text` is an array, with the latest element holding the newest information.
         During long running steps, the `text` element is updated by appending new information when available.
 
-        The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as ISO8601.
+        The `start` and `end` timestamps indicate the start and end time of the step. They are formatted as [RFC-3339](tools.ietf.org/html/rfc3339).
 
         Specific steps may carry more information in additional properties.
         
@@ -1322,7 +1321,115 @@ paths:
               examples:
                 unauthorized:
                   $ref: '#/components/examples/metadata_unauthorized'
+  
+  #Bindings Paths
+  /bindings/binding:
+    post:
+      tags:
+        - Bindings
+      summary: Create new binding
+      operationId: upload_binding
+      requestBody:
+        description: |
+          The Bindning to be uploaded.
 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/new_binding'
+            examples:
+              substitution_request_body:
+                $ref: '#/components/examples/binding_request_body'
+      responses:
+        200:
+          description: Binding Upload response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/upload_binding_response'
+              examples:
+                binding_success:
+                  $ref: '#/components/examples/binding_success'
+#
+# Deprecated extraction function. Extraction are now executed in the frontend.                  
+#  /bindings/extractR:
+#    post:
+#      tags:
+#        - Bindings
+#      summary: Extract R code
+#      operationId: extract_binding
+#      requestBody:
+#        description: |
+#          Request body for extracting those code lines needed to generate a specific result.
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/extract_binding'
+#            examples:
+#              substitution_request_body:
+#                $ref: '#/components/examples/extract_request_body'
+#      responses:
+#        200:
+#          description: Extract R code response
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/extract_binding_response'
+#              examples:
+#                extract_success:
+#                  $ref: '#/components/examples/extract_success'
+
+  /compendium/{compendium_id}/binding/{binding_id}:
+    parameters:
+        - $ref: '#/components/parameters/compendium_id'
+        - $ref: '#/components/parameters/binding_id'
+    get:
+      tags:
+        - Bindings
+      summary: Proxy for binding
+      operationId: proxy_binding
+      responses:
+        200:
+          description: Successfull Proxy
+    post:
+      tags:
+        - Bindings
+      summary: Run binding
+      operationId: run_binding
+      responses:
+        200:
+          description: Successfull run of binding
+        
+  /bindings/searchBinding:
+    post:
+      tags:
+        - Bindings
+      summary: Search for a binding
+      operationId: search_binding
+      requestBody:
+        description: |
+          Request body for finding bindings that include a certain code snippet.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/search_binding'
+            examples:
+              substitution_request_body:
+                $ref: '#/components/examples/search_binding_request_body'
+      responses:
+        200:
+          description: Search Binding response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/search_binding_response'
+              examples:
+                search_binding_success:
+                  $ref: '#/components/examples/search_binding_success'
+  
   #User Paths
   /user:
     get:
@@ -1787,8 +1894,100 @@ components:
           type: number
         size:
           type: integer
-
-
+    
+    new_binding:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the compendium for which the bindings should be created
+        computationalResult:
+          type: object
+          description: specification of the computational result that should be made interactive
+          properties:
+            type: 
+              type: string
+              description: type of the computational result, e.g. a figure or a table
+            result:
+              type: string
+              description: the actual result as it is referred to in the text
+        sourcecode:
+          type: object
+          description: all code-related information needed to create a binding for result specified above
+          properties:
+            file: 
+              type: string
+              description: main file of the research compendium containing the R code
+            codelines:
+              type: array
+              description: array of code chunks including the code needed to generate the result
+              items: 
+                type: object
+                properties:
+                  first_line:
+                    type: integer
+                    description: start of the code chunk
+                  last_line:
+                    type: integer
+                    description: end of the code chunk
+          
+            parameter:
+              type: array
+              description: array of parameters that should be made interactive
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: parameter as it is initialized in the code
+                  name:
+                    type: string
+                    description: the name of the parameter without the value
+                  val:
+                    type: integer
+                    description: the value of the parameter without the name
+                  uiWidget:
+                    type: object
+                    description: specification of the UI widget, one per parameter, here examplified with a slider
+                    properties:
+                      type:
+                        type: string
+                        description: widget type, e.g. a slider or radio buttons
+                      minValue:
+                        type: integer
+                        description: minimum value of the slider
+                      maxValue:
+                        type: integer
+                        description: maximum value of the slider
+                      stepSize:
+                        type: integer
+                        description: step size when moving the slider
+                      caption:
+                        type: string
+                        description: caption for the result
+    
+    extract_binding:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the compendium for which the bindings should be created
+        file:
+          type: string
+          description: main file of the research compendium containing the R code
+        plot:
+          type: string
+          description: function that outputs the result used as starting point for the backtracking algorithm
+    search_binding:
+      type: object
+      properties:
+        term:
+          type: string
+          description: search for bindings including this code snippet
+        metadata:
+          type: string
+          description: whole metadata object of the corresponding compendium
+     
     #Responses
     upload_response:
       type: object
@@ -1970,6 +2169,25 @@ components:
               user:
                 type: string
                 format: user_id
+                
+    upload_binding_response:
+      type: object
+      properties:
+        callback:
+          type: string
+        data:
+          description: binding           
+
+    search_binding_response:
+      type: object
+      properties:
+        callback:
+          type: string
+        data:
+          description: array of results for which bindings exist that include the corresponding code snippet
+          type: array
+          items:
+            type: string
 
     user_view_response:
       type: object
@@ -2268,6 +2486,14 @@ components:
       name: file_id
       in: path
       description: Id of the File
+      required: true
+      schema:
+        type: string
+        
+    binding_id:
+      name: binding_id
+      in: path
+      description: Id of the binding
       required: true
       schema:
         type: string
@@ -3014,6 +3240,55 @@ components:
           - id: p6s3GGn6EaDoZXM8jOWuNd5E1lHKPVRt
             compendium_id: xkjzY
             user: 0000-0002-1701-2564
+            
+    ##Binding examples:
+    binding_request_body:
+      summary: Request body for a new binding
+      value: 
+        id: rDdFN
+        computationalResult:
+         type: figure
+         result: Figure 3
+        sourcecode:
+         file: main.Rmd
+         codelines:
+           - first_line: 101
+             last_line: 503
+         parameter:
+           - text: duration <- 24
+             name: duration
+             val: 24
+             uiWidget:
+               minValue: 1
+               type: slider
+               maxValue: 24
+               stepSize: 1
+               caption: The duration parameter specifies the duration of the flood event in hours.
+               
+    binding_success:
+      summary: Response to successful
+      value: 
+        callback: ok
+        data: binding
+    
+    extract_request_body:
+      summary: Extract binding code request body
+      value:
+        id: "rDdFN"
+        file: "main.Rmd"
+        plot: "plotFigure1()"
+          
+    search_binding_request_body:
+      summary: Search binding request
+      value:
+        term: processData(input)
+        metadata: "{o2r.metadata}"
+
+    search_binding_success:
+      summary: Search response success response
+      value:
+        callback: ok
+        data: ["result"]
 
     ##User examples
     user_list_success:
@@ -3260,6 +3535,7 @@ tags:
       ### Deletion
 
       Unlike published compendia, a candidate can be deleted by a the authoring user, see [delete compendium](#operation/delete_compendium).
+
   - name: Metadata
     description: |
       ### Basics
@@ -3374,6 +3650,17 @@ tags:
 
       The packaging of a compendium ensures a recipient can verify the integrity of the transported data.
       Currently, the shipment process always creates [BagIt](http://tools.ietf.org/html/draft-kunze-bagit) bags to package a compendium.
+
+  - name: Bindings
+    description: |
+      # Bindings
+
+      A binding is an optional component of an Executable Research Compendium.
+      It can be used to make static figures interactive, for example, to show how different parameter settings affect the result shown in the figure.
+      A bindings stores information on the code lines needed to generate the corresponding figure, the parameter that should be made interactive, the data subset required for the figure, and the user interface (UI) widget (e.g. a slider or radio buttons).
+      The resulting JSON object including the binding is stored in the metadata tag `interaction`.
+      For this reason, the compendium must be at least a `candidate` where the metadata extraction is completed.
+
   - name: Users
     description: |
       ## User levels
@@ -3434,6 +3721,7 @@ tags:
       Currently [ORCID](https://www.orcid.org) is the only available authentication provider, therefore users need to be registered with ORCID. Because of its nature, the authentication workflow is not a RESTful service.
       Users must follow the redirection to the login endpoint with their web browser and grant access to the o2r reproducibility service for their ORCID account.
       They are then sent back to our authentication service, which verifies the authentication request and enriches the user session with the verified ORCID for this user.
+
   - name: API Info
     description: Get technical info from the api
 
