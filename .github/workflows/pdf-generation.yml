@@ -42,4 +42,6 @@ jobs:
       with:
         commit_author: PDF bot <o2r.projekt@uni-muenster.de>
         commit_message: update spec pdf
-        branch: ${{ github.head_ref }}
+        commit_user: o2r-user
+        branch: master
+        token: ${{ secrets.TEST_PAT }}
