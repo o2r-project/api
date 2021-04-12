@@ -42,6 +42,6 @@ jobs:
       with:
         commit_author: PDF bot <o2r.projekt@uni-muenster.de>
         commit_message: update spec pdf
-        commit_user: o2r-user
+        commit_user: Fmazin
         branch: master
         token: ${{ secrets.TEST_PAT }}
