@@ -5,8 +5,8 @@ on:
   push:
     branches:
     - master
-    paths-ignore:
-    - './docs/o2r-openapi.pdf'
+    paths:
+    - '!**.pdf'
     
   workflow_dispatch:
 
