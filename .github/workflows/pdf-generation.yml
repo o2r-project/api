@@ -17,7 +17,7 @@ jobs:
       with:
         check-latest: false
         node-version: 14.16.0
-        ref: ${{ github.head_ref }}
+        token: ${{ secrets.TEST_PAT }}
 
     - name: Install node
       uses: actions/setup-node@v1
@@ -44,4 +44,3 @@ jobs:
         commit_message: update spec pdf
         commit_user_name: Fmazin
         branch: master
-        token: ${{ secrets.TEST_PAT }}
