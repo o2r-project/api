@@ -38,6 +38,10 @@ info:
 
     The API provides a generic [search](../search.md) endpoint for finding compendia and jobs and uses [ORCID and OAuth for authentication](#section/User-authentication).
 
+    ---
+    ### PDF Download 
+
+    You can download a PDF Version of this specification [here](/pdf/o2r-openapi.pdf).
   contact:
     name: o2r project
     email: o2r.team@uni-muenster.de
