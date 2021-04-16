@@ -43,5 +43,5 @@ jobs:
       with:
         commit_author: PDF bot <o2r.projekt@uni-muenster.de>
         commit_message: update spec pdf
-        commit_user_name: o2r-user 
+        commit_user_name: PDF bot 
         commit_user_email: o2r.projekt@uni-muenster.de  
