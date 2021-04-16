@@ -41,7 +41,7 @@ info:
     ---
     ### PDF Download 
 
-    You can download a PDF Version of this specification [here](/pdf/o2r-openapi.pdf).
+    You can download a PDF Version of this specification [here](./pdf/o2r-openapi.pdf).
   contact:
     name: o2r project
     email: o2r.team@uni-muenster.de
