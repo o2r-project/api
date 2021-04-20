@@ -1335,7 +1335,7 @@ paths:
       operationId: upload_binding
       requestBody:
         description: |
-          The Bindning to be uploaded.
+          The Binding to be uploaded.
 
         required: true
         content:
@@ -1355,35 +1355,6 @@ paths:
               examples:
                 binding_success:
                   $ref: '#/components/examples/binding_success'
-#
-# Deprecated extraction function. Extraction are now executed in the frontend.                  
-#  /bindings/extractR:
-#    post:
-#      tags:
-#        - Bindings
-#      summary: Extract R code
-#      operationId: extract_binding
-#      requestBody:
-#        description: |
-#          Request body for extracting those code lines needed to generate a specific result.
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/extract_binding'
-#            examples:
-#              substitution_request_body:
-#                $ref: '#/components/examples/extract_request_body'
-#      responses:
-#        200:
-#          description: Extract R code response
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/extract_binding_response'
-#              examples:
-#                extract_success:
-#                  $ref: '#/components/examples/extract_success'
 
   /compendium/{compendium_id}/binding/{binding_id}:
     parameters:
@@ -1665,7 +1636,7 @@ paths:
       tags:
         - Compendium
       summary: |
-        🚧 Simple Search
+         🚧 Simple Search
       description: |
         ------
 
@@ -1717,7 +1688,7 @@ paths:
       tags:
         - Compendium
       summary: |
-        🚧 Complex Search
+         🚧 Complex Search
       description: |
         ## Complex Search
 
@@ -1969,19 +1940,7 @@ components:
                       caption:
                         type: string
                         description: caption for the result
-    
-    extract_binding:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the compendium for which the bindings should be created
-        file:
-          type: string
-          description: main file of the research compendium containing the R code
-        plot:
-          type: string
-          description: function that outputs the result used as starting point for the backtracking algorithm
+
     search_binding:
       type: object
       properties:
@@ -3274,13 +3233,6 @@ components:
       value: 
         callback: ok
         data: binding
-    
-    extract_request_body:
-      summary: Extract binding code request body
-      value:
-        id: "rDdFN"
-        file: "main.Rmd"
-        plot: "plotFigure1()"
           
     search_binding_request_body:
       summary: Search binding request
