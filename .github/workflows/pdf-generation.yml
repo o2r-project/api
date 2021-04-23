@@ -32,8 +32,11 @@ jobs:
     - name: Convert spec to md
       run: widdershins ./docs/o2r-openapi.yml -c true --omitHeader true -o ./docs/pdf/o2r-openapi.md
 
-    - name: Fix broken bold sections 
-      run: perl -i  -0pe  's/(\w)\n\*/\1\*/g' docs/pdf/o2r-openapi.md 
+    - name: Fix broken pdf sections 
+      run: |
+          perl -i  -0pe  's/(\w)\n\*/\1\*/g' docs/pdf/o2r-openapi.md
+          perl -i  -0pe  's/##.+\n\n`([\w\s\/{}]+)`/## \1/g' docs/pdf/o2r-openapi.md
+          perl -i  -0pe  's/## \w+_\w+\n\n(<.+>)\n\n`([\w\s\/{}]+)`/## \2\n\n\1/g' docs/pdf/o2r-openapi.md
 
     - name: Convert md to pdf
       run: mdpdf ./docs/pdf/o2r-openapi.md
