@@ -143,7 +143,7 @@ paths:
 
         1. If a file named `bagit.txt` is found, the directory is checked for Bagit validity
         2. If a single zip file is found, the file is extracted, if multiple zip files are found, the filename has to be specified, otherwise an error is returned
-        3. If a single subdirectory is found, the loader uses that subdirectory as the base directory for loading
+        3. If a single subdirectory is found, the reproducibility service uses that subdirectory as the base directory for loading
         4. Depending on the value of `content_type` (see below), the public share contents are treated as a complete compendium or as a  workspace
 
         #### Example data
@@ -646,7 +646,7 @@ paths:
   #      - Compendium
   #    summary: Compendium file listing
   #    description: |
-  #      The file listing is returned in the single view of a job or compendium. It includes the complete content of the bagtainer in its current state.
+  #      The file listing is returned in the single view of a job or compendium. It includes the complete content of the compendium in its current state.
   #      If a job has been run and the programme outputs new data, this new data is included as well.
 
   #      File listings are represented as a Object. The file structure for a synthetic job `nj141` is as follows.
@@ -1665,7 +1665,7 @@ components:
           description: |
             Path to a subdirectory or a zip file in the public share (optional)
               - default is `/`
-              - the leading `/` is optional, the loader supports both ways
+              - the leading `/` is optional, the reproducibility service supports both ways
               - when a directory has multiple zip files, the path can be used to specify which file is used, e.g. `path=/metatainer.zip`
         doi:
           type: string
@@ -3313,7 +3313,7 @@ tags:
       - **generate_configuration**
         Create a compendium configuration file; may be skipped if configuration file is already present.
       - **validate_compendium**
-        Parses and validates the bagtainer configuration file.
+        Parses and validates the compendium configuration file.
       - **generate_manifest**
         Executes the given analysis to create a container manifest; may be skipped if manifest file is already present.
       - **image_prepare**
