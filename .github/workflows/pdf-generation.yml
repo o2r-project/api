@@ -1,0 +1,53 @@
+
+name: PDF generation
+
+on:
+  push:
+    branches:
+    - master
+    paths-ignore:
+    - 'docs/pdf/**'
+    
+  workflow_dispatch:
+
+jobs: 
+  pdf-generation:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+
+    - name: Install node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.16.0
+
+    - name: Install widdershins
+      run: npm install -g widdershins
+
+    - name: Install mdpdf
+      run: npm install -g mdpdf@2.1.1 --unsafe-perm
+    
+    - name: Convert spec to md
+      run: widdershins ./docs/o2r-openapi.yml -c true --omitHeader true -o ./docs/pdf/o2r-openapi.md
+
+    - name: Fix broken pdf sections 
+      run: |
+          perl -i  -0pe  's/(\w)\n\*/\1\*/g' docs/pdf/o2r-openapi.md
+          perl -i  -0pe  's/##.+\n\n`([\w\s\/{}]+)`/## \1/g' docs/pdf/o2r-openapi.md
+          perl -i  -0pe  's/## \w+_\w+\n\n(<.+>)\n\n`([\w\s\/{}]+)`/## \2\n\n\1/g' docs/pdf/o2r-openapi.md
+
+    - name: Convert md to pdf
+      run: mdpdf ./docs/pdf/o2r-openapi.md
+
+    - name: Delete the md file
+      run: rm ./docs/pdf/*.md
+
+    - name: Commit the new PDF
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_author: PDF bot <o2r.projekt@uni-muenster.de>
+        commit_message: update spec pdf
+        commit_user_name: o2r-user 
+        commit_user_email: o2r.projekt@uni-muenster.de  

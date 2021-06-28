@@ -52,6 +52,10 @@ You can serve the HTML page (without style changes!) and automatically re-render
 ```bash
 redoc-cli serve --watch docs/openapi.yml
 ```
+### PDF Generation
+
+Note that for every commit on the `master` branch a new PDF document will be generated. This can quickly lead to many commits. 
+So it is best to develop new features on other branches. 
 
 ## Load testing
 
