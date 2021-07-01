@@ -1,16 +1,23 @@
-# Bindings
+# UI Bindings
 
-A binding is an optional component of an Executable Research Compendium.
-It can be used to make static figures interactive, for example, to show how different parameter settings affect the result shown in the figure.
-A bindings stores information on the code lines needed to generate the corresponding figure, the parameter that should be made interactive, the data subset required for the figure, and the user interface (UI) widget (e.g. a slider or radio buttons).
-The resulting JSON object including the binding is stored in the metadata tag `interaction`.
-For this reason, the compendium must be at least a `candidate` where the metadata extraction is completed. 
+A user interface binding (UI binding) is an optional component of an ERC.
+It can be used to make static figures interactive.
+For example, authors can show how different parameter settings of a computational model affect the result shown in a figure.
+A UI binding stores information on
 
-## Create a binding
+- the code lines needed to generate the corresponding figure,
+- the variable/parameter in the code that should be made interactive,
+- the data subset required for the figure, and
+- the UI widget (e.g., a slider or radio buttons).
+
+The UI binding configuration is a JSON object tored in the property `interaction` of the ERC metadata.
+For this reason, the compendium must be at least a `candidate` where the metadata extraction is completed before a UI binding can be created.
+
+## Create a UI binding
 
 `POST /api/v1/bindings/binding`
 
-Request body for a new binding:
+Example request body for a new UI binding, here using with a slider:
 
 ```json
 {
@@ -43,20 +50,20 @@ Request body for a new binding:
 
 ### Request body properties
 
-- `id` - ID of the compendium for which the bindings should be created
+- `id` - ID of the compendium for which the UI binding should be created
 - `computationalResult` - specification of the computational result that should be made interactive
-  - `type` - type of the computational result, e.g. a figure or a table
-  - `result` - the actual result as it is referred to in the text
-- `sourcecode` all code-related information needed to create a binding for result specified above
+  - `type` - type of the computational result, e.g., a figure or a table
+  - `result` - the name of the result as it is referred to in the text
+- `sourcecode` all code-related information needed to create a UI binding for result specified above
   - `file` - main file of the research compendium containing the R code
-  - `codelines` - array of code chunks including the code needed to generate the result
+  - `codelines` - array of code chunks with the code needed to generate the result
     - `first_line` - start of the code chunk
     - `last_line` - end of the code chunk
   - `parameter` - array of parameters that should be made interactive
     - `text` - parameter as it is initialized in the code
     - `name` - the name of the parameter without the value
-    - `val` - the value of the parameter without the name
-    - `uiWidget` - specification of the UI widget, one per parameter, here examplified with a slider
+    - `val` - the value of the parameter without the name as it is set in the code
+    - `uiWidget` - specification of the UI widget, one per parameter
       - `type` - widget type, e.g. a slider or radio buttons
       - `minValue` - minimum value of the slider
       - `maxValue` - maximum value of the slider
@@ -74,61 +81,23 @@ Request body for a new binding:
 }
 ```
 
-## Extract R code  -- Deprected
-
-
-### code lines extraction works now on the front end
-
-
-`POST /api/v1/bindings/extractR`
-
-Request body for extracting those code lines needed to generate a specific result:
-
-```json
-{
-  "id": "rDdFN",
-  "file": "main.Rmd",
-  "plot": "plotFigure1()"
-}
-```
-
-### Request body properties
-
-- `id` - ID of the compendium for which the bindings should be created
-- `file` - main file of the research compendium containing the R code
-- `plot` - function that outputs the result used as starting point for the backtracking algorithm
-
-### Response
-
-```json
-200 Ok
-
-{
-  "callback": "ok",
-  "codelines": [{
-    "start": 101,
-    "end": 503
-    }],
-}
-```
-
-## Proxy for binding
+## Proxy for UI binding
 
 `GET /api/v1/compendium/:compendium/binding/:binding`
 
 ...
 
-## Run binding
+## Run UI binding
 
 `POST /api/v1/compendium/:compendium/binding/:binding`
 
 ...
 
-## Search for a binding
+## Search for a UI binding
 
 `POST /api/v1/bindings/searchBinding`
 
-Request body for finding bindings that include a certain code snippet:
+Request body for finding UI bindings that include a certain code snippet:
 
 ```json
 {
@@ -139,7 +108,7 @@ Request body for finding bindings that include a certain code snippet:
 
 ### Request body properties
 
-- `term` - search for bindings including the this code snippet
+- `term` - search for UI bindings including the given code snippet
 - `metadata` - whole metadata object of the corresponding compendium
 
 ### Response
