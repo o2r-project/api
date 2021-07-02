@@ -77,21 +77,81 @@ Example request body for a new UI binding, here using with a slider:
 
 {
   "callback": "ok",
-  "data": binding
+  "data": {
+  "id": "rDdFN",
+  "computationalResult": {
+    "type": "figure",
+    "result": "Figure 3"
+  },
+  "sourcecode": {
+    "file": "main.Rmd",
+    "codelines": [{
+      "first_line": 101,
+      "last_line": 503
+      }],
+    "parameter": [{
+      "text": "duration <- 24",
+      "name": "duration",
+      "val": 24,
+      "uiWidget": {
+        "minValue": 1,
+        "type": "slider",
+        "maxValue": 24,
+        "stepSize": 1,
+        "caption": "The duration parameter specifies the duration of the flood event in hours."
+        }
+      }]
+    }
+}
 }
 ```
 
-## Proxy for UI binding
+## Get changed Image from UI binding
 
 `GET /api/v1/compendium/:compendium/binding/:binding`
 
-...
+### Request parameters
 
-## Run UI binding
+- `:compendium` - ID of the compendium for which the UI binding server should be started
+- `:binding` - name of the binding in context for which the UI binding server should be started
+
+#### Add  changed bynding parameters as query parameters
+
+'?newValue0=<value>&newValue1=<value> ...'
+  
+ - 'newValue0' The value which should be assigned to the first changeable UI parameter
+  
+### Response
+
+200 Ok - Image of updated Figure/Table
+  
+  
+## Start server for one UI Binding
 
 `POST /api/v1/compendium/:compendium/binding/:binding`
 
-...
+### Request parameters
+
+- `:compendium` - ID of the compendium for which the UI binding server should be started
+- `:binding` - name of the binding in context for which the UI binding server should be started
+
+### Request body properties
+
+- Optional
+
+### Response
+
+
+```json
+200 Ok
+
+{
+  "callback": "ok",
+  "data": {
+      request.body
+  }
+}
+```
 
 ## Search for a UI binding
 
