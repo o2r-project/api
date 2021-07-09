@@ -2,13 +2,9 @@
 title: "o2r reproducibility service load testing"
 subtitle: "Technology report"
 author: "Juan Sebastian Garzon Alvarado, Daniel Nüst"
-date: "2020-11-23"
-output:
-  html_document:
-    code_folding: show
-    toc_depth: 6  
+date: "2021-07-09"
 ---
-# o2r Reproducibility Service Load Testing
+# o2r Reprcoducibility Service Load Testing
 
 In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue ("late submissions").
 A Submission of a paper to the o2r reproducibility service is called **Creation session** and the interaction of a reader with a paper is called **Examination session**.
@@ -44,7 +40,7 @@ Note that here the term "stress test" in incorrectly used, whereas in this docum
 > The report supports stakeholders in developing long term business plans for operating reproducible research servicesbased on ERCs.
 
 ## Type of Sessions
-### Creation session
+### Creation session {#creation_sessions}
 
 #### Overview
 
@@ -68,7 +64,7 @@ From the Author perspective the test simulates 8 general steps, some steps corre
 
 **User steps (U)** are adjustable before the test in a configuration file. The steps corresponding to **o2r tasks (o2r)** require a series of interactions with the o2r API service and thus their durations are *not* configurable. These steps are explained in detail in the [**o2r task (o2r) **](#o2rtasks) section.
 
-### Examination session
+### Examination session {#examination_sessions}
 
 #### Overview
 
@@ -172,7 +168,7 @@ The first one correspond to the authentication on the o2r service and configurat
 
 #### Required libraries
 
-```{r libraries}
+```{r libraries,message=FALSE}
 library("RSelenium")
 library("binman")
 library("httr")
@@ -184,6 +180,7 @@ library("GGally")
 library("RColorBrewer")
 library("tidyr")
 library("dplyr")
+library("scales")
 library("stevedore")
 library("dockerfiler")
 ```
@@ -268,7 +265,7 @@ create_dummy_workspaces <- function(sleep_times, source, target) {
     return(
       cat(
         "ERROR: Seconds data type should be integer\n",
-        " and 'Dummy' folder should exist"
+        " and ", source ,"folder should exist"
       )
     )
   }
@@ -308,9 +305,9 @@ create_dummy_workspaces <- function(sleep_times, source, target) {
     # Modify dummy
     
     dockerfile <- readLines(file.path(target_dummy, "Dockerfile"), -1)
-    dockerfile[4] <- paste0("ENV SHEEP ", seconds)
+    dockerfile[4] <- paste0("ENV SECONDS ", seconds)
     writeLines(dockerfile, file.path(target_dummy, "Dockerfile"))
-    
+      
     # Zip dummy
     
     zip(target_dummy, file.path(target_dummy, dataFiles), flag = "-jq")
@@ -508,6 +505,8 @@ This functions creates a plot using the synchronized times of the test represent
 ```{r}
 plot_step_times <- function(df_report, test_id) {
   df_report$duration <- df_report$end - df_report$start
+  # Skipped steps to 'almost' zero
+  df_report$duration[df_report$duration==0] <- 10**(-8)
   
   duration_df <-
     df_report[df_report$step_type != "general_step", c(1, 2, 3, 8)]
@@ -518,7 +517,7 @@ plot_step_times <- function(df_report, test_id) {
   duration_df <-
     duration_df %>% mutate(across(c(compendium_id:job_id), factor))
   names <- names(duration_df)[c(-1, -2)]
-  
+
   labels <-
     c(
       "[API] Upload",
@@ -561,8 +560,8 @@ plot_step_times <- function(df_report, test_id) {
     title = "o2R API processing times",
     caption = paste0("Test ID: ", test_id),
     col = "Compendium ID"
-  ) + geom_line(size = 1) + scale_x_discrete(breaks = names, labels = labels)
-}
+  ) + geom_line(size = 1) + scale_x_discrete(breaks = names, labels = labels)+ scale_y_continuous(trans = log10_trans(), breaks = trans_breaks("log10", function(x) 10^x),labels = trans_format("log10", math_format(10^.x)))                            
+  }
 ```
 
 #### Execution functions
@@ -919,8 +918,10 @@ user_interaction <- function(sp_iss_df,test_conf,docker,examination_conf_file,cr
         cat("\r", rep(" ", 7), "User interaction finished !", rep(" ", 20))
       }
     }
+    containers <-c()
+    containers$examination_containers<-examination_containers
+    containers$creation_containers<-creation_containers
     
-    containers<-c(examination_containers, creation_containers)
     return(containers)
 }
 ```
@@ -931,8 +932,8 @@ user_interaction <- function(sp_iss_df,test_conf,docker,examination_conf_file,cr
 
 user_interaction_report<-function(containers,test_conf,results_folder){
     
-    examination_containers <- containers[1]
-    creation_containers <- containers[2]
+    examination_containers <- containers$examination_containers
+    creation_containers <- containers$creation_containers
     
     # Creates results folder for interaction
     sp_iss_interaction_folder <-
@@ -1201,10 +1202,10 @@ run_test <-
     folders <- user_interaction_report(containers, test_conf, results_folder)
     
     # Removes docker container sessions
-    lapply(containers[1], function(x) {
+    lapply(containers$creation_containers, function(x) {
       docker$container$remove(x$name())
     })
-    lapply(containers[2], function(x) {
+    lapply(containers$examination_containers, function(x) {
       docker$container$remove(x$name())
     })
     
@@ -1220,7 +1221,7 @@ run_test <-
 
 The following chunk reproduce all the required steps to run a test from scratch. 
 It is only required the `o2r_test` and `Dummy` folder, and the `test_o2r.r` file.
-Similarly a running o2r service on the background is required.
+Similarly a running o2r service on the background is required. For this example we will use **5** [Creation Sessions](#creation_sessions), **10** [Examination sessions](#examination_sessions) and 2 late submissions.
 
 ```{r test,eval = FALSE}
 # Creation session
@@ -1228,9 +1229,8 @@ Similarly a running o2r service on the background is required.
 
 Sys.setenv(
   COOKIE = URLdecode(
-    "s%3Ay-omwZZJvv8opW_2KPshUZhMzEC3kOzr.N5awjhydVBP%2BlucTvgBRXFDWxAVpT%2FKE582V0AXtyVA"
-  )
-)
+    "s%3Av3C30IGmBC2gTSt0LSiH9OwvZRSf37Nq.IqOcPief5wftHjcRpRaAxQ91paB%2B7OeV%2F8gnSCyplQo"))
+
 Sys.setenv(ENDPOINT = "http://localhost/api/v1/")
 
 # Configuration parameters
@@ -1253,12 +1253,12 @@ creat_conf_file <- file.path("creation_late.csv")
 
 # If you do not have workspaces available to test you can create 'dummy' workspaces for your special issue
 create_dummy_workspaces(
-  sleep_times = c(5, 10, 15, 20, 20, 40, 50, 60, 90, 10),
+  sleep_times = c(12,17,23,32,41,53),
   source = dummy_folder,
   target = special_issue_folder
 )
 # Similarly you can create workspace for your "late submission"
-create_dummy_workspaces(sleep_times = c(5, 10, 15),
+create_dummy_workspaces(sleep_times = c(11,16),
                         source = dummy_folder,
                         target = creat_folder)
 
@@ -1273,18 +1273,19 @@ df_special_issue_conf <-
 df_conf_creat <-
   conf_df_creation_sessions(
     folder_path = creat_folder,
-    mean_times = c(5, 5, 5, 5, 5),
-    var = c(1, 1, 1, 1, 1)
+    mean_times = c(5,5,5,5,5,5),
+    var = c(1,1,1,1,1,1)
   )
 
 # You can also create the configuration file for the examination session
 # As there are not compendium available before starting the test, the ID's will be initially NA values. After the Special Issue is created the ID's will be updated.
 
-compendium_id_list <- rep("NA", 20)
+compendium_id_list <- rep("NA", 12)
+
 df_conf_exam <-
   conf_df_examination_sessions(compendium_id_list,
-                               mean_times = c(5, 5, 5),
-                               var = c(1, 1, 1))
+                               mean_times = c(5, 5, 5, 5, 5),
+                               var = c(1, 1, 1, 1, 1))
 
 # You can manually change the configuration on your configuration dataframes and then write the files
 write.csv(df_special_issue_conf, special_issue_conf_file, row.names = FALSE)
@@ -1303,4 +1304,65 @@ test <-
     creation_folder = creat_folder,
     creation_conf_file = creat_conf_file
   )
+```
+
+# Test results
+
+## Creation special issue
+#### Timeline
+
+Timeline plot representing the general steps for [Creation Sessions](#creation_sessions) during the special issue publication.
+
+```{r}
+# Load results
+special_issue_df<-read.csv("results_test_XWOAY/special_issue_creation/synchronized_times_test_XWOAY.csv")
+
+# Plot Timeline
+timeline_plot(special_issue_df,"XWOAY")
+
+```
+
+#### Test steps
+
+Test steps plot representing API and job execution steps duration for [Creation Sessions](#creation_sessions) during the special issue publication.
+
+```{r}
+# Plot Steps
+plot_step_times(special_issue_df,"XWOAY")
+```
+
+## Interaction
+### Examination sessions
+#### Timeline
+
+Timeline plot representing the general steps for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
+```{r}
+interaction_examination_df<-read.csv("results_test_XWOAY/special_issue_interaction/examination_sessions/synchronized_times_test_XWOAY.csv")
+# Plot Timeline
+timeline_plot(interaction_examination_df,"XWOAY")
+```
+
+#### Test steps
+
+Test steps plot representing API and job execution steps duration for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
+```{r}
+# Plot Timeline
+plot_step_times(interaction_examination_df,"XWOAY")
+```
+
+### Late submission (creation sessions)
+#### Timeline
+
+Timeline plot representing the general steps for late submissions [(Creation Sessions)](#creation_sessions) during the interaction phase of the special issue.
+
+```{r}
+interaction_creation_df<-read.csv("results_test_XWOAY/special_issue_interaction/creation_sessions/synchronized_times_test_XWOAY.csv")
+timeline_plot(interaction_creation_df,"XWOAY")
+```
+
+#### Test steps
+
+Test steps plot representing API and job execution steps duration for late submissions [(Creation Sessions)](#examination_sessions) during the interaction phase with the special issue.
+```{r}
+plot_step_times(interaction_creation_df,"XWOAY")
 ```

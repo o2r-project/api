@@ -370,7 +370,7 @@ creation_session<-function(upload_origin,
     Sys.sleep(20)
     job<-job_status(job_id)
     status<-content(job)$status
-    if(status!="Running"){
+    if(status!="running"){
       job_finish<-TRUE
       execute_end_time<-Sys.time()
     }
@@ -447,7 +447,7 @@ examination_session<-function(compendium_id,
     Sys.sleep(10)
     job<-job_status(job_id)
     job_status<-content(job)$status
-    if(job_status!="Running"){
+    if(job_status!="running"){
       job_finish<-TRUE
       execute_end_time<-Sys.time()
     }
