@@ -1,4 +1,5 @@
 html_document:
+    code_folding: show
     toc: true
     toc_float: true
     self_contained: false

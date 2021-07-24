@@ -1,10 +1,10 @@
 ---
 title: "o2r reproducibility service load testing"
-subtitle: "Technology report"
 author: "Juan Sebastian Garzon Alvarado, Daniel Nüst"
-date: "2021-07-09"
+date: '2021-07-09'
+subtitle: Technology report
 ---
-# o2r Reprcoducibility Service Load Testing
+# o2r Reproducibility Service Load Testing
 
 In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue ("late submissions").
 A Submission of a paper to the o2r reproducibility service is called **Creation session** and the interaction of a reader with a paper is called **Examination session**.
@@ -169,8 +169,6 @@ The first one correspond to the authentication on the o2r service and configurat
 #### Required libraries
 
 ```{r libraries,message=FALSE}
-library("RSelenium")
-library("binman")
 library("httr")
 library("rjson")
 library("stringr")
@@ -189,43 +187,7 @@ library("dockerfiler")
 
 ##### Authentication 
 
-The following code chunk retrieves the cookie `connect.sid` from the local reference implementation, which is exposed via [o2r-guestlister](https://github.com/o2r-project/o2r-guestlister).
-This is a "security hole" facilitating local development, which of course does not work when uploading workspaces to a remote reference implementation deployment.
-Then you need an `.Renviron` file on your local machine next to this file defining `IP` corresponding to the o2r IP address of your Docker environment.
-To find the IP (usually, but not always `localhost`) you have to use the `$docker-machine ip` if you use `docker-machine`.
-As a result the function sets into the working environment a `COOKIE` and an `ENDPOINT` variable.
-
-```{r get_cookie_local_function}
-get_cookie_local <- function() {
-  # LocalTest
-  o2r_local <- Sys.getenv("IP")
-  # Starting Selenium session
-  available.versions <- list_versions("chromedriver")
-  r <- rsDriver(port = 1234L, chromever = available.versions[[1]][1])
-  rem_dr <- r[["client"]]
-  # Navigating to o2r local implementation page
-  rem_dr$navigate(o2r_local)
-  # Click on Login
-  web_elem <-
-    rem_dr$findElement(using = "xpath", "//a[@href='api/v1/auth/login']")
-  web_elem$clickElement()
-  Sys.sleep(1)
-  # o2r Admin/ Editor / User
-  # Click on 'Admin'
-  web_elem$findElement(using = "xpath", "/html/body/div/div[2]/form[3]/button")
-  web_elem$clickElement()
-  
-  # Get cookie and decoding
-  cookie <- URLdecode(webElem$getAllCookies()[[1]]$value)
-  Sys.sleep(1)
-  Sys.setenv(COOKIE = cookie)
-  Sys.setenv(ENDPOINT = "http://localhost/api/v1/")
-  
-  # Closing Selenium session
-  rem_dr$close()
-  rm(r)
-}
-```
+Find the cookie `connec.sid` for the platform website in your browser (e.g. using debug tools, `F12`), and manually define the variable `COOKIE_CODED` with the value of said cookie in the `.Renviron` file. This is a "security hole" facilitating local development, which of course does not work when uploading workspaces to a remote reference implementation deployment.
 
 ##### Configuration files functions
 
@@ -1226,10 +1188,10 @@ Similarly a running o2r service on the background is required. For this example 
 ```{r test,eval = FALSE}
 # Creation session
 # Renviron file to pass info
+readRenviron(".Renviron")
 
 Sys.setenv(
-  COOKIE = URLdecode(
-    "s%3Av3C30IGmBC2gTSt0LSiH9OwvZRSf37Nq.IqOcPief5wftHjcRpRaAxQ91paB%2B7OeV%2F8gnSCyplQo"))
+  COOKIE = URLdecode(Sys.getenv("COOKIE_CODED")))
 
 Sys.setenv(ENDPOINT = "http://localhost/api/v1/")
 

@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Juan Sebastian Garzon Alvarado, Daniel Nüst" />
+
+<meta name="date" content="2021-07-09" />
+
+<title>o2r reproducibility service load testing</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<link href="libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">o2r reproducibility service load testing</h1>
+<h3 class="subtitle">Technology report</h3>
+<h4 class="author">Juan Sebastian Garzon Alvarado, Daniel Nüst</h4>
+<h4 class="date">2021-07-09</h4>
+
+</div>
+
+
+<div id="o2r-reproducibility-service-load-testing" class="section level1">
+<h1>o2r Reproducibility Service Load Testing</h1>
+<p>In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue (“late submissions”). A Submission of a paper to the o2r reproducibility service is called <strong>Creation session</strong> and the interaction of a reader with a paper is called <strong>Examination session</strong>.</p>
+<p>The data collected during these load tests allows operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance. Each section of the document contains the functions required to test the o2r service both in <code>local</code> implementation and in the <code>remote</code> <a href="https://o2r.uni-muenster.de/">o2r.uni-muenster.de</a> implementation.</p>
+</div>
+<div id="definitions-and-scope" class="section level1">
+<h1>Definitions and scope</h1>
+<blockquote>
+<p><em>Load testing is the process of putting demand on a system and measuring its response.</em> <a href="https://en.wikipedia.org/wiki/Load_testing">Wikipedia</a></p>
+</blockquote>
+<p>Following a <a href="https://www.geeksforgeeks.org/difference-between-load-testing-and-stress-testing/">distinction from GeeksforGeeks</a> we distinguish load testing from stress testing as follows:</p>
+<blockquote>
+<p><strong>Load Testing</strong></p>
+<p><em>Load Testing is a type of performance testing which determines the performance of a system, software product or software application under real life based load conditions.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>Stress Testing</strong></p>
+<p>Stress testing is a type of software testing that verifies the stability and reliability of the system. This test particularly determines the system on its robustness and error handling under extremely heavy load conditions.</p>
+</blockquote>
+<p>The tests in this document do not try to push the system to its limits (cf. <a href="https://en.wikipedia.org/wiki/Stress_testing">Stress testing on Wikipedia</a>), but to learn more about the system scalability given a set of pre-defined scenarios with a number of parallel users. The <a href="https://doi.org/10.17879/42149626934">project proposal</a> contains the following relevant paragraphs in <em>Work Package 3.1: Technology</em>. Note that here the term “stress test” in incorrectly used, whereas in this document we correctly conduct load tests:</p>
+<blockquote>
+<p>This work package evaluates the technological decisions and the pilots, mainly from the perspective of infrastructure operators, system administrators, and developers of the publishers. The core metric to evaluate the software and architecture is suitability for the expected usage in terms of performance, integratability,and security. We focus on the former two, since established security procedures – e.g. for cloud and gridinfrastructures – can be applied to the proposed approach as well. A stress test for the deployed services isconducted and the configuration and documentation are adjusted accordingly. The number of sessions forthe test is loosely aligned with a typical number of papers in a special issue and simulates the case of twoconcurrent readers per paper (i.e. 20 in total per issue) and three creation sessions. […] A technology report summarises the stress test results [..]. The findings will be publishedand presented at reproducible research community events ([..]) at library science and preservation events ([..]), and/or research infrastructure conferences ([..]). The report supports stakeholders in developing long term business plans for operating reproducible research servicesbased on ERCs.</p>
+</blockquote>
+<div id="type-of-sessions" class="section level2">
+<h2>Type of Sessions</h2>
+<div id="creation_sessions" class="section level3">
+<h3>Creation session</h3>
+<div id="overview" class="section level4">
+<h4>Overview</h4>
+<p>From the Author perspective the test simulates 8 general steps, some steps correspond to <strong>user interaction (U)</strong> and other steps to process corresponding to <strong>o2r service tasks (o2r)</strong>.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Session start (U) :</strong> Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)</p></li>
+<li><p><strong>Login pause (U) :</strong> Time required to loggin into the o2r service (e.g remembering the password)</p></li>
+<li><p><strong>Pause before upload (U) </strong> Time required for the user before submmiting a paper into the publication (e.g Checking the files and format).</p></li>
+<li><p><strong>ERC/workspace Upload (o2r) </strong> Time required by the o2r service to upload the ERC or Workspace submmited by the author. After this steps the compendium is merely a candidate and is not publicly available.This step is part of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
+<li><p><strong>Metadata modification (U) </strong> Time required by the author to review the metadata of the submmited paper. This step is mandatory to make the ERC compendium publicly available. This step is part of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
+<li><p><strong>ERC/workspace publication (o2r) </strong> Time required by the o2r service to save the metadata and change the status of the compendia to publicly available. This is the final step of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
+<li><p><strong>Execution Pause (U)</strong> As we assume that authors are going to be interested in running the analysis of their papers/compendium, this time represents an initial examination of the published ERC before running a Job.</p></li>
+<li><p><strong>Job Execution (o2r) </strong> Time required by the o2r service to run the analysis/ <a href="https://o2r.info/api/#section/Execute-a-compendium">(Job)</a> in the compendium.</p></li>
+</ol>
+<p><strong>User steps (U)</strong> are adjustable before the test in a configuration file. The steps corresponding to <strong>o2r tasks (o2r)</strong> require a series of interactions with the o2r API service and thus their durations are <em>not</em> configurable. These steps are explained in detail in the <a href="#o2rtasks"><strong>o2r task (o2r) </strong></a> section.</p>
+</div>
+</div>
+<div id="examination_sessions" class="section level3">
+<h3>Examination session</h3>
+<div id="overview-1" class="section level4">
+<h4>Overview</h4>
+<p>An examination sessions consist on a reader interaction with an already available compendia. From the reader/examinator perspective the test simulates 4 general steps, these steps are part of some the steps already described in the creation session:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Session start (U):</strong> Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)</p></li>
+<li><p><strong>Login pause (U):</strong> Time required to loggin into the o2r service (e.g remembering the password)</p></li>
+<li><p><strong>Execution Pause (U):</strong> This time represents an initial examination of the published ERC before running a Job.</p></li>
+<li><p><strong>Job Execution (o2r):</strong> Time required by the o2r service to run the analysis <a href="https://o2r.info/api/#section/Execute-a-compendium">(Job)</a> in the compendium.</p></li>
+</ol>
+<p><strong>User steps (U)</strong> are adjustable before the test in a configuration file. The step corresponding to <strong>o2r Tasks (o2r) </strong> require a series of interactions with the o2r API service. This step is explained in the <a href="#o2rtasks"><strong>o2r Tasks</strong></a> section.</p>
+</div>
+</div>
+<div id="o2rtasks" class="section level3">
+<h3>o2r Tasks (o2r)</h3>
+<div id="ercworkspace-upload-o2r" class="section level4">
+<h4>ERC/workspace upload (o2r)</h4>
+<p>Regarding the upload process two main characteristics are important: its <strong>origin</strong> and <strong>type</strong>. The first one corresponding to the location of the files (e.g in local machine or a public repository) and the second corresponding to the content of the submitted files.</p>
+<div id="upload-origin" class="section level5">
+<h5>Upload origin</h5>
+<p>There are three types of upload origins:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Local file upload</a></li>
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Public Share from Zenodo</a></li>
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Public Share from Sciebo</a></li>
+</ol>
+<p>It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the Record ID identification is used.</p>
+</div>
+<div id="upload-type" class="section level5">
+<h5>Upload type</h5>
+<p>The ERC/workspace upload differentiates between <strong>two types of uploads</strong>, which can either be a workspace or a complete ERC. A workspace is an archive (<code>.zip</code> format) of all files needed for a scientific workflow, i.e. the main file in R Markdown format, e.g., <code>main.Rmd</code>, the file for reading, e.g., <code>display.html</code>, and all additionally required data and software files (see ERC specification for details). The finished ERC in addition contains the ERC configuration file (<code>erc.yml</code>) and the files for the computing environment (the manifest in a <code>Dockerfile</code>, the image in <code>image.tar</code>).</p>
+<p>It is of interest if one of the formats significantly impact performance, e.g., because the file sizes of ERC are much bigger because of the image tarball, while the processing is reduced since the manifest and image must not be created during submission.</p>
+</div>
+</div>
+<div id="metadata-modification-o2r" class="section level4">
+<h4>Metadata modification (o2r)</h4>
+<p>As described on the compendium life cycle, the <code>candidate process</code> should be applied to the compendium or workspaces in order to be publicly available. In this sense is the only step shared by the examination session and creation session that is not and user step. This step requires 2 interactions with the API, the first one requesting the available metadata of the candidate ERC/workspace and the second one saving the medatata modification. For this test, each user saves the metadata once and do not modify the content of the initial submission. This means that the user just confirms that the metadata is correct.</p>
+</div>
+<div id="job-execution-o2r" class="section level4">
+<h4>Job execution (o2r)</h4>
+<p>After the publication of the compendiums the authors/readers will most likely also execute the ERCs. The 10 steps of a Job execution are described in this <a href="https://o2r.info/api/#section/Execute-a-compendium">page</a>. This step requires 3 process, one API request to start the job, the internal Job execution by the o2r service and a series of request to the API to update the status of the Job. The execution finishes when the Job status as returned by the API indicates that the Job execution has finished.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="test-implementation" class="section level1">
+<h1>Test implementation</h1>
+<div id="overview-2" class="section level2">
+<h2>Overview</h2>
+<p>The test is scripted using R and is controlled via an R Markdown notebook (this file). The test consist of two main parts: the first one a script controlling the individual o2r user sessions (creation or examination), and code chunks in the R Markdown notebook controlling the test and allowing multiple simultaneous sessions by using Docker containers. The test notebook is part of the API documentation and is published at <a href="https://o2r.info/api">https://o2r.info/api</a>.</p>
+</div>
+<div id="usage-scenario-implementation" class="section level2">
+<h2>Usage scenario implementation</h2>
+<p>The test simulates the expected usage scenario explained in the previous sections. For this purpose, there are 2 main stages in the test: <strong>Special Issue Creation</strong> and <strong>Special Issue User Interaction</strong>.</p>
+<p>The first stage (<strong>Special Issue Creation</strong>) consist in the creation of an Special Issue with the <strong>simultaneous</strong> submission of a configurable number of papers. For our planned usage scenario this consist 10 simultaneous <strong>creation sessions</strong>. As a final result of this stage 10 compendia will be publicly available in the o2r service.</p>
+<p>The second stage (<strong>Special Issue User interaction</strong>) consist in two different types of users. The first type of users are examiners (<strong>examination sessions</strong>) that read and interact with the already available compendia in the <strong>Special Issue</strong> resulting of the first stage. For the usage scenario we planned 2 readers per compendium. This means that an special issue with 10 compendia expects 20 readers to interact simultaneously (2 per compendium). The second type are authors (<strong>creation sessions</strong>) uploading “late submissions” to the special issue. For the usage scenario 3 submissions are expected and are simultaneous with the <strong>examination sessions</strong>. In summary, the first stage requires 10 <strong>creation sessions</strong> and the second stage requires <strong>20 examination sessions</strong> and <strong>3 creation sessions</strong>. Within stages all sessions are synchronous but the <strong>Special Issue User interaction</strong> stage only starts after the <strong>Special Issue Creation</strong> stage is finished.</p>
+<div id="individual-sessions" class="section level3">
+<h3>Individual sessions</h3>
+<p>The script <code>o2r_sessions.R</code> in the <code>o2r_test</code> folder includes all of the functions required to simulate all the steps of either an individual <strong>Creation session</strong> or an individual <strong>Examination session</strong>. The main functions of this script are <code>examination_session</code> and <code>creation_session</code>. As for any interaction with the o2r service the functions <strong>require</strong> an authentication <code>COOKIE</code>, in the case of a local or remote service find the cookie <code>connec.sid</code> in your browser after loggin in in the o2r service (e.g. using debug tools, <code>F12</code>). An automated version for this step (that saves you a couple of clicks) is presented in the <strong>Test</strong> session, however this function is not stable for all types of systems/browsers.</p>
+<p>Each of the functions (<code>examination_session</code> and <code>creation_session</code>) runs the corresponding session and returns an individual report summarizing the times required by the user (U) or the o2r service (o2r) including subprocess corresponding to the API or the JOB execution.</p>
+<p>In this sense, three types of steps (<code>step_type</code>) are recorded:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>General steps</strong> (<code>general_step</code>): These steps correspond to the already described steps for Creation sessions (8 steps) and Examination sessions (4 steps).</p></li>
+<li><p><strong>API request steps</strong> (<code>api_request</code>): The steps correspond to response time of the API for some type of request (e.g, <code>candidate_metarequest</code>,<code>job_status</code>).</p></li>
+<li><p><strong>JOB execution</strong> (<code>job_execution</code>): The steps correspond to the job execution times described in this <a href="https://o2r.info/api/#section/Execute-a-compendium">page</a>.</p></li>
+</ol>
+</div>
+<div id="multiple-sessions" class="section level3">
+<h3>Multiple sessions</h3>
+<p>The multiple sessions test implementation is divided in three groups of functions: Configuration, Report, Execution. The first one correspond to the authentication on the o2r service and configuration of the required files, the second one correspond to the functions to create reports of the test and the last one correponds to the functions that execute the multiple test usage scenario.</p>
+<div id="required-libraries" class="section level4">
+<h4>Required libraries</h4>
+<pre class="r"><code>library(&quot;httr&quot;)
+library(&quot;rjson&quot;)
+library(&quot;stringr&quot;)
+library(&quot;parallel&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;GGally&quot;)
+library(&quot;RColorBrewer&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;scales&quot;)
+library(&quot;stevedore&quot;)
+library(&quot;dockerfiler&quot;)</code></pre>
+</div>
+<div id="configuration-functions" class="section level4">
+<h4>Configuration functions</h4>
+<div id="authentication" class="section level5">
+<h5>Authentication</h5>
+<p>Find the cookie <code>connec.sid</code> for the platform website in your browser (e.g. using debug tools, <code>F12</code>), and manually define the variable <code>COOKIE_CODED</code> with the value of said cookie in the <code>.Renviron</code> file. This is a “security hole” facilitating local development, which of course does not work when uploading workspaces to a remote reference implementation deployment.</p>
+</div>
+<div id="configuration-files-functions" class="section level5">
+<h5>Configuration files functions</h5>
+<p>In order to run simultaneous sessions (up to 23), we use Docker containers that execute individual sessions (creation or examination) by using the <code>o2r_sessions.R</code> script. For the <strong>Special Issue Creation</strong> we require one folder with the workspaces/ERC to upload and a configuration file for the <strong>creation sessions</strong>.</p>
+<p>For the <strong>Special Issue User interaction</strong> there are 2 different type of users with different configuration requirements. First, For the <strong>creations sessions</strong> it is required a folder with the ‘late submissions’ workspaces/ERC and a configuration file. Second, for the <strong>examination sessions</strong> it is requiered a configuration file. The configuration files are <code>.CSV</code> with the parameters required to run either a <strong>creation session</strong> or a <strong>examination session</strong> with the <code>o2r_sessions.R</code> script.</p>
+<p>The following chunks include functions to create:</p>
+<ol style="list-style-type: decimal">
+<li>Dummy Workspaces</li>
+<li>Configuration files for <strong>creations sessions</strong> from folders with ERC/Workspaces</li>
+<li>Configuration files for <strong>examination sessions</strong></li>
+</ol>
+</div>
+<div id="dummy-workspaces" class="section level5">
+<h5>Dummy Workspaces</h5>
+<p>The following method copy a dummy ERC workspace from a <code>source</code> folder and creates one (or multiple) new modified dummy on a <code>target</code> folder. In specific, every new dummy workspace includes a shell script that use the <code>sleep</code> command to simulate computation time of an ERC. The number of dummies and the <code>SLEEP</code> time is configurable throught the <code>dummy_times</code> parameter. This parameter is expected to be of numeric class and every number (integers only) represents the sleeping time of a new dummy ERC workspace. In consequence <code>dummy_times = c(10,100)</code> will result in <strong>two</strong> new ERC workspaces with 10 and 100 seconds of <code>SLEEP</code> time respectively.</p>
+<pre class="r"><code># create_workspace
+### Parameters
+# sleep_times -&gt; Numeric, for example: c(1,1,2,3,5,8,13)
+# source -&gt; path to the original dummy 
+# target -&gt; path to target folder 
+
+create_dummy_workspaces &lt;- function(sleep_times, source, target) {
+  # Checks if the file source exists and that the format of dummy_times is correct
+  # If check fails exits with error message
+  
+  if (!is.numeric(sleep_times) | !file.exists(source)) {
+    return(
+      cat(
+        &quot;ERROR: Seconds data type should be integer\n&quot;,
+        &quot; and &quot;, source ,&quot;folder should exist&quot;
+      )
+    )
+  }
+  
+  # Configuration of target, source and dataFiles to copy.
+  target &lt;- file.path(target)
+  source &lt;- file.path(source)
+  
+  dataFiles &lt;- dir(source)
+  
+  # Loop over dummy times and creates a new dummy
+  
+  for (seconds in sleep_times) {
+    # Skip if seconds is not an integer
+    
+    if (seconds %% 1 != 0) {
+      cat(&quot;ERROR: ### Seconds must be an integer number ! ###\n&quot;)
+      next
+    }
+    
+    # Create target folder if it does not already exist
+    dir.create(target, recursive = TRUE, showWarnings = FALSE)
+    
+    # Create dummy folder
+    # Generates a ramdom ID to identify dummy folder
+    dummy_id &lt;-
+      do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
+    
+    # Name of the folder includes the sleep time (in seconds) and ID
+    target_dummy_name &lt;- paste0(&quot;dummy_&quot;, seconds, &quot;_seconds_&quot;, dummy_id)
+    target_dummy &lt;- (file.path(target, target_dummy_name))
+    dir.create(target_dummy)
+    
+    # Read files from original dummy and copy them into new dummy folder
+    file.copy(file.path(source, dataFiles), target_dummy, overwrite = TRUE)
+    
+    # Modify dummy
+    
+    dockerfile &lt;- readLines(file.path(target_dummy, &quot;Dockerfile&quot;), -1)
+    dockerfile[4] &lt;- paste0(&quot;ENV SECONDS &quot;, seconds)
+    writeLines(dockerfile, file.path(target_dummy, &quot;Dockerfile&quot;))
+      
+    # Zip dummy
+    
+    zip(target_dummy, file.path(target_dummy, dataFiles), flag = &quot;-jq&quot;)
+    unlink(target_dummy, recursive = TRUE)
+    
+    cat(
+      &quot;*Your dummy ERC [&quot;,
+      dummy_id,
+      &quot;] has been succesfully created on &quot;,
+      target_dummy,
+      &quot;.zip *\n&quot;,
+      &quot;*It will sleep: &quot;,
+      seconds,
+      &quot; seconds* \n&quot;,
+      sep = &quot;&quot;
+    )
+    #
+  }
+}</code></pre>
+<p>A Dummy ERC is available in the <code>Dummy</code> folder.</p>
+</div>
+<div id="configuration-files-creation-sessions" class="section level5">
+<h5>Configuration files (Creation sessions)</h5>
+<p>The following method creates a dataframe with the configuration parameters for Creation sessions. The method uses the <code>folder_path</code> to examine that folder and configure a creation session with a <em>Local</em> <code>upload_origin</code>. The <code>mean_times</code> and <code>var</code> parameters correspond to the times for user steps (U) pauses (start, login, upload, metaedit and execution). In this sense, the first element in <code>mean_times</code> and <code>var</code> corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the creation sessions corresponding to the ERC/Workspaces in <code>folder_path</code>.</p>
+<pre class="r"><code># conf_df_creation_sessions
+### Parameters
+# folder_path -&gt; path with a folder with ERC/Workspaces
+# mean_times -&gt; vector with the mean times for the User (U) steps, it should be a vector with 5 values.
+# var -&gt; vector with the variance of times for the User (U) steps, it should be a vector with 5 values.
+
+conf_df_creation_sessions &lt;-
+  function(folder_path,
+           mean_times = c(10, 20, 30, 40, 50),
+           var = c(2, 4, 5, 6, 7)) {
+    erc_folders &lt;- list.files(folder_path)
+    number_folders &lt;- length(erc_folders)
+    upload_origin &lt;- rep(&quot;Local&quot;, times = number_folders)
+    content_type &lt;- rep(&quot;workspace&quot;, times = number_folders)
+    source &lt;- paste(folder_path, &quot;/&quot;, list.files(folder_path), sep = &quot;&quot;)
+    source_path &lt;- rep(NA, times = number_folders)
+    start_pause &lt;- abs(rnorm(number_folders, mean_times[1], var[1]))
+    login_pause &lt;- abs(rnorm(number_folders, mean_times[2], var[2]))
+    upload_pause &lt;- abs(rnorm(number_folders, mean_times[3], var[3]))
+    metaedit_pause &lt;- abs(rnorm(number_folders, mean_times[4], var[4]))
+    execution_pause &lt;- abs(rnorm(number_folders, mean_times[5], var[5]))
+    
+    df &lt;-
+      data.frame(
+        upload_origin,
+        content_type,
+        source,
+        source_path,
+        start_pause,
+        login_pause,
+        upload_pause,
+        metaedit_pause,
+        execution_pause,
+        stringsAsFactors = FALSE
+      )
+    return(df)
+  }</code></pre>
+</div>
+<div id="configuration-files-examination-sessions" class="section level5">
+<h5>Configuration files (Examination sessions)</h5>
+<p>The following method creates a dataframe with the configuration parameters for examination sessions. The method assigns each element in the <code>compendium_id</code> vector (each representing a examination session) their user steps (U) times (Start, login, execution). In this sense, the first element in <code>mean_times</code> and <code>var</code> corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the examination sessions corresponding to the compendium IDs in <code>compendium_id</code>.</p>
+<pre class="r"><code># conf_df_examination_sessions
+### Parameters
+# compendium_id -&gt; path with a folder with ERC/Workspaces
+# mean_times -&gt; vector with the mean times for the User (U) steps, it should be a vector with 3 values.
+# var -&gt; vector with the variance of times for the User (U) steps, it should be a vector with 3 values.
+
+conf_df_examination_sessions &lt;-
+  function(compendium_id = c(),
+           mean_times = c(10, 20, 30),
+           var = c(2, 4, 6)) {
+    number_session &lt;- length(compendium_id)
+    start_pause &lt;- abs(rnorm(number_session, mean_times[1], var[1]))
+    login_pause &lt;- abs(rnorm(number_session, mean_times[2], var[2]))
+    execution_pause &lt;-
+      abs(rnorm(number_session, mean_times[3], var[3]))
+    df &lt;-
+      data.frame(compendium_id,
+                 start_pause,
+                 login_pause,
+                 execution_pause,
+                 stringsAsFactors = FALSE)
+    return(df)
+  }</code></pre>
+</div>
+</div>
+<div id="report-functions" class="section level4">
+<h4>Report functions</h4>
+<div id="synchronize-time" class="section level5">
+<h5>Synchronize time</h5>
+<p>This functions uses as input the raw times resulting of the execution of the test. Raw times are stored as doubles in number of seconds since 01.01.1970 <a href="https://www.epochconverter.com/">Unix epoch time</a> and as the relevant value is the duration of the steps the function synchronizes the times into a relative time scale starting in 0s. The 0 value represents the common start of the synchronized sessions (creation or examination).</p>
+<pre class="r"><code>synchronize_times &lt;- function(rawtimes_df) {
+  min &lt;- min(rawtimes_df$start, na.rm = T)
+  rawtimes_df$start[rawtimes_df$step == &quot;start_pause&quot;] &lt;- min
+  rawtimes_df$start &lt;- rawtimes_df$start - min
+  rawtimes_df$end &lt;- rawtimes_df$end - min
+  synchronize_df &lt;- rawtimes_df
+  return(synchronize_df)
+}</code></pre>
+</div>
+<div id="timeline-plot" class="section level5">
+<h5>Timeline plot</h5>
+<p>This functions creates a timeline plot using the synchronized times of the test representing the general steps for creation or examination sessions.</p>
+<pre class="r"><code>timeline_plot &lt;- function(report_df, test_id) {
+  gen_steps_df &lt;- report_df[report_df$step_type == &quot;general_step&quot;, ]
+  gen_steps_df$step &lt;-
+    factor(gen_steps_df$step, levels = unique(gen_steps_df$step))
+  
+  labels &lt;-
+    c(
+      &quot;[U] Session start&quot;,
+      &quot;[U] Login pause&quot;,
+      &quot;[U] Pause before upload&quot;,
+      &quot;[o2r] ERC Upload&quot;,
+      &quot;[U] Metadata modification&quot;,
+      &quot;[o2r] ERC publication&quot;,
+      &quot;[U] Execution pause&quot;,
+      &quot;[o2r] Job execution&quot;
+    )
+  colors &lt;-
+    c(
+      &quot;#eceff1&quot;,
+      &quot;#cfd8dc&quot;,
+      &quot;#b0bec5&quot;,
+      &quot;#187de9&quot;,
+      &quot;#90a4ae&quot;,
+      &quot;#0c56bc&quot;,
+      &quot;#78909c&quot;,
+      &quot;#00308f&quot;
+    )
+  if (length(unique(gen_steps_df$step)) != 8) {
+    labels &lt;-
+      c(&quot;[U] Session start&quot;,
+        &quot;[U] Login pause&quot;,
+        &quot;[U] Execution pause&quot;,
+        &quot;[o2r] Job execution&quot;)
+    colors &lt;- c(&quot;#eceff1&quot;, &quot;#cfd8dc&quot;, &quot;#78909c&quot;, &quot;#00308f&quot;)
+  }
+  
+  ggplot(gen_steps_df) + geom_segment(aes(
+    x = start,
+    xend = end,
+    y = job_id,
+    yend = job_id,
+    color = step
+  ),
+  size = 5) + scale_color_manual(labels = labels, values = colors) + ggtitle(paste0(&quot;Timeline&quot;)) +
+    xlab(&quot;Time (s)&quot;) + ylab(&quot;Job Execution ID&quot;) + labs(color = &quot;User steps&quot;, caption =
+                                                         paste0(&quot;Test ID: &quot;, test_id)) + theme(
+                                                           legend.position = &quot;bottom&quot;,
+                                                           legend.box = &quot;vertical&quot;,
+                                                           legend.title = element_text(size = 8),
+                                                           legend.text = element_text(size = 7),
+                                                           legend.key.size = unit(1, &quot;line&quot;),
+                                                           panel.background = element_blank(),
+                                                           panel.grid = element_line(colour = &quot;black&quot;, size = 0.1),
+                                                           panel.border = element_rect(
+                                                             colour = &quot;black&quot;,
+                                                             fill = NA,
+                                                             size = 0.1
+                                                           ),
+                                                           legend.key = element_blank()
+                                                         ) + facet_grid(rows = vars(compendium_id), scales = &quot;free&quot;) + theme(strip.text.y = element_text(angle = 0))
+}</code></pre>
+</div>
+<div id="step-times-plot" class="section level5">
+<h5>Step times plot</h5>
+<p>This functions creates a plot using the synchronized times of the test representing the API steps and the job execution steps for creation or examination sessions.</p>
+<pre class="r"><code>plot_step_times &lt;- function(df_report, test_id) {
+  df_report$duration &lt;- df_report$end - df_report$start
+  # Skipped steps to &#39;almost&#39; zero
+  df_report$duration[df_report$duration==0] &lt;- 10**(-8)
+  
+  duration_df &lt;-
+    df_report[df_report$step_type != &quot;general_step&quot;, c(1, 2, 3, 8)]
+  duration_df &lt;-
+    duration_df %&gt;% pivot_wider(names_from = step, values_from = duration)
+  num_col &lt;- ncol(duration_df)
+  duration_df[is.na(duration_df)] &lt;- 0
+  duration_df &lt;-
+    duration_df %&gt;% mutate(across(c(compendium_id:job_id), factor))
+  names &lt;- names(duration_df)[c(-1, -2)]
+
+  labels &lt;-
+    c(
+      &quot;[API] Upload&quot;,
+      &quot;[API] Metadata \n request&quot;,
+      &quot;[API] Metadata\n upload&quot;,
+      &quot;[API] Job Execution \n request&quot;,
+      &quot;[JOB] Status&quot;,
+      &quot;[JOB] Validate bag&quot;,
+      &quot;[JOB] Generate \n configuration&quot;,
+      &quot;[JOB] Validate \n compendium&quot;,
+      &quot;[JOB] Generate \n manifest&quot;,
+      &quot;[JOB] Image prepare&quot;,
+      &quot;[JOB] Image build&quot;,
+      &quot;[JOB] Image execute&quot;,
+      &quot;[JOB] Check&quot;,
+      &quot;[JOB] Image save&quot;,
+      &quot;[JOB] Cleanup&quot;
+    )
+  
+ if (num_col == 14) {
+    labels &lt;- labels[c(-1:-3)]
+  }
+  
+  nr.cols &lt;- length(unique(duration_df$compendium_id))
+  session_colors &lt;- colorRampPalette(brewer.pal(9, &quot;Paired&quot;))(nr.cols)
+  
+  ggparcoord(
+    duration_df,
+    columns = 3:num_col,
+    groupColumn = 1,
+    showPoints = TRUE,
+    scale = &quot;globalminmax&quot;
+  ) + scale_color_manual(values = session_colors) + theme(axis.text.x = element_text(
+    size = 8,
+    angle = 45,
+    hjust = 1
+  )) + labs(
+    x = &quot;Steps&quot;,
+    y = &quot;Seconds (s)&quot;,
+    title = &quot;o2R API processing times&quot;,
+    caption = paste0(&quot;Test ID: &quot;, test_id),
+    col = &quot;Compendium ID&quot;
+  ) + geom_line(size = 1) + scale_x_discrete(breaks = names, labels = labels)+ scale_y_continuous(trans = log10_trans(), breaks = trans_breaks(&quot;log10&quot;, function(x) 10^x),labels = trans_format(&quot;log10&quot;, math_format(10^.x)))                            
+  }</code></pre>
+</div>
+</div>
+<div id="execution-functions" class="section level4">
+<h4>Execution functions</h4>
+<p>The test execution requires two functions, the first one <code>create_dockerfile</code> and <code>run_test</code>. The first one creates a dockerfile with the configuration to build the environment of the test and the second one executes the test. The <code>create_dockerfile</code> function runs inside the <code>run_test</code> as it takes the parameters of the test to generate and specific dockerfile environment.</p>
+<div id="dockerfile" class="section level5">
+<h5>Dockerfile</h5>
+<p>This function creates a Dockerfile with the required parameters to containers either for a <strong>creation session</strong> or a <strong>examination session</strong>. This includes authentication parametes, configuration files and folders with required files (workpaces). This Dockerfile copies into the environment the <code>test_o2r.r</code> and the <code>o2r_test/o2r_sessions.R</code> scripts. Both files are requires to run the containers.</p>
+<pre class="r"><code>library(dockerfiler)
+
+# create_dockerfile
+### Parameters
+# cookie -&gt; o2r`connec.sid` cookie
+# ednpoint -&gt;  o2r endpoint
+# special_issue_folder -&gt; path to folder with ERC/Workspaces for special issue
+# special_issue_conf_file -&gt;path to configuration file for Creation sessions (special issue creation)
+# examination_conf_file -&gt; path to configuration file for Examination sessions (Special issue User interaction)
+# creation_folder -&gt; path to folder with ERC/Workspaces for &quot;late submissions&quot; (Special issue User interaction)
+# creation_conf_file -&gt; path to configuration file for Creation sessions (Special issue User interaction / &quot;late submission&quot;)
+
+create_dockerfile &lt;- function(cookie,
+                              endpoint,
+                              special_issue_folder,
+                              special_issue_conf_file,
+                              examination_conf_file,
+                              creation_folder,
+                              creation_conf_file) {
+  mydock &lt;- Dockerfile$new(&quot;rocker/tidyverse:3.6.3&quot;)
+  mydock$ENV(&quot;COOKIE&quot;, cookie)
+  mydock$ENV(&quot;ENDPOINT&quot;, endpoint)
+  mydock$RUN(&quot;mkdir /usr/scripts&quot;)
+  mydock$WORKDIR(&quot;/usr/scripts&quot;)
+  mydock$COPY(&quot;test_o2r.r&quot;, &quot;test_o2r.r&quot;)
+  mydock$COPY(&quot;o2r_test&quot;, &quot;o2r_test&quot;)
+  mydock$COPY(special_issue_folder, special_issue_folder)
+  mydock$COPY(special_issue_conf_file, special_issue_conf_file)
+  mydock$COPY(examination_conf_file, examination_conf_file)
+  mydock$COPY(creation_folder, creation_folder)
+  mydock$COPY(creation_conf_file, creation_conf_file)
+  mydock$write()
+}</code></pre>
+</div>
+<div id="run-test" class="section level5">
+<h5>Run test</h5>
+<p>These groups of functions runs the test based on the configuration parameters. During the test the function gives an update of the stage (Special Issue creation or user interaction) and the corresponding creation or examination sessions. For clarity of the process, the <code>run_test</code> consist of 6 ‘stages’ of the usage scenario: 1) Load test configuration, 2) Creation of Special Issue, 3) Report of Special Issue creation, 4) User interaction, 5) User interaction report creation and 6) Saving configuration files. Each of these steps have a corresponding function.</p>
+<p>As an ‘output’ the test returns a folder with the results of the <strong>Special Issue creation</strong> and the <strong>User interaction</strong>.</p>
+<div id="load-test-configuration" class="section level6">
+<h6>1. Load test configuration</h6>
+<pre class="r fold-hide"><code>load_test_configuration &lt;- function(
+  special_issue_conf_file,
+  examination_conf_file,
+  creation_conf_file
+)
+  {
+   #  Random ID for TEST
+    test_id &lt;- do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
+    # Test configuration
+    special_issue &lt;-
+      data.frame(read.csv(special_issue_conf_file, header = TRUE, sep = &quot;,&quot;))
+    examination_special_issue &lt;-
+      data.frame(read.csv(examination_conf_file, header = TRUE, sep = &quot;,&quot;))
+    creation_special_issue &lt;- data.frame(read.csv(creation_conf_file))
+    
+    test_configuration&lt;-list(&quot;test_id&quot;= test_id,
+                             &quot;special_issue&quot;= special_issue,
+                             &quot;examination_si&quot; = examination_special_issue,
+                             &quot;creation_si&quot; = creation_special_issue,
+                             &quot;num_compendia_si&quot; = nrow(special_issue),
+                             &quot;num_examinations&quot; =  nrow(examination_special_issue),
+                             &quot;num_creations&quot; = nrow(creation_special_issue))
+    return(test_configuration)
+    
+}</code></pre>
+</div>
+<div id="special-issue-creation" class="section level6">
+<h6>2. Special issue creation</h6>
+<pre class="r fold-hide"><code>special_issue_creation&lt;-function(docker,test_conf,special_issue_conf_file){
+  
+  ########### SPECIAL ISSUE CREATION  ###########
+    #### Creation sessions
+    # Start Special Issue creation session containers
+    si_creation_containers &lt;- list()
+    
+    # Information banner
+    cat(
+      rep(&quot;*&quot;, 28),&quot;\n&quot;,
+      rep(&quot; &quot;, 11),&quot;TEST CONFIGURATION \n&quot;,
+      rep(&quot;*&quot;, 28),&quot;\n&quot;,
+      &quot;[o2R TEST ID: &quot;,test_conf$test_id,&quot;]\n&quot;,
+      rep(&quot;-&quot;, 28),&quot;\n&quot;,
+      &quot;[Creation Special Issue]\n&quot;,
+      &quot;Number of Compendia in Special Issue:&quot;,test_conf$num_compendia_si,&quot;\n&quot;,
+      rep(&quot;-&quot;, 28),&quot;\n&quot;,
+      &quot;[User interaction]\n&quot;,
+      &quot;Number of examination sessions:&quot;,test_conf$num_examinations,&quot;\n&quot;,
+      &quot;Number of late submissions (creation sessions):&quot;, test_conf$num_creations,&quot;\n&quot;,
+      rep(&quot;*&quot;, 28),&quot;\n&quot;,rep(&quot; &quot;, 11),
+      &quot;TEST STATUS \n&quot;,
+      rep(&quot;*&quot;, 28),&quot;\n&quot;,
+      &quot;[Creation Special Issue:&quot;,test_conf$num_compendia_si,&quot; compendia]&quot;,&quot;\n&quot;
+    )
+    
+    ### Starts special issue creation (Creation sessions) ###
+    
+    for (i in 1:test_conf$num_compendia_si) {
+      si_creation_containers  &lt;-
+        c(si_creation_containers ,
+          assign(
+            paste0(&quot;si_creation_session_&quot;, i),
+            docker$container$run(
+              &quot;test_container&quot;,
+              c(
+                &quot;Rscript&quot;,
+                &quot;test_o2r.r&quot;,
+                &quot;Creation&quot;,
+                special_issue_conf_file,
+                i
+              ),
+              network = &#39;host&#39;,
+              detach = TRUE,
+              name = paste0(&quot;si_creation_session_&quot;, i)
+            )
+          ))
+    }
+    
+    # Update state of the containers
+    
+    special_issue_finish &lt;- FALSE
+    while (special_issue_finish == FALSE) {
+      Sys.sleep(2)
+      status &lt;-
+        unlist(lapply(si_creation_containers , function(x) {
+          x$status()
+        }))
+      number_sessions &lt;- length(status)
+      if (&quot;running&quot; %in% status) {
+        running &lt;- sum(&quot;running&quot; == status)
+        cat(
+          &quot;\r&quot;,
+          as.character(Sys.time()),
+          &quot;:&quot;,
+          running,
+          &quot;out of&quot;,
+          number_sessions,
+          &quot; sessions still running &quot;
+        )
+      }
+      else{
+        special_issue_finish = TRUE
+        cat(&quot;\r&quot;, rep(&quot; &quot;, 9), &quot;Special Issue published!&quot;, rep(&quot; &quot;, 20))
+        Sys.sleep(1)
+      }
+    }
+    return(si_creation_containers)
+}</code></pre>
+</div>
+<div id="special-issue-creation-report" class="section level6">
+<h6>3. Special issue creation report</h6>
+<pre class="r fold-hide"><code> ## REPORT SPECIAL ISSUE CREATION
+
+special_issue_report &lt;- function(test_conf, si_creation_containers, results_folder){
+    # Creates results folder for creation sessions reports
+  
+    special_issue_creation_folder &lt;-
+      file.path(results_folder, &quot;special_issue_creation&quot;)
+    dir.create(results_folder)
+    dir.create(special_issue_creation_folder)
+    
+    # Extracts report files from containers
+    lapply(si_creation_containers, function(x) {
+      x$cp_out(&quot;usr/scripts/result.csv&quot;,
+               file.path(
+                 special_issue_creation_folder,
+                 paste0(x$name(), &quot;_results.csv&quot;)
+               ))
+    })
+    
+    # Creates unified report and delete individual files
+    sessions_csv &lt;-
+      file.path(special_issue_creation_folder,
+                list.files(special_issue_creation_folder))
+    reports &lt;- lapply(sessions_csv, read.csv)
+    file.remove(sessions_csv)
+    
+    # Creates Special issue dataframe with raw times and writes report file
+    sp_iss_df &lt;- do.call(rbind, reports)
+    rawtimes_path &lt;-
+      file.path(special_issue_creation_folder,
+                paste0(&quot;raw_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;))
+    write.csv(sp_iss_df, rawtimes_path, row.names = F)
+    
+    # Creates Special issue dataframe with synchronized times and writes report file
+    sp_iss_sync_df &lt;- synchronize_times(sp_iss_df)
+    sync_path &lt;-
+      file.path(
+        special_issue_creation_folder,
+        paste0(&quot;synchronized_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;)
+      )
+    write.csv(sp_iss_sync_df, sync_path, row.names = F)
+    
+    # Timeline plot for Special issue creation
+    timeline &lt;-
+      timeline_plot(report_df = sp_iss_sync_df, test_id = test_conf$test_id)
+    timeline_path &lt;-
+      file.path(special_issue_creation_folder,
+                paste0(&quot;timeline_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(timeline_path,
+           plot = timeline,
+           width = 10,
+           height = 5)
+    
+    # Steps duration plot for Special issue creation
+    steps_plot &lt;-
+      plot_step_times(df_report = sp_iss_sync_df, test_id = test_conf$test_id)
+    steps_path &lt;-
+      file.path(special_issue_creation_folder,
+                paste0(&quot;steps_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(steps_path,
+           plot = steps_plot,
+           width = 10,
+           height = 5)
+    
+    # Prints message with Special issue creation result folder
+    cat(
+      &quot;\r Special issue loading results saved in folder:\n&quot;,
+      special_issue_creation_folder,
+      &quot;\n&quot;,
+      rep(&quot;-&quot;, 28),
+      &quot;\n&quot;
+    )
+    return(sp_iss_df)
+}</code></pre>
+</div>
+<div id="users-interaction" class="section level6">
+<h6>4. Users interaction</h6>
+<pre class="r fold-hide"><code>user_interaction &lt;- function(sp_iss_df,test_conf,docker,examination_conf_file,creation_conf_file){
+    ########### USER INTERACTION  ###########
+    #### Creation sessions
+    #### Examination sessions
+    
+    # Compendium IDs of Special Issue
+    special_issue_compendia &lt;- unique(sp_iss_df$compendium_id)
+    
+    # Distribution of readers in list of compendia
+    compendia_to_examine &lt;-
+      rep_len(special_issue_compendia, test_conf$num_examinations)
+    test_conf$examination_si$compendium_id &lt;- compendia_to_examine
+    
+    # List of containers for examination and creation sessions
+    examination_containers &lt;- list()
+    creation_containers &lt;- list()
+    
+    # Information banner
+    cat(
+      &quot;\r[User interaction: &quot;,
+      test_conf$num_examinations,
+      &quot;examinations - &quot;,
+      test_conf$num_creations ,
+      &quot;creation sessions]\n&quot;
+    )
+    cat(&quot;Starting User interaction&quot;)
+    
+    ### Start user interaction (Creation and examination sessions) ###
+    
+    ## Examination sessions
+    for (i in 1:test_conf$num_examinations) {
+      examination_containers &lt;-
+        c(examination_containers,
+          assign(
+            paste0(&quot;examination_session_&quot;, i),
+            docker$container$run(
+              &quot;test_container&quot;,
+              c(
+                &quot;Rscript&quot;,
+                &quot;test_o2r.r&quot;,
+                &quot;Examination&quot;,
+                examination_conf_file,
+                i,
+                as.character(compendia_to_examine[i])
+              ),
+              network = &#39;host&#39;,
+              detach = TRUE,
+              name = paste0(&quot;examination_session_&quot;, i)
+            )
+          ))
+    }
+    
+    ## Creation sessions
+    for (i in 1:test_conf$num_creations) {
+      creation_containers  &lt;-
+        c(creation_containers ,
+          assign(
+            paste0(&quot;creation_session_&quot;, i),
+            docker$container$run(
+              &quot;test_container&quot;,
+              c(&quot;Rscript&quot;, &quot;test_o2r.r&quot;, &quot;Creation&quot;, creation_conf_file, i),
+              network = &#39;host&#39;,
+              detach = TRUE,
+              name = paste0(&quot;creation_session_&quot;, i)
+            )
+          ))
+    }
+    
+    interaction_special_issue_finish &lt;- FALSE
+    
+    while (interaction_special_issue_finish == FALSE) {
+      Sys.sleep(2)
+      status_exam &lt;-
+        unlist(lapply(examination_containers, function(x) {
+          x$status()
+        }))
+      status_creat &lt;-
+        unlist(lapply(creation_containers, function(x) {
+          x$status()
+        }))
+      status &lt;- c(status_exam, status_creat)
+      
+      if (&quot;running&quot; %in% status) {
+        running_exam &lt;- sum(&quot;running&quot; == status_exam)
+        running_creat &lt;- sum(&quot;running&quot; == status_creat)
+        cat(
+          &quot;\r&quot;,
+          as.character(Sys.time()),
+          &quot;:&quot;,
+          running_exam,
+          &quot; examination and&quot;,
+          running_creat,
+          &quot; creation sessions still running &quot;
+        )
+      }
+      else{
+        interaction_special_issue_finish = TRUE
+        cat(&quot;\r&quot;, rep(&quot; &quot;, 9), &quot;Test finished!&quot;, rep(&quot; &quot;, 25))
+        cat(&quot;\r&quot;, rep(&quot; &quot;, 7), &quot;User interaction finished !&quot;, rep(&quot; &quot;, 20))
+      }
+    }
+    containers &lt;-c()
+    containers$examination_containers&lt;-examination_containers
+    containers$creation_containers&lt;-creation_containers
+    
+    return(containers)
+}</code></pre>
+</div>
+<div id="users-interaction-report" class="section level6">
+<h6>5. Users interaction report</h6>
+<pre class="r fold-hide"><code>user_interaction_report&lt;-function(containers,test_conf,results_folder){
+    
+    examination_containers &lt;- containers$examination_containers
+    creation_containers &lt;- containers$creation_containers
+    
+    # Creates results folder for interaction
+    sp_iss_interaction_folder &lt;-
+      file.path(results_folder, &quot;special_issue_interaction&quot;)
+    dir.create(sp_iss_interaction_folder)
+    
+    # Creates results folder for examination sessions reports
+    sp_iss_interac_exam_folder &lt;-
+      file.path(sp_iss_interaction_folder, &quot;examination_sessions&quot;)
+    dir.create(sp_iss_interac_exam_folder)
+    
+    # Creates results folder for creation sessions reports
+    sp_iss_interac_creat_folder &lt;-
+      file.path(sp_iss_interaction_folder, &quot;creation_sessions&quot;)
+    dir.create(sp_iss_interac_creat_folder)
+    
+    # Import information from containers
+    
+    lapply(examination_containers, function(x) {
+      x$cp_out(&quot;usr/scripts/result.csv&quot;,
+               file.path(
+                 sp_iss_interac_exam_folder,
+                 paste0(x$name(), &quot;_results.csv&quot;)
+               ))
+    })
+    
+    lapply(creation_containers, function(x) {
+      x$cp_out(&quot;usr/scripts/result.csv&quot;,
+               file.path(
+                 sp_iss_interac_creat_folder,
+                 paste0(x$name(), &quot;_results.csv&quot;)
+               ))
+    })
+    
+     # Creates unified reports and deletes individual files
+    
+    exam_sessions_csv &lt;-
+      file.path(sp_iss_interac_exam_folder,
+                list.files(sp_iss_interac_exam_folder))
+    exam_reports &lt;- lapply(exam_sessions_csv, read.csv)
+    
+    creat_sessions_csv &lt;-
+      file.path(sp_iss_interac_creat_folder,
+                list.files(sp_iss_interac_creat_folder))
+    creat_reports &lt;- lapply(creat_sessions_csv, read.csv)
+    
+    file.remove(exam_sessions_csv, creat_sessions_csv)
+    
+    # Creates User interaction dataframes with raw times and writes report files
+    
+    int_exam_df &lt;- do.call(rbind, exam_reports)
+    int_creat_df &lt;- do.call(rbind, creat_reports)
+    
+    rawtimes_exam_path &lt;-
+      file.path(sp_iss_interac_exam_folder,
+                paste0(&quot;raw_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;))
+    write.csv(int_exam_df, rawtimes_exam_path, row.names = F)
+    
+    rawtimes_creat_path &lt;-
+      file.path(sp_iss_interac_creat_folder,
+                paste0(&quot;raw_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;))
+    write.csv(int_creat_df, rawtimes_creat_path, row.names = F)
+    
+    # Creates User interaction dataframes with synchronized times and writes report files
+    
+    int_exam_synchr_df &lt;- synchronize_times(int_exam_df)
+    int_exam_sync_path &lt;-
+      file.path(sp_iss_interac_exam_folder,
+                paste0(&quot;synchronized_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;))
+    write.csv(int_exam_synchr_df, int_exam_sync_path, row.names = F)
+    
+    int_creat_synchr_df &lt;- synchronize_times(int_creat_df)
+    int_creat_sync_path &lt;-
+      file.path(
+        sp_iss_interac_creat_folder,
+        paste0(&quot;synchronized_times_test_&quot;, test_conf$test_id, &quot;.csv&quot;)
+      )
+    write.csv(int_creat_synchr_df, int_creat_sync_path, row.names = F)
+    
+    ## Timeline plots
+    # Examination sessions
+    timeline_exam &lt;-
+      timeline_plot(report_df = int_exam_synchr_df, test_id = test_conf$test_id)
+    timeline_path &lt;-
+      file.path(sp_iss_interac_exam_folder,
+                paste0(&quot;timeline_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(timeline_path,
+           plot = timeline_exam,
+           width = 10,
+           height = 5)
+    # Creation sessions
+    timeline_creat &lt;-
+      timeline_plot(report_df = int_creat_synchr_df, test_id = test_conf$test_id)
+    timeline_creat_path &lt;-
+      file.path(sp_iss_interac_creat_folder,
+                paste0(&quot;timeline_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(
+      timeline_creat_path,
+      plot = timeline_creat,
+      width = 10,
+      height = 5
+    )
+    
+    # Steps duration plot for user interaction
+    # Examination sessions
+    steps_exam_plot &lt;-
+      plot_step_times(df_report = int_exam_synchr_df, test_id = test_conf$test_id)
+    steps_exam_path &lt;-
+      file.path(sp_iss_interac_exam_folder,
+                paste0(&quot;steps_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(steps_exam_path,
+           plot = steps_exam_plot,
+           width = 10,
+           height = 5)
+    # Creation sessions
+    steps_creat_plot &lt;-
+      plot_step_times(df_report = int_creat_synchr_df, test_id = test_conf$test_id)
+    steps_creat_path &lt;-
+      file.path(sp_iss_interac_creat_folder,
+                paste0(&quot;steps_test_&quot;, test_conf$test_id, &quot;.pdf&quot;))
+    ggsave(
+      steps_creat_path,
+      plot = steps_creat_plot,
+      width = 10,
+      height = 5
+    )
+    
+    folders&lt;-c(sp_iss_interac_creat_folder, sp_iss_interac_exam_folder)
+    return(folders)
+}</code></pre>
+</div>
+<div id="save-configuration-files" class="section level6">
+<h6>6. Save configuration files</h6>
+<pre class="r fold-hide"><code>save_conf_files &lt;- function(test_conf,results_folder,
+           special_issue_conf_file,
+           examination_conf_file,
+           creation_conf_file, folders){
+    configuration_folder &lt;-
+      file.path(results_folder, &quot;configuration_files&quot;)
+    dir.create(configuration_folder)
+    file.copy(&quot;Dockerfile&quot;,
+              file.path(configuration_folder, &quot;Dockerfile&quot;))
+    file.remove(&quot;Dockerfile&quot;)
+    file.copy(
+      special_issue_conf_file,
+      file.path(configuration_folder, special_issue_conf_file)
+    )
+    file.remove(special_issue_conf_file)
+    
+    file.copy(creation_conf_file,
+              file.path(configuration_folder, creation_conf_file))
+    file.remove(creation_conf_file)
+    
+    write.csv(
+      test_conf$examination_si,
+      file.path(configuration_folder, examination_conf_file),
+      row.names = FALSE
+    )
+    file.remove(examination_conf_file)
+    
+    # Reports end of test
+    cat(
+      &quot;\r&quot;,
+      &quot;Examination session results saved in folder : \n&quot;,
+      folders[2],
+      &quot;\n&quot;,
+      &quot;Creation session results saved in folder: \n&quot;,
+      folders[1],
+      &quot;\n&quot;,
+      &quot;\n&quot;,
+      rep(&quot;*&quot;, 28),
+      &quot;\n&quot;,
+      rep(&quot;*&quot;, 9),
+      &quot;TEST&quot;,
+      test_conf$test_id,
+      &quot; FINISHED&quot;,
+      rep(&quot;*&quot;, 8),
+      &quot;\n&quot;,
+      rep(&quot;*&quot;, 28),
+      &quot;\n&quot;,
+      rep(&quot; &quot;, 4),
+      &quot;Configuration files moved into test folder&quot;
+    )
+}</code></pre>
+</div>
+<div id="run_test" class="section level6">
+<h6>run_test</h6>
+<p>The following function integrates the 6 previously described test steps.</p>
+<pre class="r"><code># run_test
+### Parameters
+# Exactly same parameters as create_dockerfile function.
+
+run_test &lt;-
+  function(cookie,
+           endpoint,
+           special_issue_folder,
+           special_issue_conf_file,
+           examination_conf_file,
+           creation_folder,
+           creation_conf_file) {
+    
+    #Check cookie
+    response &lt;- tryCatch(
+      GET(url=paste0(endpoint,&quot;auth/whoami&quot;),
+                accept_json(),
+                set_cookies(connect.sid=cookie),
+                enconde=&quot;multipart&quot;)
+    , 
+      error = function(e) {
+        response &lt;- c()
+        response$status &lt;-10061
+        return(response)})
+    print(response)
+    
+    if (response$status !=200){
+      stop(&quot;Error : Check if you have a running o2r service in the background and a valid cookie.&quot;)
+    }
+    
+    # Test configuration 
+    test_conf &lt;- load_test_configuration(special_issue_conf_file,
+                                         exam_conf_file, creat_conf_file)
+    # Create docker file
+    create_dockerfile(cookie = cookie,
+                      endpoint = endpoint, 
+                      special_issue_folder = special_issue_folder,
+                      special_issue_conf_file = special_issue_conf_file,
+                      examination_conf_file = examination_conf_file,
+                      creation_folder = creation_folder,
+                      creation_conf_file = creation_conf_file
+                      )
+    # Start docker
+    
+    docker &lt;- stevedore::docker_client()
+    docker$container$prune()
+  
+    # Build docker image
+    docker$image$build(&quot;.&quot;, tag = &quot;test_container&quot;, nocache = TRUE)
+    
+    ########### SPECIAL ISSUE CREATION ###########
+    # Run special issue creation
+    si_creation_containers&lt;-special_issue_creation(docker,test_conf,special_issue_conf_file)
+    
+    ## Create report for special issue creation
+    results_folder &lt;- file.path(paste0(&quot;results_test_&quot;, test_conf$test_id))
+    sp_iss_df &lt;- special_issue_report(test_conf, si_creation_containers, results_folder)
+    
+    # Removes docker container sessions
+    lapply(si_creation_containers, function(x) {
+      docker$container$remove(x$name())
+    })
+  
+    ########### USER INTERACTION ###########
+    
+    containers &lt;- user_interaction(sp_iss_df,test_conf,docker, examination_conf_file, creation_conf_file)
+    
+    ## REPORT USER INTERACTION
+    folders &lt;- user_interaction_report(containers, test_conf, results_folder)
+    
+    # Removes docker container sessions
+    lapply(containers$creation_containers, function(x) {
+      docker$container$remove(x$name())
+    })
+    lapply(containers$examination_containers, function(x) {
+      docker$container$remove(x$name())
+    })
+    
+    ########### END OF TEST ###########
+    # Creates configuration folder with configuration files
+    
+    save_conf_files(test_conf, results_folder, special_issue_conf_file,
+                    examination_conf_file, creation_conf_file, folders)
+  }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="test-execution" class="section level1">
+<h1>Test execution</h1>
+<p>The following chunk reproduce all the required steps to run a test from scratch. It is only required the <code>o2r_test</code> and <code>Dummy</code> folder, and the <code>test_o2r.r</code> file. Similarly a running o2r service on the background is required. For this example we will use <strong>5</strong> <a href="#creation_sessions">Creation Sessions</a>, <strong>10</strong> <a href="#examination_sessions">Examination sessions</a> and 2 late submissions.</p>
+<pre class="r"><code># Creation session
+# Renviron file to pass info
+readRenviron(&quot;.Renviron&quot;)
+
+Sys.setenv(
+  COOKIE = URLdecode(Sys.getenv(&quot;COOKIE_CODED&quot;)))
+
+Sys.setenv(ENDPOINT = &quot;http://localhost/api/v1/&quot;)
+
+# Configuration parameters
+
+cookie &lt;- Sys.getenv(&quot;COOKIE&quot;)
+endpoint &lt;- Sys.getenv(&quot;ENDPOINT&quot;)
+dummy_folder &lt;- file.path(&quot;dummy-workspace&quot;)
+
+# Creating Workspaces for special issue
+# special_issue_conf_file : File path for configuration file of special issue
+special_issue_conf_file &lt;- file.path(&quot;special_issue_conf.csv&quot;)
+special_issue_folder &lt;- file.path(&quot;special_issue&quot;)
+
+# User interaction Configuration files
+# exam_conf_file : configuration of examination sessions
+exam_conf_file &lt;- file.path(&quot;examination.csv&quot;)
+# creat_conf_file: configuration of creation sessions (&quot;late submission&quot;)
+creat_folder &lt;- file.path(&quot;late_submission&quot;)
+creat_conf_file &lt;- file.path(&quot;creation_late.csv&quot;)
+
+# If you do not have workspaces available to test you can create &#39;dummy&#39; workspaces for your special issue
+create_dummy_workspaces(
+  sleep_times = c(12,17,23,32,41,53),
+  source = dummy_folder,
+  target = special_issue_folder
+)
+# Similarly you can create workspace for your &quot;late submission&quot;
+create_dummy_workspaces(sleep_times = c(11,16),
+                        source = dummy_folder,
+                        target = creat_folder)
+
+# Base on the content of your special_issue_folder you can create the configuration dataframe of the special issue creation and the late submission
+df_special_issue_conf &lt;-
+  conf_df_creation_sessions(
+    folder_path = special_issue_folder,
+    mean_times = c(5, 5, 5, 5, 5),
+    var = c(1, 1, 1, 1, 1)
+  )
+
+df_conf_creat &lt;-
+  conf_df_creation_sessions(
+    folder_path = creat_folder,
+    mean_times = c(5,5,5,5,5,5),
+    var = c(1,1,1,1,1,1)
+  )
+
+# You can also create the configuration file for the examination session
+# As there are not compendium available before starting the test, the ID&#39;s will be initially NA values. After the Special Issue is created the ID&#39;s will be updated.
+
+compendium_id_list &lt;- rep(&quot;NA&quot;, 12)
+
+df_conf_exam &lt;-
+  conf_df_examination_sessions(compendium_id_list,
+                               mean_times = c(5, 5, 5, 5, 5),
+                               var = c(1, 1, 1, 1, 1))
+
+# You can manually change the configuration on your configuration dataframes and then write the files
+write.csv(df_special_issue_conf, special_issue_conf_file, row.names = FALSE)
+write.csv(df_conf_exam, exam_conf_file, row.names = FALSE)
+write.csv(df_conf_creat, creat_conf_file, row.names = FALSE)
+
+# Running test
+
+test &lt;-
+  run_test(
+    cookie = cookie,
+    endpoint = endpoint,
+    special_issue_folder = special_issue_folder,
+    special_issue_conf_file = special_issue_conf_file ,
+    examination_conf_file = exam_conf_file,
+    creation_folder = creat_folder,
+    creation_conf_file = creat_conf_file
+  )</code></pre>
+</div>
+<div id="test-results" class="section level1">
+<h1>Test results</h1>
+<div id="creation-special-issue" class="section level2">
+<h2>Creation special issue</h2>
+<div id="timeline" class="section level4">
+<h4>Timeline</h4>
+<p>Timeline plot representing the general steps for <a href="#creation_sessions">Creation Sessions</a> during the special issue publication.</p>
+<pre class="r"><code># Load results
+special_issue_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_creation/synchronized_times_test_XWOAY.csv&quot;)
+
+# Plot Timeline
+timeline_plot(special_issue_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="test-steps" class="section level4">
+<h4>Test steps</h4>
+<p>Test steps plot representing API and job execution steps duration for <a href="#creation_sessions">Creation Sessions</a> during the special issue publication.</p>
+<pre class="r"><code># Plot Steps
+plot_step_times(special_issue_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="interaction" class="section level2">
+<h2>Interaction</h2>
+<div id="examination-sessions" class="section level3">
+<h3>Examination sessions</h3>
+<div id="timeline-1" class="section level4">
+<h4>Timeline</h4>
+<p>Timeline plot representing the general steps for <a href="#examination_sessions">Examination Sessions</a> during the interaction of readers with the special issue.</p>
+<pre class="r"><code>interaction_examination_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_interaction/examination_sessions/synchronized_times_test_XWOAY.csv&quot;)
+# Plot Timeline
+timeline_plot(interaction_examination_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="test-steps-1" class="section level4">
+<h4>Test steps</h4>
+<p>Test steps plot representing API and job execution steps duration for <a href="#examination_sessions">Examination Sessions</a> during the interaction of readers with the special issue.</p>
+<pre class="r"><code># Plot Timeline
+plot_step_times(interaction_examination_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="late-submission-creation-sessions" class="section level3">
+<h3>Late submission (creation sessions)</h3>
+<div id="timeline-2" class="section level4">
+<h4>Timeline</h4>
+<p>Timeline plot representing the general steps for late submissions <a href="#creation_sessions">(Creation Sessions)</a> during the interaction phase of the special issue.</p>
+<pre class="r"><code>interaction_creation_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_interaction/creation_sessions/synchronized_times_test_XWOAY.csv&quot;)
+timeline_plot(interaction_creation_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="test-steps-2" class="section level4">
+<h4>Test steps</h4>
+<p>Test steps plot representing API and job execution steps duration for late submissions <a href="#examination_sessions">(Creation Sessions)</a> during the interaction phase with the special issue.</p>
+<pre class="r"><code>plot_step_times(interaction_creation_df,&quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5,h6",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+
+</body>
+</html>
