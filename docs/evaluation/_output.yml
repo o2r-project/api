@@ -1,0 +1,8 @@
+html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    self_contained: false
+    lib_dir: libs
+    mathjax: null
+    toc_depth: 6

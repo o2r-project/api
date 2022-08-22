@@ -25,6 +25,10 @@ nav:
     - User management: 'user/user.md'
     - User levels: 'user/levels.md'
     - Authentication (for developers): 'user/auth.md'
+  - Evaluation:
+    - Load test Endpoint: 'evaluation/load_test_endpoint.md'
+    - Load test HTML: 'evaluation/HTML_test.md'
+    - Load test: 'evaluation/load_test.md'
 theme:
   name: readthedocs
   custom_dir: custom_theme
