@@ -6,28 +6,32 @@ subtitle: Technology report
 ---
 # o2r Reproducibility Service Load Testing
 
-In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue ("late submissions").
-A Submission of a paper to the o2r reproducibility service is called **Creation session** and the interaction of a reader with a paper is called **Examination session**.
+In order to evaluate the performance of the [o2r reproducibility service](https://o2r.info/results/), we conduct a load test for the following expected usage scenario.
+A journal has published a special issue with Executable Research Compendia ([ERC](https://o2r.info/results/)).
+Ten ERC passed the peer review and the journal website has two concurrent readers per ERC.
+Three authors still submit their workflows to the special issue ("late submissions").
+The submission of a workflow to the o2r reproducibility service is called a **creation session** and the interaction of a reader with an ERC is called an **examination session** and they both put a load on the reproducibility service.
 
-The data collected during these load tests allows operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance. Each section of the document contains the functions required to test the o2r service both in `local` implementation and in the `remote` [o2r.uni-muenster.de](https://o2r.uni-muenster.de/) implementation.
+The data collected during these load tests allow operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance.
+Each section of the document contains the functions required to test the o2r service both in a `local` instance and in the public `remote` demo server at  [o2r.uni-muenster.de](https://o2r.uni-muenster.de/).
 
 # Definitions and scope
 
 > _Load testing is the process of putting demand on a system and measuring its response._ [Wikipedia](https://en.wikipedia.org/wiki/Load_testing)
 
-Following a [distinction from GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-load-testing-and-stress-testing/) we distinguish load testing from stress testing as follows:
+Following a [distinction from GeeksforGeeks](https://www.geeksforgeeks.org/difference-between-load-testing-and-stress-testing/) we distinguish load testing from stress testing as follows  (cf. also [stress testing on Wikipedia](https://en.wikipedia.org/wiki/Stress_testing)):
 
 > **Load Testing**
 > 
-> _Load Testing is a type of performance testing which determines the performance of a system, software product or software application under real life based load conditions._
+> _Load testing is a type of performance testing which determines the performance of a system, software product or software application under real life based load conditions._
 
 > **Stress Testing**
 > 
-> Stress testing is a type of software testing that verifies the stability and reliability of the system. This test particularly determines the system on its robustness and error handling under extremely heavy load conditions.
+> _Stress testing is a type of software testing that verifies the stability and reliability of the system. This test particularly determines the system on its robustness and error handling under extremely heavy load conditions._
 
-The tests in this document do not try to push the system to its limits (cf. [Stress testing on Wikipedia](https://en.wikipedia.org/wiki/Stress_testing)), but to learn more about the system scalability given a set of pre-defined scenarios with a number of parallel users.
-The [project proposal](https://doi.org/10.17879/42149626934) contains the following relevant paragraphs in _Work Package 3.1: Technology_.
-Note that here the term "stress test" in incorrectly used, whereas in this document we correctly conduct load tests:
+The tests in this document do not try to push the system to its limits, but to learn more about the system scalability given a set of pre-defined scenarios with a number of parallel users.
+The [o2r project proposal](https://doi.org/10.17879/42149626934) contains the following relevant paragraphs in _Work Package 3.1: Technology_.
+Note that here the term "stress test" in incorrectly used, whereas in this document we correctly conduct "load tests":
 
 > This work package evaluates the technological decisions and the pilots, mainly from the perspective of infrastructure operators, system administrators, and developers of the publishers.
 > The core metric to evaluate the software and architecture is suitability for the expected usage in terms of performance, integratability,and security.
@@ -40,62 +44,71 @@ Note that here the term "stress test" in incorrectly used, whereas in this docum
 > The report supports stakeholders in developing long term business plans for operating reproducible research servicesbased on ERCs.
 
 ## Type of Sessions
+
 ### Creation session {#creation_sessions}
 
 #### Overview
 
-From the Author perspective the test simulates 8 general steps, some steps correspond to **user interaction (U)** and other steps to process corresponding to **o2r service tasks (o2r)**.
+From the author perspective, the test simulates eight general steps.
+Some of these steps correspond to **user interaction (U)** and other steps to process corresponding to **o2r reproducibility service tasks (o2r)**.
 
-1. **Session start (U) :** Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)
+1. **Session start (U):** Time from the start of the test to accessing the o2r reproducibility service (e.g., grabbing a coffee, adjusting the chair).
 
-2. **Login pause (U) :** Time required to loggin into the o2r service (e.g remembering the password)
+2. **Login pause (U):** Time required to loggin into the o2r service (e.g., remembering the password).
 
-3. **Pause before upload (U) ** Time required for the user before submmiting a paper into the publication (e.g Checking the files and format).
+3. **Pause before upload (U):** Time required for the user before submitting a paper into the publication (e.g., checking the files and format).
 
-4. **ERC/workspace Upload (o2r) ** Time required by the o2r service to upload the ERC or Workspace submmited by the author. After this steps the compendium is merely a candidate and is not publicly available.This step is part of the [candidate process](https://o2r.info/api/#section/Candidate-process)
+4. **ERC/workspace upload (o2r):** Time required by the o2r reproducibility service to receive the ERC or workspace submitted by the author. After this steps the compendium is merely a candidate and is not publicly available. This step is part of the [candidate process](https://o2r.info/api/#section/Candidate-process).
 
-5. **Metadata modification (U) ** Time required by the author to review the metadata of the submmited paper. This step is mandatory to make the ERC compendium publicly available. This step is part of the [candidate process](https://o2r.info/api/#section/Candidate-process)
+5. **Metadata modification (U):** Time required by the author to review the metadata of the submmited paper. This step is mandatory to make the ERC compendium publicly available. This step is part of the [candidate process](https://o2r.info/api/#section/Candidate-process)
 
-6. **ERC/workspace publication (o2r) ** Time required by the o2r service to save the metadata and change the status of the compendia to publicly available. This is the final step of the [candidate process](https://o2r.info/api/#section/Candidate-process)
+6. **ERC/workspace publication (o2r):** Time required by the o2r service to save the metadata and change the status of the compendia to publicly available. This is the final step of the [candidate process](https://o2r.info/api/#section/Candidate-process).
 
-7. **Execution Pause (U)** As we assume that authors are going to be interested in running the analysis of their papers/compendium, this time represents an initial examination of the published ERC before running a Job.
+7. **Execution Pause (U):** As we assume that authors are going to be interested to take a look at the contents of their compendium, this time represents an initial examination of the published ERC before running a Job.
 
-8. **Job Execution (o2r) ** Time required by the o2r service to run the analysis/ [(Job)](https://o2r.info/api/#section/Execute-a-compendium) in the compendium. 
+8. **Job Execution (o2r):** Time required by the o2r reproducibility service to run the analysis, i.e., the [job](https://o2r.info/api/#section/Execute-a-compendium), packaged in the compendium. 
 
-**User steps (U)** are adjustable before the test in a configuration file. The steps corresponding to **o2r tasks (o2r)** require a series of interactions with the o2r API service and thus their durations are *not* configurable. These steps are explained in detail in the [**o2r task (o2r) **](#o2rtasks) section.
+User steps durations are adjustable before the test in a configuration file.
+The steps corresponding to o2r reproducibility service tasks require a series of interactions with the o2r API service and thus their durations are *not* configurable.
+These steps are explained in detail in the [o2r task (o2r)](#o2rtasks) section.
 
 ### Examination session {#examination_sessions}
 
 #### Overview
 
-An examination sessions consist on a reader interaction with an already available compendia. From the reader/examinator perspective the test simulates 4 general steps, these steps are part of some the steps already described in the creation session:
+An examination sessions consist of a reader interaction with an already available compendium.
+From the reader perspective the test simulates four general steps.
+Some steps match the ones from the creation session:
 
-1. **Session start (U):** Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)
+1. **Session start (U):** Time from the start of the test to the access to the o2r service (e.g.,grabbing a coffee, adjusting the chair).
 
-2. **Login pause (U):** Time required to loggin into the o2r service (e.g remembering the password)
+2. **Login pause (U):** Time required to login into the o2r service (e.g.,remembering the password).
 
-3. **Execution Pause (U):**  This time represents an initial examination of the published ERC before running a Job.
+3. **Execution Pause (U):**  This time represents an initial examination of the published ERC before running a job.
 
 4. **Job Execution (o2r):** Time required by the o2r service to run the analysis [(Job)](https://o2r.info/api/#section/Execute-a-compendium) in the compendium. 
 
-**User steps (U)** are adjustable before the test in a configuration file. The step corresponding to **o2r Tasks (o2r) ** require a series of interactions with the o2r API service. This step is explained in the [**o2r Tasks**](#o2rtasks) section.
+User steps durations are adjustable before the test in a configuration file.
+The step corresponding to o2r Tasks require a series of interactions with the o2r API service.
+This step is explained in the [o2r Tasks](#o2rtasks) section.
 
 ### o2r Tasks (o2r) {#o2rtasks}
 
 #### ERC/workspace upload (o2r)
 
 Regarding the upload process two main characteristics are important: its **origin** and **type**.
-The first one corresponding to the location of the files (e.g in local machine or a public repository) and the second corresponding to the content of the submitted files.
+The first one corresponding to the location of the files (e.g.,in local machine or a public repository) and the second corresponding to the content of the submitted files.
 
 ##### Upload origin
 
 There are three types of upload origins:
 
 1. [Local file upload](https://o2r.info/api/#operation/upload_compendium)
-2. [Public Share from Zenodo](https://o2r.info/api/#operation/upload_compendium)
-3. [Public Share from Sciebo](https://o2r.info/api/#operation/upload_compendium)
+2. [Public share from Zenodo](https://o2r.info/api/#operation/upload_compendium)
+3. [Public share from Sciebo](https://o2r.info/api/#operation/upload_compendium)
 
-It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the Record ID identification is used.
+It is of interest if any of these sources perform better or worse than others.
+For the Zenodo option, only the record ID option is used.
 
 ##### Upload type
 
@@ -528,14 +541,14 @@ plot_step_times <- function(df_report, test_id) {
 
 #### Execution functions
 
-The test execution requires two functions, the first one `create_dockerfile` and `run_test`. The first one creates a dockerfile with the configuration to build the environment of the test and the second one executes the test. The `create_dockerfile` function runs inside the `run_test` as it takes the parameters of the test to generate and specific dockerfile environment.
+The test execution requires two functions, the first one `create_dockerfile` and `run_test`. The first one creates a Dockerfile with the configuration to build the environment of the test and the second one executes the test. The `create_dockerfile` function runs inside the `run_test` as it takes the parameters of the test to generate a specific Docker environment.
 
 ##### Dockerfile
 
 This function creates a Dockerfile with the required parameters to containers either for a **creation session** or a **examination session**.
-This includes authentication parametes, configuration files and folders with required files (workpaces).
+This includes authentication parameters, configuration files and folders with required files (workspaces).
 This Dockerfile copies into the environment the `test_o2r.r` and the `o2r_test/o2r_sessions.R` scripts. 
-Both files are requires to run the containers.
+Both files are required to run the containers.
 
 ```{r dockerfile}
 library(dockerfiler)
@@ -613,6 +626,7 @@ load_test_configuration <- function(
 ```
 
 ###### 2. Special issue creation
+
 ```{r, class.source='fold-hide' }
 
 special_issue_creation<-function(docker,test_conf,special_issue_conf_file){
@@ -1271,6 +1285,7 @@ test <-
 # Test results
 
 ## Creation special issue
+
 #### Timeline
 
 Timeline plot representing the general steps for [Creation Sessions](#creation_sessions) during the special issue publication.
@@ -1294,10 +1309,13 @@ plot_step_times(special_issue_df,"XWOAY")
 ```
 
 ## Interaction
+
 ### Examination sessions
+
 #### Timeline
 
 Timeline plot representing the general steps for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
+
 ```{r}
 interaction_examination_df<-read.csv("results_test_XWOAY/special_issue_interaction/examination_sessions/synchronized_times_test_XWOAY.csv")
 # Plot Timeline
@@ -1307,12 +1325,14 @@ timeline_plot(interaction_examination_df,"XWOAY")
 #### Test steps
 
 Test steps plot representing API and job execution steps duration for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
+
 ```{r}
 # Plot Timeline
 plot_step_times(interaction_examination_df,"XWOAY")
 ```
 
 ### Late submission (creation sessions)
+
 #### Timeline
 
 Timeline plot representing the general steps for late submissions [(Creation Sessions)](#creation_sessions) during the interaction phase of the special issue.
@@ -1325,6 +1345,7 @@ timeline_plot(interaction_creation_df,"XWOAY")
 #### Test steps
 
 Test steps plot representing API and job execution steps duration for late submissions [(Creation Sessions)](#examination_sessions) during the interaction phase with the special issue.
+
 ```{r}
 plot_step_times(interaction_creation_df,"XWOAY")
 ```
