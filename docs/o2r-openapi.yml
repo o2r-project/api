@@ -19,6 +19,12 @@ info:
     For a complete list of publications, posters, presentations, and software projects from the o2r project please visit [https://o2r.info/results/](https://o2r.info/results/).
 
     ---
+    ### Load test & performance
+
+    To evaluate the performance of the o2r web API in realistic usage scenarios, the o2r team developed a scripts that simulates concurrent creation and interaction with ERCs.
+    See <https://o2r.info/api/evaluation/load_test.html> for details.
+
+    ---
     ### License
 
     ![Public Domain Button](https://licensebuttons.net/p/zero/1.0/88x31.png)

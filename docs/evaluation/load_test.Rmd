@@ -4,7 +4,8 @@ author: "Juan Sebastian Garzon Alvarado, Daniel Nüst"
 date: '2021-07-09'
 subtitle: Technology report
 ---
-# o2r Reproducibility Service Load Testing
+
+# Introduction
 
 In order to evaluate the performance of the [o2r reproducibility service](https://o2r.info/results/), we conduct a load test for the following expected usage scenario.
 A journal has published a special issue with Executable Research Compendia ([ERC](https://o2r.info/results/)).
@@ -240,7 +241,7 @@ create_dummy_workspaces <- function(sleep_times, source, target) {
     return(
       cat(
         "ERROR: Seconds data type should be integer\n",
-        " and ", source ,"folder should exist"
+        " and ", source , "folder should exist"
       )
     )
   }
@@ -408,7 +409,7 @@ synchronize_times <- function(rawtimes_df) {
 
 This functions creates a timeline plot using the synchronized times of the test representing the general steps for creation or examination sessions.
 
-```{r timeline_plot}
+```{r   plot_function_timeline}
 timeline_plot <- function(report_df, test_id) {
   gen_steps_df <- report_df[report_df$step_type == "general_step", ]
   gen_steps_df$step <-
@@ -477,7 +478,7 @@ timeline_plot <- function(report_df, test_id) {
 
 This functions creates a plot using the synchronized times of the test representing the API steps and the job execution steps for creation or examination sessions.
 
-```{r}
+```{r plot_function_step_times}
 plot_step_times <- function(df_report, test_id) {
   df_report$duration <- df_report$end - df_report$start
   # Skipped steps to 'almost' zero
@@ -594,8 +595,8 @@ During the test the function gives an update of the stage (Special Issue creatio
 As an 'output' the test returns a folder with the results of the **Special Issue creation** and the **User interaction**.
 
 ###### 1. Load test configuration
-```{r, class.source='fold-hide' }
 
+```{r load_test_configuration, class.source='fold-hide' }
 load_test_configuration <- function(
   special_issue_conf_file,
   examination_conf_file,
@@ -606,9 +607,9 @@ load_test_configuration <- function(
     test_id <- do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
     # Test configuration
     special_issue <-
-      data.frame(read.csv(special_issue_conf_file, header = TRUE, sep = ","))
+      data.frame(read.csv(special_issue_conf_file, header = TRUE, sep = ", "))
     examination_special_issue <-
-      data.frame(read.csv(examination_conf_file, header = TRUE, sep = ","))
+      data.frame(read.csv(examination_conf_file, header = TRUE, sep = ", "))
     creation_special_issue <- data.frame(read.csv(creation_conf_file))
     
     test_configuration<-list("test_id"= test_id,
@@ -627,8 +628,7 @@ load_test_configuration <- function(
 
 ###### 2. Special issue creation
 
-```{r, class.source='fold-hide' }
-
+```{r special_issue_creation, class.source='fold-hide'}
 special_issue_creation<-function(docker,test_conf,special_issue_conf_file){
   
   ########### SPECIAL ISSUE CREATION  ###########
@@ -638,21 +638,21 @@ special_issue_creation<-function(docker,test_conf,special_issue_conf_file){
     
     # Information banner
     cat(
-      rep("*", 28),"\n",
-      rep(" ", 11),"TEST CONFIGURATION \n",
-      rep("*", 28),"\n",
-      "[o2R TEST ID: ",test_conf$test_id,"]\n",
-      rep("-", 28),"\n",
+      rep("*", 28), "\n",
+      rep(" ", 11), "TEST CONFIGURATION \n",
+      rep("*", 28), "\n",
+      "[o2R TEST ID: ",test_conf$test_id, "]\n",
+      rep("-", 28), "\n",
       "[Creation Special Issue]\n",
-      "Number of Compendia in Special Issue:",test_conf$num_compendia_si,"\n",
-      rep("-", 28),"\n",
+      "Number of Compendia in Special Issue:",test_conf$num_compendia_si, "\n",
+      rep("-", 28), "\n",
       "[User interaction]\n",
-      "Number of examination sessions:",test_conf$num_examinations,"\n",
-      "Number of late submissions (creation sessions):", test_conf$num_creations,"\n",
-      rep("*", 28),"\n",rep(" ", 11),
+      "Number of examination sessions:",test_conf$num_examinations, "\n",
+      "Number of late submissions (creation sessions):", test_conf$num_creations, "\n",
+      rep("*", 28), "\n",rep(" ", 11),
       "TEST STATUS \n",
-      rep("*", 28),"\n",
-      "[Creation Special Issue:",test_conf$num_compendia_si," compendia]","\n"
+      rep("*", 28), "\n",
+      "[Creation Special Issue:",test_conf$num_compendia_si, " compendia]", "\n"
     )
     
     ### Starts special issue creation (Creation sessions) ###
@@ -712,9 +712,7 @@ special_issue_creation<-function(docker,test_conf,special_issue_conf_file){
 
 ###### 3. Special issue creation report
 
-```{r,class.source='fold-hide' }
- ## REPORT SPECIAL ISSUE CREATION
-
+```{r special_issue_creation_report, class.source='fold-hide' }
 special_issue_report <- function(test_conf, si_creation_containers, results_folder){
     # Creates results folder for creation sessions reports
   
@@ -791,8 +789,7 @@ special_issue_report <- function(test_conf, si_creation_containers, results_fold
 
 ###### 4. Users interaction
 
-```{r, class.source='fold-hide' }
-
+```{r users_interaction, class.source='fold-hide' }
 user_interaction <- function(sp_iss_df,test_conf,docker,examination_conf_file,creation_conf_file){
     ########### USER INTERACTION  ###########
     #### Creation sessions
@@ -904,8 +901,7 @@ user_interaction <- function(sp_iss_df,test_conf,docker,examination_conf_file,cr
 
 ###### 5. Users interaction report
 
-```{r,class.source='fold-hide' }
-
+```{r users_interaction_report, class.source='fold-hide' }
 user_interaction_report<-function(containers,test_conf,results_folder){
     
     examination_containers <- containers$examination_containers
@@ -1046,7 +1042,7 @@ user_interaction_report<-function(containers,test_conf,results_folder){
 
 ###### 6. Save configuration files
 
-```{r,class.source='fold-hide'}
+```{r save_configuration_files, class.source='fold-hide'}
 
 save_conf_files <- function(test_conf,results_folder,
            special_issue_conf_file,
@@ -1106,11 +1102,7 @@ save_conf_files <- function(test_conf,results_folder,
 The following function integrates the 6 previously described test steps. 
 
 ```{r run_test}
-
-# run_test
-### Parameters
-# Exactly same parameters as create_dockerfile function.
-
+# Parameters: Exactly same parameters as create_dockerfile function.
 run_test <-
   function(cookie,
            endpoint,
@@ -1122,7 +1114,7 @@ run_test <-
     
     #Check cookie
     response <- tryCatch(
-      GET(url=paste0(endpoint,"auth/whoami"),
+      GET(url=paste0(endpoint, "auth/whoami"),
                 accept_json(),
                 set_cookies(connect.sid=cookie),
                 enconde="multipart")
@@ -1199,7 +1191,7 @@ The following chunk reproduce all the required steps to run a test from scratch.
 It is only required the `o2r_test` and `Dummy` folder, and the `test_o2r.r` file.
 Similarly a running o2r service on the background is required. For this example we will use **5** [Creation Sessions](#creation_sessions), **10** [Examination sessions](#examination_sessions) and 2 late submissions.
 
-```{r test,eval = FALSE}
+```{r test-execution, eval = FALSE}
 # Creation session
 # Renviron file to pass info
 readRenviron(".Renviron")
@@ -1286,26 +1278,24 @@ test <-
 
 ## Creation special issue
 
-#### Timeline
+### Timeline
 
 Timeline plot representing the general steps for [Creation Sessions](#creation_sessions) during the special issue publication.
 
-```{r}
+```{r plot-creation-timeline}
 # Load results
 special_issue_df<-read.csv("results_test_XWOAY/special_issue_creation/synchronized_times_test_XWOAY.csv")
 
 # Plot Timeline
-timeline_plot(special_issue_df,"XWOAY")
-
+timeline_plot(special_issue_df, "XWOAY")
 ```
 
-#### Test steps
+### Test steps
 
 Test steps plot representing API and job execution steps duration for [Creation Sessions](#creation_sessions) during the special issue publication.
 
-```{r}
-# Plot Steps
-plot_step_times(special_issue_df,"XWOAY")
+```{r plot-creation-steps}
+plot_step_times(special_issue_df, "XWOAY")
 ```
 
 ## Interaction
@@ -1316,19 +1306,18 @@ plot_step_times(special_issue_df,"XWOAY")
 
 Timeline plot representing the general steps for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
 
-```{r}
+```{r plot-examination-timeline}
 interaction_examination_df<-read.csv("results_test_XWOAY/special_issue_interaction/examination_sessions/synchronized_times_test_XWOAY.csv")
 # Plot Timeline
-timeline_plot(interaction_examination_df,"XWOAY")
+timeline_plot(interaction_examination_df, "XWOAY")
 ```
 
 #### Test steps
 
 Test steps plot representing API and job execution steps duration for [Examination Sessions](#examination_sessions) during the interaction of readers with the special issue.
 
-```{r}
-# Plot Timeline
-plot_step_times(interaction_examination_df,"XWOAY")
+```{r plot-examination-steps}
+plot_step_times(interaction_examination_df, "XWOAY")
 ```
 
 ### Late submission (creation sessions)
@@ -1337,15 +1326,19 @@ plot_step_times(interaction_examination_df,"XWOAY")
 
 Timeline plot representing the general steps for late submissions [(Creation Sessions)](#creation_sessions) during the interaction phase of the special issue.
 
-```{r}
+```{r plot-late-timeline}
 interaction_creation_df<-read.csv("results_test_XWOAY/special_issue_interaction/creation_sessions/synchronized_times_test_XWOAY.csv")
-timeline_plot(interaction_creation_df,"XWOAY")
+timeline_plot(interaction_creation_df, "XWOAY")
 ```
 
 #### Test steps
 
 Test steps plot representing API and job execution steps duration for late submissions [(Creation Sessions)](#examination_sessions) during the interaction phase with the special issue.
 
-```{r}
-plot_step_times(interaction_creation_df,"XWOAY")
+```{r plot-late-steps}
+plot_step_times(interaction_creation_df, "XWOAY")
 ```
+
+# License
+
+This document is published under a [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0) license at <https://o2r.info/api/evaluation/load_test.html>.

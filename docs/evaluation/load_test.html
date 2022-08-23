@@ -15,7 +15,8 @@
 
 <title>o2r reproducibility service load testing</title>
 
-<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -45,7 +46,8 @@
   div.column{display: inline-block; vertical-align: top; width: 50%;}
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
-    </style>
+      .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
@@ -57,6 +59,7 @@ if (window.hljs) {
   }
 }
 </script>
+
 
 
 
@@ -85,6 +88,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -243,7 +249,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -252,7 +258,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">o2r reproducibility service load testing</h1>
+<h1 class="title toc-ignore">o2r reproducibility service load
+testing</h1>
 <h3 class="subtitle">Technology report</h3>
 <h4 class="author">Juan Sebastian Garzon Alvarado, Daniel Nüst</h4>
 <h4 class="date">2021-07-09</h4>
@@ -260,28 +267,80 @@ div.tocify {
 </div>
 
 
-<div id="o2r-reproducibility-service-load-testing" class="section level1">
-<h1>o2r Reproducibility Service Load Testing</h1>
-<p>In order to evaluate the performance of the o2r reproducibility service, we conduct a load test for an expected usage scenario: a Special issue with ten (10) papers, two (2) concurrent readers per paper and 3 additional authors submitting papers to the initial Special issue (“late submissions”). A Submission of a paper to the o2r reproducibility service is called <strong>Creation session</strong> and the interaction of a reader with a paper is called <strong>Examination session</strong>.</p>
-<p>The data collected during these load tests allows operators of the reproducibility service to estimate the required infrastructure and helps developers to improve the performance. Each section of the document contains the functions required to test the o2r service both in <code>local</code> implementation and in the <code>remote</code> <a href="https://o2r.uni-muenster.de/">o2r.uni-muenster.de</a> implementation.</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In order to evaluate the performance of the <a
+href="https://o2r.info/results/">o2r reproducibility service</a>, we
+conduct a load test for the following expected usage scenario. A journal
+has published a special issue with Executable Research Compendia (<a
+href="https://o2r.info/results/">ERC</a>). Ten ERC passed the peer
+review and the journal website has two concurrent readers per ERC. Three
+authors still submit their workflows to the special issue (“late
+submissions”). The submission of a workflow to the o2r reproducibility
+service is called a <strong>creation session</strong> and the
+interaction of a reader with an ERC is called an <strong>examination
+session</strong> and they both put a load on the reproducibility
+service.</p>
+<p>The data collected during these load tests allow operators of the
+reproducibility service to estimate the required infrastructure and
+helps developers to improve the performance. Each section of the
+document contains the functions required to test the o2r service both in
+a <code>local</code> instance and in the public <code>remote</code> demo
+server at <a
+href="https://o2r.uni-muenster.de/">o2r.uni-muenster.de</a>.</p>
 </div>
 <div id="definitions-and-scope" class="section level1">
 <h1>Definitions and scope</h1>
 <blockquote>
-<p><em>Load testing is the process of putting demand on a system and measuring its response.</em> <a href="https://en.wikipedia.org/wiki/Load_testing">Wikipedia</a></p>
+<p><em>Load testing is the process of putting demand on a system and
+measuring its response.</em> <a
+href="https://en.wikipedia.org/wiki/Load_testing">Wikipedia</a></p>
 </blockquote>
-<p>Following a <a href="https://www.geeksforgeeks.org/difference-between-load-testing-and-stress-testing/">distinction from GeeksforGeeks</a> we distinguish load testing from stress testing as follows:</p>
+<p>Following a <a
+href="https://www.geeksforgeeks.org/difference-between-load-testing-and-stress-testing/">distinction
+from GeeksforGeeks</a> we distinguish load testing from stress testing
+as follows (cf. also <a
+href="https://en.wikipedia.org/wiki/Stress_testing">stress testing on
+Wikipedia</a>):</p>
 <blockquote>
 <p><strong>Load Testing</strong></p>
-<p><em>Load Testing is a type of performance testing which determines the performance of a system, software product or software application under real life based load conditions.</em></p>
+<p><em>Load testing is a type of performance testing which determines
+the performance of a system, software product or software application
+under real life based load conditions.</em></p>
 </blockquote>
 <blockquote>
 <p><strong>Stress Testing</strong></p>
-<p>Stress testing is a type of software testing that verifies the stability and reliability of the system. This test particularly determines the system on its robustness and error handling under extremely heavy load conditions.</p>
+<p><em>Stress testing is a type of software testing that verifies the
+stability and reliability of the system. This test particularly
+determines the system on its robustness and error handling under
+extremely heavy load conditions.</em></p>
 </blockquote>
-<p>The tests in this document do not try to push the system to its limits (cf. <a href="https://en.wikipedia.org/wiki/Stress_testing">Stress testing on Wikipedia</a>), but to learn more about the system scalability given a set of pre-defined scenarios with a number of parallel users. The <a href="https://doi.org/10.17879/42149626934">project proposal</a> contains the following relevant paragraphs in <em>Work Package 3.1: Technology</em>. Note that here the term “stress test” in incorrectly used, whereas in this document we correctly conduct load tests:</p>
+<p>The tests in this document do not try to push the system to its
+limits, but to learn more about the system scalability given a set of
+pre-defined scenarios with a number of parallel users. The <a
+href="https://doi.org/10.17879/42149626934">o2r project proposal</a>
+contains the following relevant paragraphs in <em>Work Package 3.1:
+Technology</em>. Note that here the term “stress test” in incorrectly
+used, whereas in this document we correctly conduct “load tests”:</p>
 <blockquote>
-<p>This work package evaluates the technological decisions and the pilots, mainly from the perspective of infrastructure operators, system administrators, and developers of the publishers. The core metric to evaluate the software and architecture is suitability for the expected usage in terms of performance, integratability,and security. We focus on the former two, since established security procedures – e.g. for cloud and gridinfrastructures – can be applied to the proposed approach as well. A stress test for the deployed services isconducted and the configuration and documentation are adjusted accordingly. The number of sessions forthe test is loosely aligned with a typical number of papers in a special issue and simulates the case of twoconcurrent readers per paper (i.e. 20 in total per issue) and three creation sessions. […] A technology report summarises the stress test results [..]. The findings will be publishedand presented at reproducible research community events ([..]) at library science and preservation events ([..]), and/or research infrastructure conferences ([..]). The report supports stakeholders in developing long term business plans for operating reproducible research servicesbased on ERCs.</p>
+<p>This work package evaluates the technological decisions and the
+pilots, mainly from the perspective of infrastructure operators, system
+administrators, and developers of the publishers. The core metric to
+evaluate the software and architecture is suitability for the expected
+usage in terms of performance, integratability,and security. We focus on
+the former two, since established security procedures – e.g. for cloud
+and gridinfrastructures – can be applied to the proposed approach as
+well. A stress test for the deployed services isconducted and the
+configuration and documentation are adjusted accordingly. The number of
+sessions forthe test is loosely aligned with a typical number of papers
+in a special issue and simulates the case of twoconcurrent readers per
+paper (i.e. 20 in total per issue) and three creation sessions. […] A
+technology report summarises the stress test results [..]. The findings
+will be publishedand presented at reproducible research community events
+([..]) at library science and preservation events ([..]), and/or
+research infrastructure conferences ([..]). The report supports
+stakeholders in developing long term business plans for operating
+reproducible research servicesbased on ERCs.</p>
 </blockquote>
 <div id="type-of-sessions" class="section level2">
 <h2>Type of Sessions</h2>
@@ -289,62 +348,146 @@ div.tocify {
 <h3>Creation session</h3>
 <div id="overview" class="section level4">
 <h4>Overview</h4>
-<p>From the Author perspective the test simulates 8 general steps, some steps correspond to <strong>user interaction (U)</strong> and other steps to process corresponding to <strong>o2r service tasks (o2r)</strong>.</p>
+<p>From the author perspective, the test simulates eight general steps.
+Some of these steps correspond to <strong>user interaction (U)</strong>
+and other steps to process corresponding to <strong>o2r reproducibility
+service tasks (o2r)</strong>.</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Session start (U) :</strong> Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)</p></li>
-<li><p><strong>Login pause (U) :</strong> Time required to loggin into the o2r service (e.g remembering the password)</p></li>
-<li><p><strong>Pause before upload (U) </strong> Time required for the user before submmiting a paper into the publication (e.g Checking the files and format).</p></li>
-<li><p><strong>ERC/workspace Upload (o2r) </strong> Time required by the o2r service to upload the ERC or Workspace submmited by the author. After this steps the compendium is merely a candidate and is not publicly available.This step is part of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
-<li><p><strong>Metadata modification (U) </strong> Time required by the author to review the metadata of the submmited paper. This step is mandatory to make the ERC compendium publicly available. This step is part of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
-<li><p><strong>ERC/workspace publication (o2r) </strong> Time required by the o2r service to save the metadata and change the status of the compendia to publicly available. This is the final step of the <a href="https://o2r.info/api/#section/Candidate-process">candidate process</a></p></li>
-<li><p><strong>Execution Pause (U)</strong> As we assume that authors are going to be interested in running the analysis of their papers/compendium, this time represents an initial examination of the published ERC before running a Job.</p></li>
-<li><p><strong>Job Execution (o2r) </strong> Time required by the o2r service to run the analysis/ <a href="https://o2r.info/api/#section/Execute-a-compendium">(Job)</a> in the compendium.</p></li>
+<li><p><strong>Session start (U):</strong> Time from the start of the
+test to accessing the o2r reproducibility service (e.g., grabbing a
+coffee, adjusting the chair).</p></li>
+<li><p><strong>Login pause (U):</strong> Time required to loggin into
+the o2r service (e.g., remembering the password).</p></li>
+<li><p><strong>Pause before upload (U):</strong> Time required for the
+user before submitting a paper into the publication (e.g., checking the
+files and format).</p></li>
+<li><p><strong>ERC/workspace upload (o2r):</strong> Time required by the
+o2r reproducibility service to receive the ERC or workspace submitted by
+the author. After this steps the compendium is merely a candidate and is
+not publicly available. This step is part of the <a
+href="https://o2r.info/api/#section/Candidate-process">candidate
+process</a>.</p></li>
+<li><p><strong>Metadata modification (U):</strong> Time required by the
+author to review the metadata of the submmited paper. This step is
+mandatory to make the ERC compendium publicly available. This step is
+part of the <a
+href="https://o2r.info/api/#section/Candidate-process">candidate
+process</a></p></li>
+<li><p><strong>ERC/workspace publication (o2r):</strong> Time required
+by the o2r service to save the metadata and change the status of the
+compendia to publicly available. This is the final step of the <a
+href="https://o2r.info/api/#section/Candidate-process">candidate
+process</a>.</p></li>
+<li><p><strong>Execution Pause (U):</strong> As we assume that authors
+are going to be interested to take a look at the contents of their
+compendium, this time represents an initial examination of the published
+ERC before running a Job.</p></li>
+<li><p><strong>Job Execution (o2r):</strong> Time required by the o2r
+reproducibility service to run the analysis, i.e., the <a
+href="https://o2r.info/api/#section/Execute-a-compendium">job</a>,
+packaged in the compendium.</p></li>
 </ol>
-<p><strong>User steps (U)</strong> are adjustable before the test in a configuration file. The steps corresponding to <strong>o2r tasks (o2r)</strong> require a series of interactions with the o2r API service and thus their durations are <em>not</em> configurable. These steps are explained in detail in the <a href="#o2rtasks"><strong>o2r task (o2r) </strong></a> section.</p>
+<p>User steps durations are adjustable before the test in a
+configuration file. The steps corresponding to o2r reproducibility
+service tasks require a series of interactions with the o2r API service
+and thus their durations are <em>not</em> configurable. These steps are
+explained in detail in the <a href="#o2rtasks">o2r task (o2r)</a>
+section.</p>
 </div>
 </div>
 <div id="examination_sessions" class="section level3">
 <h3>Examination session</h3>
 <div id="overview-1" class="section level4">
 <h4>Overview</h4>
-<p>An examination sessions consist on a reader interaction with an already available compendia. From the reader/examinator perspective the test simulates 4 general steps, these steps are part of some the steps already described in the creation session:</p>
+<p>An examination sessions consist of a reader interaction with an
+already available compendium. From the reader perspective the test
+simulates four general steps. Some steps match the ones from the
+creation session:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Session start (U):</strong> Time from the start of the test to the access to the o2r service (e.g grabbing a coffee, adjusting the chair)</p></li>
-<li><p><strong>Login pause (U):</strong> Time required to loggin into the o2r service (e.g remembering the password)</p></li>
-<li><p><strong>Execution Pause (U):</strong> This time represents an initial examination of the published ERC before running a Job.</p></li>
-<li><p><strong>Job Execution (o2r):</strong> Time required by the o2r service to run the analysis <a href="https://o2r.info/api/#section/Execute-a-compendium">(Job)</a> in the compendium.</p></li>
+<li><p><strong>Session start (U):</strong> Time from the start of the
+test to the access to the o2r service (e.g.,grabbing a coffee, adjusting
+the chair).</p></li>
+<li><p><strong>Login pause (U):</strong> Time required to login into the
+o2r service (e.g.,remembering the password).</p></li>
+<li><p><strong>Execution Pause (U):</strong> This time represents an
+initial examination of the published ERC before running a job.</p></li>
+<li><p><strong>Job Execution (o2r):</strong> Time required by the o2r
+service to run the analysis <a
+href="https://o2r.info/api/#section/Execute-a-compendium">(Job)</a> in
+the compendium.</p></li>
 </ol>
-<p><strong>User steps (U)</strong> are adjustable before the test in a configuration file. The step corresponding to <strong>o2r Tasks (o2r) </strong> require a series of interactions with the o2r API service. This step is explained in the <a href="#o2rtasks"><strong>o2r Tasks</strong></a> section.</p>
+<p>User steps durations are adjustable before the test in a
+configuration file. The step corresponding to o2r Tasks require a series
+of interactions with the o2r API service. This step is explained in the
+<a href="#o2rtasks">o2r Tasks</a> section.</p>
 </div>
 </div>
 <div id="o2rtasks" class="section level3">
 <h3>o2r Tasks (o2r)</h3>
 <div id="ercworkspace-upload-o2r" class="section level4">
 <h4>ERC/workspace upload (o2r)</h4>
-<p>Regarding the upload process two main characteristics are important: its <strong>origin</strong> and <strong>type</strong>. The first one corresponding to the location of the files (e.g in local machine or a public repository) and the second corresponding to the content of the submitted files.</p>
+<p>Regarding the upload process two main characteristics are important:
+its <strong>origin</strong> and <strong>type</strong>. The first one
+corresponding to the location of the files (e.g.,in local machine or a
+public repository) and the second corresponding to the content of the
+submitted files.</p>
 <div id="upload-origin" class="section level5">
 <h5>Upload origin</h5>
 <p>There are three types of upload origins:</p>
 <ol style="list-style-type: decimal">
-<li><a href="https://o2r.info/api/#operation/upload_compendium">Local file upload</a></li>
-<li><a href="https://o2r.info/api/#operation/upload_compendium">Public Share from Zenodo</a></li>
-<li><a href="https://o2r.info/api/#operation/upload_compendium">Public Share from Sciebo</a></li>
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Local
+file upload</a></li>
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Public
+share from Zenodo</a></li>
+<li><a href="https://o2r.info/api/#operation/upload_compendium">Public
+share from Sciebo</a></li>
 </ol>
-<p>It is of interest if any of these sources perform better or worse than others. For the Zenodo option, only the Record ID identification is used.</p>
+<p>It is of interest if any of these sources perform better or worse
+than others. For the Zenodo option, only the record ID option is
+used.</p>
 </div>
 <div id="upload-type" class="section level5">
 <h5>Upload type</h5>
-<p>The ERC/workspace upload differentiates between <strong>two types of uploads</strong>, which can either be a workspace or a complete ERC. A workspace is an archive (<code>.zip</code> format) of all files needed for a scientific workflow, i.e. the main file in R Markdown format, e.g., <code>main.Rmd</code>, the file for reading, e.g., <code>display.html</code>, and all additionally required data and software files (see ERC specification for details). The finished ERC in addition contains the ERC configuration file (<code>erc.yml</code>) and the files for the computing environment (the manifest in a <code>Dockerfile</code>, the image in <code>image.tar</code>).</p>
-<p>It is of interest if one of the formats significantly impact performance, e.g., because the file sizes of ERC are much bigger because of the image tarball, while the processing is reduced since the manifest and image must not be created during submission.</p>
+<p>The ERC/workspace upload differentiates between <strong>two types of
+uploads</strong>, which can either be a workspace or a complete ERC. A
+workspace is an archive (<code>.zip</code> format) of all files needed
+for a scientific workflow, i.e. the main file in R Markdown format,
+e.g., <code>main.Rmd</code>, the file for reading, e.g.,
+<code>display.html</code>, and all additionally required data and
+software files (see ERC specification for details). The finished ERC in
+addition contains the ERC configuration file (<code>erc.yml</code>) and
+the files for the computing environment (the manifest in a
+<code>Dockerfile</code>, the image in <code>image.tar</code>).</p>
+<p>It is of interest if one of the formats significantly impact
+performance, e.g., because the file sizes of ERC are much bigger because
+of the image tarball, while the processing is reduced since the manifest
+and image must not be created during submission.</p>
 </div>
 </div>
 <div id="metadata-modification-o2r" class="section level4">
 <h4>Metadata modification (o2r)</h4>
-<p>As described on the compendium life cycle, the <code>candidate process</code> should be applied to the compendium or workspaces in order to be publicly available. In this sense is the only step shared by the examination session and creation session that is not and user step. This step requires 2 interactions with the API, the first one requesting the available metadata of the candidate ERC/workspace and the second one saving the medatata modification. For this test, each user saves the metadata once and do not modify the content of the initial submission. This means that the user just confirms that the metadata is correct.</p>
+<p>As described on the compendium life cycle, the
+<code>candidate process</code> should be applied to the compendium or
+workspaces in order to be publicly available. In this sense is the only
+step shared by the examination session and creation session that is not
+and user step. This step requires 2 interactions with the API, the first
+one requesting the available metadata of the candidate ERC/workspace and
+the second one saving the medatata modification. For this test, each
+user saves the metadata once and do not modify the content of the
+initial submission. This means that the user just confirms that the
+metadata is correct.</p>
 </div>
 <div id="job-execution-o2r" class="section level4">
 <h4>Job execution (o2r)</h4>
-<p>After the publication of the compendiums the authors/readers will most likely also execute the ERCs. The 10 steps of a Job execution are described in this <a href="https://o2r.info/api/#section/Execute-a-compendium">page</a>. This step requires 3 process, one API request to start the job, the internal Job execution by the o2r service and a series of request to the API to update the status of the Job. The execution finishes when the Job status as returned by the API indicates that the Job execution has finished.</p>
+<p>After the publication of the compendiums the authors/readers will
+most likely also execute the ERCs. The 10 steps of a Job execution are
+described in this <a
+href="https://o2r.info/api/#section/Execute-a-compendium">page</a>. This
+step requires 3 process, one API request to start the job, the internal
+Job execution by the o2r service and a series of request to the API to
+update the status of the Job. The execution finishes when the Job status
+as returned by the API indicates that the Job execution has
+finished.</p>
 </div>
 </div>
 </div>
@@ -353,27 +496,87 @@ div.tocify {
 <h1>Test implementation</h1>
 <div id="overview-2" class="section level2">
 <h2>Overview</h2>
-<p>The test is scripted using R and is controlled via an R Markdown notebook (this file). The test consist of two main parts: the first one a script controlling the individual o2r user sessions (creation or examination), and code chunks in the R Markdown notebook controlling the test and allowing multiple simultaneous sessions by using Docker containers. The test notebook is part of the API documentation and is published at <a href="https://o2r.info/api">https://o2r.info/api</a>.</p>
+<p>The test is scripted using R and is controlled via an R Markdown
+notebook (this file). The test consist of two main parts: the first one
+a script controlling the individual o2r user sessions (creation or
+examination), and code chunks in the R Markdown notebook controlling the
+test and allowing multiple simultaneous sessions by using Docker
+containers. The test notebook is part of the API documentation and is
+published at <a
+href="https://o2r.info/api">https://o2r.info/api</a>.</p>
 </div>
 <div id="usage-scenario-implementation" class="section level2">
 <h2>Usage scenario implementation</h2>
-<p>The test simulates the expected usage scenario explained in the previous sections. For this purpose, there are 2 main stages in the test: <strong>Special Issue Creation</strong> and <strong>Special Issue User Interaction</strong>.</p>
-<p>The first stage (<strong>Special Issue Creation</strong>) consist in the creation of an Special Issue with the <strong>simultaneous</strong> submission of a configurable number of papers. For our planned usage scenario this consist 10 simultaneous <strong>creation sessions</strong>. As a final result of this stage 10 compendia will be publicly available in the o2r service.</p>
-<p>The second stage (<strong>Special Issue User interaction</strong>) consist in two different types of users. The first type of users are examiners (<strong>examination sessions</strong>) that read and interact with the already available compendia in the <strong>Special Issue</strong> resulting of the first stage. For the usage scenario we planned 2 readers per compendium. This means that an special issue with 10 compendia expects 20 readers to interact simultaneously (2 per compendium). The second type are authors (<strong>creation sessions</strong>) uploading “late submissions” to the special issue. For the usage scenario 3 submissions are expected and are simultaneous with the <strong>examination sessions</strong>. In summary, the first stage requires 10 <strong>creation sessions</strong> and the second stage requires <strong>20 examination sessions</strong> and <strong>3 creation sessions</strong>. Within stages all sessions are synchronous but the <strong>Special Issue User interaction</strong> stage only starts after the <strong>Special Issue Creation</strong> stage is finished.</p>
+<p>The test simulates the expected usage scenario explained in the
+previous sections. For this purpose, there are 2 main stages in the
+test: <strong>Special Issue Creation</strong> and <strong>Special Issue
+User Interaction</strong>.</p>
+<p>The first stage (<strong>Special Issue Creation</strong>) consist in
+the creation of an Special Issue with the <strong>simultaneous</strong>
+submission of a configurable number of papers. For our planned usage
+scenario this consist 10 simultaneous <strong>creation
+sessions</strong>. As a final result of this stage 10 compendia will be
+publicly available in the o2r service.</p>
+<p>The second stage (<strong>Special Issue User interaction</strong>)
+consist in two different types of users. The first type of users are
+examiners (<strong>examination sessions</strong>) that read and interact
+with the already available compendia in the <strong>Special
+Issue</strong> resulting of the first stage. For the usage scenario we
+planned 2 readers per compendium. This means that an special issue with
+10 compendia expects 20 readers to interact simultaneously (2 per
+compendium). The second type are authors (<strong>creation
+sessions</strong>) uploading “late submissions” to the special issue.
+For the usage scenario 3 submissions are expected and are simultaneous
+with the <strong>examination sessions</strong>. In summary, the first
+stage requires 10 <strong>creation sessions</strong> and the second
+stage requires <strong>20 examination sessions</strong> and <strong>3
+creation sessions</strong>. Within stages all sessions are synchronous
+but the <strong>Special Issue User interaction</strong> stage only
+starts after the <strong>Special Issue Creation</strong> stage is
+finished.</p>
 <div id="individual-sessions" class="section level3">
 <h3>Individual sessions</h3>
-<p>The script <code>o2r_sessions.R</code> in the <code>o2r_test</code> folder includes all of the functions required to simulate all the steps of either an individual <strong>Creation session</strong> or an individual <strong>Examination session</strong>. The main functions of this script are <code>examination_session</code> and <code>creation_session</code>. As for any interaction with the o2r service the functions <strong>require</strong> an authentication <code>COOKIE</code>, in the case of a local or remote service find the cookie <code>connec.sid</code> in your browser after loggin in in the o2r service (e.g. using debug tools, <code>F12</code>). An automated version for this step (that saves you a couple of clicks) is presented in the <strong>Test</strong> session, however this function is not stable for all types of systems/browsers.</p>
-<p>Each of the functions (<code>examination_session</code> and <code>creation_session</code>) runs the corresponding session and returns an individual report summarizing the times required by the user (U) or the o2r service (o2r) including subprocess corresponding to the API or the JOB execution.</p>
-<p>In this sense, three types of steps (<code>step_type</code>) are recorded:</p>
+<p>The script <code>o2r_sessions.R</code> in the <code>o2r_test</code>
+folder includes all of the functions required to simulate all the steps
+of either an individual <strong>Creation session</strong> or an
+individual <strong>Examination session</strong>. The main functions of
+this script are <code>examination_session</code> and
+<code>creation_session</code>. As for any interaction with the o2r
+service the functions <strong>require</strong> an authentication
+<code>COOKIE</code>, in the case of a local or remote service find the
+cookie <code>connec.sid</code> in your browser after loggin in in the
+o2r service (e.g. using debug tools, <code>F12</code>). An automated
+version for this step (that saves you a couple of clicks) is presented
+in the <strong>Test</strong> session, however this function is not
+stable for all types of systems/browsers.</p>
+<p>Each of the functions (<code>examination_session</code> and
+<code>creation_session</code>) runs the corresponding session and
+returns an individual report summarizing the times required by the user
+(U) or the o2r service (o2r) including subprocess corresponding to the
+API or the JOB execution.</p>
+<p>In this sense, three types of steps (<code>step_type</code>) are
+recorded:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>General steps</strong> (<code>general_step</code>): These steps correspond to the already described steps for Creation sessions (8 steps) and Examination sessions (4 steps).</p></li>
-<li><p><strong>API request steps</strong> (<code>api_request</code>): The steps correspond to response time of the API for some type of request (e.g, <code>candidate_metarequest</code>,<code>job_status</code>).</p></li>
-<li><p><strong>JOB execution</strong> (<code>job_execution</code>): The steps correspond to the job execution times described in this <a href="https://o2r.info/api/#section/Execute-a-compendium">page</a>.</p></li>
+<li><p><strong>General steps</strong> (<code>general_step</code>): These
+steps correspond to the already described steps for Creation sessions (8
+steps) and Examination sessions (4 steps).</p></li>
+<li><p><strong>API request steps</strong> (<code>api_request</code>):
+The steps correspond to response time of the API for some type of
+request (e.g,
+<code>candidate_metarequest</code>,<code>job_status</code>).</p></li>
+<li><p><strong>JOB execution</strong> (<code>job_execution</code>): The
+steps correspond to the job execution times described in this <a
+href="https://o2r.info/api/#section/Execute-a-compendium">page</a>.</p></li>
 </ol>
 </div>
 <div id="multiple-sessions" class="section level3">
 <h3>Multiple sessions</h3>
-<p>The multiple sessions test implementation is divided in three groups of functions: Configuration, Report, Execution. The first one correspond to the authentication on the o2r service and configuration of the required files, the second one correspond to the functions to create reports of the test and the last one correponds to the functions that execute the multiple test usage scenario.</p>
+<p>The multiple sessions test implementation is divided in three groups
+of functions: Configuration, Report, Execution. The first one correspond
+to the authentication on the o2r service and configuration of the
+required files, the second one correspond to the functions to create
+reports of the test and the last one correponds to the functions that
+execute the multiple test usage scenario.</p>
 <div id="required-libraries" class="section level4">
 <h4>Required libraries</h4>
 <pre class="r"><code>library(&quot;httr&quot;)
@@ -393,22 +596,53 @@ library(&quot;dockerfiler&quot;)</code></pre>
 <h4>Configuration functions</h4>
 <div id="authentication" class="section level5">
 <h5>Authentication</h5>
-<p>Find the cookie <code>connec.sid</code> for the platform website in your browser (e.g. using debug tools, <code>F12</code>), and manually define the variable <code>COOKIE_CODED</code> with the value of said cookie in the <code>.Renviron</code> file. This is a “security hole” facilitating local development, which of course does not work when uploading workspaces to a remote reference implementation deployment.</p>
+<p>Find the cookie <code>connec.sid</code> for the platform website in
+your browser (e.g. using debug tools, <code>F12</code>), and manually
+define the variable <code>COOKIE_CODED</code> with the value of said
+cookie in the <code>.Renviron</code> file. This is a “security hole”
+facilitating local development, which of course does not work when
+uploading workspaces to a remote reference implementation
+deployment.</p>
 </div>
 <div id="configuration-files-functions" class="section level5">
 <h5>Configuration files functions</h5>
-<p>In order to run simultaneous sessions (up to 23), we use Docker containers that execute individual sessions (creation or examination) by using the <code>o2r_sessions.R</code> script. For the <strong>Special Issue Creation</strong> we require one folder with the workspaces/ERC to upload and a configuration file for the <strong>creation sessions</strong>.</p>
-<p>For the <strong>Special Issue User interaction</strong> there are 2 different type of users with different configuration requirements. First, For the <strong>creations sessions</strong> it is required a folder with the ‘late submissions’ workspaces/ERC and a configuration file. Second, for the <strong>examination sessions</strong> it is requiered a configuration file. The configuration files are <code>.CSV</code> with the parameters required to run either a <strong>creation session</strong> or a <strong>examination session</strong> with the <code>o2r_sessions.R</code> script.</p>
+<p>In order to run simultaneous sessions (up to 23), we use Docker
+containers that execute individual sessions (creation or examination) by
+using the <code>o2r_sessions.R</code> script. For the <strong>Special
+Issue Creation</strong> we require one folder with the workspaces/ERC to
+upload and a configuration file for the <strong>creation
+sessions</strong>.</p>
+<p>For the <strong>Special Issue User interaction</strong> there are 2
+different type of users with different configuration requirements.
+First, For the <strong>creations sessions</strong> it is required a
+folder with the ‘late submissions’ workspaces/ERC and a configuration
+file. Second, for the <strong>examination sessions</strong> it is
+requiered a configuration file. The configuration files are
+<code>.CSV</code> with the parameters required to run either a
+<strong>creation session</strong> or a <strong>examination
+session</strong> with the <code>o2r_sessions.R</code> script.</p>
 <p>The following chunks include functions to create:</p>
 <ol style="list-style-type: decimal">
 <li>Dummy Workspaces</li>
-<li>Configuration files for <strong>creations sessions</strong> from folders with ERC/Workspaces</li>
+<li>Configuration files for <strong>creations sessions</strong> from
+folders with ERC/Workspaces</li>
 <li>Configuration files for <strong>examination sessions</strong></li>
 </ol>
 </div>
 <div id="dummy-workspaces" class="section level5">
 <h5>Dummy Workspaces</h5>
-<p>The following method copy a dummy ERC workspace from a <code>source</code> folder and creates one (or multiple) new modified dummy on a <code>target</code> folder. In specific, every new dummy workspace includes a shell script that use the <code>sleep</code> command to simulate computation time of an ERC. The number of dummies and the <code>SLEEP</code> time is configurable throught the <code>dummy_times</code> parameter. This parameter is expected to be of numeric class and every number (integers only) represents the sleeping time of a new dummy ERC workspace. In consequence <code>dummy_times = c(10,100)</code> will result in <strong>two</strong> new ERC workspaces with 10 and 100 seconds of <code>SLEEP</code> time respectively.</p>
+<p>The following method copy a dummy ERC workspace from a
+<code>source</code> folder and creates one (or multiple) new modified
+dummy on a <code>target</code> folder. In specific, every new dummy
+workspace includes a shell script that use the <code>sleep</code>
+command to simulate computation time of an ERC. The number of dummies
+and the <code>SLEEP</code> time is configurable throught the
+<code>dummy_times</code> parameter. This parameter is expected to be of
+numeric class and every number (integers only) represents the sleeping
+time of a new dummy ERC workspace. In consequence
+<code>dummy_times = c(10,100)</code> will result in <strong>two</strong>
+new ERC workspaces with 10 and 100 seconds of <code>SLEEP</code> time
+respectively.</p>
 <pre class="r"><code># create_workspace
 ### Parameters
 # sleep_times -&gt; Numeric, for example: c(1,1,2,3,5,8,13)
@@ -423,7 +657,7 @@ create_dummy_workspaces &lt;- function(sleep_times, source, target) {
     return(
       cat(
         &quot;ERROR: Seconds data type should be integer\n&quot;,
-        &quot; and &quot;, source ,&quot;folder should exist&quot;
+        &quot; and &quot;, source , &quot;folder should exist&quot;
       )
     )
   }
@@ -489,7 +723,17 @@ create_dummy_workspaces &lt;- function(sleep_times, source, target) {
 </div>
 <div id="configuration-files-creation-sessions" class="section level5">
 <h5>Configuration files (Creation sessions)</h5>
-<p>The following method creates a dataframe with the configuration parameters for Creation sessions. The method uses the <code>folder_path</code> to examine that folder and configure a creation session with a <em>Local</em> <code>upload_origin</code>. The <code>mean_times</code> and <code>var</code> parameters correspond to the times for user steps (U) pauses (start, login, upload, metaedit and execution). In this sense, the first element in <code>mean_times</code> and <code>var</code> corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the creation sessions corresponding to the ERC/Workspaces in <code>folder_path</code>.</p>
+<p>The following method creates a dataframe with the configuration
+parameters for Creation sessions. The method uses the
+<code>folder_path</code> to examine that folder and configure a creation
+session with a <em>Local</em> <code>upload_origin</code>. The
+<code>mean_times</code> and <code>var</code> parameters correspond to
+the times for user steps (U) pauses (start, login, upload, metaedit and
+execution). In this sense, the first element in <code>mean_times</code>
+and <code>var</code> corresponds to the parameters to create a normal
+distribution of times for the Start Pause for all of the creation
+sessions corresponding to the ERC/Workspaces in
+<code>folder_path</code>.</p>
 <pre class="r"><code># conf_df_creation_sessions
 ### Parameters
 # folder_path -&gt; path with a folder with ERC/Workspaces
@@ -528,9 +772,17 @@ conf_df_creation_sessions &lt;-
     return(df)
   }</code></pre>
 </div>
-<div id="configuration-files-examination-sessions" class="section level5">
+<div id="configuration-files-examination-sessions"
+class="section level5">
 <h5>Configuration files (Examination sessions)</h5>
-<p>The following method creates a dataframe with the configuration parameters for examination sessions. The method assigns each element in the <code>compendium_id</code> vector (each representing a examination session) their user steps (U) times (Start, login, execution). In this sense, the first element in <code>mean_times</code> and <code>var</code> corresponds to the parameters to create a normal distribution of times for the Start Pause for all of the examination sessions corresponding to the compendium IDs in <code>compendium_id</code>.</p>
+<p>The following method creates a dataframe with the configuration
+parameters for examination sessions. The method assigns each element in
+the <code>compendium_id</code> vector (each representing a examination
+session) their user steps (U) times (Start, login, execution). In this
+sense, the first element in <code>mean_times</code> and <code>var</code>
+corresponds to the parameters to create a normal distribution of times
+for the Start Pause for all of the examination sessions corresponding to
+the compendium IDs in <code>compendium_id</code>.</p>
 <pre class="r"><code># conf_df_examination_sessions
 ### Parameters
 # compendium_id -&gt; path with a folder with ERC/Workspaces
@@ -560,7 +812,13 @@ conf_df_examination_sessions &lt;-
 <h4>Report functions</h4>
 <div id="synchronize-time" class="section level5">
 <h5>Synchronize time</h5>
-<p>This functions uses as input the raw times resulting of the execution of the test. Raw times are stored as doubles in number of seconds since 01.01.1970 <a href="https://www.epochconverter.com/">Unix epoch time</a> and as the relevant value is the duration of the steps the function synchronizes the times into a relative time scale starting in 0s. The 0 value represents the common start of the synchronized sessions (creation or examination).</p>
+<p>This functions uses as input the raw times resulting of the execution
+of the test. Raw times are stored as doubles in number of seconds since
+01.01.1970 <a href="https://www.epochconverter.com/">Unix epoch time</a>
+and as the relevant value is the duration of the steps the function
+synchronizes the times into a relative time scale starting in 0s. The 0
+value represents the common start of the synchronized sessions (creation
+or examination).</p>
 <pre class="r"><code>synchronize_times &lt;- function(rawtimes_df) {
   min &lt;- min(rawtimes_df$start, na.rm = T)
   rawtimes_df$start[rawtimes_df$step == &quot;start_pause&quot;] &lt;- min
@@ -572,7 +830,9 @@ conf_df_examination_sessions &lt;-
 </div>
 <div id="timeline-plot" class="section level5">
 <h5>Timeline plot</h5>
-<p>This functions creates a timeline plot using the synchronized times of the test representing the general steps for creation or examination sessions.</p>
+<p>This functions creates a timeline plot using the synchronized times
+of the test representing the general steps for creation or examination
+sessions.</p>
 <pre class="r"><code>timeline_plot &lt;- function(report_df, test_id) {
   gen_steps_df &lt;- report_df[report_df$step_type == &quot;general_step&quot;, ]
   gen_steps_df$step &lt;-
@@ -637,7 +897,9 @@ conf_df_examination_sessions &lt;-
 </div>
 <div id="step-times-plot" class="section level5">
 <h5>Step times plot</h5>
-<p>This functions creates a plot using the synchronized times of the test representing the API steps and the job execution steps for creation or examination sessions.</p>
+<p>This functions creates a plot using the synchronized times of the
+test representing the API steps and the job execution steps for creation
+or examination sessions.</p>
 <pre class="r"><code>plot_step_times &lt;- function(df_report, test_id) {
   df_report$duration &lt;- df_report$end - df_report$start
   # Skipped steps to &#39;almost&#39; zero
@@ -701,10 +963,22 @@ conf_df_examination_sessions &lt;-
 </div>
 <div id="execution-functions" class="section level4">
 <h4>Execution functions</h4>
-<p>The test execution requires two functions, the first one <code>create_dockerfile</code> and <code>run_test</code>. The first one creates a dockerfile with the configuration to build the environment of the test and the second one executes the test. The <code>create_dockerfile</code> function runs inside the <code>run_test</code> as it takes the parameters of the test to generate and specific dockerfile environment.</p>
+<p>The test execution requires two functions, the first one
+<code>create_dockerfile</code> and <code>run_test</code>. The first one
+creates a Dockerfile with the configuration to build the environment of
+the test and the second one executes the test. The
+<code>create_dockerfile</code> function runs inside the
+<code>run_test</code> as it takes the parameters of the test to generate
+a specific Docker environment.</p>
 <div id="dockerfile" class="section level5">
 <h5>Dockerfile</h5>
-<p>This function creates a Dockerfile with the required parameters to containers either for a <strong>creation session</strong> or a <strong>examination session</strong>. This includes authentication parametes, configuration files and folders with required files (workpaces). This Dockerfile copies into the environment the <code>test_o2r.r</code> and the <code>o2r_test/o2r_sessions.R</code> scripts. Both files are requires to run the containers.</p>
+<p>This function creates a Dockerfile with the required parameters to
+containers either for a <strong>creation session</strong> or a
+<strong>examination session</strong>. This includes authentication
+parameters, configuration files and folders with required files
+(workspaces). This Dockerfile copies into the environment the
+<code>test_o2r.r</code> and the <code>o2r_test/o2r_sessions.R</code>
+scripts. Both files are required to run the containers.</p>
 <pre class="r"><code>library(dockerfiler)
 
 # create_dockerfile
@@ -741,8 +1015,18 @@ create_dockerfile &lt;- function(cookie,
 </div>
 <div id="run-test" class="section level5">
 <h5>Run test</h5>
-<p>These groups of functions runs the test based on the configuration parameters. During the test the function gives an update of the stage (Special Issue creation or user interaction) and the corresponding creation or examination sessions. For clarity of the process, the <code>run_test</code> consist of 6 ‘stages’ of the usage scenario: 1) Load test configuration, 2) Creation of Special Issue, 3) Report of Special Issue creation, 4) User interaction, 5) User interaction report creation and 6) Saving configuration files. Each of these steps have a corresponding function.</p>
-<p>As an ‘output’ the test returns a folder with the results of the <strong>Special Issue creation</strong> and the <strong>User interaction</strong>.</p>
+<p>These groups of functions runs the test based on the configuration
+parameters. During the test the function gives an update of the stage
+(Special Issue creation or user interaction) and the corresponding
+creation or examination sessions. For clarity of the process, the
+<code>run_test</code> consist of 6 ‘stages’ of the usage scenario: 1)
+Load test configuration, 2) Creation of Special Issue, 3) Report of
+Special Issue creation, 4) User interaction, 5) User interaction report
+creation and 6) Saving configuration files. Each of these steps have a
+corresponding function.</p>
+<p>As an ‘output’ the test returns a folder with the results of the
+<strong>Special Issue creation</strong> and the <strong>User
+interaction</strong>.</p>
 <div id="load-test-configuration" class="section level6">
 <h6>1. Load test configuration</h6>
 <pre class="r fold-hide"><code>load_test_configuration &lt;- function(
@@ -755,9 +1039,9 @@ create_dockerfile &lt;- function(cookie,
     test_id &lt;- do.call(paste0, replicate(5, sample(LETTERS, 1), FALSE))
     # Test configuration
     special_issue &lt;-
-      data.frame(read.csv(special_issue_conf_file, header = TRUE, sep = &quot;,&quot;))
+      data.frame(read.csv(special_issue_conf_file, header = TRUE, sep = &quot;, &quot;))
     examination_special_issue &lt;-
-      data.frame(read.csv(examination_conf_file, header = TRUE, sep = &quot;,&quot;))
+      data.frame(read.csv(examination_conf_file, header = TRUE, sep = &quot;, &quot;))
     creation_special_issue &lt;- data.frame(read.csv(creation_conf_file))
     
     test_configuration&lt;-list(&quot;test_id&quot;= test_id,
@@ -782,21 +1066,21 @@ create_dockerfile &lt;- function(cookie,
     
     # Information banner
     cat(
-      rep(&quot;*&quot;, 28),&quot;\n&quot;,
-      rep(&quot; &quot;, 11),&quot;TEST CONFIGURATION \n&quot;,
-      rep(&quot;*&quot;, 28),&quot;\n&quot;,
-      &quot;[o2R TEST ID: &quot;,test_conf$test_id,&quot;]\n&quot;,
-      rep(&quot;-&quot;, 28),&quot;\n&quot;,
+      rep(&quot;*&quot;, 28), &quot;\n&quot;,
+      rep(&quot; &quot;, 11), &quot;TEST CONFIGURATION \n&quot;,
+      rep(&quot;*&quot;, 28), &quot;\n&quot;,
+      &quot;[o2R TEST ID: &quot;,test_conf$test_id, &quot;]\n&quot;,
+      rep(&quot;-&quot;, 28), &quot;\n&quot;,
       &quot;[Creation Special Issue]\n&quot;,
-      &quot;Number of Compendia in Special Issue:&quot;,test_conf$num_compendia_si,&quot;\n&quot;,
-      rep(&quot;-&quot;, 28),&quot;\n&quot;,
+      &quot;Number of Compendia in Special Issue:&quot;,test_conf$num_compendia_si, &quot;\n&quot;,
+      rep(&quot;-&quot;, 28), &quot;\n&quot;,
       &quot;[User interaction]\n&quot;,
-      &quot;Number of examination sessions:&quot;,test_conf$num_examinations,&quot;\n&quot;,
-      &quot;Number of late submissions (creation sessions):&quot;, test_conf$num_creations,&quot;\n&quot;,
-      rep(&quot;*&quot;, 28),&quot;\n&quot;,rep(&quot; &quot;, 11),
+      &quot;Number of examination sessions:&quot;,test_conf$num_examinations, &quot;\n&quot;,
+      &quot;Number of late submissions (creation sessions):&quot;, test_conf$num_creations, &quot;\n&quot;,
+      rep(&quot;*&quot;, 28), &quot;\n&quot;,rep(&quot; &quot;, 11),
       &quot;TEST STATUS \n&quot;,
-      rep(&quot;*&quot;, 28),&quot;\n&quot;,
-      &quot;[Creation Special Issue:&quot;,test_conf$num_compendia_si,&quot; compendia]&quot;,&quot;\n&quot;
+      rep(&quot;*&quot;, 28), &quot;\n&quot;,
+      &quot;[Creation Special Issue:&quot;,test_conf$num_compendia_si, &quot; compendia]&quot;, &quot;\n&quot;
     )
     
     ### Starts special issue creation (Creation sessions) ###
@@ -855,9 +1139,7 @@ create_dockerfile &lt;- function(cookie,
 </div>
 <div id="special-issue-creation-report" class="section level6">
 <h6>3. Special issue creation report</h6>
-<pre class="r fold-hide"><code> ## REPORT SPECIAL ISSUE CREATION
-
-special_issue_report &lt;- function(test_conf, si_creation_containers, results_folder){
+<pre class="r fold-hide"><code>special_issue_report &lt;- function(test_conf, si_creation_containers, results_folder){
     # Creates results folder for creation sessions reports
   
     special_issue_creation_folder &lt;-
@@ -1233,11 +1515,9 @@ special_issue_report &lt;- function(test_conf, si_creation_containers, results_f
 </div>
 <div id="run_test" class="section level6">
 <h6>run_test</h6>
-<p>The following function integrates the 6 previously described test steps.</p>
-<pre class="r"><code># run_test
-### Parameters
-# Exactly same parameters as create_dockerfile function.
-
+<p>The following function integrates the 6 previously described test
+steps.</p>
+<pre class="r"><code># Parameters: Exactly same parameters as create_dockerfile function.
 run_test &lt;-
   function(cookie,
            endpoint,
@@ -1249,7 +1529,7 @@ run_test &lt;-
     
     #Check cookie
     response &lt;- tryCatch(
-      GET(url=paste0(endpoint,&quot;auth/whoami&quot;),
+      GET(url=paste0(endpoint, &quot;auth/whoami&quot;),
                 accept_json(),
                 set_cookies(connect.sid=cookie),
                 enconde=&quot;multipart&quot;)
@@ -1326,7 +1606,14 @@ run_test &lt;-
 </div>
 <div id="test-execution" class="section level1">
 <h1>Test execution</h1>
-<p>The following chunk reproduce all the required steps to run a test from scratch. It is only required the <code>o2r_test</code> and <code>Dummy</code> folder, and the <code>test_o2r.r</code> file. Similarly a running o2r service on the background is required. For this example we will use <strong>5</strong> <a href="#creation_sessions">Creation Sessions</a>, <strong>10</strong> <a href="#examination_sessions">Examination sessions</a> and 2 late submissions.</p>
+<p>The following chunk reproduce all the required steps to run a test
+from scratch. It is only required the <code>o2r_test</code> and
+<code>Dummy</code> folder, and the <code>test_o2r.r</code> file.
+Similarly a running o2r service on the background is required. For this
+example we will use <strong>5</strong> <a
+href="#creation_sessions">Creation Sessions</a>, <strong>10</strong> <a
+href="#examination_sessions">Examination sessions</a> and 2 late
+submissions.</p>
 <pre class="r"><code># Creation session
 # Renviron file to pass info
 readRenviron(&quot;.Renviron&quot;)
@@ -1412,22 +1699,25 @@ test &lt;-
 <h1>Test results</h1>
 <div id="creation-special-issue" class="section level2">
 <h2>Creation special issue</h2>
-<div id="timeline" class="section level4">
-<h4>Timeline</h4>
-<p>Timeline plot representing the general steps for <a href="#creation_sessions">Creation Sessions</a> during the special issue publication.</p>
+<div id="timeline" class="section level3">
+<h3>Timeline</h3>
+<p>Timeline plot representing the general steps for <a
+href="#creation_sessions">Creation Sessions</a> during the special issue
+publication.</p>
 <pre class="r"><code># Load results
 special_issue_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_creation/synchronized_times_test_XWOAY.csv&quot;)
 
 # Plot Timeline
-timeline_plot(special_issue_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+timeline_plot(special_issue_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-creation-timeline-1.png" width="672" /></p>
 </div>
-<div id="test-steps" class="section level4">
-<h4>Test steps</h4>
-<p>Test steps plot representing API and job execution steps duration for <a href="#creation_sessions">Creation Sessions</a> during the special issue publication.</p>
-<pre class="r"><code># Plot Steps
-plot_step_times(special_issue_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div id="test-steps" class="section level3">
+<h3>Test steps</h3>
+<p>Test steps plot representing API and job execution steps duration for
+<a href="#creation_sessions">Creation Sessions</a> during the special
+issue publication.</p>
+<pre class="r"><code>plot_step_times(special_issue_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-creation-steps-1.png" width="672" /></p>
 </div>
 </div>
 <div id="interaction" class="section level2">
@@ -1436,37 +1726,52 @@ plot_step_times(special_issue_df,&quot;XWOAY&quot;)</code></pre>
 <h3>Examination sessions</h3>
 <div id="timeline-1" class="section level4">
 <h4>Timeline</h4>
-<p>Timeline plot representing the general steps for <a href="#examination_sessions">Examination Sessions</a> during the interaction of readers with the special issue.</p>
+<p>Timeline plot representing the general steps for <a
+href="#examination_sessions">Examination Sessions</a> during the
+interaction of readers with the special issue.</p>
 <pre class="r"><code>interaction_examination_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_interaction/examination_sessions/synchronized_times_test_XWOAY.csv&quot;)
 # Plot Timeline
-timeline_plot(interaction_examination_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+timeline_plot(interaction_examination_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-examination-timeline-1.png" width="672" /></p>
 </div>
 <div id="test-steps-1" class="section level4">
 <h4>Test steps</h4>
-<p>Test steps plot representing API and job execution steps duration for <a href="#examination_sessions">Examination Sessions</a> during the interaction of readers with the special issue.</p>
-<pre class="r"><code># Plot Timeline
-plot_step_times(interaction_examination_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Test steps plot representing API and job execution steps duration for
+<a href="#examination_sessions">Examination Sessions</a> during the
+interaction of readers with the special issue.</p>
+<pre class="r"><code>plot_step_times(interaction_examination_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-examination-steps-1.png" width="672" /></p>
 </div>
 </div>
 <div id="late-submission-creation-sessions" class="section level3">
 <h3>Late submission (creation sessions)</h3>
 <div id="timeline-2" class="section level4">
 <h4>Timeline</h4>
-<p>Timeline plot representing the general steps for late submissions <a href="#creation_sessions">(Creation Sessions)</a> during the interaction phase of the special issue.</p>
+<p>Timeline plot representing the general steps for late submissions <a
+href="#creation_sessions">(Creation Sessions)</a> during the interaction
+phase of the special issue.</p>
 <pre class="r"><code>interaction_creation_df&lt;-read.csv(&quot;results_test_XWOAY/special_issue_interaction/creation_sessions/synchronized_times_test_XWOAY.csv&quot;)
-timeline_plot(interaction_creation_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+timeline_plot(interaction_creation_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-late-timeline-1.png" width="672" /></p>
 </div>
 <div id="test-steps-2" class="section level4">
 <h4>Test steps</h4>
-<p>Test steps plot representing API and job execution steps duration for late submissions <a href="#examination_sessions">(Creation Sessions)</a> during the interaction phase with the special issue.</p>
-<pre class="r"><code>plot_step_times(interaction_creation_df,&quot;XWOAY&quot;)</code></pre>
-<p><img src="load_test_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Test steps plot representing API and job execution steps duration for
+late submissions <a href="#examination_sessions">(Creation Sessions)</a>
+during the interaction phase with the special issue.</p>
+<pre class="r"><code>plot_step_times(interaction_creation_df, &quot;XWOAY&quot;)</code></pre>
+<p><img src="load_test_files/figure-html/plot-late-steps-1.png" width="672" /></p>
 </div>
 </div>
 </div>
+</div>
+<div id="license" class="section level1">
+<h1>License</h1>
+<p>This document is published under a <a
+href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
+Attribution 4.0 International</a> (CC BY 4.0) license at <a
+href="https://o2r.info/api/evaluation/load_test.html"
+class="uri">https://o2r.info/api/evaluation/load_test.html</a>.</p>
 </div>
 
 
