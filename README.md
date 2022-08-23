@@ -19,10 +19,10 @@ The docs are build dynamically based on `openapi.yml` when `index.html` is opene
 You can do this locally by starting a web browser in the `/docs` directory:
 
 ```bash
-docker run --rm -it -v $(pwd)/docs:/usr/share/nginx/html:ro nginx
+docker run --rm -it -p 80:80 -v $(pwd)/docs:/usr/share/nginx/html:ro nginx
 ```
 
-Then open http://localhost/index.html.
+Then open <http://localhost/index.html>.
 
 ### Build
 
@@ -52,15 +52,17 @@ You can serve the HTML page (without style changes!) and automatically re-render
 ```bash
 redoc-cli serve --watch docs/openapi.yml
 ```
+
 ### PDF Generation
 
-Note that for every commit on the `master` branch a new PDF document will be generated. This can quickly lead to many commits. 
-So it is best to develop new features on other branches. 
+Note that for every commit on the `master` branch a new PDF document will be generated. This can quickly lead to many commits.
+So it is best to develop new features on other branches.
 
 ## Load testing
 
 This repository contains a collection of [R Markdown](https://rmarkdown.rstudio.com/) documents that can be used to evaluate the performance of the o2r reproducibility service.
-See the directory `docs/evaluation` for R code and documentation for running load tests on the API and the user interface.
+See the directory `docs/evaluation` for R code and documentation and for running load tests on the API and the user interface.
+The current load test report can be rendered with `make loadtest_buld`.
 
 ## License
 
